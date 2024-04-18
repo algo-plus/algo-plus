@@ -1,0 +1,49 @@
+{
+    "manifest_version": 3,
+
+    "name": "Algo Plus",
+    "description": "백준, SWEA를 실제 코딩테스트처럼 풀 수 있는 환경을 제공하고, 오답 노트 기능 등 학습에 유용한 기능을 제공하는 크롬 확장 프로그램",
+    "version": "1.0.0",
+
+    "options_ui": {
+        "page": "options.html"
+    },
+
+    "action": {
+        "default_icon": "icon.png",
+        "default_popup": "popup.html"
+    },
+
+    "content_scripts": [
+        {
+            "matches": [
+                "https://www.acmicpc.net/?",
+                "https://www.acmicpc.net/*"
+            ],
+            "js": ["js/vendor.js", "js/main.js"]
+        }
+    ],
+
+    "background": {
+        "service_worker": "js/background.js"
+    },
+
+    "permissions": [
+        "storage",
+        "unlimitedStorage",
+        "declarativeNetRequest",
+        "declarativeNetRequestWithHostAccess"
+    ],
+
+    "host_permissions": ["<all_urls>"],
+
+    "declarative_net_request": {
+        "rule_resources": [
+            {
+                "id": "ruleset",
+                "enabled": true,
+                "path": "rules.json"
+            }
+        ]
+    }
+}
