@@ -19,7 +19,7 @@ Chrome Extension, React, TypeScript and Visual Studio Code
 
 ## Project Structure
 
--   src/content_scripts: Content script files
+-   src/scripts: Content script files
 -   src/assets: static files
 -   dist: Chrome Extension directory
 -   dist/js: Generated JavaScript files
