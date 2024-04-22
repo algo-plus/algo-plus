@@ -1,6 +1,5 @@
 const customStatusPage = (): void => {
   const url: string = window.location.pathname;
-  
 
   console.log("custom status page...");
 
@@ -105,8 +104,8 @@ const showModal = () => {
   const modalFooter = document.createElement("div");
   modalFooter.classList.add("modal-footer");
   modalFooter.innerHTML = `
-  <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-  <button type="button" class="btn btn-primary">저장</button>
+  <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel">취소</button>
+  <button type="button" class="btn btn-primary" id="save">저장</button>
   `;
 
   modalContent.style.position = "absolute";
@@ -120,7 +119,7 @@ const showModal = () => {
   document.body.appendChild(modalBackdrop);
 
   // Close modal when close button or backdrop is clicked
-  modalHeader.querySelector(".close")?.addEventListener("click", () => {
+  modalFooter.querySelector("#cancel")?.addEventListener("click", () => {
     closeModal();
   });
 
