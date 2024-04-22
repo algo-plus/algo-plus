@@ -1,5 +1,6 @@
 import customProblemPage from "@/scripts/baekjoon/problem";
 import customGlobalPage from "./scripts/baekjoon/global";
+import customSubmitPage from "./scripts/baekjoon/submit";
 
 const url: string = window.location.pathname;
 
@@ -11,4 +12,8 @@ if (url.startsWith("/problem/")) {
 
 if (url.startsWith("/")) {
   customGlobalPage();
+}
+
+if (url.startsWith("/submit")) {
+  customSubmitPage();
 }
