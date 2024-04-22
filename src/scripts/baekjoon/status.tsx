@@ -1,8 +1,6 @@
+import { createElement } from "react";
+
 const customStatusPage = (): void => {
-  const url: string = window.location.pathname;
-
-  console.log("custom status page...");
-
   // Find the table in the DOM
   const table = document.getElementById("status-table");
 
@@ -28,6 +26,7 @@ const customStatusPage = (): void => {
     const checkboxCell = document.createElement("td");
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
+    checkbox.classList.add("note-checkbox");
     checkboxCell.appendChild(checkbox);
 
     row.insertBefore(checkboxCell, row.firstChild);
@@ -49,6 +48,21 @@ const customStatusPage = (): void => {
 
     anchor[1].insertBefore(container, anchor[1].firstChild);
   }
+  const checkboxes = document.querySelectorAll(".note-checkbox");
+  checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener("click", () => {
+      let checkedCount = 0;
+      checkboxes.forEach((cb) => {
+        let checked = cb as HTMLInputElement;
+        if (checked.checked) {
+          checkedCount++;
+        }
+      });
+      if (checkedCount > 2) {
+        (checkbox as HTMLInputElement).checked = false;
+      }
+    });
+  });
 };
 
 const showModal = () => {
