@@ -1,0 +1,18 @@
+.split-view {
+  display: flex;
+}
+
+.panel {
+  position: relative;
+  overflow: auto;
+}
+
+.resizer {
+  width: 5px;
+  cursor: col-resize;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #eee;
+}

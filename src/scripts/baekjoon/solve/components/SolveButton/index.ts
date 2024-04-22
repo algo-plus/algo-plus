@@ -1,3 +1,1 @@
-import { SolveButton } from "./SolveButton";
-
-export default SolveButton;
+export { default as SolveButton } from "./SolveButton";
