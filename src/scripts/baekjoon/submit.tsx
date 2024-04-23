@@ -4,9 +4,11 @@ import React, { useState } from 'react';
 
 import { PrismCodeEditor } from './solve/components/PrismCodeEditor';
 import { createRoot } from 'react-dom/client';
+import { SplitView } from './solve/components/SplitView';
 import { SubmitPostRequest } from './types/submit';
 import { submit } from './apis/submit';
 import { Button } from './solve/components/Button';
+import { getProblemId } from './utils';
 
 const SolveView = () => {
     const [code, setCode] = useState('');
@@ -54,7 +56,60 @@ const SolveView = () => {
 };
 
 const customSubmitPage = () => {
-    console.log('custom problem page...');
+    const addSplitView = () => {
+        const root = document.createElement('div');
+        const problemId = getProblemId();
+
+        const problemMenu = document.querySelector(
+            'ul.problem-menu'
+        ) as HTMLElement;
+        problemMenu.style.marginBottom = '0';
+
+        const contentContainer = document.querySelector(
+            '.container.content'
+        ) as HTMLElement;
+
+        const splitView = (
+            <SplitView
+                left={{ type: 'Problem', data: problemId }}
+                right={{ type: 'Editor' }}
+            />
+        );
+
+        createRoot(root).render(splitView);
+
+        if (contentContainer) {
+            contentContainer.innerHTML = '';
+            contentContainer.style.width = '100%';
+            contentContainer.appendChild(problemMenu);
+            contentContainer.appendChild(root);
+        }
+    };
+
+    const checkActiveState = async () => {
+        const urlParams = new URLSearchParams(window.location.search);
+
+        if (urlParams.get('solve') === 'true') {
+            document
+                .querySelectorAll('ul.problem-menu li.active')
+                .forEach((activeItem) => {
+                    activeItem.classList.remove('active');
+                });
+
+            const submitButton = document.querySelector(
+                'ul.problem-menu li a[href*="/submit"]'
+            );
+
+            if (submitButton) {
+                const solveButton = submitButton.closest('li')?.nextSibling;
+                console.log('solveButton=', solveButton);
+                if (solveButton && solveButton instanceof HTMLLIElement) {
+                    solveButton.classList.add('active');
+                }
+                addSplitView();
+            }
+        }
+    };
 
     // 기존 에디터 숨기기
     const beforeEditor = document.querySelector(
@@ -83,6 +138,8 @@ const customSubmitPage = () => {
 
     const root = createRoot(editorDiv);
     root.render(<SolveView />);
+
+    window.addEventListener('load', checkActiveState);
 };
 
 export default customSubmitPage;
