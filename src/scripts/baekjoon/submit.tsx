@@ -8,9 +8,16 @@ import { createRoot } from 'react-dom/client';
 export default function customSubmitPage(): void {
     const addSplitView = () => {
         const root = document.createElement('div');
-        document.body.appendChild(root);
-
         const problemId = getProblemId();
+
+        const problemMenu = document.querySelector(
+            'ul.problem-menu'
+        ) as HTMLElement;
+        problemMenu.style.marginBottom = '0';
+
+        const contentContainer = document.querySelector(
+            '.container.content'
+        ) as HTMLElement;
 
         const splitView = (
             <SplitView
@@ -18,7 +25,15 @@ export default function customSubmitPage(): void {
                 right={{ type: 'Editor' }}
             />
         );
+
         createRoot(root).render(splitView);
+
+        if (contentContainer) {
+            contentContainer.innerHTML = '';
+            contentContainer.style.width = '100%';
+            contentContainer.appendChild(problemMenu);
+            contentContainer.appendChild(root);
+        }
     };
 
     const checkActiveState = async () => {

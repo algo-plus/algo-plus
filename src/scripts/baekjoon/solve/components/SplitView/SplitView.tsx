@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ProblemPanel } from '../Panel';
+import { ProblemPanel } from '../ProblemPanel';
 
 const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
     const [panelsWidth, setPanelsWidth] = useState<number[]>([50, 50]);
@@ -46,7 +46,7 @@ const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
             style={{ display: 'flex' }}
         >
             <div
-                className='panel'
+                className='panel left'
                 style={{
                     width: `${panelsWidth[0]}%`,
                     position: 'relative',
@@ -73,7 +73,7 @@ const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
                 onMouseDown={() => handleMouseDown(0)}
             />
             <div
-                className='panel'
+                className='panel right'
                 style={{
                     width: `${panelsWidth[1]}%`,
                     position: 'relative',
@@ -84,9 +84,9 @@ const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
                 {props.right.type === 'Problem' ? (
                     <ProblemPanel problemId={props.left.data} />
                 ) : props.right.type === 'Editor' ? (
-                    <div>이 곳에 에디터를 넣어주세요.</div>
+                    `이 곳에 에디터 패널을 넣어주세요`
                 ) : (
-                    <div>Panel 1</div>
+                    <div>Panel 2</div>
                 )}
             </div>
         </div>
