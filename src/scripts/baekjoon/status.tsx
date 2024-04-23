@@ -1,4 +1,6 @@
+import { createRoot } from 'react-dom/client';
 import { Modal } from './note/components/Modal';
+import React from 'react';
 
 const customStatusPage = (): void => {
     const table = document.querySelector('#status-table');
@@ -52,7 +54,16 @@ const customStatusPage = (): void => {
     button.textContent = '오답 노트 작성';
     button.classList.add('btn', 'btn-primary');
     button.addEventListener('click', () => {
-        Modal();
+        console.log('Clicked note btn');
+        const modalDiv = document.createElement('div');
+        modalDiv.id = 'modalContainer';
+        document.body.appendChild(modalDiv);
+        const root = createRoot(modalDiv);
+        root.render(
+            <React.StrictMode>
+                <Modal />
+            </React.StrictMode>
+        );
     });
 
     // FIX: 오답 노트 작성 버튼 위치 고정해야함
