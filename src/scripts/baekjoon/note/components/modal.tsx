@@ -30,14 +30,14 @@ const modalNote = () => {
     modalHeader.classList.add('modal-header');
     modalHeader.innerHTML = `<h5 class="modal-title">오답 노트 작성</h5>`;
 
-    const btnClose = document.createElement('button');
-    btnClose.type = 'button';
-    btnClose.classList.add('close');
-    btnClose.id = 'btn-close';
-    btnClose.setAttribute('data-dismiss', 'modal');
-    btnClose.setAttribute('aria-label', 'Close');
+    const buttonClose = document.createElement('button');
+    buttonClose.type = 'button';
+    buttonClose.classList.add('close');
+    buttonClose.id = 'btn-close';
+    buttonClose.setAttribute('data-dismiss', 'modal');
+    buttonClose.setAttribute('aria-label', 'Close');
 
-    modalHeader.appendChild(btnClose);
+    modalHeader.appendChild(buttonClose);
 
     const modalBody = document.createElement('div');
     modalBody.classList.add('modal-body');
