@@ -25,6 +25,7 @@
 
 .modal-header {
     display: flex;
+    justify-content: space-between;
 }
 
 .modal-header h5 {
@@ -45,3 +46,8 @@
 .modal-footer button {
     margin-left: 10px;
 }
+
+.close {
+    justify-content: flex-end;
+}
+
