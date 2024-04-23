@@ -8,6 +8,8 @@ console.info('url=', url);
 
 if (url.startsWith('/problem/')) {
     customProblemPage();
+} else if (url.startsWith('/submit')) {
+    customSubmitPage();
 }
 
 if (url.startsWith('/')) {
