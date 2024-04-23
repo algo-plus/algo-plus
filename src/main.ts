@@ -1,5 +1,5 @@
 import customProblemPage from '@/scripts/baekjoon/problem';
-import customStatusPage from './scripts/baekjoon/status';
+import customStatusPage from '@/scripts/baekjoon/status';
 import customSubmitPage from '@/scripts/baekjoon/submit';
 
 const url: string = window.location.pathname;
