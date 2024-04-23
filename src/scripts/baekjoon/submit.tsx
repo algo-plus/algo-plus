@@ -1,9 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { SplitView } from './solve/components/SplitView';
 import { SubmitPostRequest } from './types/submit';
 import { submit } from './apis/submit';
 import { getProblemId } from './utils';
+import { createRoot } from 'react-dom/client';
 
 export default function customSubmitPage(): void {
     const addSplitView = () => {
@@ -18,7 +18,7 @@ export default function customSubmitPage(): void {
                 right={{ type: 'Editor' }}
             />
         );
-        ReactDOM.render(splitView, root);
+        createRoot(root).render(splitView);
     };
 
     const checkActiveState = async () => {
