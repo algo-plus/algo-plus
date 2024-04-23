@@ -1,5 +1,5 @@
 import React from 'react';
-import {ForwardedRef, forwardRef, useEffect, useRef} from 'react';
+import { ForwardedRef, forwardRef, useEffect, useRef } from 'react';
 import { PrismEditor } from 'prism-code-editor';
 import {
     basicEditor,
