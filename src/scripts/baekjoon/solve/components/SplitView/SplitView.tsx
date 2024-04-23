@@ -54,7 +54,13 @@ const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
                 }}
                 onMouseDown={() => handleMouseDown(0)}
             >
-                <ProblemPanel problemId={props.left.data} />
+                {props.left.type === 'Problem' ? (
+                    <ProblemPanel problemId={props.left.data} />
+                ) : props.left.type === 'Editor' ? (
+                    <div>이 곳에 에디터를 넣어주세요.</div>
+                ) : (
+                    <div>Panel 1</div>
+                )}
             </div>
             <div
                 className='resizer'
@@ -75,7 +81,13 @@ const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
                 }}
                 onMouseDown={() => handleMouseDown(1)}
             >
-                Panel 2
+                {props.right.type === 'Problem' ? (
+                    <ProblemPanel problemId={props.left.data} />
+                ) : props.right.type === 'Editor' ? (
+                    <div>이 곳에 에디터를 넣어주세요.</div>
+                ) : (
+                    <div>Panel 1</div>
+                )}
             </div>
         </div>
     );

@@ -12,10 +12,4 @@ if (url.startsWith('/problem/')) {
     customSubmitPage();
 }
 
-if (url.startsWith('/')) {
-    customGlobalPage();
-}
-
-if (url.startsWith('/submit')) {
-    customSubmitPage();
-}
+customGlobalPage();

@@ -3,15 +3,18 @@ import ReactDOM from 'react-dom';
 import { SplitView } from './solve/components/SplitView';
 import { SubmitPostRequest } from './types/submit';
 import { submit } from './apis/submit';
+import { getProblemId } from './utils';
 
 export default function customSubmitPage(): void {
     const addSplitView = () => {
         const root = document.createElement('div');
         document.body.appendChild(root);
 
+        const problemId = getProblemId();
+
         const splitView = (
             <SplitView
-                left={{ type: 'Problem', data: '1000' }}
+                left={{ type: 'Problem', data: problemId }}
                 right={{ type: 'Editor' }}
             />
         );
@@ -31,8 +34,10 @@ export default function customSubmitPage(): void {
             const submitButton = document.querySelector(
                 'ul.problem-menu li a[href*="/submit"]'
             );
+
             if (submitButton) {
                 const solveButton = submitButton.closest('li')?.nextSibling;
+                console.log('solveButton=', solveButton);
                 if (solveButton && solveButton instanceof HTMLLIElement) {
                     solveButton.classList.add('active');
                 }
@@ -81,5 +86,6 @@ export default function customSubmitPage(): void {
         '#submit_form > div:nth-child(7) > div'
     ) as HTMLDivElement;
     buttonContainer.appendChild(mySubmitButton);
-    checkActiveState();
+
+    window.addEventListener('load', checkActiveState);
 }
