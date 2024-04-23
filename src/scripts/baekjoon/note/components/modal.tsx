@@ -28,9 +28,7 @@ const modalNote = () => {
     const modalHeader = document.createElement('div');
     modalHeader.style.display = 'flex';
     modalHeader.classList.add('modal-header');
-    modalHeader.innerHTML = `
-  <h5 class="modal-title">오답 노트 작성</h5>
-  `;
+    modalHeader.innerHTML = `<h5 class="modal-title">오답 노트 작성</h5>`;
 
     const btnClose = document.createElement('button');
     btnClose.type = 'button';
@@ -43,17 +41,12 @@ const modalNote = () => {
 
     const modalBody = document.createElement('div');
     modalBody.classList.add('modal-body');
-    modalBody.innerHTML = `
-    <textarea rows="6" cols="50">
-    </textarea>
-  `;
+    modalBody.innerHTML = `<textarea rows="6" cols="50"></textarea>`;
 
     const modalFooter = document.createElement('div');
     modalFooter.classList.add('modal-footer');
-    modalFooter.innerHTML = `
-  <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel">취소</button>
-  <button type="button" class="btn btn-primary" id="save">저장</button>
-  `;
+    modalFooter.innerHTML = `<button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel">취소</button>
+                             <button type="button" class="btn btn-primary" id="save">저장</button>`;
 
     modalContent.style.position = 'absolute';
     modalContent.style.opacity = '1';
