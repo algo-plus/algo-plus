@@ -1,10 +1,11 @@
 import ReactDOM from 'react-dom';
 import 'prism-code-editor/prism/languages/javascript';
 import 'prism-code-editor/prism/languages/java';
-import React, { useState } from 'react';
+import React, { useState, CSSProperties } from 'react';
 import axios from 'axios';
 
 import { PrismCodeEditor } from './solve/components/PrismCodeEditor';
+import { SubmitButtonStyle, ParentButtonStyle } from './solve/components/SubmitButtonStyle';
 import { createRoot } from 'react-dom/client';
 
 const SolveView = () => {
@@ -48,13 +49,25 @@ const SolveView = () => {
                 language='java' 
                 onUpdate={setCode}
             />
-            <button onClick={submitHandle}>버튼</button>
+            <div style={ParentButtonStyle as CSSProperties}><button style={SubmitButtonStyle as CSSProperties} onClick={submitHandle}>제출</button></div>
         </>
     );
 };
 
 const customSubmitPage = () => {
     console.log('custom problem page...');
+
+    // 기존 에디터 숨기기
+    const beforeEditor = document.querySelector('#submit_form > div:nth-child(5) > div.col-md-10') as HTMLDivElement;
+    if (beforeEditor) {
+        beforeEditor.style.display = 'none';
+    }
+
+    // 기존 제출버튼 숨기기
+    const beforeButton = document.querySelector('#submit_form > div:nth-child(7) > div') as HTMLDivElement;
+    if (beforeButton) {
+        beforeButton.style.display = 'none';
+    }
 
     const editorDiv: HTMLDivElement = document.createElement('div');
     editorDiv.id = 'editorContainer';
