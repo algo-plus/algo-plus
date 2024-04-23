@@ -1,6 +1,6 @@
 import customProblemPage from '@/scripts/baekjoon/problem';
-import customGlobalPage from './scripts/baekjoon/global';
-import customSubmitPage from './scripts/baekjoon/submit';
+import customGlobalPage from '@/scripts/baekjoon/global';
+import customSubmitPage from '@/apis/scripts/baekjoon/submit';
 
 const url: string = window.location.pathname;
 
