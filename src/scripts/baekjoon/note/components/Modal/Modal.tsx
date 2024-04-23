@@ -1,29 +1,11 @@
-const modalNote = () => {
-    const modalBackdrop = document.createElement('div');
-    modalBackdrop.style.display = 'flex';
-    modalBackdrop.classList.add('modal-backdrop');
+import './Modal.css';
 
-    modalBackdrop.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-    modalBackdrop.style.position = 'fixed';
-    modalBackdrop.style.top = '0';
-    modalBackdrop.style.left = '0';
-    modalBackdrop.style.width = '100%';
-    modalBackdrop.style.height = '100%';
-    modalBackdrop.style.justifyContent = 'center';
-    modalBackdrop.style.alignItems = 'center';
+const Modal = () => {
+    const modalBackdrop = document.createElement('div');
+    modalBackdrop.classList.add('modal-backdrop');
 
     const modalContent = document.createElement('div');
     modalContent.classList.add('modal-content');
-    modalContent.style.backgroundColor = 'white';
-    modalContent.style.padding = '20px';
-    modalContent.style.borderRadius = '10px';
-    modalContent.style.width = '500px';
-    modalContent.style.maxWidth = '100%';
-    modalContent.style.margin = 'auto';
-    modalContent.style.position = 'relative';
-    modalContent.style.top = '50%';
-    modalContent.style.transform = 'translateY(-50%)';
-    modalContent.style.boxShadow = '0px 0px 10px rgba(0, 0, 0, 0.5)';
 
     const modalHeader = document.createElement('div');
     modalHeader.style.display = 'flex';
@@ -46,10 +28,7 @@ const modalNote = () => {
     const modalFooter = document.createElement('div');
     modalFooter.classList.add('modal-footer');
     modalFooter.innerHTML = `<button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel">취소</button>
-                             <button type="button" class="btn btn-primary" id="save">저장</button>`;
-
-    modalContent.style.position = 'absolute';
-    modalContent.style.opacity = '1';
+                           <button type="button" class="btn btn-primary" id="save">저장</button>`;
 
     // 모달 요소들 body에 결합
     modalContent.appendChild(modalHeader);
@@ -77,4 +56,4 @@ const closeModal = () => {
     }
 };
 
-export default modalNote;
+export default Modal;

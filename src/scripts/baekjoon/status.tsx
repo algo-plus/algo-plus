@@ -1,4 +1,4 @@
-import modalNote from './note/components/modal';
+import { Modal } from './note/components/Modal';
 
 const customStatusPage = (): void => {
     const table = document.querySelector('#status-table');
@@ -52,7 +52,7 @@ const customStatusPage = (): void => {
     button.textContent = '오답 노트 작성';
     button.classList.add('btn', 'btn-primary');
     button.addEventListener('click', () => {
-        modalNote();
+        Modal();
     });
 
     // FIX: 오답 노트 작성 버튼 위치 고정해야함
