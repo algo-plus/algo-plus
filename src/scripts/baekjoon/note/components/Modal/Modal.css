@@ -13,7 +13,7 @@
 .modal-content {
     background-color: white;
     padding: 20px;
-    width: 500px;
+    width: 900px;
     max-width: 100%;
     margin: auto;
     position: absolute;
@@ -50,4 +50,3 @@
 .close {
     justify-content: flex-end;
 }
-

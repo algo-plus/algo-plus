@@ -28,6 +28,8 @@ const Modal = () => {
                 </button>
             </div>
             <div className='modal-body'>
+                
+
                 <textarea rows={6} cols={50}></textarea>
             </div>
             <div className='modal-footer'>
