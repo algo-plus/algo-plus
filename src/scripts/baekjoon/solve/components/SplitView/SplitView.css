@@ -16,10 +16,15 @@
 }
 
 .resizer {
-    width: '5px';
-    cursor: 'col-resize';
-    position: 'absolute';
-    background-color: '#eee';
+    width: 5px;
+    cursor: col-resize;
+    position: relative;
+    background-color: #eee;
+}
+
+.resizer:hover,
+.resizer:active {
+    background-color: #4d92cb;
 }
 
 .split-view ::-webkit-scrollbar {

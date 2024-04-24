@@ -72,16 +72,7 @@ const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
                     <div>Panel 1</div>
                 )}
             </div>
-            <div
-                className='resizer'
-                style={{
-                    width: '5px',
-                    cursor: 'col-resize',
-                    position: 'relative',
-                    backgroundColor: '#eee',
-                }}
-                onMouseDown={() => handleMouseDown(0)}
-            />
+            <div className='resizer' onMouseDown={() => handleMouseDown(0)} />
             <div
                 className='panel right'
                 style={{
