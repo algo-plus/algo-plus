@@ -16,11 +16,26 @@
 
     "content_scripts": [
         {
+            "matches": ["https://github.com/*"],
+            "js": [
+                "scripts/util.js",
+                "scripts/Github.js",
+                "scripts/authorize.js"
+            ],
+            "run_at": "document_idle"
+        },
+        {
             "matches": [
                 "https://www.acmicpc.net/?",
                 "https://www.acmicpc.net/*"
             ],
-            "js": ["js/vendor.js", "js/main.js"]
+            "js": [
+                "library/sha1.min.js",
+                "library/jszip.min.js",
+                "library/FileSaver.min.js",
+                "js/vendor.js",
+                "js/main.js"
+            ]
         }
     ],
 
