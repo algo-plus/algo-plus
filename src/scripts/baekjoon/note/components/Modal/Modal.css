@@ -12,7 +12,7 @@
 
 .modal-content {
     background-color: white;
-    padding: 15px;
+    padding: 10px;
     width: 1200px;
     max-width: 100%;
     margin: auto;
@@ -29,16 +29,29 @@
 }
 
 .modal-header h5 {
-    margin: 0;
+    margin: 1;
+}
+
+.modal-body {
+    padding: 10px;
 }
 
 .modal-body textarea {
+    margin-top: 3px;
     width: 100%;
     resize: none;
 }
 
+.modal-body pre {
+    padding: 0%;
+}
+
+.modal-body h6 {
+    margin: 5px;
+}
+
 .modal-footer {
-    margin-top: 20px;
+    margin-top: 10px;
     display: flex;
     justify-content: flex-end;
 }
@@ -49,4 +62,9 @@
 
 .close {
     justify-content: flex-end;
+}
+
+.codediff-container {
+    max-height: 500px;
+    overflow-y: auto;
 }
