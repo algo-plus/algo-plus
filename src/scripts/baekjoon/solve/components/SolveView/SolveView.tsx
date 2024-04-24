@@ -78,6 +78,7 @@ const SolveView: React.FC<SolveViewProps> = ({
                         maxWidth: '100%',
                         maxHeight: '700px',
                         overflowY: 'auto',
+                        fontSize: '18px',
                     }}
                 >
                     <PrismCodeEditor
