@@ -16,15 +16,6 @@
 
     "content_scripts": [
         {
-            "matches": ["https://github.com/*"],
-            "js": [
-                "scripts/util.js",
-                "scripts/Github.js",
-                "scripts/authorize.js"
-            ],
-            "run_at": "document_idle"
-        },
-        {
             "matches": [
                 "https://www.acmicpc.net/?",
                 "https://www.acmicpc.net/*"
