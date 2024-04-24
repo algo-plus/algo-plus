@@ -1,102 +1,74 @@
 import 'prism-code-editor/prism/languages/javascript';
 import 'prism-code-editor/prism/languages/java';
-import React, { useState } from 'react';
-
-import { PrismCodeEditor } from './solve/components/PrismCodeEditor';
+import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { SubmitPostRequest } from './types/submit';
-import { submit } from './apis/submit';
-import { Button } from './solve/components/Button';
-import { compile } from '@/apis/compile';
-import { CodeCompileRequest } from '@/types/compile';
+import { EditorPanel } from './solve/components/EditorPanel';
+import { SplitView } from './solve/components/SplitView';
+import { getProblemId } from './utils';
 
-const SolveView = () => {
-    const [code, setCode] = useState('');
+const customSubmitPage = () => {
+    const addSplitView = () => {
+        const root = document.createElement('div');
+        const problemId = getProblemId();
 
-    // TODO: 더미 데이터 호출 삭제
-    const compileHandle = (event: any) => {
-        event.preventDefault();
-        const data: CodeCompileRequest = {
-            code: 'import java.io.*;\nimport java.util.*;\n\n// 주석도 잘됩니까?\npublic class Main {\n\n    public static void main(String[] args) throws Exception {\n        System.out.println("잘되나요?");\n    }\n}\n\n',
-            language: 'java',
-            versionIndex: 4,
-        };
-        // abc(console.log, console.error);
-        compile(data, (response) => console.log(response), console.error);
-    };
+        const problemMenu = document.querySelector(
+            'ul.problem-menu'
+        ) as HTMLElement;
+        problemMenu.style.marginBottom = '0';
 
-    const submitHandle = (event: any) => {
-        event.preventDefault();
+        const contentContainer = document.querySelector(
+            '.container.content'
+        ) as HTMLElement;
+
         const csrfKey = (
             document.querySelector(
                 '#submit_form > input[type=hidden]:nth-child(6)'
             ) as HTMLInputElement
         ).value;
 
-        // TODO: 문제번호, 언어, 코드공개여부 설정
-        const data: SubmitPostRequest = {
-            problem_id: 1000,
-            language: 3,
-            code_open: 'onlyaccepted',
-            source: code,
-            csrf_key: csrfKey,
-        };
-
-        submit(
-            data,
-            (response) => {
-                const responseURL = response.request.responseURL;
-                if (responseURL) {
-                    console.log('code submit... responseURL=' + responseURL);
-                    // TODO: 코드 제출 후 로직 작성
-                }
-            },
-            console.error
+        const splitView = (
+            <SplitView
+                left={{ type: 'Problem', data: problemId }}
+                right={{ type: 'Editor', data: csrfKey }}
+            />
         );
+
+        createRoot(root).render(splitView);
+
+        if (contentContainer) {
+            contentContainer.innerHTML = '';
+            contentContainer.style.width = '100%';
+            contentContainer.appendChild(problemMenu);
+            contentContainer.appendChild(root);
+        }
     };
 
-    return (
-        <>
-            <PrismCodeEditor
-                theme='github-dark'
-                language='java'
-                onUpdate={setCode}
-            />
-            <Button text='제출' onClick={compileHandle} />
-        </>
-    );
-};
+    const checkActiveState = async () => {
+        const urlParams = new URLSearchParams(window.location.search);
 
-const customSubmitPage = () => {
-    console.log('custom problem page...');
+        if (urlParams.get('solve') === 'true') {
+            document
+                .querySelectorAll('ul.problem-menu li.active')
+                .forEach((activeItem) => {
+                    activeItem.classList.remove('active');
+                });
 
-    // 기존 에디터 숨기기
-    const beforeEditor = document.querySelector(
-        '#submit_form > div:nth-child(5) > div.col-md-10'
-    ) as HTMLDivElement;
-    if (beforeEditor) {
-        beforeEditor.style.display = 'none';
-    }
+            const submitButton = document.querySelector(
+                'ul.problem-menu li a[href*="/submit"]'
+            );
 
-    // 기존 제출버튼 숨기기
-    const beforeButton = document.querySelector(
-        '#submit_form > div:nth-child(7) > div'
-    ) as HTMLDivElement;
-    if (beforeButton) {
-        beforeButton.style.display = 'none';
-    }
+            if (submitButton) {
+                const solveButton = submitButton.closest('li')?.nextSibling;
+                console.log('solveButton=', solveButton);
+                if (solveButton && solveButton instanceof HTMLLIElement) {
+                    solveButton.classList.add('active');
+                }
+                addSplitView();
+            }
+        }
+    };
 
-    const editorDiv: HTMLDivElement = document.createElement('div');
-    editorDiv.id = 'editorContainer';
-    const child = document.querySelector(
-        '#submit_form > div:nth-child(5) > div.col-md-10'
-    );
-    document
-        .querySelector('#submit_form > div:nth-child(5)')
-        ?.insertBefore(editorDiv, child);
-
-    const root = createRoot(editorDiv);
-    root.render(<SolveView />);
+    window.addEventListener('load', checkActiveState);
 };
 
 export default customSubmitPage;
