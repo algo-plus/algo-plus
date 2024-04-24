@@ -33,6 +33,7 @@ function handleMessage(request: any, sender: any, sendResponse: any) {
         request.closeWebPage === true &&
         request.isSuccess === false
     ) {
+        // TODO: Use tabs.query instead
         alert('유저 인증 관련 오류');
         chrome.tabs.getSelected(function (tab) {
             chrome.tabs.remove(tab.id);

@@ -56,7 +56,7 @@ const customStatusPage = (): void => {
     button.addEventListener('click', () => {
         console.log('Clicked note btn');
         const modalDiv = document.createElement('div');
-        modalDiv.id = 'modalContainer';
+        modalDiv.className = 'modal-backdrop';
         document.body.appendChild(modalDiv);
         const root = createRoot(modalDiv);
         root.render(
