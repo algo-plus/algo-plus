@@ -52,7 +52,6 @@ const ProblemPanel: React.FC<{ problemId: string | null }> = ({
                                 flex: '1',
                                 maxHeight: '100vh',
                                 overflowY: 'auto',
-                                paddingRight: '10px',
                             }}
                             dangerouslySetInnerHTML={{
                                 __html: problemContainer.innerHTML,

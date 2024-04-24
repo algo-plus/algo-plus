@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ProblemPanel } from '../ProblemPanel';
 import { EditorPanel } from '../EditorPanel';
+import './SplitView.css';
 
 const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
     const [panelsWidth, setPanelsWidth] = useState<number[]>([50, 50]);
@@ -51,19 +52,12 @@ const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
     };
 
     return (
-        <div
-            className='split-view'
-            ref={wrapperRef}
-            style={{ display: 'flex' }}
-        >
+        <div className='split-view' ref={wrapperRef}>
             <div
                 className='panel left'
                 style={{
                     width: `${panelsWidth[0]}%`,
-                    position: 'relative',
-                    overflow: 'auto',
                 }}
-                onMouseDown={() => handleMouseDown(0)}
             >
                 {props.left.type === 'Problem' ? (
                     <ProblemPanel problemId={props.left.data} />
@@ -92,10 +86,7 @@ const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
                 className='panel right'
                 style={{
                     width: `${panelsWidth[1]}%`,
-                    position: 'relative',
-                    overflow: 'auto',
                 }}
-                onMouseDown={() => handleMouseDown(1)}
             >
                 {props.right.type === 'Problem' ? (
                     <ProblemPanel problemId={props.left.data} />

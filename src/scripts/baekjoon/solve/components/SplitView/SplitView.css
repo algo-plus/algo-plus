@@ -7,12 +7,38 @@
     overflow: auto;
 }
 
+.panel.left {
+    margin-right: 5px;
+}
+
+.panel.right {
+    margin-left: 10px;
+}
+
 .resizer {
-    width: 5px;
-    cursor: col-resize;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #eee;
+    width: '5px';
+    cursor: 'col-resize';
+    position: 'absolute';
+    background-color: '#eee';
+}
+
+.split-view ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+.split-view ::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 6px;
+}
+
+.split-view ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 6px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+.split-view ::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
