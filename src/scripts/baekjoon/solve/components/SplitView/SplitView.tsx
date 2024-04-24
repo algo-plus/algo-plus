@@ -35,10 +35,12 @@ const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
 
     const disableTextSelection = () => {
         document.body.style.userSelect = 'none';
+        document.body.style.cursor = 'col-resize';
     };
 
     const enableTextSelection = () => {
         document.body.style.userSelect = '';
+        document.body.style.cursor = '';
     };
 
     const handleMouseUp = () => {
