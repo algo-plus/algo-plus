@@ -28,6 +28,7 @@ export const PrismCodeEditor = forwardRef(
 
             if (ref)
                 typeof ref == 'function' ? ref(editor) : (ref.current = editor);
+
             return editor.remove;
         }, []);
 
