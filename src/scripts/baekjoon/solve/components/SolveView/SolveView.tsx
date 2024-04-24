@@ -4,7 +4,17 @@ import { Button } from '../Button';
 import { SubmitPostRequest } from '../../../types/submit';
 import { submit } from '../../../apis/submit';
 
-const SolveView: React.FC<{ csrfKey: string | null }> = ({ csrfKey }) => {
+interface SolveViewProps {
+    csrfKey: string | null;
+    language: string;
+    codeOpen: string;
+}
+
+const SolveView: React.FC<SolveViewProps> = ({
+    csrfKey,
+    language,
+    codeOpen,
+}) => {
     const [code, setCode] = useState('');
 
     const submitHandle = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -12,8 +22,8 @@ const SolveView: React.FC<{ csrfKey: string | null }> = ({ csrfKey }) => {
 
         const data: SubmitPostRequest = {
             problem_id: 1000,
-            language: 3,
-            code_open: 'onlyaccepted',
+            language: Number(language),
+            code_open: codeOpen,
             source: code,
             csrf_key: csrfKey ? csrfKey : '',
         };
