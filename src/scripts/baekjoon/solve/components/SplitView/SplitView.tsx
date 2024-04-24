@@ -59,7 +59,10 @@ const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
                     <ProblemPanel problemId={props.left.data} />
                 ) : props.left.type === 'Editor' ? (
                     <div>
-                        <EditorPanel csrfKey={props.right.data} />
+                        <EditorPanel
+                            csrfKey={props.right.data}
+                            problemId={props.left.data}
+                        />
                     </div>
                 ) : (
                     <div>Panel 1</div>
@@ -87,7 +90,10 @@ const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
                 {props.right.type === 'Problem' ? (
                     <ProblemPanel problemId={props.left.data} />
                 ) : props.right.type === 'Editor' ? (
-                    <EditorPanel csrfKey={props.right.data} />
+                    <EditorPanel
+                        csrfKey={props.right.data}
+                        problemId={props.left.data}
+                    />
                 ) : (
                     <div>Panel 2</div>
                 )}

@@ -8,12 +8,14 @@ interface SolveViewProps {
     csrfKey: string | null;
     language: string;
     codeOpen: string;
+    problemId: number;
 }
 
 const SolveView: React.FC<SolveViewProps> = ({
     csrfKey,
     language,
     codeOpen,
+    problemId,
 }) => {
     const [code, setCode] = useState('');
 
@@ -21,7 +23,7 @@ const SolveView: React.FC<SolveViewProps> = ({
         event.preventDefault();
 
         const data: SubmitPostRequest = {
-            problem_id: 1000,
+            problem_id: problemId,
             language: Number(language),
             code_open: codeOpen,
             source: code,
@@ -50,7 +52,15 @@ const SolveView: React.FC<SolveViewProps> = ({
                     flexDirection: 'column',
                 }}
             >
-                <div style={{ background: 'black', height: '100%' }}>
+                <div
+                    style={{
+                        background: 'black',
+                        height: '100%',
+                        maxWidth: '100%',
+                        maxHeight: '700px',
+                        overflowY: 'auto',
+                    }}
+                >
                     <PrismCodeEditor
                         theme='github-dark'
                         language='java'

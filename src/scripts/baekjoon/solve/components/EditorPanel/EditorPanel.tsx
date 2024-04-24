@@ -4,7 +4,12 @@ import { SolveView } from '../SolveView';
 import { LanguageButton } from '../LanguageButton';
 import { CodeOpenButton } from '../CodeOpenButton';
 
-const EditorPanel: React.FC<{ csrfKey: string | null }> = ({ csrfKey }) => {
+interface EditorPanelProps {
+    csrfKey: string | null;
+    problemId: number;
+}
+
+const EditorPanel: React.FC<EditorPanelProps> = ({ csrfKey, problemId }) => {
     const [language, setLanguage] = useState('0'); // 초기 언어 설정
     const [codeOpen, setCodeOpen] = useState('close'); // 초기 소스코드 설정
 
@@ -40,6 +45,7 @@ const EditorPanel: React.FC<{ csrfKey: string | null }> = ({ csrfKey }) => {
                 csrfKey={csrfKey}
                 language={language}
                 codeOpen={codeOpen}
+                problemId={problemId}
             />
         );
     }, [csrfKey, language, codeOpen]); // csrfKey 또는 language가 변경될 때마다 실행
@@ -70,6 +76,7 @@ const EditorPanel: React.FC<{ csrfKey: string | null }> = ({ csrfKey }) => {
                     csrfKey={csrfKey}
                     language={language}
                     codeOpen={codeOpen}
+                    problemId={problemId}
                 />
             </div>
         </>
