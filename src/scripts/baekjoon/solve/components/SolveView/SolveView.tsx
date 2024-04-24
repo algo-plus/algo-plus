@@ -19,6 +19,25 @@ const SolveView: React.FC<SolveViewProps> = ({
 }) => {
     const [code, setCode] = useState('');
 
+    // language 숫자에 따라 실제 언어 문자열을 매핑하는 객체
+    const languageMap: Record<string, string> = {
+        '0': 'c',
+        '95': 'cpp',
+        '86': 'csharp',
+        '3': 'java',
+        '93': 'java',
+        '28': 'python',
+        '73': 'python',
+        '17': 'js',
+        '69': 'kotlin',
+        '68': 'ruby',
+        '74': 'swift',
+        '12': 'go',
+        '113': 'rust',
+    };
+
+    const selectedLanguage = languageMap[language] || 'c';
+
     const submitHandle = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
 
@@ -62,10 +81,9 @@ const SolveView: React.FC<SolveViewProps> = ({
                     }}
                 >
                     <PrismCodeEditor
-                        theme='github-dark'
-                        language='java'
+                        theme='vs-code-dark'
+                        language={selectedLanguage}
                         onUpdate={setCode}
-                        tab-size='4'
                     />
                 </div>
                 <div
