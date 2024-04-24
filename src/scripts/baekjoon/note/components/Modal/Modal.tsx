@@ -199,7 +199,7 @@ const Modal = () => {
                 </div>
                 <div>
                     <h6>전체 코멘트</h6>
-                    <textarea rows={6} cols={50}></textarea>
+                    <textarea rows={4} cols={50}></textarea>
                 </div>
             </div>
             <div className='modal-footer'>
