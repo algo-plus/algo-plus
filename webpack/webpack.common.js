@@ -1,7 +1,14 @@
 const webpack = require('webpack');
+const dotenv = require('dotenv');
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 const srcDir = path.join(__dirname, '..', 'src');
+
+const env = dotenv.config().parsed;
+const envKeys = Object.keys(env).reduce((prev, next) => {
+    prev[`process.env.${next}`] = JSON.stringify(env[next]);
+    return prev;
+}, {});
 
 module.exports = {
     entry: {
@@ -46,5 +53,6 @@ module.exports = {
             patterns: [{ from: '.', to: '../', context: 'public' }],
             options: {},
         }),
+        new webpack.DefinePlugin(envKeys),
     ],
 };
