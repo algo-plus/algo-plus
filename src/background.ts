@@ -33,9 +33,7 @@ function handleMessage(request: any, sender: any, sendResponse: any) {
         request.closeWebPage === true &&
         request.isSuccess === false
     ) {
-        alert(
-            'Something went wrong while trying to authenticate your profile!'
-        );
+        alert('유저 인증 관련 오류');
         chrome.tabs.getSelected(function (tab) {
             chrome.tabs.remove(tab.id);
         });
