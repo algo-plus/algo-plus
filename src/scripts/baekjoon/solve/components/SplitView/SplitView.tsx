@@ -23,10 +23,6 @@ const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
             setPanelsWidth(newWidths);
         };
 
-        const handleMouseUp = () => {
-            setResizingIndex(null);
-        };
-
         window.addEventListener('mousemove', handleMouseMove);
         window.addEventListener('mouseup', handleMouseUp);
 
@@ -36,7 +32,21 @@ const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
         };
     }, [resizingIndex, panelsWidth]);
 
+    const disableTextSelection = () => {
+        document.body.style.userSelect = 'none';
+    };
+
+    const enableTextSelection = () => {
+        document.body.style.userSelect = '';
+    };
+
+    const handleMouseUp = () => {
+        enableTextSelection();
+        setResizingIndex(null);
+    };
+
     const handleMouseDown = (index: number) => {
+        disableTextSelection();
         setResizingIndex(index);
     };
 
