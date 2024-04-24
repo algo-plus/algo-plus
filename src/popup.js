@@ -6,8 +6,8 @@ $('#authenticate').on('click', () => {
     }
 });
 
-/* Get URL for welcome page */
-$('#welcome_URL').attr(
+/* Get URL for link page */
+$('#link_URL').attr(
     'href',
     `chrome-extension://${chrome.runtime.id}/link.html`
 );
@@ -16,9 +16,9 @@ $('#hook_URL').attr(
     `chrome-extension://${chrome.runtime.id}/link.html`
 );
 
-chrome.storage.local.get('BaekjoonHub_token', (data) => {
-    const token = data.BaekjoonHub_token;
-    console.log('token', token);
+chrome.storage.local.get('AlgoPlus_token', (data) => {
+    const token = data.AlgoPlus_token;
+
     if (token === null || token === undefined) {
         action = true;
         $('#auth_mode').show();
@@ -36,13 +36,12 @@ chrome.storage.local.get('BaekjoonHub_token', (data) => {
                             $('#commit_mode').show();
                             /* Get problem stats and repo link */
                             chrome.storage.local.get(
-                                ['stats', 'BaekjoonHub_hook'],
+                                ['stats', 'AlgoPlus_hook'],
                                 (data3) => {
-                                    const BaekjoonHubHook =
-                                        data3.BaekjoonHub_hook;
-                                    if (BaekjoonHubHook) {
+                                    const AlgoPlusHook = data3.AlgoPlus_hook;
+                                    if (AlgoPlusHook) {
                                         $('#repo_url').html(
-                                            `Your Repo: <a target="blank" style="color: cadetblue !important;" href="https://github.com/${BaekjoonHubHook}">${BaekjoonHubHook}</a>`
+                                            `Your Repo: <a target="blank" style="color: cadetblue !important;" href="https://github.com/${AlgoPlusHook}">${AlgoPlusHook}</a>`
                                         );
                                     }
                                 }
@@ -54,16 +53,13 @@ chrome.storage.local.get('BaekjoonHub_token', (data) => {
                 } else if (xhr.status === 401) {
                     // bad oAuth
                     // reset token and redirect to authorization process again!
-                    chrome.storage.local.set(
-                        { BaekjoonHub_token: null },
-                        () => {
-                            console.log(
-                                'BAD oAuth!!! Redirecting back to oAuth process'
-                            );
-                            action = true;
-                            $('#auth_mode').show();
-                        }
-                    );
+                    chrome.storage.local.set({ AlgoPlus_token: null }, () => {
+                        console.log(
+                            'BAD oAuth!!! Redirecting back to oAuth process'
+                        );
+                        action = true;
+                        $('#auth_mode').show();
+                    });
                 }
             }
         });
@@ -76,17 +72,17 @@ chrome.storage.local.get('BaekjoonHub_token', (data) => {
 /*
   초기에 활성화 데이터가 존재하는지 확인, 없으면 새로 생성, 있으면 있는 데이터에 맞게 버튼 조정
  */
-chrome.storage.local.get('bjhEnable', (data4) => {
-    if (data4.bjhEnable === undefined) {
+chrome.storage.local.get('alpEnable', (data4) => {
+    if (data4.alpEnable === undefined) {
         $('#onffbox').prop('checked', true);
         chrome.storage.local.set(
-            { bjhEnable: $('#onffbox').is(':checked') },
+            { alpEnable: $('#onffbox').is(':checked') },
             () => {}
         );
     } else {
-        $('#onffbox').prop('checked', data4.bjhEnable);
+        $('#onffbox').prop('checked', data4.alpEnable);
         chrome.storage.local.set(
-            { bjhEnable: $('#onffbox').is(':checked') },
+            { alpEnable: $('#onffbox').is(':checked') },
             () => {}
         );
     }
@@ -97,7 +93,7 @@ chrome.storage.local.get('bjhEnable', (data4) => {
  */
 $('#onffbox').on('click', () => {
     chrome.storage.local.set(
-        { bjhEnable: $('#onffbox').is(':checked') },
+        { alpEnable: $('#onffbox').is(':checked') },
         () => {}
     );
 });

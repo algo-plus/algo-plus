@@ -15,18 +15,18 @@ function handleMessage(request: any, sender: any, sendResponse: any) {
         request.isSuccess === true
     ) {
         /* Set username */
-        chrome.storage.local.set({ BaekjoonHub_username: request.username });
+        chrome.storage.local.set({ AlgoPlus_username: request.username });
 
         /* Set token */
-        chrome.storage.local.set({ BaekjoonHub_token: request.token });
+        chrome.storage.local.set({ AlgoPlus_token: request.token });
 
         /* Close pipe */
-        chrome.storage.local.set({ pipe_BaekjoonHub: false }, () => {
+        chrome.storage.local.set({ pipe_AlgoPlus: false }, () => {
             console.log('Closed pipe.');
         });
 
         /* Go to onboarding for UX */
-        const urlOnboarding = `chrome-extension://${chrome.runtime.id}/welcome.html`;
+        const urlOnboarding = `chrome-extension://${chrome.runtime.id}/link.html`;
         chrome.tabs.create({ url: urlOnboarding, selected: true }); // creates new tab
     } else if (
         request &&

@@ -2,6 +2,7 @@ npm-debug.log
 node_modules/
 dist/
 tmp/
+.env
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,react
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,react

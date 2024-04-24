@@ -16,6 +16,11 @@
 
     "content_scripts": [
         {
+            "matches": ["https://github.com/*"],
+            "js": ["oauth/util.js", "oauth/Github.js", "oauth/authorize.js"],
+            "run_at": "document_idle"
+        },
+        {
             "matches": [
                 "https://www.acmicpc.net/?",
                 "https://www.acmicpc.net/*"
@@ -25,7 +30,20 @@
                 "library/jszip.min.js",
                 "library/FileSaver.min.js",
                 "js/vendor.js",
-                "js/main.js"
+                "js/main.js",
+                "oauth/toast.js",
+                "oauth/util.js",
+                "oauth/oauth2.js",
+                "oauth/Github.js",
+                "oauth/authorize.js",
+                "oauth/storage.js",
+                "oauth/enable.js",
+                "oauth/boj/variables.js",
+                "oauth/boj/storage.js",
+                "oauth/boj/parsing.js",
+                "oauth/boj/util.js",
+                "oauth/boj/uploadfunctions.js",
+                "oauth/boj/baekjoon.js"
             ]
         }
     ],

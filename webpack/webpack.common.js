@@ -46,5 +46,11 @@ module.exports = {
             patterns: [{ from: '.', to: '../', context: 'public' }],
             options: {},
         }),
+        new CopyPlugin({
+            patterns: [
+                { from: '.', to: '../oauth/', context: 'src/scripts/oauth' },
+            ],
+            options: {},
+        }),
     ],
 };
