@@ -1,7 +1,7 @@
-import customProblemPage from '@/scripts/baekjoon/problem';
-import customStatusPage from '@/scripts/baekjoon/status';
-import customGlobalPage from '@/scripts/baekjoon/global';
-import customSubmitPage from '@/scripts/baekjoon/submit';
+import customProblemPage from '@/baekjoon/problem';
+import customStatusPage from '@/baekjoon/status';
+import customGlobalPage from '@/baekjoon/global';
+import customSubmitPage from '@/baekjoon/submit';
 
 const url: string = window.location.pathname;
 const searchUrl: string = window.location.search;
