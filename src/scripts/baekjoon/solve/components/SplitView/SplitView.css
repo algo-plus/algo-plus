@@ -5,6 +5,7 @@
 .panel {
     position: relative;
     overflow: auto;
+    background-color: transparent;
 }
 
 .panel.left {
