@@ -1,7 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { SolveButton } from './solve/components/SolveButton';
-import { getProblemId } from './utils';
+import { SolveButton } from '../solve/components/SolveButton';
+import { getProblemId } from '../utils';
 
 const customGlobalPage = (): void => {
     const addSolveButton = () => {

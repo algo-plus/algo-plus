@@ -2,8 +2,8 @@ import 'prism-code-editor/prism/languages/javascript';
 import 'prism-code-editor/prism/languages/java';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { SplitView } from './solve/components/SplitView';
-import { getProblemId } from './utils';
+import { SplitView } from '../solve/components/SplitView';
+import { getProblemId } from '../utils';
 
 const customSubmitPage = () => {
     const addSplitView = () => {
