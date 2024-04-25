@@ -1,5 +1,4 @@
 import React from 'react';
-import * as Diff from 'diff';
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer-continued';
 import './Modal.css';
 
