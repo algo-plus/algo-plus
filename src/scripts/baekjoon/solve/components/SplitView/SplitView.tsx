@@ -6,6 +6,7 @@ import './SplitView.css';
 const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
     const [panelsWidth, setPanelsWidth] = useState<number[]>([50, 50]);
     const [resizingIndex, setResizingIndex] = useState<number | null>(null);
+    const [mouseOffset, setMouseOffset] = useState<number>(0);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -14,7 +15,7 @@ const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
 
             const wrapperRect = wrapperRef.current.getBoundingClientRect();
             const totalWidth = wrapperRect.width;
-            const mouseX = e.clientX;
+            const mouseX = e.clientX - wrapperRect.left - mouseOffset;
             const leftPanelWidth = (mouseX / totalWidth) * 100;
             const rightPanelWidth = 100 - leftPanelWidth;
 
@@ -48,7 +49,13 @@ const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
         setResizingIndex(null);
     };
 
-    const handleMouseDown = (index: number) => {
+    const handleMouseDown = (
+        e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+        index: number
+    ) => {
+        const resizerRect = e.currentTarget.getBoundingClientRect();
+        const offset = e.clientX - resizerRect.left; // 클릭한 위치와 resizer 왼쪽 가장자리와의 거리 계산
+        setMouseOffset(offset);
         disableTextSelection();
         setResizingIndex(index);
     };
@@ -74,7 +81,10 @@ const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
                     <div>Panel 1</div>
                 )}
             </div>
-            <div className='resizer' onMouseDown={() => handleMouseDown(0)} />
+            <div
+                className='resizer'
+                onMouseDown={(e) => handleMouseDown(e, 0)}
+            />
             <div
                 className='panel right'
                 style={{
