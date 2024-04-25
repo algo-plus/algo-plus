@@ -1,0 +1,5 @@
+.problem-content {
+    flex: 1;
+    max-height: 100vh;
+    overflow-y: auto;
+}

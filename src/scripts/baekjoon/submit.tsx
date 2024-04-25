@@ -2,7 +2,6 @@ import 'prism-code-editor/prism/languages/javascript';
 import 'prism-code-editor/prism/languages/java';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { EditorPanel } from './solve/components/EditorPanel';
 import { SplitView } from './solve/components/SplitView';
 import { getProblemId } from './utils';
 
@@ -10,6 +9,8 @@ const customSubmitPage = () => {
     const addSplitView = () => {
         const root = document.createElement('div');
         const problemId = getProblemId();
+
+        document.title = `${problemId}번 문제 풀기`;
 
         const problemMenu = document.querySelector(
             'ul.problem-menu'

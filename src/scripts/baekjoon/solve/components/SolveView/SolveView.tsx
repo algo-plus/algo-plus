@@ -3,6 +3,8 @@ import { PrismCodeEditor } from '../PrismCodeEditor';
 import { Button } from '../Button';
 import { SubmitPostRequest } from '../../../types/submit';
 import { submit } from '../../../apis/submit';
+import { CodeCompileRequest } from '@/types/compile';
+import { compile } from '@/apis/compile';
 
 interface SolveViewProps {
     csrfKey: string | null;
@@ -37,6 +39,21 @@ const SolveView: React.FC<SolveViewProps> = ({
     };
 
     const selectedLanguage = languageMap[language] || 'c';
+
+    // TODO: 더미 데이터 호출 삭제
+    const testCaseRunHandle = (event: any) => {
+        event.preventDefault();
+        const data: CodeCompileRequest = {
+            lang: 'java',
+            code: 'import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        int a = scanner.nextInt();\n        int b = scanner.nextInt();\n        System.out.println("두 수의 합 = " + (a + b));\n        scanner.close();\n    }\n}            \n            ',
+            input: '5 6',
+        };
+        compile(
+            data,
+            (value) => alert((value as any)['output']),
+            (error) => console.log('error =', error)
+        );
+    };
 
     const submitHandle = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
@@ -101,7 +118,7 @@ const SolveView: React.FC<SolveViewProps> = ({
                         text='테스트 케이스 추가'
                         onClick={() => alert('테스트 케이스 구현 중')}
                     />
-                    <Button text='실행' onClick={() => alert('실행 구현중')} />
+                    <Button text='실행' onClick={testCaseRunHandle} />
                     <Button text='제출' onClick={submitHandle} />
                 </div>
             </div>
