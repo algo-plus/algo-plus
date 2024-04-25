@@ -21,6 +21,24 @@ const SolveView: React.FC<SolveViewProps> = ({
 }) => {
     const [code, setCode] = useState('');
 
+    const languageMap: Record<string, string> = {
+        '0': 'c',
+        '95': 'cpp',
+        '86': 'csharp',
+        '3': 'java',
+        '93': 'java',
+        '28': 'python',
+        '73': 'python',
+        '17': 'js',
+        '69': 'kotlin',
+        '68': 'ruby',
+        '74': 'swift',
+        '12': 'go',
+        '113': 'rust',
+    };
+
+    const selectedLanguage = languageMap[language] || 'c';
+
     // TODO: 더미 데이터 호출 삭제
     const testCaseRunHandle = (event: any) => {
         event.preventDefault();
@@ -76,13 +94,13 @@ const SolveView: React.FC<SolveViewProps> = ({
                         maxWidth: '100%',
                         maxHeight: '700px',
                         overflowY: 'auto',
+                        fontSize: '18px',
                     }}
                 >
                     <PrismCodeEditor
-                        theme='github-dark'
-                        language='java'
+                        theme='vs-code-dark'
+                        language={selectedLanguage}
                         onUpdate={setCode}
-                        tab-size='4'
                     />
                 </div>
                 <div
