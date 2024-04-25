@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import './ProblemPanel.css';
 
 const ProblemPanel: React.FC<{ problemId: string | null }> = ({
     problemId,
@@ -20,40 +21,25 @@ const ProblemPanel: React.FC<{ problemId: string | null }> = ({
                 ) as HTMLElement;
 
                 if (problemContainer) {
+                    // 문제 메뉴, 즐겨찾기 버튼, 알고리즘 분류, 메모 제거
+                    const elementsToRemove = [
+                        'ul.problem-menu',
+                        '.problem-button',
+                        '#problem_tags',
+                        '#problem_memo',
+                    ];
+                    elementsToRemove.forEach((selector) => {
+                        const elem = problemContainer.querySelector(selector);
+                        if (elem && elem.parentNode) {
+                            elem.parentNode.removeChild(elem);
+                        }
+                    });
+
                     problemContainer.style.margin = '0';
-
-                    // 문제 메뉴 제거
-                    const menu =
-                        problemContainer.querySelector('ul.problem-menu');
-                    if (menu && menu.parentNode)
-                        menu.parentNode.removeChild(menu);
-
-                    // 즐겨찾기 버튼 제거
-                    const problemButton =
-                        problemContainer.querySelector('.problem-button');
-                    if (problemButton && problemButton.parentNode)
-                        problemButton.parentNode.removeChild(problemButton);
-
-                    // 알고리즘 분류 제거
-                    const problemTag =
-                        problemContainer.querySelector('#problem_tags');
-                    if (problemTag && problemTag.parentNode)
-                        problemTag.parentNode.removeChild(problemTag);
-
-                    // 메모 제거
-                    const problemMemo =
-                        problemContainer.querySelector('#problem_memo');
-                    if (problemMemo && problemMemo.parentNode)
-                        problemMemo.parentNode.removeChild(problemMemo);
 
                     const content = (
                         <div
-                            style={{
-                                flex: '1',
-                                maxHeight: '100vh',
-                                overflowY: 'auto',
-                                paddingRight: '10px',
-                            }}
+                            className='problem-content'
                             dangerouslySetInnerHTML={{
                                 __html: problemContainer.innerHTML,
                             }}

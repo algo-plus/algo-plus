@@ -10,6 +10,8 @@ const customSubmitPage = () => {
         const root = document.createElement('div');
         const problemId = getProblemId();
 
+        document.title = `${problemId}번 문제 풀기`;
+
         const problemMenu = document.querySelector(
             'ul.problem-menu'
         ) as HTMLElement;

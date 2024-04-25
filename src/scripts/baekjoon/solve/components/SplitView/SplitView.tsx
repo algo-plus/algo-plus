@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ProblemPanel } from '../ProblemPanel';
 import { EditorPanel } from '../EditorPanel';
+import './SplitView.css';
 
 const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
     const [panelsWidth, setPanelsWidth] = useState<number[]>([50, 50]);
     const [resizingIndex, setResizingIndex] = useState<number | null>(null);
+    const [mouseOffset, setMouseOffset] = useState<number>(0);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -13,7 +15,7 @@ const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
 
             const wrapperRect = wrapperRef.current.getBoundingClientRect();
             const totalWidth = wrapperRect.width;
-            const mouseX = e.clientX;
+            const mouseX = e.clientX - wrapperRect.left - mouseOffset;
             const leftPanelWidth = (mouseX / totalWidth) * 100;
             const rightPanelWidth = 100 - leftPanelWidth;
 
@@ -21,10 +23,6 @@ const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
             newWidths[resizingIndex] = leftPanelWidth;
             newWidths[resizingIndex + 1] = rightPanelWidth;
             setPanelsWidth(newWidths);
-        };
-
-        const handleMouseUp = () => {
-            setResizingIndex(null);
         };
 
         window.addEventListener('mousemove', handleMouseMove);
@@ -36,24 +34,39 @@ const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
         };
     }, [resizingIndex, panelsWidth]);
 
-    const handleMouseDown = (index: number) => {
+    const disableTextSelection = () => {
+        document.body.style.userSelect = 'none';
+        document.body.style.cursor = 'col-resize';
+    };
+
+    const enableTextSelection = () => {
+        document.body.style.userSelect = '';
+        document.body.style.cursor = '';
+    };
+
+    const handleMouseUp = () => {
+        enableTextSelection();
+        setResizingIndex(null);
+    };
+
+    const handleMouseDown = (
+        e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+        index: number
+    ) => {
+        const resizerRect = e.currentTarget.getBoundingClientRect();
+        const offset = e.clientX - resizerRect.left;
+        setMouseOffset(offset);
+        disableTextSelection();
         setResizingIndex(index);
     };
 
     return (
-        <div
-            className='split-view'
-            ref={wrapperRef}
-            style={{ display: 'flex' }}
-        >
+        <div className='split-view' ref={wrapperRef}>
             <div
                 className='panel left'
                 style={{
                     width: `${panelsWidth[0]}%`,
-                    position: 'relative',
-                    overflow: 'auto',
                 }}
-                onMouseDown={() => handleMouseDown(0)}
             >
                 {props.left.type === 'Problem' ? (
                     <ProblemPanel problemId={props.left.data} />
@@ -70,22 +83,13 @@ const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
             </div>
             <div
                 className='resizer'
-                style={{
-                    width: '5px',
-                    cursor: 'col-resize',
-                    position: 'relative',
-                    backgroundColor: '#eee',
-                }}
-                onMouseDown={() => handleMouseDown(0)}
+                onMouseDown={(e) => handleMouseDown(e, 0)}
             />
             <div
                 className='panel right'
                 style={{
                     width: `${panelsWidth[1]}%`,
-                    position: 'relative',
-                    overflow: 'auto',
                 }}
-                onMouseDown={() => handleMouseDown(1)}
             >
                 {props.right.type === 'Problem' ? (
                     <ProblemPanel problemId={props.left.data} />

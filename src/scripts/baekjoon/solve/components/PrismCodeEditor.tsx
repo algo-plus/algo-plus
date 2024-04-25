@@ -6,6 +6,7 @@ import {
     SetupOptions,
     updateTheme,
 } from 'prism-code-editor/setups';
+import 'prism-code-editor/prism/languages';
 
 export const PrismCodeEditor = forwardRef(
     (props: SetupOptions, ref: ForwardedRef<PrismEditor>) => {
@@ -13,7 +14,7 @@ export const PrismCodeEditor = forwardRef(
         const editorRef = useRef<PrismEditor>();
 
         useEffect(() => {
-            editorRef.current?.setOptions(props);
+            editorRef.current?.setOptions({ ...props, tabSize: 4 });
         }, [props]);
 
         useEffect(() => {
@@ -30,7 +31,7 @@ export const PrismCodeEditor = forwardRef(
                 typeof ref == 'function' ? ref(editor) : (ref.current = editor);
 
             return editor.remove;
-        }, []);
+        }, [props.language]);
 
         return <div className='prism-editor-react' ref={divRef} />;
     }
