@@ -21,7 +21,6 @@ const SolveView: React.FC<SolveViewProps> = ({
 }) => {
     const [code, setCode] = useState('');
 
-    // language 숫자에 따라 실제 언어 문자열을 매핑하는 객체
     const languageMap: Record<string, string> = {
         '0': 'c',
         '95': 'cpp',
