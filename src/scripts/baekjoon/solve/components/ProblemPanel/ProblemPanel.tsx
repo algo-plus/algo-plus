@@ -35,7 +35,6 @@ const ProblemPanel: React.FC<{ problemId: string | null }> = ({
                         }
                     });
 
-                    // 스타일 조정
                     problemContainer.style.margin = '0';
 
                     const content = (

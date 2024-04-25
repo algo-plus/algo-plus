@@ -54,7 +54,7 @@ const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
         index: number
     ) => {
         const resizerRect = e.currentTarget.getBoundingClientRect();
-        const offset = e.clientX - resizerRect.left; // 클릭한 위치와 resizer 왼쪽 가장자리와의 거리 계산
+        const offset = e.clientX - resizerRect.left;
         setMouseOffset(offset);
         disableTextSelection();
         setResizingIndex(index);
