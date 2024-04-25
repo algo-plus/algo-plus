@@ -1,4 +1,4 @@
-import { CodeCompileRequest } from '@/types/compile';
+import { CodeCompileRequest } from '@/common/types/compile';
 
 const url = 'https://code-compiler10.p.rapidapi.com/';
 const headers: HeadersInit = {

@@ -3,8 +3,8 @@ import { PrismCodeEditor } from '../PrismCodeEditor';
 import { Button } from '../Button';
 import { SubmitPostRequest } from '../../../types/submit';
 import { submit } from '../../../apis/submit';
-import { CodeCompileRequest } from '@/types/compile';
-import { compile } from '@/apis/compile';
+import { CodeCompileRequest } from '@/common/types/compile';
+import { compile } from '@/common/apis/compile';
 
 interface SolveViewProps {
     csrfKey: string | null;
