@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import './ProblemPanel.css';
 
 const ProblemPanel: React.FC<{ problemId: string | null }> = ({
     problemId,
@@ -48,11 +49,7 @@ const ProblemPanel: React.FC<{ problemId: string | null }> = ({
 
                     const content = (
                         <div
-                            style={{
-                                flex: '1',
-                                maxHeight: '100vh',
-                                overflowY: 'auto',
-                            }}
+                            className='problem-content'
                             dangerouslySetInnerHTML={{
                                 __html: problemContainer.innerHTML,
                             }}
