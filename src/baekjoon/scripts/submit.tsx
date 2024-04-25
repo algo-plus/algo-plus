@@ -3,7 +3,7 @@ import 'prism-code-editor/prism/languages/java';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { SplitView } from '@/baekjoon/containers/SplitView';
-import { getProblemId } from '@/baekjoon/utils';
+import { getProblemId } from '@/baekjoon/utils/parsing';
 
 const customSubmitPage = () => {
     const addSplitView = () => {
