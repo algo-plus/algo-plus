@@ -20,7 +20,13 @@
                 "https://www.acmicpc.net/?",
                 "https://www.acmicpc.net/*"
             ],
-            "js": ["js/vendor.js", "js/main.js"]
+            "js": [
+                "library/sha1.min.js",
+                "library/jszip.min.js",
+                "library/FileSaver.min.js",
+                "js/vendor.js",
+                "js/main.js"
+            ]
         }
     ],
 

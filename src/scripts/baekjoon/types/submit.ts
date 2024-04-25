@@ -1,7 +1,7 @@
 type SubmitPostRequest = {
     problem_id: number;
     language: number;
-    code_open: 'open' | 'close' | 'onlyaccepted';
+    code_open: string;
     source: string;
     csrf_key: string;
 };
