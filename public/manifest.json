@@ -17,7 +17,7 @@
     "content_scripts": [
         {
             "matches": ["https://github.com/*"],
-            "js": ["oauth/util.js", "oauth/Github.js", "oauth/authorize.js"],
+            "js": ["oauth/util.js", "oauth/Github.js"],
             "run_at": "document_idle"
         },
         {
@@ -35,7 +35,6 @@
                 "oauth/util.js",
                 "oauth/oauth2.js",
                 "oauth/Github.js",
-                "oauth/authorize.js",
                 "oauth/storage.js",
                 "oauth/enable.js",
                 "oauth/boj/variables.js",
