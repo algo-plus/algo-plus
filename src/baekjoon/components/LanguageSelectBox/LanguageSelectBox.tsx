@@ -1,11 +1,11 @@
 import React, { ChangeEvent } from 'react';
 
-interface LanguageButtonProps {
+interface LanguageSelectBoxProps {
     defaultValue: string;
     onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
 }
 
-const LanguageButton: React.FC<LanguageButtonProps> = ({
+const LanguageSelectBox: React.FC<LanguageSelectBoxProps> = ({
     defaultValue,
     onChange,
 }) => {
@@ -67,4 +67,4 @@ const LanguageButton: React.FC<LanguageButtonProps> = ({
     );
 };
 
-export default LanguageButton;
+export default LanguageSelectBox;

@@ -8,7 +8,7 @@ import {
 } from 'prism-code-editor/setups';
 import 'prism-code-editor/prism/languages';
 
-export const PrismCodeEditor = forwardRef(
+const PrismCodeEditor = forwardRef(
     (props: SetupOptions, ref: ForwardedRef<PrismEditor>) => {
         const divRef = useRef<HTMLDivElement>(null);
         const editorRef = useRef<PrismEditor>();
@@ -36,3 +36,5 @@ export const PrismCodeEditor = forwardRef(
         return <div className='prism-editor-react' ref={divRef} />;
     }
 );
+
+export default PrismCodeEditor;

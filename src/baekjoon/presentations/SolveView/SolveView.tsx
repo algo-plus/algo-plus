@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { PrismCodeEditor } from '../PrismCodeEditor';
-import { Button } from '../Button';
-import { SubmitPostRequest } from '../../../types/submit';
-import { submit } from '../../../apis/submit';
+import { PrismCodeEditor } from '@/baekjoon/components/PrismCodeEditor';
+import { Button } from '@/baekjoon/components/Button';
+import { SubmitPostRequest } from '@/baekjoon/types/submit';
+import { submit } from '@/baekjoon/apis/submit';
 import { CodeCompileRequest } from '@/common/types/compile';
 import { compile } from '@/common/apis/compile';
 

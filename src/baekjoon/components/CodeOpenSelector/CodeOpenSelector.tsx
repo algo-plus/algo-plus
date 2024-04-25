@@ -5,7 +5,10 @@ interface CodeOpenProps {
     onChange: (value: string) => void; // 선택 변경 핸들러
 }
 
-const CodeOpen: React.FC<CodeOpenProps> = ({ defaultValue, onChange }) => {
+const CodeOpenSelector: React.FC<CodeOpenProps> = ({
+    defaultValue,
+    onChange,
+}) => {
     const handleCodeOpenChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedValue = e.target.value;
         onChange(selectedValue); // 선택된 값 상태 업데이트
@@ -58,4 +61,4 @@ const CodeOpen: React.FC<CodeOpenProps> = ({ defaultValue, onChange }) => {
     );
 };
 
-export default CodeOpen;
+export default CodeOpenSelector;

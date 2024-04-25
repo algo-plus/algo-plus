@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import { Modal } from '../note/components/Modal';
+import { Modal } from '@/baekjoon/containers/Modal';
 import React from 'react';
 
 const customStatusPage = (): void => {

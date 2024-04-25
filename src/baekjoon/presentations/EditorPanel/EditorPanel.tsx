@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { SolveView } from '../SolveView';
-import { LanguageButton } from '../LanguageButton';
-import { CodeOpenButton } from '../CodeOpenButton';
+import { SolveView } from '@/baekjoon/presentations/SolveView';
+import { LanguageSelectBox } from '@/baekjoon/components/LanguageSelectBox';
+import { CodeOpenSelector } from '@/baekjoon/components/CodeOpenSelector';
 
 interface EditorPanelProps {
     csrfKey: string | null;
@@ -62,11 +62,11 @@ const EditorPanel: React.FC<EditorPanelProps> = ({ csrfKey, problemId }) => {
     return (
         <>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <LanguageButton
+                <LanguageSelectBox
                     defaultValue='0'
                     onChange={handleLanguageChange}
                 />
-                <CodeOpenButton
+                <CodeOpenSelector
                     defaultValue={codeOpen}
                     onChange={handleCodeOpenChange}
                 />

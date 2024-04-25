@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ProblemPanel } from '../ProblemPanel';
-import { EditorPanel } from '../EditorPanel';
+import { ProblemPanel } from '@/baekjoon/presentations/ProblemPanel';
+import { EditorPanel } from '@/baekjoon/presentations/EditorPanel';
 import './SplitView.css';
 
 const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
