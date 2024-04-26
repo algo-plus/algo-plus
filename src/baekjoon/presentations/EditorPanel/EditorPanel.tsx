@@ -10,6 +10,7 @@ import { LanguageSelectBox } from '@/baekjoon/components/LanguageSelectBox';
 import { CodeOpenSelector } from '@/baekjoon/components/CodeOpenSelector';
 import { TestCase } from '@/baekjoon/types/problem';
 import { convertLanguageIdForSubmitApi } from '@/baekjoon/utils/language';
+import './EditorPanel.css';
 
 interface EditorPanelProps {
     csrfKey: string | null;
@@ -107,39 +108,15 @@ const EditorPanel: React.FC<EditorPanelProps> = ({
 
         const root = createRoot(editorDiv);
         root.render(
-            <div
-                style={{
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                }}
-            >
-                <div
-                    style={{
-                        background: 'black',
-                        height: '100%',
-                        maxWidth: '100%',
-                        maxHeight: '700px',
-                        overflowY: 'auto',
-                        fontSize: '18px',
-                    }}
-                >
+            <div className='editor-panel'>
+                <div className='editor'>
                     <PrismCodeEditor
                         theme='vs-code-dark'
                         language={selectedLanguage}
                         onUpdate={setCode}
                     />
                 </div>
-                <div
-                    style={{
-                        height: '70px',
-                        display: 'flex',
-                        justifyContent: 'right',
-                        alignContent: 'center',
-                        padding: '10px 0px',
-                        gap: '10px',
-                    }}
-                >
+                <div className='editor-button-container'>
                     <Button
                         text='테스트 케이스 추가'
                         onClick={() => alert('테스트 케이스 구현 중')}
