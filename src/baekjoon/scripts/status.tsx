@@ -2,7 +2,27 @@ import { createRoot } from 'react-dom/client';
 import { Modal } from '@/baekjoon/containers/Modal';
 import React from 'react';
 
-const customStatusPage = (): void => {
+const fetchSubmitCode = async (problemId: number, submitId: number) => {
+    const url = `https://www.acmicpc.net/submit/${problemId}/${submitId}`;
+    try {
+        const res = await fetch(url);
+        const text = await res.text();
+        const doc = new DOMParser().parseFromString(text, 'text/html');
+        const code = doc.querySelector('#source');
+        if (!code) {
+            console.error('No code found');
+            return null;
+        }
+        return code.innerHTML;
+    } catch (error) {
+        console.error('Error fetching code:', error);
+        return null;
+    }
+};
+
+const customStatusPage = async () => {
+    const previousCode = await fetchSubmitCode(1759, 65390875);
+
     const table = document.querySelector('#status-table');
     if (!table) return;
     const tableHead = table.querySelector('thead');
