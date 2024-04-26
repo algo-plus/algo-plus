@@ -1,0 +1,45 @@
+body,
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.popup_wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 360px;
+    height: 200px;
+    border-radius: 10%;
+}
+
+.popup_main {
+    align-items: center;
+    background-color: #e7e7ec;
+}
+
+.logo_img {
+    display: block;
+    margin: 0 auto;
+    width: 100px;
+}
+
+#popup_description {
+    text-align: center;
+}
+
+.popup_sub {
+    margin-top: 10px;
+    align-items: center;
+    text-align: center;
+}
+
+.note_setting {
+    border-radius: 20px;
+    width: 180px;
+    height: 30px;
+    font-size: 14px;
+    background-color: #0076c0;
+    color: white;
+    border: none;
+}
