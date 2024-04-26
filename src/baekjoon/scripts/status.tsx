@@ -2,7 +2,6 @@ import { createRoot } from 'react-dom/client';
 import { Modal } from '@/baekjoon/containers/Modal';
 import React from 'react';
 import { fetchCode } from '../apis/source';
-import { ModalProps } from '@/baekjoon/types/source';
 
 const customStatusPage = async () => {
     const table = document.querySelector('#status-table');
@@ -32,7 +31,6 @@ const customStatusPage = async () => {
         row.insertBefore(checkboxCell, row.firstChild);
     }
 
-    // TODO: Checkbox 코드 선택 기능 추가
     const checkboxes = document.querySelectorAll('.note-checkbox');
     checkboxes.forEach((checkbox) => {
         checkbox.addEventListener('click', () => {

@@ -3,7 +3,6 @@ import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer-continued';
 import './Modal.css';
 import { ModalProps } from '@/baekjoon/types/source';
 
-// const Modal = (oldCode: String, newCode: String) => {
 const Modal = (ModalProps: ModalProps) => {
     const closeModal = () => {
         const modalBackdrop = document.querySelector('.modal-backdrop');
@@ -19,7 +18,6 @@ const Modal = (ModalProps: ModalProps) => {
     const oldCode = ModalProps.sourceCodes[0];
     const newCode = ModalProps.sourceCodes[1];
 
-    // TODO: Adjust margin and padding of ReactDiffViewer
     return (
         <div className='modal-content'>
             <div className='modal-header' style={{ display: 'flex' }}>
