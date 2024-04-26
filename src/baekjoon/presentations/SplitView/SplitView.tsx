@@ -1,9 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ProblemPanel } from '@/baekjoon/presentations/ProblemPanel';
-import { EditorPanel } from '@/baekjoon/presentations/EditorPanel';
 import './SplitView.css';
-import { fetchProblemHtml } from '@/baekjoon/apis/problem';
-import { parsingProblemDetail } from '@/baekjoon/utils/parsing';
 
 type SplitViewProps = {
     left: JSX.Element;
