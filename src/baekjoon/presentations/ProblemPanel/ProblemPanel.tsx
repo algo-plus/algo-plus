@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './ProblemPanel.css';
-import { fetchProblemHtml } from '@/baekjoon/apis/problem';
-import { parsingProblemDetail } from '@/baekjoon/utils/parsing';
 
 const ProblemPanel: React.FC<{ content: JSX.Element | null }> = ({
     content,
