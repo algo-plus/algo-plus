@@ -1,0 +1,132 @@
+body {
+    margin: 50px 100px;
+}
+
+.setting_tittle {
+    display: flex;
+}
+
+.logo_img {
+    width: 100px;
+    height: 60px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.title {
+    font-size: 20px;
+    margin: 40px 0 0 10px;
+}
+
+.setting {
+    margin: 0 auto;
+}
+
+.setting_category {
+    display: flex;
+    margin: 20px 0 0 20px;
+    gap: 10px;
+}
+
+#github_button {
+    height: 30px;
+    width: 80px;
+    border: none;
+    border-radius: 2px;
+    background-color: #0076c0;
+    color: white;
+    cursor: pointer;
+}
+
+#local_button {
+    height: 30px;
+    width: 80px;
+    border: none;
+    border-radius: 2px;
+    background-color: lightgray;
+    color: gray;
+    cursor: pointer;
+}
+
+.github_setting_box {
+    border: 3px solid #0076c0;
+    border-radius: 10px;
+    height: 500px;
+    width: 90%;
+    padding: 0 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.github_title {
+    font-size: 12px;
+    color: gray;
+    font-weight: bold;
+    margin: 5px 10px;
+}
+
+#githubAuth {
+    width: 200px;
+}
+
+#github_auth_warning {
+    margin: 30px 0 0 30px;
+    font-size: 14px;
+    color: red;
+}
+.repo_name {
+    margin-top: 10px;
+}
+.repo_setting {
+    display: flex;
+    gap: 60px;
+}
+.field select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid;
+    border-radius: 10px;
+    color: #333;
+    width: 500px;
+    transition: border-color 0.3s ease;
+}
+
+/* 선택상자가 포커스를 받았을 때의 스타일 */
+.field select:focus {
+    outline: none; /* 포커스 테두리 제거 */
+    border-color: #66afe9; /* 포커스 시 테두리 색상 변경 */
+}
+
+.field input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid;
+    border-radius: 10px;
+    color: #333;
+    width: 1040px;
+    margin-bottom: 40px;
+}
+
+#github_submit {
+    display: flex;
+    justify-content: end;
+    margin-right: 50px;
+}
+
+#github_warning {
+    font-size: 14px;
+    color: red;
+    margin: 8px 10px 0 0;
+}
+
+#github_link_button {
+    border-radius: 10px;
+    width: 120px;
+    height: 32px;
+    font-size: 14px;
+    background-color: #0076c0;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
