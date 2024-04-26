@@ -54,9 +54,7 @@ module.exports = {
             options: {},
         }),
         new CopyPlugin({
-            patterns: [
-                { from: '.', to: '../oauth/', context: 'src/scripts/oauth' },
-            ],
+            patterns: [{ from: '.', to: '../oauth/', context: 'src/oauth' }],
             options: {},
         }),
         new webpack.DefinePlugin(envKeys),
