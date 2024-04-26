@@ -3,7 +3,7 @@ import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer-continued';
 import './Modal.css';
 import { ModalProps } from '@/baekjoon/types/source';
 
-const Modal = (ModalProps: ModalProps) => {
+const Modal = (modalProps: ModalProps) => {
     const closeModal = () => {
         const modalBackdrop = document.querySelector('.modal-backdrop');
         if (modalBackdrop) {
@@ -15,8 +15,8 @@ const Modal = (ModalProps: ModalProps) => {
         console.log('save');
     };
 
-    const oldCode = ModalProps.sourceCodes[0];
-    const newCode = ModalProps.sourceCodes[1];
+    const oldCode = modalProps.sourceCodes[0];
+    const newCode = modalProps.sourceCodes[1];
 
     return (
         <div className='modal-content'>
