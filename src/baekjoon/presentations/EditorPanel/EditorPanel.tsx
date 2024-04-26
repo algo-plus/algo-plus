@@ -11,7 +11,7 @@ import { CodeOpenSelector } from '@/baekjoon/components/CodeOpenSelector';
 
 interface EditorPanelProps {
     csrfKey: string | null;
-    problemId: number;
+    problemId: string | null;
 }
 
 const EditorPanel: React.FC<EditorPanelProps> = ({ csrfKey, problemId }) => {
@@ -135,6 +135,10 @@ const EditorPanel: React.FC<EditorPanelProps> = ({ csrfKey, problemId }) => {
 
     const submitHandle = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
+        if (problemId === null) {
+            alert('문제 정보를 불러올 수 없습니다.');
+            return;
+        }
 
         const data: SubmitPostRequest = {
             problem_id: problemId,
