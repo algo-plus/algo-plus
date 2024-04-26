@@ -14,37 +14,6 @@ const Modal = () => {
         console.log('save');
     };
 
-    // const CodeDiff: React.FC<CodeDiffProps> = ({ oldCode, newCode }) => {
-    //     const generateDiff = () => {
-    //         const diff = Diff.diffLines(oldCode, newCode);
-    //         return diff.map((part, index) => {
-    //             if (part.added) {
-    //                 return (
-    //                     <span
-    //                         key={index}
-    //                         style={{ backgroundColor: 'lightgreen' }}
-    //                     >
-    //                         + {part.value}
-    //                     </span>
-    //                 );
-    //             }
-    //             if (part.removed) {
-    //                 return (
-    //                     <span
-    //                         key={index}
-    //                         style={{ backgroundColor: 'lightcoral' }}
-    //                     >
-    //                         - {part.value}
-    //                     </span>
-    //                 );
-    //             }
-    //             return <span key={index}>{part.value}</span>;
-    //         });
-    //     };
-
-    //     return <div>{generateDiff()}</div>;
-    // };
-
     const oldCode: string = `import java.io.BufferedReader;
     import java.io.IOException;
     import java.io.InputStreamReader;
@@ -186,9 +155,6 @@ const Modal = () => {
             <div className='modal-body'>
                 <div className='codediff-container'>
                     <h6>코드 비교 결과:</h6>
-                    {/* <pre>
-                        <CodeDiff oldCode={oldCode} newCode={newCode} />
-                    </pre> */}
                     <ReactDiffViewer
                         oldValue={oldCode}
                         newValue={newCode}
