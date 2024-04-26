@@ -10,7 +10,7 @@ const headers: HeadersInit = {
 
 async function compile(
     data: CodeCompileRequest,
-    success: (value: Response) => void,
+    success: (output: string) => void,
     fail: (error: any) => void
 ) {
     fetch(url, {
@@ -19,6 +19,7 @@ async function compile(
         body: JSON.stringify(data),
     })
         .then((response) => response.json())
+        .then((json) => json.output.trim())
         .then(success)
         .catch(fail);
 }
