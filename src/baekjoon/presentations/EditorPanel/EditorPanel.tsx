@@ -8,13 +8,20 @@ import { SubmitPostRequest } from '@/baekjoon/types/submit';
 import { submit } from '@/baekjoon/apis/submit';
 import { LanguageSelectBox } from '@/baekjoon/components/LanguageSelectBox';
 import { CodeOpenSelector } from '@/baekjoon/components/CodeOpenSelector';
+import { TestCase } from '@/baekjoon/types/problem';
+import { convertLanguageIdForSubmitApi } from '@/baekjoon/utils/language';
 
 interface EditorPanelProps {
     csrfKey: string | null;
-    problemId: number;
+    problemId: string | null;
+    testCases: TestCase[];
 }
 
-const EditorPanel: React.FC<EditorPanelProps> = ({ csrfKey, problemId }) => {
+const EditorPanel: React.FC<EditorPanelProps> = ({
+    csrfKey,
+    problemId,
+    testCases,
+}) => {
     const [language, setLanguage] = useState('0'); // 초기 언어 설정
     const [codeOpen, setCodeOpen] = useState('close'); // 초기 소스코드 설정
     const [code, setCode] = useState('');
@@ -40,16 +47,36 @@ const EditorPanel: React.FC<EditorPanelProps> = ({ csrfKey, problemId }) => {
     // TODO: 더미 데이터 호출 삭제
     const testCaseRunHandle = (event: any) => {
         event.preventDefault();
-        const data: CodeCompileRequest = {
-            lang: 'java',
-            code: 'import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        int a = scanner.nextInt();\n        int b = scanner.nextInt();\n        System.out.println("두 수의 합 = " + (a + b));\n        scanner.close();\n    }\n}            \n            ',
-            input: '5 6',
-        };
-        compile(
-            data,
-            (value) => alert((value as any)['output']),
-            (error) => console.log('error =', error)
-        );
+
+        const lang = convertLanguageIdForSubmitApi(language);
+
+        for (const testCase of testCases) {
+            const data: CodeCompileRequest = {
+                lang: lang,
+                code: code,
+                input: testCase.input,
+            };
+
+            // TODO: 테스트 케이스 콘솔을 화면 컴포넌트 새엇ㅇ 로직으로 변경
+            compile(
+                data,
+                (output) => {
+                    console.log(
+                        `======= 테스트 케이스 ${testCase.no} ========`
+                    );
+                    console.log(`output=${output}`);
+                    console.log(`expect=${testCase.output}`);
+                    console.log(
+                        `result=${
+                            output == testCase.output
+                                ? '맞았습니다!'
+                                : '틀렸습니다'
+                        }`
+                    );
+                },
+                (error) => console.log('error =', error)
+            );
+        }
     };
 
     useEffect(() => {
@@ -135,6 +162,10 @@ const EditorPanel: React.FC<EditorPanelProps> = ({ csrfKey, problemId }) => {
 
     const submitHandle = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
+        if (problemId === null) {
+            alert('문제 정보를 불러올 수 없습니다.');
+            return;
+        }
 
         const data: SubmitPostRequest = {
             problem_id: problemId,

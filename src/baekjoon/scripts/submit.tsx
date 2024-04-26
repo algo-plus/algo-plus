@@ -2,8 +2,8 @@ import 'prism-code-editor/prism/languages/javascript';
 import 'prism-code-editor/prism/languages/java';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { SplitView } from '@/baekjoon/containers/SplitView';
 import { getProblemId } from '@/baekjoon/utils/parsing';
+import SolveView from '@/baekjoon/containers/SolveView/SolveView';
 
 const customSubmitPage = () => {
     const addSplitView = () => {
@@ -27,14 +27,9 @@ const customSubmitPage = () => {
             ) as HTMLInputElement
         ).value;
 
-        const splitView = (
-            <SplitView
-                left={{ type: 'Problem', data: problemId }}
-                right={{ type: 'Editor', data: csrfKey }}
-            />
-        );
+        const solveView = <SolveView problemId={problemId} csrfKey={csrfKey} />;
 
-        createRoot(root).render(splitView);
+        createRoot(root).render(solveView);
 
         if (contentContainer) {
             contentContainer.innerHTML = '';
