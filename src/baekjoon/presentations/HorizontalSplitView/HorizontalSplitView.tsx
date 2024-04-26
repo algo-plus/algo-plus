@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import './SplitView.css';
+import './HorizontalSplitView.css';
 
-type SplitViewProps = {
+type HorizontalSplitViewProps = {
     left: JSX.Element;
     right: JSX.Element;
 };
 
-const SplitView: React.FC<SplitViewProps> = (props: SplitViewProps) => {
+const HorizontalSplitView: React.FC<HorizontalSplitViewProps> = (
+    props: HorizontalSplitViewProps
+) => {
     const [panelsWidth, setPanelsWidth] = useState<number[]>([50, 50]);
     const [resizingIndex, setResizingIndex] = useState<number | null>(null);
     const [mouseOffset, setMouseOffset] = useState<number>(0);
@@ -64,9 +66,9 @@ const SplitView: React.FC<SplitViewProps> = (props: SplitViewProps) => {
     };
 
     return (
-        <div className='split-view' ref={wrapperRef}>
+        <div className='horizontal split-view' ref={wrapperRef}>
             <div
-                className='panel left'
+                className='horizontal panel left'
                 style={{
                     width: `${panelsWidth[0]}%`,
                 }}
@@ -74,11 +76,11 @@ const SplitView: React.FC<SplitViewProps> = (props: SplitViewProps) => {
                 {props.left}
             </div>
             <div
-                className='resizer'
+                className='horizontal resizer'
                 onMouseDown={(e) => handleMouseDown(e, 0)}
             />
             <div
-                className='panel right'
+                className='horizontal panel right'
                 style={{
                     width: `${panelsWidth[1]}%`,
                 }}
@@ -89,4 +91,4 @@ const SplitView: React.FC<SplitViewProps> = (props: SplitViewProps) => {
     );
 };
 
-export default SplitView;
+export default HorizontalSplitView;

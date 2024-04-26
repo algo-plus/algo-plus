@@ -1,8 +1,9 @@
-.split-view {
+.horizontal.split-view {
     display: flex;
+    max-height: 95vh;
 }
 
-.panel {
+.horizontal.panel {
     position: relative;
     overflow: auto;
     background-color: transparent;
@@ -16,7 +17,7 @@
     margin-left: 10px;
 }
 
-.resizer {
+.horizontal.resizer {
     width: 5px;
     cursor: col-resize;
     position: relative;

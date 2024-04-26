@@ -6,8 +6,8 @@ import {
     parsingProblemDetail,
     parsingTestCases,
 } from '@/baekjoon/utils/parsing';
-import { SplitView } from '@/baekjoon/presentations/SplitView';
 import { TestCase } from '@/baekjoon/types/problem';
+import { HorizontalSplitView } from '@/baekjoon/presentations/HorizontalSplitView';
 
 type SolveViewProps = {
     problemId: string | null;
@@ -35,7 +35,7 @@ const SolveView: React.FC<SolveViewProps> = (props: SolveViewProps) => {
     }, []);
 
     return (
-        <SplitView
+        <HorizontalSplitView
             left={<ProblemPanel content={problemContent} />}
             right={
                 <EditorPanel
