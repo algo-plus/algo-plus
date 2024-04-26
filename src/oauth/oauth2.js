@@ -6,7 +6,7 @@ const oAuth2 = {
         this.KEY = 'AlgoPlus_token';
         this.ACCESS_TOKEN_URL = 'https://github.com/login/oauth/access_token';
         this.AUTHORIZATION_URL = 'https://github.com/login/oauth/authorize';
-        this.CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID;
+        this.CLIENT_ID = proces.env.REACT_APP_GITHUB_CLIENT_ID;
         this.CLIENT_SECRET = process.env.REACT_APP_GITHUB_CLIENT_SECRET;
         this.REDIRECT_URL = 'https://github.com/';
         this.SCOPES = ['repo'];
@@ -16,7 +16,7 @@ const oAuth2 = {
      * Begin
      */
     begin() {
-        this.init(); // secure token params.
+        this.init();
 
         let url = `${this.AUTHORIZATION_URL}?client_id=${this.CLIENT_ID}&redirect_uri${this.REDIRECT_URL}&scope=`;
 
