@@ -8,6 +8,8 @@ import {
 } from '@/baekjoon/utils/parsing';
 import { TestCase } from '@/baekjoon/types/problem';
 import { HorizontalSplitView } from '@/baekjoon/presentations/HorizontalSplitView';
+import { VerticalSplitView } from '@/baekjoon/presentations/VerticalSplitView';
+import TestCasePanel from '@/baekjoon/presentations/TestCasePanel/TestCasePanel';
 
 type SolveViewProps = {
     problemId: string | null;
@@ -38,10 +40,15 @@ const SolveView: React.FC<SolveViewProps> = (props: SolveViewProps) => {
         <HorizontalSplitView
             left={<ProblemPanel content={problemContent} />}
             right={
-                <EditorPanel
-                    problemId={props.problemId}
-                    csrfKey={props.csrfKey}
-                    testCases={testCases}
+                <VerticalSplitView
+                    top={
+                        <EditorPanel
+                            problemId={props.problemId}
+                            csrfKey={props.csrfKey}
+                            testCases={testCases}
+                        />
+                    }
+                    bottom={<TestCasePanel testCases={testCases} />}
                 />
             }
         />

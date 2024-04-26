@@ -1,7 +1,7 @@
 type TestCase = {
     no: number;
-    input?: string | null;
-    output?: string | null;
+    input: string;
+    output: string;
 };
 
 export { TestCase };
