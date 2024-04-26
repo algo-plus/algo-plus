@@ -6,15 +6,12 @@ $('#authenticate').on('click', () => {
     }
 });
 
-/* Get URL for link page */
-$('#link_URL').attr(
-    'href',
-    `chrome-extension://${chrome.runtime.id}/link.html`
-);
-$('#hook_URL').attr(
-    'href',
-    `chrome-extension://${chrome.runtime.id}/link.html`
-);
+document.querySelector('.note_setting').addEventListener('click', function () {
+    // GitHub 페이지로 이동하는 링크 생성
+    var githubLink = `chrome-extension://${chrome.runtime.id}/link.html`;
+    // 새 창에서 링크 열기
+    window.open(githubLink);
+});
 
 chrome.storage.local.get('AlgoPlus_token', (data) => {
     const token = data.AlgoPlus_token;
@@ -32,23 +29,7 @@ chrome.storage.local.get('AlgoPlus_token', (data) => {
                 if (xhr.status === 200) {
                     /* Show MAIN FEATURES */
                     chrome.storage.local.get('mode_type', (data2) => {
-                        if (data2 && data2.mode_type === 'commit') {
-                            $('#commit_mode').show();
-                            /* Get problem stats and repo link */
-                            chrome.storage.local.get(
-                                ['stats', 'AlgoPlus_hook'],
-                                (data3) => {
-                                    const AlgoPlusHook = data3.AlgoPlus_hook;
-                                    if (AlgoPlusHook) {
-                                        $('#repo_url').html(
-                                            `Your Repo: <a target="blank" style="color: cadetblue !important;" href="https://github.com/${AlgoPlusHook}">${AlgoPlusHook}</a>`
-                                        );
-                                    }
-                                }
-                            );
-                        } else {
-                            $('#hook_mode').show();
-                        }
+                        $('#hook_mode').show();
                     });
                 } else if (xhr.status === 401) {
                     // bad oAuth
@@ -67,33 +48,4 @@ chrome.storage.local.get('AlgoPlus_token', (data) => {
         xhr.setRequestHeader('Authorization', `token ${token}`);
         xhr.send();
     }
-});
-
-/*
-  초기에 활성화 데이터가 존재하는지 확인, 없으면 새로 생성, 있으면 있는 데이터에 맞게 버튼 조정
- */
-chrome.storage.local.get('alpEnable', (data4) => {
-    if (data4.alpEnable === undefined) {
-        $('#onffbox').prop('checked', true);
-        chrome.storage.local.set(
-            { alpEnable: $('#onffbox').is(':checked') },
-            () => {}
-        );
-    } else {
-        $('#onffbox').prop('checked', data4.alpEnable);
-        chrome.storage.local.set(
-            { alpEnable: $('#onffbox').is(':checked') },
-            () => {}
-        );
-    }
-});
-
-/*
-  활성화 버튼 클릭 시 storage에 활성 여부 데이터를 저장.
- */
-$('#onffbox').on('click', () => {
-    chrome.storage.local.set(
-        { alpEnable: $('#onffbox').is(':checked') },
-        () => {}
-    );
 });

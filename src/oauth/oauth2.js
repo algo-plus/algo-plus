@@ -1,4 +1,4 @@
-export const oAuth2 = {
+const oAuth2 = {
     /**
      * Initialize
      */
