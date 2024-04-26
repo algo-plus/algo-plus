@@ -8,10 +8,12 @@ import { SubmitPostRequest } from '@/baekjoon/types/submit';
 import { submit } from '@/baekjoon/apis/submit';
 import { LanguageSelectBox } from '@/baekjoon/components/LanguageSelectBox';
 import { CodeOpenSelector } from '@/baekjoon/components/CodeOpenSelector';
+import { TestCase } from '@/baekjoon/types/problem';
 
 interface EditorPanelProps {
     csrfKey: string | null;
     problemId: string | null;
+    testCases: TestCase[];
 }
 
 const EditorPanel: React.FC<EditorPanelProps> = ({ csrfKey, problemId }) => {

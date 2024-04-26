@@ -1,4 +1,5 @@
 import React, { ElementType } from 'react';
+import { TestCase } from '@/baekjoon/types/problem';
 
 const getProblemId = (): string | null => {
     const problemIdElement = document.querySelector(
@@ -56,4 +57,20 @@ const parsingProblemDetail = (html: string): JSX.Element => {
     }
 };
 
-export { getProblemId, parsingProblemDetail };
+const parsingTestCases = (html: string): TestCase[] => {
+    const testCases: TestCase[] = [];
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+
+    const inputs = doc.querySelectorAll('[id^="sample-input-"]');
+    const outputs = doc.querySelectorAll('[id^="sample-output-"]');
+    const count = inputs.length;
+    for (let i = 0; i < count; ++i) {
+        testCases.push({
+            input: inputs[i].textContent,
+            output: outputs[i].textContent,
+        });
+    }
+    return testCases;
+};
+
+export { getProblemId, parsingProblemDetail, parsingTestCases };
