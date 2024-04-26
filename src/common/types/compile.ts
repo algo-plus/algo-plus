@@ -11,7 +11,7 @@ type CodeCompileRequest = {
         | 'swift'
         | 'golang';
     code: string;
-    input: string;
+    input?: string | null;
 };
 
 export type { CodeCompileRequest };

@@ -1,5 +1,5 @@
 type SubmitPostRequest = {
-    problem_id: number;
+    problem_id: string;
     language: number;
     code_open: string;
     source: string;

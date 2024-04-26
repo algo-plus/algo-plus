@@ -1,9 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ProblemPanel } from '@/baekjoon/presentations/ProblemPanel';
-import { EditorPanel } from '@/baekjoon/presentations/EditorPanel';
-import './SplitView.css';
+import './HorizontalSplitView.css';
 
-const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
+type HorizontalSplitViewProps = {
+    left: JSX.Element;
+    right: JSX.Element;
+};
+
+const HorizontalSplitView: React.FC<HorizontalSplitViewProps> = (
+    props: HorizontalSplitViewProps
+) => {
     const [panelsWidth, setPanelsWidth] = useState<number[]>([50, 50]);
     const [resizingIndex, setResizingIndex] = useState<number | null>(null);
     const [mouseOffset, setMouseOffset] = useState<number>(0);
@@ -61,59 +66,29 @@ const SplitView: React.FC<PanelProps> = (props: PanelProps) => {
     };
 
     return (
-        <div className='split-view' ref={wrapperRef}>
+        <div className='horizontal split-view' ref={wrapperRef}>
             <div
-                className='panel left'
+                className='horizontal panel left'
                 style={{
                     width: `${panelsWidth[0]}%`,
                 }}
             >
-                {props.left.type === 'Problem' ? (
-                    <ProblemPanel problemId={props.left.data} />
-                ) : props.left.type === 'Editor' ? (
-                    <div>
-                        <EditorPanel
-                            csrfKey={props.right.data}
-                            problemId={props.left.data}
-                        />
-                    </div>
-                ) : (
-                    <div>Panel 1</div>
-                )}
+                {props.left}
             </div>
             <div
-                className='resizer'
+                className='horizontal resizer'
                 onMouseDown={(e) => handleMouseDown(e, 0)}
             />
             <div
-                className='panel right'
+                className='horizontal panel right'
                 style={{
                     width: `${panelsWidth[1]}%`,
                 }}
             >
-                {props.right.type === 'Problem' ? (
-                    <ProblemPanel problemId={props.left.data} />
-                ) : props.right.type === 'Editor' ? (
-                    <EditorPanel
-                        csrfKey={props.right.data}
-                        problemId={props.left.data}
-                    />
-                ) : (
-                    <div>Panel 2</div>
-                )}
+                {props.right}
             </div>
         </div>
     );
 };
 
-export default SplitView;
-type PanelProps = {
-    left: {
-        type: string;
-        data?: any;
-    };
-    right: {
-        type: string;
-        data?: any;
-    };
-};
+export default HorizontalSplitView;
