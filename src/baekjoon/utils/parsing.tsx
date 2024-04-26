@@ -67,8 +67,8 @@ const parsingTestCases = (html: string): TestCase[] => {
     for (let i = 0; i < count; ++i) {
         testCases.push({
             no: i + 1,
-            input: inputs[i].textContent?.trim(),
-            output: outputs[i].textContent?.trim(),
+            input: (inputs[i].textContent as string).trim(),
+            output: (outputs[i].textContent as string).trim(),
         });
     }
     return testCases;
