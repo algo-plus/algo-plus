@@ -51,3 +51,8 @@
 .split-view ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+.resizer:hover,
+.resizer:active {
+    background-color: #4d92cb;
+}
