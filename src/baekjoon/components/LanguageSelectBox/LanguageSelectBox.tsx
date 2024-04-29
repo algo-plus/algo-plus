@@ -65,9 +65,6 @@ const LanguageSelectBox: React.FC<LanguageSelectBoxProps> = ({
                     <option value='12' data-mime='text/x-go'>
                         Go
                     </option>
-                    <option value='113' data-mime='text/x-rustsrc'>
-                        Rust 2021
-                    </option>
                 </select>
             </div>
         </div>
