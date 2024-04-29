@@ -25,8 +25,8 @@
     background-color: #eee;
 }
 
-.vertical-resizer:hover,
-.vertical-resizer:active {
+.resizer:hover,
+.resizer:active {
     background-color: #4d92cb;
 }
 
