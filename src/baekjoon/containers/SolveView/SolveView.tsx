@@ -41,11 +41,19 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     const [codeOpen, setCodeOpen] = useState('close');
     const [code, setCode] = useState(getDefaultCode(editorLanguage));
 
-    const runHandle = () => {
+    const codeInitialize = () => {
+        setCode(getDefaultCode(editorLanguage));
+    };
+
+    const codeRun = () => {
         if (!code) {
             alert('실행할 코드가 없습니다.');
             return;
         }
+
+        // temporary log
+        console.log(code);
+        return;
 
         const lang = convertLanguageIdForSubmitApi(languageId);
 
@@ -78,7 +86,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
         }
     };
 
-    const submitHandle = () => {
+    const codeSubmit = () => {
         if (problemId === null) {
             alert('문제 정보를 불러올 수 없습니다.');
             return;
@@ -186,10 +194,14 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                 }
             />
             <EditorButtonBox
-                codeInitializeHandle={() => alert('TODO: 코드 초기화 로직')}
+                codeInitializeHandle={() => {
+                    if (confirm('정말로 초기화하시겠습니까?')) {
+                        codeInitialize();
+                    }
+                }}
                 addTestCaseHandle={() => alert('TODO: 테스트 케이스 추가 모달')}
-                runHandle={runHandle}
-                submitHandle={submitHandle}
+                runHandle={codeRun}
+                submitHandle={codeSubmit}
             />
         </div>
     );
