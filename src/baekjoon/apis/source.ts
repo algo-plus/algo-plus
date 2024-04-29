@@ -4,13 +4,12 @@ const fetchCode = async (submitId: number) => {
         const res = await fetch(url);
         const text = await res.text();
         const doc = new DOMParser().parseFromString(text, 'text/html');
-        console.log(doc);
         const code = doc.querySelector('.no-mathjax.codemirror-textarea');
         if (!code) {
             console.error('No code found');
             return null;
         }
-        return code.innerHTML;
+        return code.textContent;
     } catch (error) {
         console.error('Error fetching code:', error);
         return null;

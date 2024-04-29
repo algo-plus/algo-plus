@@ -56,7 +56,6 @@ const customStatusPage = async () => {
         for (const id of sourceCodeIds) {
             const sourceCode = await fetchCode(id);
             sourceCodes.push(sourceCode);
-            console.log('sourceCode: ', sourceCode);
         }
         return sourceCodes;
     };
