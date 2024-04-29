@@ -11,7 +11,7 @@ const Options = () => {
     );
 };
 
-const root = createRoot(document.getElementById('root')!);
+const root = createRoot(document.querySelector('#root')!);
 
 root.render(
     <React.StrictMode>

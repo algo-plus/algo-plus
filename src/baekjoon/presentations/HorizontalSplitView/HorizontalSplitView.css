@@ -1,6 +1,7 @@
 .horizontal.split-view {
     display: flex;
-    max-height: 95vh;
+    height: 95vh;
+    overflow: hidden;
 }
 
 .horizontal.panel {

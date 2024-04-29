@@ -2,7 +2,7 @@
  * 로딩 버튼 추가
  */
 function startUpload() {
-    let elem = document.getElementById('AlgoPlus_progress_anchor_element');
+    let elem = document.querySelector('#AlgoPlus_progress_anchor_element');
     if (elem !== undefined) {
         elem = document.createElement('span');
         elem.id = 'AlgoPlus_progress_anchor_element';
@@ -11,7 +11,7 @@ function startUpload() {
     }
     elem.innerHTML = `<div id="AlgoPlus_progress_elem" class="AlgoPlus_progress"></div>`;
     const target =
-        document.getElementById('status-table')?.childNodes[1].childNodes[0]
+        document.querySelector('#status-table')?.childNodes[1].childNodes[0]
             .childNodes[3] ||
         document.querySelector(
             'div.table-responsive > table > tbody > tr > td:nth-child(5)'
@@ -32,7 +32,7 @@ function startUpload() {
  */
 function markUploadedCSS(branches, directory) {
     uploadState.uploading = false;
-    const elem = document.getElementById('AlgoPlus_progress_elem');
+    const elem = document.querySelector('#AlgoPlus_progress_elem');
     elem.className = 'markuploaded';
     const uploadedUrl =
         'https://github.com/' +
@@ -52,7 +52,7 @@ function markUploadedCSS(branches, directory) {
  */
 function markUploadFailedCSS() {
     uploadState.uploading = false;
-    const elem = document.getElementById('AlgoPlus_progress_elem');
+    const elem = document.querySelector('#AlgoPlus_progress_elem');
     elem.className = 'markuploadfailed';
 }
 
