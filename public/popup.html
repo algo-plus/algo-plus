@@ -2,11 +2,6 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <meta
-            http-equiv="Content-Security-Policy"
-            content="script-src 'self' https://kit.fontawesome.com"
-        />
-
         <link rel="stylesheet" href="css/popup.css" />
         <script src="/library/jquery-3.3.1.min.js"></script>
     </head>
@@ -14,7 +9,7 @@
     <body>
         <div class="popup_wrapper">
             <div class="popup_main">
-                <img class="logo_img" src="logo.png" />
+                <img class="logo_img" src="asset/logo.png" />
                 <p id="popup_description">
                     실제 코딩 테스트 환경 / 오답노트 제공
                 </p>
@@ -25,14 +20,7 @@
             </div>
 
             <!-- Generate Socials -->
-            <i class="fa-brands fa-github"></i>
-            <div id="socials" class="">
-                <a
-                    title="AlgoPlus GitHub"
-                    href="https://github.com"
-                    target="_blank"
-                ></a>
-            </div>
+            <div id="socials"></div>
         </div>
 
         <script src="oauth/oauth2.js"></script>

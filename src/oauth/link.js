@@ -1,3 +1,20 @@
+const githubButton = document.getElementById('github_button');
+const localButton = document.getElementById('local_button');
+
+localButton.addEventListener('click', function () {
+    localButton.style.backgroundColor = '#0076c0';
+    localButton.style.color = 'white';
+    githubButton.style.backgroundColor = 'lightgray';
+    githubButton.style.color = 'gray';
+});
+
+githubButton.addEventListener('click', function () {
+    githubButton.style.backgroundColor = '#0076c0';
+    githubButton.style.color = 'white';
+    localButton.style.backgroundColor = 'lightgray';
+    localButton.style.color = 'gray';
+});
+
 const option = () => {
     return $('#type').val();
 };

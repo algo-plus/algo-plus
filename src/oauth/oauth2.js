@@ -16,7 +16,7 @@ const oAuth2 = {
      * Begin
      */
     begin() {
-        this.init(); // secure token params.
+        this.init();
 
         let url = `${this.AUTHORIZATION_URL}?client_id=${this.CLIENT_ID}&redirect_uri${this.REDIRECT_URL}&scope=`;
 
