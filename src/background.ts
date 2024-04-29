@@ -44,6 +44,13 @@ function handleMessage(request: any, sender: any, sendResponse: any) {
         request.task == 'SolvedApiCall'
     ) {
         SolvedApiCall(request.problemId).then((res) => sendResponse(res));
+    } else if (
+        request &&
+        request.action == 'saveRepository' &&
+        request.repositoryName
+    ) {
+        chrome.storage.local.set({ repositories: request.repositoryName });
+        chrome.storage.local.get((result) => console.log(result));
     }
     return true;
 }
