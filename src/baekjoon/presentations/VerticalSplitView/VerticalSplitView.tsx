@@ -1,9 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { CSSProperties } from 'react';
 import './VerticalSplitView.css';
 
 type VerticalSplitViewProps = {
     top: JSX.Element;
     bottom: JSX.Element;
+    topStyle?: CSSProperties;
+    bottomStyle?: CSSProperties;
 };
 
 const VerticalSplitView: React.FC<VerticalSplitViewProps> = (
@@ -70,6 +73,7 @@ const VerticalSplitView: React.FC<VerticalSplitViewProps> = (
             <div
                 className='vertical panel top'
                 style={{
+                    ...props.topStyle,
                     height: `${panelsHeight[0]}%`,
                 }}
             >
@@ -82,6 +86,7 @@ const VerticalSplitView: React.FC<VerticalSplitViewProps> = (
             <div
                 className='vertical panel bottom'
                 style={{
+                    ...props.bottomStyle,
                     height: `${panelsHeight[1]}%`,
                 }}
             >
