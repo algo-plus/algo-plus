@@ -34,6 +34,11 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     const [code, setCode] = useState('');
 
     const runHandle = () => {
+        if (!code) {
+            alert('실행할 코드가 없습니다.');
+            return;
+        }
+
         const lang = convertLanguageIdForSubmitApi(language);
 
         for (const testCase of testCases) {
