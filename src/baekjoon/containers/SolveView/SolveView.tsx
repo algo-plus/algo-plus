@@ -123,12 +123,13 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                             height: '100%',
                             display: 'flex',
                             flexDirection: 'column',
-                            gap: '10px',
+                            gap: '5px',
                         }}
                     >
                         <div
                             style={{
                                 display: 'flex',
+                                alignItems: 'center',
                                 flexWrap: 'wrap',
                                 justifyContent: 'space-between',
                             }}
