@@ -10,17 +10,24 @@ const LanguageSelectBox: React.FC<LanguageSelectBoxProps> = ({
     onChange,
 }) => {
     return (
-        <div className='form-group'>
-            <label className='col-md-2 control-label'>언어</label>
-            <div className='col-md-2' style={{ marginTop: '7px' }}>
+        <div
+            style={{
+                display: 'flex',
+                gap: '20px',
+                justifyContent: 'right',
+                marginRight: '10px',
+            }}
+        >
+            <label className='control-label'>언어</label>
+            <div>
                 <select
                     id='language'
                     name='language'
                     data-placeholder='언어를 선택해 주세요'
-                    className='language-select col-md-12 chosen-select'
+                    className='language-select chosen-select'
                     data-no_results_text='없는 언어 입니다'
-                    defaultValue={defaultValue} // 초기 선택 옵션 설정
-                    onChange={onChange} // 선택 변경 핸들러
+                    defaultValue={defaultValue}
+                    onChange={onChange}
                 >
                     <option value='0' data-mime='text/x-csrc'>
                         C99

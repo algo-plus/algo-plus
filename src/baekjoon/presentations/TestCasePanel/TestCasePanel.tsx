@@ -8,7 +8,13 @@ interface TestCasePanelProps {
 
 const TestCasePanel: React.FC<TestCasePanelProps> = ({ testCases }) => {
     return (
-        <>
+        <div
+            style={{
+                border: '1px solid #ccc',
+                background: '#efefef',
+                minHeight: '100%',
+            }}
+        >
             {testCases.map((testCase, index) => (
                 <TestCaseElement
                     key={index}
@@ -18,7 +24,7 @@ const TestCasePanel: React.FC<TestCasePanelProps> = ({ testCases }) => {
                     output=''
                 />
             ))}
-        </>
+        </div>
     );
 };
 

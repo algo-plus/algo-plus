@@ -1,23 +1,8 @@
-.editor-panel {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+.scroll-disabled {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
-.editor {
-    background: black;
-    height: 100%;
-    max-width: 100%;
-    max-height: 700px;
-    overflow-y: auto;
-    font-size: 18px;
-}
-
-.editor-button-container {
-    height: 70px;
-    display: flex;
-    justify-content: right;
-    align-content: center;
-    padding: 10px 0px;
-    gap: 10px;
+.scroll-disabled::-webkit-scrollbar {
+    display: none;
 }

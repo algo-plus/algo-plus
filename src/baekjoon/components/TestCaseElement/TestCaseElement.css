@@ -1,5 +1,6 @@
 .test-case-elem {
-    margin-top: 20px;
+    margin: 10px 0;
+    padding: 10px 0;
 }
 
 .test-case-elem h4 {
