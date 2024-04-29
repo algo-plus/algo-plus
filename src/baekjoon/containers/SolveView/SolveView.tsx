@@ -43,7 +43,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                 input: testCase.input,
             };
 
-            // TODO: 테스트 케이스 콘솔을 화면 컴포넌트 새엇ㅇ 로직으로 변경
+            // TODO: 테스트 케이스 콘솔을 화면 컴포넌트 생성 로직으로 변경
             compile(
                 data,
                 (output) => {
