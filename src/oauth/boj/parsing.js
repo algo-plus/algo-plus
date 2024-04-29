@@ -135,14 +135,14 @@ function findUsernameOnUserInfoPage() {
   결과 테이블의 존재 여부를 확인합니다.
 */
 function isExistResultTable() {
-    return document.getElementById('status-table') !== null;
+    return document.querySelector('#status-table') !== null;
 }
 
 /*
   결과 테이블을 파싱하는 함수입니다.
 */
 function parsingResultTableList(doc) {
-    const table = doc.getElementById('status-table');
+    const table = doc.querySelector('#status-table');
     if (table === null || table === undefined || table.length === 0) return [];
     const headers = Array.from(table.rows[0].cells, (x) =>
         convertResultTableHeader(x.innerText.trim())
@@ -227,22 +227,22 @@ function findFromResultTable() {
     - 백준 문제 카테고리: category
 */
 function parseProblemDescription(doc = document) {
-    convertImageTagAbsoluteURL(doc.getElementById('problem_description')); //이미지에 상대 경로가 있을 수 있으므로 이미지 경로를 절대 경로로 전환 합니다.
+    convertImageTagAbsoluteURL(doc.querySelector('#problem_description')); //이미지에 상대 경로가 있을 수 있으므로 이미지 경로를 절대 경로로 전환 합니다.
     const problemId = doc
         .getElementsByTagName('title')[0]
         .textContent.split(':')[0]
         .replace(/[^0-9]/, '');
     const problem_description = unescapeHtml(
-        doc.getElementById('problem_description').innerHTML.trim()
+        doc.querySelector('#problem_description').innerHTML.trim()
     );
     const problem_input =
         doc
-            .getElementById('problem_input')
+            .querySelector('#problem_input')
             ?.innerHTML.trim?.()
             .unescapeHtml?.() || 'Empty'; // eslint-disable-line
     const problem_output =
         doc
-            .getElementById('problem_output')
+            .querySelector('#problem_output')
             ?.innerHTML.trim?.()
             .unescapeHtml?.() || 'Empty'; // eslint-disable-line
     if (problemId && problem_description) {
@@ -443,12 +443,12 @@ async function findResultTableListByUsername(username) {
     let doc = await findHtmlDocumentByUrl(
         `https://www.acmicpc.net/status?user_id=${username}&result_id=4`
     );
-    let next_page = doc.getElementById('next_page');
+    let next_page = doc.querySelector('#next_page');
     do {
         result.push(...parsingResultTableList(doc));
         if (next_page !== null)
             doc = await findHtmlDocumentByUrl(next_page.getAttribute('href'));
-    } while ((next_page = doc.getElementById('next_page')) !== null);
+    } while ((next_page = doc.querySelector('#next_page')) !== null);
     result.push(...parsingResultTableList(doc));
 
     return result;
