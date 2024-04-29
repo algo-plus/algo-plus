@@ -146,6 +146,10 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                         <VerticalSplitView
                             top={<EditorPanel onCodeUpdate={setCode} />}
                             bottom={<TestCasePanel testCases={testCases} />}
+                            bottomStyle={{
+                                border: '1px solid #ccc',
+                                background: '#efefef',
+                            }}
                         />
                     </div>
                 }

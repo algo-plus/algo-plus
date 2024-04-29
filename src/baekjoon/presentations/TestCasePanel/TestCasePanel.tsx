@@ -10,8 +10,6 @@ const TestCasePanel: React.FC<TestCasePanelProps> = ({ testCases }) => {
     return (
         <div
             style={{
-                border: '1px solid #ccc',
-                background: '#efefef',
                 minHeight: '100%',
             }}
         >
