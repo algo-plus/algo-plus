@@ -1,9 +1,9 @@
-const githubButton = document.getElementById('github_button');
-const localButton = document.getElementById('local_button');
-const githubSetting = document.getElementById('github_setting');
-const localSetting = document.getElementById('local-setting');
-const githubAuth = document.getElementById('github-auth');
-const repoSubmit = document.getElementById('github_link_button');
+const githubButton = document.querySelector('#github-button');
+const localButton = document.querySelector('#local-button');
+const githubSetting = document.querySelector('#github-setting');
+const localSetting = document.querySelector('#local-setting');
+const githubAuth = document.querySelector('#github-auth');
+const repoSubmit = document.querySelector('github-link-button');
 
 localButton.addEventListener('click', function () {
     localButton.style.backgroundColor = '#0076c0';
@@ -24,10 +24,10 @@ githubButton.addEventListener('click', function () {
 });
 
 document
-    .getElementById('local-name-save')
+    .querySelector('#local-name-save')
     .addEventListener('click', function () {
-        const repositoryName = document.getElementById(
-            'repositoryNameInput'
+        const repositoryName = document.querySelector(
+            '#repositoryNameInput'
         ).value;
         chrome.runtime.sendMessage({
             action: 'saveRepository',
@@ -163,10 +163,6 @@ const statusCode = (res, status, name) => {
                     `Successfully created <a target="blank" href="${res.html_url}">${name}</a>. Start <a href="https://www.acmicpc.net/">BOJ</a>!`
                 );
                 $('#success').show();
-                /* Show new layout */
-                document.getElementById('hook_mode').style.display = 'none';
-                document.getElementById('commit_mode').style.display =
-                    'inherit';
             });
             /* Set Repo Hook */
             chrome.storage.local.set({ AlgoPlus_hook: res.full_name }, () => {
@@ -267,12 +263,6 @@ const linkRepo = (token, name) => {
                     chrome.storage.local.set({ AlgoPlus_hook: null }, () => {
                         console.log('Defaulted repo hook to NONE');
                     });
-
-                    /* Hide accordingly */
-                    document.getElementById('hook_mode').style.display =
-                        'inherit';
-                    document.getElementById('commit_mode').style.display =
-                        'none';
                 } else {
                     /* Change mode type to commit */
                     /* Save repo url to chrome storage */
@@ -302,10 +292,6 @@ const linkRepo = (token, name) => {
                             });
                         }
                     );
-                    /* Hide accordingly */
-                    document.getElementById('hook_mode').style.display = 'none';
-                    document.getElementById('commit_mode').style.display =
-                        'inherit';
                 }
             }
         }
@@ -321,13 +307,13 @@ const linkRepo = (token, name) => {
 $('#type').on('change', function () {
     const valueSelected = this.value;
     if (valueSelected) {
-        $('#github_link_button').attr('disabled', false);
+        $('#github-link-button').attr('disabled', false);
     } else {
-        $('#github_link_button').attr('disabled', true);
+        $('#github-link-button').attr('disabled', true);
     }
 });
 
-$('#github_link_button').on('click', () => {
+$('#github-link-button').on('click', () => {
     /* on click should generate: 1) option 2) repository name */
     if (!option()) {
         $('#error').text(
@@ -407,9 +393,6 @@ chrome.storage.local.get('mode_type', (data) => {
                 );
                 $('#error').show();
                 $('#success').hide();
-                /* Hide accordingly */
-                document.getElementById('hook_mode').style.display = 'inherit';
-                document.getElementById('commit_mode').style.display = 'none';
             } else {
                 /* Get access to repo */
                 chrome.storage.local.get('AlgoPlus_hook', (repoName) => {
@@ -421,11 +404,6 @@ chrome.storage.local.get('mode_type', (data) => {
                         );
                         $('#error').show();
                         $('#success').hide();
-                        /* Hide accordingly */
-                        document.getElementById('hook_mode').style.display =
-                            'inherit';
-                        document.getElementById('commit_mode').style.display =
-                            'none';
                     } else {
                         /* Username exists, at least in storage. Confirm this */
                         linkRepo(token, hook);
