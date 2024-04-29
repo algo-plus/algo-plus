@@ -17,6 +17,7 @@ import { submit } from '@/baekjoon/apis/submit';
 import { compile } from '@/common/apis/compile';
 import { convertLanguageIdForSubmitApi } from '@/baekjoon/utils/language';
 import { CodeCompileRequest } from '@/common/types/compile';
+import { CodeOpenSelector } from '@/baekjoon/components/CodeOpenSelector';
 
 type SolveViewProps = {
     problemId: string | null;
@@ -113,7 +114,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     };
 
     return (
-        <>
+        <div style={{ height: '100%' }}>
             <HorizontalSplitView
                 left={<ProblemPanel content={problemContent} />}
                 right={
@@ -125,10 +126,23 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                             gap: '10px',
                         }}
                     >
-                        <LanguageSelectBox
-                            defaultValue='0'
-                            onChange={languageChangeHandle}
-                        />
+                        <div
+                            style={{
+                                display: 'flex',
+                                flexWrap: 'wrap',
+                                justifyContent: 'space-between',
+                            }}
+                        >
+                            {/* TODO: 코드 공개 여부 백준 사용자 설정 값으로 지정 */}
+                            <CodeOpenSelector
+                                defaultValue={codeOpen}
+                                onChange={setCodeOpen}
+                            />
+                            <LanguageSelectBox
+                                defaultValue='0'
+                                onChange={languageChangeHandle}
+                            />
+                        </div>
                         <VerticalSplitView
                             top={<EditorPanel onCodeUpdate={setCode} />}
                             bottom={<TestCasePanel testCases={testCases} />}
@@ -137,12 +151,12 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                 }
             />
             <EditorButtonBox
-                codeInitializeHandle={() => alert(1)}
-                addTestCaseHandle={() => alert(1)}
+                codeInitializeHandle={() => alert('TODO: 코드 초기화 로직')}
+                addTestCaseHandle={() => alert('TODO: 테스트 케이스 추가 모달')}
                 runHandle={runHandle}
                 submitHandle={submitHandle}
             />
-        </>
+        </div>
     );
 };
 
