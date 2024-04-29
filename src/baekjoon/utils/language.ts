@@ -1,4 +1,7 @@
-const submitApiLanguageConvertMap: Record<string, string> = {
+import { CompilerLanguage } from '@/common/types/compile';
+import { EditorLanguage } from '@/common/types/language';
+
+const submitApiLanguageConvertMap: Record<string, CompilerLanguage> = {
     '0': 'c',
     '95': 'c_cpp',
     '86': 'csharp',
@@ -11,11 +14,29 @@ const submitApiLanguageConvertMap: Record<string, string> = {
     '68': 'ruby',
     '74': 'swift',
     '12': 'golang',
-    '113': 'rust',
 };
 
-function convertLanguageIdForSubmitApi(languageId: string): any {
+const editorLanguageConvertMap: Record<string, EditorLanguage> = {
+    '0': 'c',
+    '95': 'cpp',
+    '86': 'csharp',
+    '3': 'java',
+    '93': 'java',
+    '28': 'python',
+    '73': 'python',
+    '17': 'js',
+    '69': 'kotlin',
+    '68': 'ruby',
+    '74': 'swift',
+    '12': 'go',
+};
+
+function convertLanguageIdForSubmitApi(languageId: string): CompilerLanguage {
     return submitApiLanguageConvertMap[languageId];
 }
 
-export { convertLanguageIdForSubmitApi };
+function convertLanguageIdForEditor(languageId: string): EditorLanguage {
+    return editorLanguageConvertMap[languageId];
+}
+
+export { convertLanguageIdForSubmitApi, convertLanguageIdForEditor };

@@ -28,6 +28,9 @@ const LanguageSelectBox: React.FC<LanguageSelectBoxProps> = ({
                     data-no_results_text='없는 언어 입니다'
                     defaultValue={defaultValue}
                     onChange={onChange}
+                    style={{
+                        cursor: 'pointer',
+                    }}
                 >
                     <option value='0' data-mime='text/x-csrc'>
                         C99
@@ -64,9 +67,6 @@ const LanguageSelectBox: React.FC<LanguageSelectBoxProps> = ({
                     </option>
                     <option value='12' data-mime='text/x-go'>
                         Go
-                    </option>
-                    <option value='113' data-mime='text/x-rustsrc'>
-                        Rust 2021
                     </option>
                 </select>
             </div>

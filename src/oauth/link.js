@@ -3,7 +3,7 @@ const localButton = document.querySelector('#local-button');
 const githubSetting = document.querySelector('#github-setting');
 const localSetting = document.querySelector('#local-setting');
 const githubAuth = document.querySelector('#github-auth');
-const repoSubmit = document.querySelector('github-link-button');
+const repoSubmit = document.querySelector('#github-link-button');
 
 localButton.addEventListener('click', function () {
     localButton.style.backgroundColor = '#0076c0';
