@@ -1,56 +1,70 @@
-import React from 'react';
+import React, { useState } from 'react';
+import './CodeOpenSelector.css';
 
 interface CodeOpenProps {
-    defaultValue: string; // 초기 선택 값
-    onChange: (value: string) => void; // 선택 변경 핸들러
+    defaultValue: string;
+    onChange: (value: string) => void;
 }
 
 const CodeOpenSelector: React.FC<CodeOpenProps> = ({
     defaultValue,
     onChange,
 }) => {
-    const handleCodeOpenChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const selectedValue = e.target.value;
-        onChange(selectedValue); // 선택된 값 상태 업데이트
+    const [selectedValue, setSelectedValue] = useState<string>(defaultValue);
+    const handleCodeOpenChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        onChange(event.target.value);
+        setSelectedValue(event.target.value);
     };
 
     return (
-        <div className='form-group'>
-            <label className='col-md-2 control-label' htmlFor='code_open'>
+        <div
+            style={{ display: 'flex', gap: '20px', margin: '5px 0' }}
+            className='code-open-selector'
+        >
+            <label className='control-label' htmlFor='code_open'>
                 소스 코드 공개
             </label>
-            <div className='col-md-10'>
-                <div className='radio'>
-                    <label>
+            <div
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                    gap: '10px',
+                }}
+            >
+                <div>
+                    <label className='code-open-selector-element'>
                         <input
                             type='radio'
                             name='code_open'
                             value='open'
-                            checked={defaultValue === 'open'}
+                            checked={selectedValue === 'open'}
                             onChange={handleCodeOpenChange}
                         />
                         공개
                     </label>
                 </div>
-                <div className='radio'>
-                    <label>
+                <div>
+                    <label className='code-open-selector-element'>
                         <input
                             type='radio'
                             name='code_open'
                             value='close'
-                            checked={defaultValue === 'close'}
+                            checked={selectedValue === 'close'}
                             onChange={handleCodeOpenChange}
                         />
                         비공개
                     </label>
                 </div>
-                <div className='radio'>
-                    <label>
+                <div>
+                    <label className='code-open-selector-element'>
                         <input
                             type='radio'
                             name='code_open'
                             value='onlyaccepted'
-                            checked={defaultValue === 'onlyaccepted'}
+                            checked={selectedValue === 'onlyaccepted'}
                             onChange={handleCodeOpenChange}
                         />
                         맞았을 때만 공개

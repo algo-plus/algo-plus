@@ -13,19 +13,12 @@ import { convertLanguageIdForSubmitApi } from '@/baekjoon/utils/language';
 import './EditorPanel.css';
 
 interface EditorPanelProps {
-    csrfKey: string | null;
-    problemId: string | null;
-    testCases: TestCase[];
+    onCodeUpdate: (code: string) => void;
 }
 
-const EditorPanel: React.FC<EditorPanelProps> = ({
-    csrfKey,
-    problemId,
-    testCases,
-}) => {
+const EditorPanel: React.FC<EditorPanelProps> = ({ onCodeUpdate }) => {
     const [language, setLanguage] = useState('0'); // 초기 언어 설정
     const [codeOpen, setCodeOpen] = useState('close'); // 초기 소스코드 설정
-    const [code, setCode] = useState('');
 
     const languageMap: Record<string, string> = {
         '0': 'c',
@@ -44,41 +37,6 @@ const EditorPanel: React.FC<EditorPanelProps> = ({
     };
 
     const selectedLanguage = languageMap[language] || 'c';
-
-    // TODO: 더미 데이터 호출 삭제
-    const testCaseRunHandle = (event: any) => {
-        event.preventDefault();
-
-        const lang = convertLanguageIdForSubmitApi(language);
-
-        for (const testCase of testCases) {
-            const data: CodeCompileRequest = {
-                lang: lang,
-                code: code,
-                input: testCase.input,
-            };
-
-            // TODO: 테스트 케이스 콘솔을 화면 컴포넌트 새엇ㅇ 로직으로 변경
-            compile(
-                data,
-                (output) => {
-                    console.log(
-                        `======= 테스트 케이스 ${testCase.no} ========`
-                    );
-                    console.log(`output=${output}`);
-                    console.log(`expect=${testCase.output}`);
-                    console.log(
-                        `result=${
-                            output == testCase.output
-                                ? '맞았습니다!'
-                                : '틀렸습니다'
-                        }`
-                    );
-                },
-                (error) => console.log('error =', error)
-            );
-        }
-    };
 
     useEffect(() => {
         // 기존 에디터 숨기기
@@ -113,7 +71,7 @@ const EditorPanel: React.FC<EditorPanelProps> = ({
                     <PrismCodeEditor
                         theme='vs-code-dark'
                         language={selectedLanguage}
-                        onUpdate={setCode}
+                        onUpdate={onCodeUpdate}
                     />
                 </div>
                 <div className='editor-button-container'>
@@ -121,12 +79,10 @@ const EditorPanel: React.FC<EditorPanelProps> = ({
                         text='테스트 케이스 추가'
                         onClick={() => alert('테스트 케이스 구현 중')}
                     />
-                    <Button text='실행' onClick={testCaseRunHandle} />
-                    <Button text='제출' onClick={submitHandle} />
                 </div>
             </div>
         );
-    }, [csrfKey, language, codeOpen]); // csrfKey 또는 language가 변경될 때마다 실행
+    }, [language, codeOpen]); // csrfKey 또는 language가 변경될 때마다 실행
 
     const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedLanguage = e.target.value;
@@ -137,90 +93,24 @@ const EditorPanel: React.FC<EditorPanelProps> = ({
         setCodeOpen(value);
     };
 
-    const submitHandle = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-        if (problemId === null) {
-            alert('문제 정보를 불러올 수 없습니다.');
-            return;
-        }
-
-        const data: SubmitPostRequest = {
-            problem_id: problemId,
-            language: Number(language),
-            code_open: codeOpen,
-            source: code,
-            csrf_key: csrfKey ? csrfKey : '',
-        };
-
-        submit(
-            data,
-            (response) => {
-                const responseURL = response.request.responseURL;
-                if (responseURL) {
-                    console.log('code submit... responseURL=' + responseURL);
-                    // TODO: 코드 제출 후 로직 작성
-                }
-            },
-            console.error
-        );
-    };
-
     return (
-        <>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <LanguageSelectBox
-                    defaultValue='0'
-                    onChange={handleLanguageChange}
-                />
-                <CodeOpenSelector
-                    defaultValue={codeOpen}
-                    onChange={handleCodeOpenChange}
-                />
-            </div>
-            <div id='editorContainer' style={{ height: '70%' }}>
-                <div
-                    style={{
-                        height: '100%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                    }}
-                >
-                    <div
-                        style={{
-                            background: 'black',
-                            height: '100%',
-                            maxWidth: '100%',
-                            maxHeight: '700px',
-                            overflowY: 'auto',
-                            fontSize: '18px',
-                        }}
-                    >
-                        <PrismCodeEditor
-                            theme='vs-code-dark'
-                            language={selectedLanguage}
-                            onUpdate={setCode}
-                        />
-                    </div>
-                    <div
-                        style={{
-                            height: '70px',
-                            display: 'flex',
-                            justifyContent: 'right',
-                            alignContent: 'center',
-                            padding: '10px 0px',
-                            gap: '10px',
-                        }}
-                    >
-                        <Button
-                            text='테스트 케이스 추가'
-                            onClick={() => alert('테스트 케이스 구현 중')}
-                        />
-                        <Button text='실행' onClick={testCaseRunHandle} />
-                        <Button text='제출' onClick={submitHandle} />
-                    </div>
-                </div>
-            </div>
-        </>
+        <div
+            className='scroll-disabled'
+            style={{
+                background: 'black',
+                height: '100%',
+                maxWidth: '100%',
+                maxHeight: '700px',
+                overflowY: 'auto',
+                fontSize: '16px',
+            }}
+        >
+            <PrismCodeEditor
+                theme='vs-code-dark'
+                language={selectedLanguage}
+                onUpdate={onCodeUpdate}
+            />
+        </div>
     );
 };
 
