@@ -48,7 +48,7 @@ body {
     cursor: pointer;
 }
 
-.github_setting_box {
+.setting_box {
     border: 3px solid #0076c0;
     border-radius: 10px;
     height: 500px;
@@ -66,21 +66,28 @@ body {
     margin: 5px 10px;
 }
 
-#githubAuth {
+#github-auth {
     width: 200px;
+    cursor: pointer;
 }
 
-#github_auth_warning {
+#error {
     margin: 30px 0 0 30px;
     font-size: 14px;
     color: red;
 }
+
+/* #github_auth_warning {
+    margin: 30px 0 0 30px;
+    font-size: 14px;
+    color: red;
+} */
 .repo_name {
     margin-top: 10px;
 }
 .repo_setting {
     display: flex;
-    gap: 60px;
+    gap: 70px;
 }
 .field select {
     padding: 10px;
@@ -104,14 +111,14 @@ body {
     border: 1px solid;
     border-radius: 10px;
     color: #333;
-    width: 1040px;
+    width: 94%;
     margin-bottom: 40px;
 }
 
 #github_submit {
     display: flex;
     justify-content: end;
-    margin-right: 50px;
+    margin-right: 45px;
 }
 
 #github_warning {
@@ -120,7 +127,35 @@ body {
     margin: 8px 10px 0 0;
 }
 
+#success {
+    margin: 8px 10px 0 0;
+}
+
 #github_link_button {
+    border-radius: 10px;
+    width: 120px;
+    height: 32px;
+    font-size: 14px;
+    background-color: #0076c0;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.local_path {
+    font-size: 12px;
+    color: gray;
+    font-weight: bold;
+    margin: 5px 10px;
+}
+
+.local-path-save {
+    display: flex;
+    justify-content: end;
+    margin-right: 40px;
+}
+
+#local-name-save {
     border-radius: 10px;
     width: 120px;
     height: 32px;
