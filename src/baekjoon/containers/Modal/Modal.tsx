@@ -22,29 +22,84 @@ const Modal = (modalProps: ModalProps) => {
     const oldCode = modalProps.sourceCodes[0] || '';
     const newCode = modalProps.sourceCodes[1] || '';
 
-    const [selectedOldCode, setSelectedOldCode] = useState<string | null>(null);
-    const [selectedNewCode, setSelectedNewCode] = useState<string | null>(null);
-    const [oldCodeName, setOldCodeName] = useState<string>('첫 번째 코드');
-    const [newCodeName, setNewCodeName] = useState<string>('두 번째 코드');
+    const [codeBlocks, setCodeBlocks] = useState([
+        {
+            id: 0,
+            selectedOldCode: '',
+            selectedNewCode: '',
+            oldCodeName: '첫 번째 코드',
+            newCodeName: '두 번째 코드',
+            comment: '',
+            isRegistered: false,
+        },
+    ]);
+
+    const handleRegisterBlock = (id: number) => {
+        // 선택된 블록을 등록완료로 변경
+        setCodeBlocks((prevBlocks) => {
+            const updatedBlocks = [...prevBlocks];
+            updatedBlocks[id].isRegistered = true;
+            return updatedBlocks;
+        });
+        position = 'S-';
+    };
+
+    const handleEditBlock = (id: number) => {
+        setCodeBlocks((prevBlocks) => {
+            const updatedBlocks = [...prevBlocks];
+            updatedBlocks[id].isRegistered = false;
+            return updatedBlocks;
+        });
+        position = 'S-';
+    };
 
     const handleOldCodeNameChange = (
-        event: React.ChangeEvent<HTMLInputElement>
+        event: React.ChangeEvent<HTMLInputElement>,
+        id: number
     ) => {
-        setOldCodeName(event.target.value);
+        setCodeBlocks((prevBlocks) => {
+            const updatedBlocks = [...prevBlocks];
+            updatedBlocks[id].oldCodeName = event.target.value;
+            return updatedBlocks;
+        });
     };
 
     const handleNewCodeNameChange = (
-        event: React.ChangeEvent<HTMLInputElement>
+        event: React.ChangeEvent<HTMLInputElement>,
+        id: number
     ) => {
-        setNewCodeName(event.target.value);
+        setCodeBlocks((prevBlocks) => {
+            const updatedBlocks = [...prevBlocks];
+            updatedBlocks[id].newCodeName = event.target.value;
+            return updatedBlocks;
+        });
     };
 
-    const handleCloseCode = (codeType: 'old' | 'new') => {
-        if (codeType === 'old') {
-            setSelectedOldCode('');
-        } else if (codeType === 'new') {
-            setSelectedNewCode('');
-        }
+    const handleCloseCode = (codeType: 'old' | 'new', id: number) => {
+        setCodeBlocks((prevBlocks) => {
+            const updatedBlocks = [...prevBlocks];
+            const blockIndex = updatedBlocks.findIndex(
+                (block) => block.id === id
+            );
+            if (blockIndex !== -1) {
+                if (codeType === 'old') {
+                    updatedBlocks[blockIndex].selectedOldCode = '';
+                } else if (codeType === 'new') {
+                    updatedBlocks[blockIndex].selectedNewCode = '';
+                }
+            }
+            return updatedBlocks;
+        });
+    };
+
+    const handleDeleteBlock = (id: number) => {
+        // setCodeBlocks((prevBlocks) => {
+        //     prevBlocks = prevBlocks.filter((block) => block.id !== id);
+        //     for (let i = id; i < updatedBlocks.length; i++) {
+        //         updatedBlocks[i].id = i;
+        //     }
+        //     return updatedBlocks;
+        // });
     };
 
     const handleLineNumberClick = (
@@ -53,6 +108,15 @@ const Modal = (modalProps: ModalProps) => {
     ) => {
         const linePrefix = lineId.substring(0, 2);
         const lineIndex = parseInt(lineId.substring(2), 10) - 1;
+
+        console.log(
+            'lineId: ',
+            lineId,
+            ' linePrefix: ',
+            linePrefix,
+            ' lineIndex: ',
+            lineIndex
+        );
 
         if (position === 'S-') {
             position = linePrefix;
@@ -72,20 +136,71 @@ const Modal = (modalProps: ModalProps) => {
             }
         }
 
-        let selectedCodeBlock = '';
+        console.log('여기까지왔나요');
+
+        let selectedOldCodeBlock = '';
+        let selectedNewCodeBlock = '';
+        const updatedBlocks = [...codeBlocks];
+        const lastBlock = updatedBlocks[updatedBlocks.length - 1];
 
         if (position == 'L-') {
             const codeArray = oldCode.split('\n');
-            selectedCodeBlock = codeArray
+            selectedOldCodeBlock = codeArray
                 .slice(startLineIndex, endLineIndex + 1)
                 .join('\n');
-            setSelectedOldCode(selectedCodeBlock);
         } else if (position == 'R-') {
             const codeArray = newCode.split('\n');
-            selectedCodeBlock = codeArray
+            selectedNewCodeBlock = codeArray
                 .slice(startLineIndex, endLineIndex + 1)
                 .join('\n');
-            setSelectedNewCode(selectedCodeBlock);
+        }
+
+        console.log('lastBlock: ' + lastBlock);
+        console.log('lastBlockIsRegistered: ' + lastBlock.isRegistered);
+
+        // 새로운 블록 생성
+        if (lastBlock.isRegistered) {
+            setCodeBlocks((prevBlocks) => [
+                ...prevBlocks,
+                {
+                    id: prevBlocks.length,
+                    selectedOldCode: '',
+                    selectedNewCode: '',
+                    oldCodeName: '첫 번째 코드',
+                    newCodeName: '두 번째 코드',
+                    comment: '',
+                    isRegistered: false,
+                },
+            ]);
+        }
+
+        let blockIndex = -1;
+        for (let i = 0; i < codeBlocks.length; i++) {
+            if (!codeBlocks[i].isRegistered) {
+                blockIndex = i;
+                break;
+            }
+        }
+        if (blockIndex == -1) {
+            blockIndex = codeBlocks.length;
+        }
+
+        console.log('blockIndex: ' + blockIndex);
+
+        if (position == 'L-') {
+            setCodeBlocks((prevBlocks) => {
+                const updatedBlocks = [...prevBlocks];
+                updatedBlocks[blockIndex].selectedOldCode =
+                    selectedOldCodeBlock;
+                return updatedBlocks;
+            });
+        } else if (position == 'R-') {
+            setCodeBlocks((prevBlocks) => {
+                const updatedBlocks = [...prevBlocks];
+                updatedBlocks[blockIndex].selectedNewCode =
+                    selectedNewCodeBlock;
+                return updatedBlocks;
+            });
         }
     };
 
@@ -117,60 +232,110 @@ const Modal = (modalProps: ModalProps) => {
                         onLineNumberClick={handleLineNumberClick}
                     />
                 </div>
-                <div>
-                    <div>
-                        {selectedOldCode && (
+                {codeBlocks.map((block) => (
+                    <div key={block.id}>
+                        {block.selectedOldCode && (
                             <div>
                                 <h5>
                                     <input
                                         type='text'
-                                        value={oldCodeName}
-                                        onChange={handleOldCodeNameChange}
+                                        value={block.oldCodeName}
+                                        onChange={(e) =>
+                                            handleOldCodeNameChange(e, block.id)
+                                        }
                                     />
                                 </h5>
                                 <button
                                     type='button'
                                     className='close'
                                     aria-label='Close'
-                                    onClick={() => handleCloseCode('old')}
+                                    onClick={() =>
+                                        handleCloseCode('old', block.id)
+                                    }
                                 >
                                     <span aria-hidden='true'>&times;</span>
                                 </button>
-                                <pre>{selectedOldCode}</pre>
+                                <pre>{block.selectedOldCode}</pre>
                             </div>
                         )}
-                    </div>
-                    <div></div>
-                    <div>
-                        {selectedNewCode && (
+                        {block.selectedNewCode && (
                             <div>
                                 <h5>
                                     <input
                                         type='text'
-                                        value={newCodeName}
-                                        onChange={handleNewCodeNameChange}
+                                        value={block.newCodeName}
+                                        onChange={(e) =>
+                                            handleNewCodeNameChange(e, block.id)
+                                        }
                                     />
                                 </h5>
                                 <button
                                     type='button'
                                     className='close'
                                     aria-label='Close'
-                                    onClick={() => handleCloseCode('new')}
+                                    onClick={() =>
+                                        handleCloseCode('new', block.id)
+                                    }
                                 >
                                     <span aria-hidden='true'>&times;</span>
                                 </button>
-                                <pre>{selectedNewCode}</pre>
+                                <pre>{block.selectedNewCode}</pre>
+                            </div>
+                        )}
+                        {(block.selectedOldCode || block.selectedNewCode) && (
+                            <div>
+                                <h5>코멘트</h5>
+                                <textarea
+                                    rows={4}
+                                    cols={50}
+                                    value={block.comment}
+                                    onChange={(e) => {
+                                        setCodeBlocks((prevBlocks) => {
+                                            const updatedBlocks = [
+                                                ...prevBlocks,
+                                            ];
+                                            updatedBlocks[block.id].comment =
+                                                e.target.value;
+                                            return updatedBlocks;
+                                        });
+                                    }}
+                                ></textarea>
+                            </div>
+                        )}
+                        {(block.selectedOldCode || block.selectedNewCode) &&
+                            !block.isRegistered && (
+                                <div>
+                                    <button
+                                        type='button'
+                                        className='btn btn-primary'
+                                        onClick={() =>
+                                            handleRegisterBlock(block.id)
+                                        }
+                                    >
+                                        등록
+                                    </button>
+                                </div>
+                            )}
+                        {block.isRegistered && (
+                            <div>
+                                <button
+                                    type='button'
+                                    className='btn btn-warning'
+                                    onClick={() => handleEditBlock(block.id)}
+                                >
+                                    수정
+                                </button>
+                                <button
+                                    type='button'
+                                    className='btn btn-danger'
+                                    onClick={() => handleDeleteBlock(block.id)}
+                                >
+                                    삭제
+                                </button>
                             </div>
                         )}
                     </div>
-                    <div></div>
-                    {(selectedOldCode || selectedNewCode) && (
-                        <div>
-                            <h5>코멘트</h5>
-                            <textarea rows={4} cols={50}></textarea>
-                        </div>
-                    )}
-                </div>
+                ))}
                 <div>
                     <h5>전체 코멘트</h5>
                     <textarea rows={4} cols={50}></textarea>
