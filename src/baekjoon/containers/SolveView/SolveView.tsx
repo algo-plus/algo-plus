@@ -106,7 +106,6 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
         const lang = convertLanguageIdForSubmitApi(languageId);
         console.log(targetTestCases);
 
-        // TODO : 테스트 케이스 한 번에 묶어 전송
         try {
             await Promise.all(
                 targetTestCases.map(async (testCase) => {
@@ -116,7 +115,11 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                         input: testCase.input,
                     };
 
+                    testCase.result = undefined;
+                    compile(data);
+
                     const output = await compile(data);
+                    testCase.result = output;
 
                     console.log(
                         `======= 테스트 케이스 ${testCase.uuid} ========`

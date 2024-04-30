@@ -25,7 +25,7 @@ const TestCasePanel: React.FC<TestCasePanelProps> = ({ testCases, state }) => {
                         no={index + 1}
                         input={testCase.input}
                         expectedValue={testCase.output}
-                        output=''
+                        output={testCase.result}
                     />
                 ))
             )}
