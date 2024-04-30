@@ -1,4 +1,4 @@
-import TestCaseElement from '@/baekjoon/components/TestCaseElement/TestCaseElement';
+import TestCaseResultElement from '@/baekjoon/components/TestCaseResultElement/TestCaseResultElement';
 import { TestCase } from '@/baekjoon/types/problem';
 import React from 'react';
 
@@ -20,9 +20,9 @@ const TestCasePanel: React.FC<TestCasePanelProps> = ({ testCases, state }) => {
                 </p>
             ) : (
                 testCases.map((testCase, index) => (
-                    <TestCaseElement
+                    <TestCaseResultElement
                         key={index}
-                        no={testCase.no}
+                        no={index + 1}
                         input={testCase.input}
                         expectedValue={testCase.output}
                         output=''

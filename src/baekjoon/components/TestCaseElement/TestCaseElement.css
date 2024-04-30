@@ -1,24 +1,17 @@
-.test-case-elem {
-    padding: 10px 0;
-}
-
-.test-case-elem h4 {
-    margin: 0;
-    margin-bottom: 5px;
-    padding-left: 15px;
-}
-.test-case-elem p {
-    display: flex;
-    font-size: small;
-    margin: 0;
-}
-
-.test-case-elem p > span:first-child {
-    width: 100px;
-    text-align: center;
-    font-weight: bold;
-}
-
-.test-case-elem p > span:nth-child(2) {
+.test-case-element {
     width: 100%;
+}
+
+.test-case-element textarea {
+    display: block;
+    padding: 9.5px;
+    margin: 0 0 10px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #333;
+    word-break: break-all;
+    word-wrap: break-word;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }

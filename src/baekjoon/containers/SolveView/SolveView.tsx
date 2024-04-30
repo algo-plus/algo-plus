@@ -25,6 +25,8 @@ import { getDefaultCode } from '@/common/utils/default-code';
 import { EditorLanguage } from '@/common/types/language';
 import { Modal } from '@/baekjoon/presentations/Modal';
 import { Button } from '@/baekjoon/components/Button';
+import { TestCaseElement } from '@/baekjoon/components/TestCaseElement';
+import uuid from 'react-uuid';
 
 type SolveViewProps = {
     problemId: string | null;
@@ -36,6 +38,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
         null
     );
     const [testCases, setTestCases] = useState<TestCase[]>([]);
+    const [customTestCases, setCustomTestCases] = useState<TestCase[]>([]);
     const [languageId, setLanguageId] = useState('0');
     const [editorLanguage, setEditorLanguage] = useState<EditorLanguage>(
         convertLanguageIdForEditor(languageId)
@@ -62,11 +65,12 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
 
         // temporary log
         console.log(code);
-        return;
 
         const lang = convertLanguageIdForSubmitApi(languageId);
 
-        for (const testCase of testCases) {
+        const targetTestCases = [...testCases, ...customTestCases];
+        console.log(targetTestCases);
+        for (const testCase of targetTestCases) {
             const data: CodeCompileRequest = {
                 lang: lang,
                 code: code,
@@ -78,7 +82,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                 data,
                 (output) => {
                     console.log(
-                        `======= 테스트 케이스 ${testCase.no} ========`
+                        `======= 테스트 케이스 ${testCase.uuid} ========`
                     );
                     console.log(`output=${output}`);
                     console.log(`expect=${testCase.output}`);
@@ -222,19 +226,63 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                 title={<h1>테스트 케이스 추가</h1>}
                 content={
                     <>
-                        <h1>test</h1>
-                        <br />
+                        {testCases.map((testCase, index) => (
+                            <TestCaseElement
+                                no={index + 1}
+                                testCase={testCase}
+                                disabled={true}
+                                key={testCase.uuid}
+                            />
+                        ))}
+                        {customTestCases.map((testCase, index) => (
+                            <TestCaseElement
+                                no={testCases.length + index + 1}
+                                testCase={testCase}
+                                disabled={false}
+                                key={testCase.uuid}
+                                onDelete={(uuid) =>
+                                    setCustomTestCases([
+                                        ...customTestCases.filter(
+                                            (tc) => tc.uuid !== uuid
+                                        ),
+                                    ])
+                                }
+                            />
+                        ))}
                     </>
                 }
                 footer={
-                    <button
-                        className='btn btn-primary'
-                        onClick={() => {
-                            toggleTestCaseModal();
-                        }}
-                    >
-                        확인
-                    </button>
+                    <>
+                        <button
+                            className='btn btn-default'
+                            onClick={() => {
+                                if (customTestCases.length >= 10) {
+                                    alert(
+                                        '테스트 케이스를 10개 이상 추가할 수 없습니다.'
+                                    );
+                                    return;
+                                }
+                                setCustomTestCases([
+                                    ...customTestCases,
+                                    {
+                                        uuid: uuid(),
+                                        input: '',
+                                        output: '',
+                                    },
+                                ]);
+                            }}
+                        >
+                            + 추가
+                        </button>
+                        <button
+                            className='btn btn-primary'
+                            onClick={() => {
+                                toggleTestCaseModal();
+                            }}
+                        >
+                            저장
+                        </button>
+                    </>
                 }
                 modalOpen={testCaseModalOpen}
                 onClose={toggleTestCaseModal}
