@@ -25,7 +25,9 @@ import { getDefaultCode } from '@/common/utils/default-code';
 import { EditorLanguage } from '@/common/types/language';
 import { Modal } from '@/baekjoon/presentations/Modal';
 import { TestCaseElement } from '@/baekjoon/components/TestCaseElement';
+import { TestCaseModalButtonBox } from '@/baekjoon/presentations/TestCaseModalButtonBox';
 import uuid from 'react-uuid';
+import { TestCaseContainer } from '@/baekjoon/presentations/TestCaseContainer';
 
 type SolveViewProps = {
     problemId: string | null;
@@ -54,7 +56,31 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
         setTestCaseModalOpen(!testCaseModalOpen);
     };
 
-    const addTestCase = () => {};
+    const addTestCase = () => {
+        if (customTestCases.length >= 10) {
+            alert('테스트 케이스를 10개 이상 추가할 수 없습니다.');
+            return;
+        }
+        setCustomTestCases([
+            ...customTestCases,
+            {
+                uuid: uuid(),
+                input: '',
+                output: '',
+            },
+        ]);
+    };
+
+    const deleteTestCase = (uuid: string) => {
+        setCustomTestCases([
+            ...customTestCases.filter((tc) => tc.uuid !== uuid),
+        ]);
+    };
+
+    // TODO: 로컬 스토리지에 테스트 케이스 저장 로직 작성
+    const saveTestCase = () => {
+        toggleTestCaseModal();
+    };
 
     const codeRun = () => {
         if (!code) {
@@ -224,64 +250,17 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                 height={600}
                 title={<h1>테스트 케이스 추가</h1>}
                 content={
-                    <>
-                        {testCases.map((testCase, index) => (
-                            <TestCaseElement
-                                no={index + 1}
-                                testCase={testCase}
-                                disabled={true}
-                                key={testCase.uuid}
-                            />
-                        ))}
-                        {customTestCases.map((testCase, index) => (
-                            <TestCaseElement
-                                no={testCases.length + index + 1}
-                                testCase={testCase}
-                                disabled={false}
-                                key={testCase.uuid}
-                                onDelete={(uuid) =>
-                                    setCustomTestCases([
-                                        ...customTestCases.filter(
-                                            (tc) => tc.uuid !== uuid
-                                        ),
-                                    ])
-                                }
-                            />
-                        ))}
-                    </>
+                    <TestCaseContainer
+                        testCases={testCases}
+                        customTestCases={customTestCases}
+                        onDeleteCustomTestCase={deleteTestCase}
+                    />
                 }
                 footer={
-                    <>
-                        <button
-                            className='btn btn-default'
-                            onClick={() => {
-                                if (customTestCases.length >= 10) {
-                                    alert(
-                                        '테스트 케이스를 10개 이상 추가할 수 없습니다.'
-                                    );
-                                    return;
-                                }
-                                setCustomTestCases([
-                                    ...customTestCases,
-                                    {
-                                        uuid: uuid(),
-                                        input: '',
-                                        output: '',
-                                    },
-                                ]);
-                            }}
-                        >
-                            + 추가
-                        </button>
-                        <button
-                            className='btn btn-primary'
-                            onClick={() => {
-                                toggleTestCaseModal();
-                            }}
-                        >
-                            저장
-                        </button>
-                    </>
+                    <TestCaseModalButtonBox
+                        addTestCaseHandle={addTestCase}
+                        saveTestCaseHandle={saveTestCase}
+                    />
                 }
                 modalOpen={testCaseModalOpen}
                 onClose={toggleTestCaseModal}
