@@ -98,13 +98,13 @@ const customStatusPage = async () => {
         );
     });
 
-    // FIX: 오답 노트 작성 버튼 위치 고정해야함
     const anchor = document.querySelectorAll('.text-center');
+    const position = anchor.length - 1;
     if (anchor) {
         const container = document.createElement('div');
         container.style.display = 'flex';
         container.appendChild(button);
-        anchor[2].insertBefore(container, anchor[2].firstChild);
+        anchor[position].insertBefore(container, anchor[position].firstChild); //
     }
 };
 
