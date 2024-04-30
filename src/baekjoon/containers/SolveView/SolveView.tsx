@@ -15,9 +15,18 @@ import { LanguageSelectBox } from '@/baekjoon/components/LanguageSelectBox';
 import { SubmitPostRequest } from '@/baekjoon/types/submit';
 import { submit } from '@/baekjoon/apis/submit';
 import { compile } from '@/common/apis/compile';
-import { convertLanguageIdForSubmitApi } from '@/baekjoon/utils/language';
+import {
+    convertLanguageIdForEditor,
+    convertLanguageIdForSubmitApi,
+} from '@/baekjoon/utils/language';
 import { CodeCompileRequest } from '@/common/types/compile';
 import { CodeOpenSelector } from '@/baekjoon/components/CodeOpenSelector';
+import { getDefaultCode } from '@/common/utils/default-code';
+import { EditorLanguage } from '@/common/types/language';
+import {
+    loadAndParseProblemDetail,
+    loadAndParseProblemMathJaxStyle,
+} from '@/baekjoon/utils/storage';
 
 type SolveViewProps = {
     problemId: string | null;
@@ -28,13 +37,30 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     const [problemContent, setProblemContent] = useState<JSX.Element | null>(
         null
     );
+    const [problemStyle, setProblemStyle] = useState<JSX.Element | null>(null);
     const [testCases, setTestCases] = useState<TestCase[]>([]);
-    const [language, setLanguage] = useState('0'); // 초기 언어 설정
-    const [codeOpen, setCodeOpen] = useState('close'); // 초기 소스코드 설정
-    const [code, setCode] = useState('');
+    const [languageId, setLanguageId] = useState('0');
+    const [editorLanguage, setEditorLanguage] = useState<EditorLanguage>(
+        convertLanguageIdForEditor(languageId)
+    );
+    const [codeOpen, setCodeOpen] = useState('close');
+    const [code, setCode] = useState(getDefaultCode(editorLanguage));
 
-    const runHandle = () => {
-        const lang = convertLanguageIdForSubmitApi(language);
+    const codeInitialize = () => {
+        setCode(getDefaultCode(editorLanguage));
+    };
+
+    const codeRun = () => {
+        if (!code) {
+            alert('실행할 코드가 없습니다.');
+            return;
+        }
+
+        // temporary log
+        console.log(code);
+        return;
+
+        const lang = convertLanguageIdForSubmitApi(languageId);
 
         for (const testCase of testCases) {
             const data: CodeCompileRequest = {
@@ -65,7 +91,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
         }
     };
 
-    const submitHandle = () => {
+    const codeSubmit = () => {
         if (problemId === null) {
             alert('문제 정보를 불러올 수 없습니다.');
             return;
@@ -73,7 +99,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
 
         const data: SubmitPostRequest = {
             problem_id: problemId,
-            language: Number(language),
+            language: Number(languageId),
             code_open: codeOpen,
             source: code,
             csrf_key: csrfKey ? csrfKey : '',
@@ -93,30 +119,64 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     };
 
     useEffect(() => {
-        fetchProblemHtml(
-            problemId,
-            (html) => {
-                setProblemContent(parsingProblemDetail(html));
-                setTestCases(parsingTestCases(html));
-            },
-            (error) => {
-                console.error('문제를 불러오는데 실패했습니다.', error);
-                setProblemContent(<h1>문제를 불러오는데 실패했습니다.</h1>);
+        const editorLanguage = convertLanguageIdForEditor(languageId);
+        setEditorLanguage(editorLanguage);
+        setCode(getDefaultCode(editorLanguage));
+    }, [languageId]);
+
+    useEffect(() => {
+        const loadProblemData = async () => {
+            if (!problemId) return;
+            const loadedProblemContent = await loadAndParseProblemDetail(
+                problemId
+            );
+            const loadedProblemStyle = await loadAndParseProblemMathJaxStyle(
+                problemId
+            );
+
+            if (loadedProblemContent) {
+                setProblemContent(loadedProblemContent);
+                setProblemStyle(loadedProblemStyle);
+            } else {
+                fetchProblemHtml(
+                    problemId,
+                    async (html) => {
+                        const parsedContent = parsingProblemDetail(html);
+                        setProblemContent(parsedContent);
+                        const parsedTestCases = parsingTestCases(html);
+                        setTestCases(parsedTestCases);
+                    },
+                    (error) => {
+                        console.error('문제를 불러오는데 실패했습니다.', error);
+                        setProblemContent(
+                            <h1>문제를 불러오는데 실패했습니다.</h1>
+                        );
+                    }
+                );
             }
-        );
-    }, []);
+        };
+
+        if (problemId) {
+            loadProblemData();
+        }
+    }, [problemId]);
 
     const languageChangeHandle = (
         event: React.ChangeEvent<HTMLSelectElement>
     ) => {
         const selectedLanguage = event.target.value;
-        setLanguage(selectedLanguage);
+        setLanguageId(selectedLanguage);
     };
 
     return (
         <div style={{ height: '100%' }}>
             <HorizontalSplitView
-                left={<ProblemPanel content={problemContent} />}
+                left={
+                    <ProblemPanel
+                        content={problemContent}
+                        mathJaxStyle={problemStyle}
+                    />
+                }
                 right={
                     <div
                         style={{
@@ -145,7 +205,13 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                             />
                         </div>
                         <VerticalSplitView
-                            top={<EditorPanel onCodeUpdate={setCode} />}
+                            top={
+                                <EditorPanel
+                                    language={editorLanguage}
+                                    code={code}
+                                    onCodeUpdate={setCode}
+                                />
+                            }
                             bottom={
                                 <TestCasePanel
                                     testCases={testCases}
@@ -161,10 +227,14 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                 }
             />
             <EditorButtonBox
-                codeInitializeHandle={() => alert('TODO: 코드 초기화 로직')}
+                codeInitializeHandle={() => {
+                    if (confirm('정말로 초기화하시겠습니까?')) {
+                        codeInitialize();
+                    }
+                }}
                 addTestCaseHandle={() => alert('TODO: 테스트 케이스 추가 모달')}
-                runHandle={runHandle}
-                submitHandle={submitHandle}
+                runHandle={codeRun}
+                submitHandle={codeSubmit}
             />
         </div>
     );

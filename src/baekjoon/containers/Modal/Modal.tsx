@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer-continued';
 import './Modal.css';
 import { ModalProps } from '@/baekjoon/types/source';
+
+let startLineIndex: number = -1;
+let endLineIndex: number = -1;
+let position: String = 'S-';
 
 const Modal = (modalProps: ModalProps) => {
     const closeModal = () => {
@@ -15,8 +19,75 @@ const Modal = (modalProps: ModalProps) => {
         console.log('save');
     };
 
-    const oldCode = modalProps.sourceCodes[0];
-    const newCode = modalProps.sourceCodes[1];
+    const oldCode = modalProps.sourceCodes[0] || '';
+    const newCode = modalProps.sourceCodes[1] || '';
+
+    const [selectedOldCode, setSelectedOldCode] = useState<string | null>(null);
+    const [selectedNewCode, setSelectedNewCode] = useState<string | null>(null);
+    const [oldCodeName, setOldCodeName] = useState<string>('첫 번째 코드');
+    const [newCodeName, setNewCodeName] = useState<string>('두 번째 코드');
+
+    const handleOldCodeNameChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setOldCodeName(event.target.value);
+    };
+
+    const handleNewCodeNameChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setNewCodeName(event.target.value);
+    };
+
+    const handleCloseCode = (codeType: 'old' | 'new') => {
+        if (codeType === 'old') {
+            setSelectedOldCode('');
+        } else if (codeType === 'new') {
+            setSelectedNewCode('');
+        }
+    };
+
+    const handleLineNumberClick = (
+        lineId: string,
+        event: React.MouseEvent<HTMLTableCellElement>
+    ) => {
+        const linePrefix = lineId.substring(0, 2);
+        const lineIndex = parseInt(lineId.substring(2), 10) - 1;
+
+        if (position === 'S-') {
+            position = linePrefix;
+            startLineIndex = lineIndex;
+            endLineIndex = lineIndex;
+        } else {
+            if (linePrefix === position) {
+                if (lineIndex < startLineIndex) startLineIndex = lineIndex;
+                else if (lineIndex > endLineIndex) endLineIndex = lineIndex;
+                else if (lineIndex === startLineIndex) endLineIndex = lineIndex;
+                else if (lineIndex === endLineIndex) startLineIndex = lineIndex;
+                else endLineIndex = lineIndex;
+            } else {
+                position = linePrefix;
+                startLineIndex = lineIndex;
+                endLineIndex = lineIndex;
+            }
+        }
+
+        let selectedCodeBlock = '';
+
+        if (position == 'L-') {
+            const codeArray = oldCode.split('\n');
+            selectedCodeBlock = codeArray
+                .slice(startLineIndex, endLineIndex + 1)
+                .join('\n');
+            setSelectedOldCode(selectedCodeBlock);
+        } else if (position == 'R-') {
+            const codeArray = newCode.split('\n');
+            selectedCodeBlock = codeArray
+                .slice(startLineIndex, endLineIndex + 1)
+                .join('\n');
+            setSelectedNewCode(selectedCodeBlock);
+        }
+    };
 
     return (
         <div className='modal-content'>
@@ -32,7 +103,10 @@ const Modal = (modalProps: ModalProps) => {
                     <span aria-hidden='true'>&times;</span>
                 </button>
             </div>
-            <div className='modal-body'>
+            <div
+                className='modal-body'
+                style={{ overflowY: 'auto', maxHeight: '75vh' }}
+            >
                 <div className='codediff-container'>
                     <h5>코드 비교 결과:</h5>
                     <ReactDiffViewer
@@ -40,7 +114,62 @@ const Modal = (modalProps: ModalProps) => {
                         newValue={newCode ? newCode : ''}
                         compareMethod={DiffMethod.LINES}
                         splitView={true}
+                        onLineNumberClick={handleLineNumberClick}
                     />
+                </div>
+                <div>
+                    <div>
+                        {selectedOldCode && (
+                            <div>
+                                <h5>
+                                    <input
+                                        type='text'
+                                        value={oldCodeName}
+                                        onChange={handleOldCodeNameChange}
+                                    />
+                                </h5>
+                                <button
+                                    type='button'
+                                    className='close'
+                                    aria-label='Close'
+                                    onClick={() => handleCloseCode('old')}
+                                >
+                                    <span aria-hidden='true'>&times;</span>
+                                </button>
+                                <pre>{selectedOldCode}</pre>
+                            </div>
+                        )}
+                    </div>
+                    <div></div>
+                    <div>
+                        {selectedNewCode && (
+                            <div>
+                                <h5>
+                                    <input
+                                        type='text'
+                                        value={newCodeName}
+                                        onChange={handleNewCodeNameChange}
+                                    />
+                                </h5>
+                                <button
+                                    type='button'
+                                    className='close'
+                                    aria-label='Close'
+                                    onClick={() => handleCloseCode('new')}
+                                >
+                                    <span aria-hidden='true'>&times;</span>
+                                </button>
+                                <pre>{selectedNewCode}</pre>
+                            </div>
+                        )}
+                    </div>
+                    <div></div>
+                    {(selectedOldCode || selectedNewCode) && (
+                        <div>
+                            <h5>코멘트</h5>
+                            <textarea rows={4} cols={50}></textarea>
+                        </div>
+                    )}
                 </div>
                 <div>
                     <h5>전체 코멘트</h5>

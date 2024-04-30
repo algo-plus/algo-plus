@@ -4,6 +4,8 @@ import './HorizontalSplitView.css';
 type HorizontalSplitViewProps = {
     left: JSX.Element;
     right: JSX.Element;
+    leftStyle?: React.CSSProperties;
+    rightStyle?: React.CSSProperties;
 };
 
 const HorizontalSplitView: React.FC<HorizontalSplitViewProps> = (
@@ -70,6 +72,7 @@ const HorizontalSplitView: React.FC<HorizontalSplitViewProps> = (
             <div
                 className='horizontal panel left'
                 style={{
+                    ...props.leftStyle,
                     width: `${panelsWidth[0]}%`,
                 }}
             >
@@ -82,6 +85,7 @@ const HorizontalSplitView: React.FC<HorizontalSplitViewProps> = (
             <div
                 className='horizontal panel right'
                 style={{
+                    ...props.rightStyle,
                     width: `${panelsWidth[1]}%`,
                 }}
             >

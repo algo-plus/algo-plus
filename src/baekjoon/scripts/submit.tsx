@@ -43,6 +43,20 @@ const customSubmitPage = () => {
         const urlParams = new URLSearchParams(window.location.search);
 
         if (urlParams.get('solve') === 'true') {
+            // 기존 에디터 숨기기
+            (
+                document.querySelector(
+                    '#submit_form > div:nth-child(5) > div.col-md-10'
+                ) as HTMLDivElement
+            ).style.display = 'none';
+
+            // 기존 제출버튼 숨기기
+            (
+                document.querySelector(
+                    '#submit_form > div:nth-child(7) > div'
+                ) as HTMLDivElement
+            ).style.display = 'none';
+
             document
                 .querySelectorAll('ul.problem-menu li.active')
                 .forEach((activeItem) => {
