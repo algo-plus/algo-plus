@@ -5,12 +5,12 @@ import { refreshUrl } from '@/common/utils/url';
 
 type WrongResultModalProps = {
     problemId: string | number;
-    result?: string | null;
+    message?: string | null;
 };
 
 const WrongResultModal: React.FC<WrongResultModalProps> = ({
     problemId,
-    result,
+    message,
 }) => {
     const [modalOpen, setModalOpen] = useState<boolean>(true);
 
@@ -31,7 +31,7 @@ const WrongResultModal: React.FC<WrongResultModalProps> = ({
             }
             content={
                 <div className='content-center'>
-                    <h4>{result}</h4>
+                    <h4>{message}</h4>
                 </div>
             }
             footer={

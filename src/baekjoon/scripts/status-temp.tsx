@@ -1,9 +1,12 @@
+import React, { createElement } from 'react';
 import { getUrlSearchParam } from '@/common/utils/url';
 import {
-    getFirstStatusResultTag,
+    getWrongModalMessage,
     isJudgingState,
     isWrongState,
 } from '@/baekjoon/utils/status';
+import WrongResultModal from '../containers/WrongResultModal/WrongResultModal';
+import { createRoot } from 'react-dom/client';
 
 const customStatusPageTemp = () => {
     if (
@@ -15,7 +18,21 @@ const customStatusPageTemp = () => {
             } else {
                 clearInterval(timer);
                 if (isWrongState()) {
-                    alert(getFirstStatusResultTag());
+                    const problemId = getUrlSearchParam(
+                        window.location.href,
+                        'problem_id'
+                    );
+                    const message = getWrongModalMessage();
+
+                    if (!problemId) return;
+                    const root = document.createElement('div');
+                    document.body.appendChild(root);
+                    createRoot(root).render(
+                        <WrongResultModal
+                            problemId={problemId}
+                            message={message}
+                        />
+                    );
                 }
             }
         }, 500);

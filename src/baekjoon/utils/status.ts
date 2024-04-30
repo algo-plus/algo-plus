@@ -29,4 +29,13 @@ function getFirstStatusResultTag(): string | undefined {
     )?.classList[1];
 }
 
-export { isWrongState, isJudgingState, getFirstStatusResultTag };
+function getWrongModalMessage(): string | null {
+    const element = document.querySelector(
+        '#status-table > tbody > tr:first-child .result-text'
+    );
+    if (!element) return null;
+    if (element.classList[1] === 'result-wa') return '결과를 확인해 주세요.';
+    return element.textContent;
+}
+
+export { isWrongState, isJudgingState, getWrongModalMessage };
