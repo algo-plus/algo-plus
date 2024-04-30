@@ -116,23 +116,9 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                     };
 
                     testCase.result = undefined;
-                    compile(data);
 
                     const output = await compile(data);
                     testCase.result = output;
-
-                    console.log(
-                        `======= 테스트 케이스 ${testCase.uuid} ========`
-                    );
-                    console.log(`output=${output}`);
-                    console.log(`expect=${testCase.output}`);
-                    console.log(
-                        `result=${
-                            output == testCase.output
-                                ? '맞았습니다!'
-                                : '틀렸습니다'
-                        }`
-                    );
                 })
             );
         } catch (error) {
