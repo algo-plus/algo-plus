@@ -45,6 +45,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     );
     const [codeOpen, setCodeOpen] = useState('close');
     const [code, setCode] = useState(getDefaultCode(editorLanguage));
+    const [isRunning, setIsRunning] = useState(false);
 
     const codeInitialize = () => {
         setCode(getDefaultCode(editorLanguage));
@@ -56,9 +57,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
             return;
         }
 
-        // temporary log
-        // console.log(code);
-        // return;
+        setIsRunning(true);
 
         const lang = convertLanguageIdForSubmitApi(languageId);
 
@@ -89,6 +88,8 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                 (error) => console.log('error =', error)
             );
         }
+
+        setIsRunning(false);
     };
 
     const codeSubmit = () => {
@@ -239,6 +240,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                 addTestCaseHandle={() => alert('TODO: 테스트 케이스 추가 모달')}
                 runHandle={codeRun}
                 submitHandle={codeSubmit}
+                isRunning={isRunning}
             />
         </div>
     );
