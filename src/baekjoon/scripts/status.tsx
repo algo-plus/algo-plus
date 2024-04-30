@@ -104,7 +104,7 @@ const customStatusPage = async () => {
         const container = document.createElement('div');
         container.style.display = 'flex';
         container.appendChild(button);
-        anchor[2].insertBefore(container, anchor[2].firstChild);
+        anchor[1].insertBefore(container, anchor[1].firstChild);
     }
 };
 
