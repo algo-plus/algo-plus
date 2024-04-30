@@ -36,11 +36,17 @@ const TestCaseResultElement: React.FC<TestCaseResultElementProps> = ({
                             : { color: 'red' }
                     }
                 >
-                    {output == undefined
-                        ? '실행 중...'
-                        : output == expectedValue
-                        ? '테스트를 통과하였습니다.'
-                        : '테스트를 통과하지 못하였습니다.'}
+                    {output == undefined ? (
+                        <span>
+                            <span className='loading-dot'></span>
+                            <span className='loading-dot'></span>
+                            <span className='loading-dot'></span>
+                        </span>
+                    ) : output == expectedValue ? (
+                        '테스트를 통과하였습니다.'
+                    ) : (
+                        '테스트를 통과하지 못하였습니다.'
+                    )}
                 </span>
             </p>
             {output == undefined || output == expectedValue ? null : (
