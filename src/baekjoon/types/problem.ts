@@ -1,5 +1,5 @@
 type TestCase = {
-    no: number;
+    uuid: string;
     input: string;
     output: string;
 };
