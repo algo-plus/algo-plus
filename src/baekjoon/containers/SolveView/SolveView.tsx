@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ProblemPanel } from '@/baekjoon/presentations/ProblemPanel';
 import { EditorPanel } from '@/baekjoon/presentations/EditorPanel';
 import { fetchProblemHtml } from '@/baekjoon/apis/problem';
@@ -24,7 +24,6 @@ import { CodeOpenSelector } from '@/baekjoon/components/CodeOpenSelector';
 import { getDefaultCode } from '@/common/utils/default-code';
 import { EditorLanguage } from '@/common/types/language';
 import { Modal } from '@/baekjoon/presentations/Modal';
-import { Button } from '@/baekjoon/components/Button';
 import { TestCaseElement } from '@/baekjoon/components/TestCaseElement';
 import uuid from 'react-uuid';
 
