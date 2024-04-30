@@ -37,7 +37,9 @@ const Modal: React.FC<ModalProps> = ({
                 }}
             >
                 <div className='modal-header'>
-                    <div className='modal-title'>{title}</div>
+                    <div className='modal-title' style={{ width: '100%' }}>
+                        {title}
+                    </div>
                     <button
                         type='button'
                         className='boj-modal-close'
