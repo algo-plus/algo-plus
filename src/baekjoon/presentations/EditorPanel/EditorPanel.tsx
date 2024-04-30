@@ -1,18 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { createRoot } from 'react-dom/client';
-import { Button } from '@/baekjoon/components/Button';
-import { CodeCompileRequest } from '@/common/types/compile';
-import { compile } from '@/common/apis/compile';
+import React from 'react';
 import { PrismCodeEditor } from '@/baekjoon/components/PrismCodeEditor';
-import { SubmitPostRequest } from '@/baekjoon/types/submit';
-import { submit } from '@/baekjoon/apis/submit';
-import { LanguageSelectBox } from '@/baekjoon/components/LanguageSelectBox';
-import { CodeOpenSelector } from '@/baekjoon/components/CodeOpenSelector';
-import { TestCase } from '@/baekjoon/types/problem';
-import { convertLanguageIdForEditor } from '@/baekjoon/utils/language';
-import './EditorPanel.css';
-import { getDefaultCode } from '@/common/utils/default-code';
 import { EditorLanguage } from '@/common/types/language';
+import './EditorPanel.css';
 
 interface EditorPanelProps {
     code: string;
