@@ -107,16 +107,17 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
         console.log(targetTestCases);
 
         // TODO : 테스트 케이스 한 번에 묶어 전송
-        targetTestCases.map((testCase) => {
-            const data: CodeCompileRequest = {
-                lang: lang,
-                code: code,
-                input: testCase.input,
-            };
+        try {
+            await Promise.all(
+                targetTestCases.map(async (testCase) => {
+                    const data: CodeCompileRequest = {
+                        lang: lang,
+                        code: code,
+                        input: testCase.input,
+                    };
 
-            compile(
-                data,
-                (output) => {
+                    const output = await compile(data);
+
                     console.log(
                         `======= 테스트 케이스 ${testCase.uuid} ========`
                     );
@@ -129,12 +130,13 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                                 : '틀렸습니다'
                         }`
                     );
-                    console.log('테스트 케이스 실행 완료');
-                    setIsRunning(false);
-                },
-                (error) => console.log('error =', error)
+                })
             );
-        });
+        } catch (error) {
+            console.log('error =', error);
+        }
+
+        setIsRunning(false);
     };
 
     const codeSubmit = () => {
