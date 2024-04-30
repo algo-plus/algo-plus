@@ -93,13 +93,11 @@ const Modal = (modalProps: ModalProps) => {
     };
 
     const handleDeleteBlock = (id: number) => {
-        // setCodeBlocks((prevBlocks) => {
-        //     prevBlocks = prevBlocks.filter((block) => block.id !== id);
-        //     for (let i = id; i < updatedBlocks.length; i++) {
-        //         updatedBlocks[i].id = i;
-        //     }
-        //     return updatedBlocks;
-        // });
+        const prevBlocks = codeBlocks.filter((block) => block.id !== id);
+        for (let i = 0; i < prevBlocks.length; i++) {
+            prevBlocks[i].id = i;
+        }
+        setCodeBlocks(prevBlocks);
     };
 
     const handleLineNumberClick = (
@@ -108,15 +106,6 @@ const Modal = (modalProps: ModalProps) => {
     ) => {
         const linePrefix = lineId.substring(0, 2);
         const lineIndex = parseInt(lineId.substring(2), 10) - 1;
-
-        console.log(
-            'lineId: ',
-            lineId,
-            ' linePrefix: ',
-            linePrefix,
-            ' lineIndex: ',
-            lineIndex
-        );
 
         if (position === 'S-') {
             position = linePrefix;
@@ -136,8 +125,6 @@ const Modal = (modalProps: ModalProps) => {
             }
         }
 
-        console.log('여기까지왔나요');
-
         let selectedOldCodeBlock = '';
         let selectedNewCodeBlock = '';
         const updatedBlocks = [...codeBlocks];
@@ -155,15 +142,12 @@ const Modal = (modalProps: ModalProps) => {
                 .join('\n');
         }
 
-        console.log('lastBlock: ' + lastBlock);
-        console.log('lastBlockIsRegistered: ' + lastBlock.isRegistered);
-
         // 새로운 블록 생성
         if (lastBlock.isRegistered) {
-            setCodeBlocks((prevBlocks) => [
-                ...prevBlocks,
+            setCodeBlocks([
+                ...codeBlocks,
                 {
-                    id: prevBlocks.length,
+                    id: codeBlocks.length,
                     selectedOldCode: '',
                     selectedNewCode: '',
                     oldCodeName: '첫 번째 코드',
@@ -184,8 +168,6 @@ const Modal = (modalProps: ModalProps) => {
         if (blockIndex == -1) {
             blockIndex = codeBlocks.length;
         }
-
-        console.log('blockIndex: ' + blockIndex);
 
         if (position == 'L-') {
             setCodeBlocks((prevBlocks) => {
