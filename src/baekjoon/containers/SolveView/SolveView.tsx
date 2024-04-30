@@ -91,8 +91,8 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     };
 
     useEffect(() => {
-        setTargetTestCases([...testCases, ...customTestCases]);
-    }, [testCases, customTestCases]);
+        setTargetTestCases([...testCases]);
+    }, [testCases]);
 
     const codeRun = async () => {
         if (!code) {
@@ -104,11 +104,12 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
         setIsInitial(false);
 
         const lang = convertLanguageIdForSubmitApi(languageId);
-        console.log(targetTestCases);
+        const currentTestCases = [...testCases, ...customTestCases];
+        setTargetTestCases(currentTestCases);
 
         try {
             await Promise.all(
-                targetTestCases.map(async (testCase) => {
+                currentTestCases.map(async (testCase) => {
                     const data: CodeCompileRequest = {
                         lang: lang,
                         code: code,
