@@ -23,6 +23,8 @@ import { CodeCompileRequest } from '@/common/types/compile';
 import { CodeOpenSelector } from '@/baekjoon/components/CodeOpenSelector';
 import { getDefaultCode } from '@/common/utils/default-code';
 import { EditorLanguage } from '@/common/types/language';
+import { Modal } from '@/baekjoon/presentations/Modal';
+import { Button } from '@/baekjoon/components/Button';
 
 type SolveViewProps = {
     problemId: string | null;
@@ -40,10 +42,17 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     );
     const [codeOpen, setCodeOpen] = useState('close');
     const [code, setCode] = useState(getDefaultCode(editorLanguage));
+    const [testCaseModalOpen, setTestCaseModalOpen] = useState<boolean>(false);
 
     const codeInitialize = () => {
         setCode(getDefaultCode(editorLanguage));
     };
+
+    const toggleTestCaseModal = () => {
+        setTestCaseModalOpen(!testCaseModalOpen);
+    };
+
+    const addTestCase = () => {};
 
     const codeRun = () => {
         if (!code) {
@@ -141,69 +150,96 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     };
 
     return (
-        <div style={{ height: '100%' }}>
-            <HorizontalSplitView
-                left={<ProblemPanel content={problemContent} />}
-                right={
-                    <div
-                        style={{
-                            height: '100%',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '5px',
-                        }}
-                    >
+        <>
+            <div style={{ height: '100%' }}>
+                <HorizontalSplitView
+                    left={<ProblemPanel content={problemContent} />}
+                    right={
                         <div
                             style={{
+                                height: '100%',
                                 display: 'flex',
-                                alignItems: 'center',
-                                flexWrap: 'wrap',
-                                justifyContent: 'space-between',
+                                flexDirection: 'column',
+                                gap: '5px',
                             }}
                         >
-                            {/* TODO: 코드 공개 여부 백준 사용자 설정 값으로 지정 */}
-                            <CodeOpenSelector
-                                defaultValue={codeOpen}
-                                onChange={setCodeOpen}
-                            />
-                            <LanguageSelectBox
-                                defaultValue='0'
-                                onChange={languageChangeHandle}
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    flexWrap: 'wrap',
+                                    justifyContent: 'space-between',
+                                }}
+                            >
+                                {/* TODO: 코드 공개 여부 백준 사용자 설정 값으로 지정 */}
+                                <CodeOpenSelector
+                                    defaultValue={codeOpen}
+                                    onChange={setCodeOpen}
+                                />
+                                <LanguageSelectBox
+                                    defaultValue='0'
+                                    onChange={languageChangeHandle}
+                                />
+                            </div>
+                            <VerticalSplitView
+                                top={
+                                    <EditorPanel
+                                        language={editorLanguage}
+                                        code={code}
+                                        onCodeUpdate={setCode}
+                                    />
+                                }
+                                bottom={
+                                    <TestCasePanel
+                                        testCases={testCases}
+                                        state='initial'
+                                    />
+                                }
+                                bottomStyle={{
+                                    border: '1px solid #ccc',
+                                    background: '#efefef',
+                                }}
                             />
                         </div>
-                        <VerticalSplitView
-                            top={
-                                <EditorPanel
-                                    language={editorLanguage}
-                                    code={code}
-                                    onCodeUpdate={setCode}
-                                />
-                            }
-                            bottom={
-                                <TestCasePanel
-                                    testCases={testCases}
-                                    state='initial'
-                                />
-                            }
-                            bottomStyle={{
-                                border: '1px solid #ccc',
-                                background: '#efefef',
-                            }}
-                        />
-                    </div>
-                }
-            />
-            <EditorButtonBox
-                codeInitializeHandle={() => {
-                    if (confirm('정말로 초기화하시겠습니까?')) {
-                        codeInitialize();
                     }
-                }}
-                addTestCaseHandle={() => alert('TODO: 테스트 케이스 추가 모달')}
-                runHandle={codeRun}
-                submitHandle={codeSubmit}
+                />
+                <EditorButtonBox
+                    codeInitializeHandle={() => {
+                        if (confirm('정말로 초기화하시겠습니까?')) {
+                            codeInitialize();
+                        }
+                    }}
+                    addTestCaseHandle={toggleTestCaseModal}
+                    runHandle={codeRun}
+                    submitHandle={codeSubmit}
+                />
+            </div>
+
+            {/* 테스트 케이스 추가 모달 */}
+            <Modal
+                width={'80vw'}
+                height={600}
+                title={<h1>테스트 케이스 추가</h1>}
+                content={
+                    <>
+                        <h1>test</h1>
+                        <br />
+                    </>
+                }
+                footer={
+                    <button
+                        className='btn btn-primary'
+                        onClick={() => {
+                            toggleTestCaseModal();
+                        }}
+                    >
+                        확인
+                    </button>
+                }
+                modalOpen={testCaseModalOpen}
+                onClose={toggleTestCaseModal}
             />
-        </div>
+        </>
     );
 };
 
