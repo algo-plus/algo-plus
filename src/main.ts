@@ -2,6 +2,7 @@ import customProblemPage from '@/baekjoon/scripts/problem';
 import customStatusPage from '@/baekjoon/scripts/status';
 import customGlobalPage from '@/baekjoon/scripts/global';
 import customSubmitPage from '@/baekjoon/scripts/submit';
+import customStatusPageTemp from '@/baekjoon/scripts/status-temp';
 
 const url: string = window.location.pathname;
 const searchUrl: string = window.location.search;
@@ -12,6 +13,8 @@ if (url.startsWith('/problem/')) {
     customProblemPage();
 } else if (url.startsWith('/status') && searchUrl.startsWith('?from_mine=')) {
     customStatusPage();
+} else if (url.startsWith('/status')) {
+    customStatusPageTemp();
 } else if (url.startsWith('/submit')) {
     customSubmitPage();
 }
