@@ -1,0 +1,24 @@
+.test-case-elem {
+    padding: 10px 0;
+}
+
+.test-case-elem h4 {
+    margin: 0;
+    margin-bottom: 5px;
+    padding-left: 15px;
+}
+.test-case-elem p {
+    display: flex;
+    font-size: small;
+    margin: 0;
+}
+
+.test-case-elem p > span:first-child {
+    width: 100px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.test-case-elem p > span:nth-child(2) {
+    width: 100%;
+}

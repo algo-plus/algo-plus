@@ -1,65 +1,86 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './TestCaseElement.css';
-import { replaceNewLineToBrTag } from '@/common/utils/string';
+import { TestCase } from '@/baekjoon/types/problem';
 
-const TestCaseElement: React.FC<testCaseElementProps> = ({
+const TestCaseElement: React.FC<TestCaseElementProps> = ({
     no,
-    input,
-    output,
-    expectedValue,
+    testCase,
+    disabled,
+    onDelete,
 }) => {
+    const [rows, setRows] = useState(getOptimalRows());
+    const resize = () => {
+        setRows(getOptimalRows());
+    };
+
+    function getOptimalRows() {
+        return Math.max(
+            testCase.input.split('\n').length,
+            testCase.output.split('\n').length
+        );
+    }
+
     return (
-        <div className='test-case-elem'>
-            <h4>테스트{no}</h4>
-            <p>
-                <span>입력값</span>
-                <span
-                    dangerouslySetInnerHTML={{
-                        __html: replaceNewLineToBrTag(input),
+        <div
+            style={{
+                display: 'flex',
+                width: '100%',
+                gap: '10px',
+                margin: '10px 0',
+            }}
+        >
+            <section className='test-case-element'>
+                <div className='headline'>
+                    <h2>예제 입력 {no}</h2>
+                </div>
+                <textarea
+                    style={disabled ? {} : { background: '#fff' }}
+                    disabled={disabled}
+                    rows={rows}
+                    defaultValue={testCase.input}
+                    onChange={(event) => {
+                        testCase.input = event.target.value;
+                        resize();
                     }}
-                ></span>
-            </p>
-            <p>
-                <span>기댓값</span>
-                <span
-                    dangerouslySetInnerHTML={{
-                        __html: replaceNewLineToBrTag(expectedValue),
-                    }}
-                ></span>
-            </p>
-            <p>
-                <span>실행 결과</span>
-                <span
-                    style={
-                        output == expectedValue
-                            ? { color: 'blue' }
-                            : { color: 'red' }
-                    }
+                ></textarea>
+            </section>
+            <section className='test-case-element'>
+                <div
+                    className='headline'
+                    style={{ display: 'flex', justifyContent: 'space-between' }}
                 >
-                    {output == expectedValue
-                        ? '테스트를 통과하였습니다.'
-                        : '테스트를 통과하지 못하였습니다.'}
-                </span>
-            </p>
-            {output == expectedValue ? null : (
-                <p>
-                    <span>출력</span>
-                    <span
-                        dangerouslySetInnerHTML={{
-                            __html: replaceNewLineToBrTag(output),
-                        }}
-                    ></span>
-                </p>
-            )}
+                    <h2>예제 출력 {no}</h2>
+                    {disabled ? null : (
+                        <button
+                            className='btn btn-link'
+                            onClick={() => {
+                                testCase.uuid && onDelete?.(testCase.uuid);
+                            }}
+                        >
+                            삭제
+                        </button>
+                    )}
+                </div>
+                <textarea
+                    style={disabled ? {} : { background: '#fff' }}
+                    disabled={disabled}
+                    rows={rows}
+                    defaultValue={testCase.output}
+                    onChange={(event) => {
+                        testCase.output = event.target.value;
+                        resize();
+                    }}
+                ></textarea>
+            </section>
         </div>
     );
 };
 
-type testCaseElementProps = {
-    no: number | string;
-    input: string;
-    output: string;
-    expectedValue: string;
+type TestCaseElementProps = {
+    no: number;
+    testCase: TestCase;
+    disabled: boolean;
+    onDelete?: (uuid: string) => void;
 };
 
 export default TestCaseElement;

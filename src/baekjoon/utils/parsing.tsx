@@ -1,5 +1,6 @@
-import React, { ElementType } from 'react';
+import React from 'react';
 import { TestCase } from '@/baekjoon/types/problem';
+import uuid from 'react-uuid';
 
 const getProblemId = (): string | null => {
     const problemIdElement = document.querySelector(
@@ -57,6 +58,16 @@ const parsingProblemDetail = (html: string): JSX.Element => {
     }
 };
 
+const parsingStyle = (html: string): JSX.Element => {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const style = doc.querySelector('style');
+    if (style) {
+        return <style>{style.textContent}</style>;
+    } else {
+        return <style>{''}</style>;
+    }
+};
+
 const parsingTestCases = (html: string): TestCase[] => {
     const testCases: TestCase[] = [];
     const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -66,7 +77,7 @@ const parsingTestCases = (html: string): TestCase[] => {
     const count = inputs.length;
     for (let i = 0; i < count; ++i) {
         testCases.push({
-            no: i + 1,
+            uuid: uuid(),
             input: (inputs[i].textContent as string).trim(),
             output: (outputs[i].textContent as string).trim(),
         });
@@ -74,4 +85,4 @@ const parsingTestCases = (html: string): TestCase[] => {
     return testCases;
 };
 
-export { getProblemId, parsingProblemDetail, parsingTestCases };
+export { getProblemId, parsingProblemDetail, parsingTestCases, parsingStyle };
