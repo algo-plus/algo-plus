@@ -180,10 +180,6 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                     loadedProblemContent.props.dangerouslySetInnerHTML.__html
                 );
                 setTestCases(parsedTestCases);
-                const parsedTestCases = parsingTestCases(
-                    loadedProblemContent.props.dangerouslySetInnerHTML.__html
-                );
-                setTestCases(parsedTestCases);
             } else {
                 fetchProblemHtml(
                     problemId,
