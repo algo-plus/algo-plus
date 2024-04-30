@@ -57,8 +57,8 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
         }
 
         // temporary log
-        console.log(code);
-        return;
+        // console.log(code);
+        // return;
 
         const lang = convertLanguageIdForSubmitApi(languageId);
 
@@ -137,6 +137,10 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
             if (loadedProblemContent) {
                 setProblemContent(loadedProblemContent);
                 setProblemStyle(loadedProblemStyle);
+                const parsedTestCases = parsingTestCases(
+                    loadedProblemContent.props.dangerouslySetInnerHTML.__html
+                );
+                setTestCases(parsedTestCases);
             } else {
                 fetchProblemHtml(
                     problemId,
