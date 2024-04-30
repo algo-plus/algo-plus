@@ -23,6 +23,10 @@ import { CodeCompileRequest } from '@/common/types/compile';
 import { CodeOpenSelector } from '@/baekjoon/components/CodeOpenSelector';
 import { getDefaultCode } from '@/common/utils/default-code';
 import { EditorLanguage } from '@/common/types/language';
+import {
+    loadAndParseProblemDetail,
+    loadAndParseProblemMathJaxStyle,
+} from '@/baekjoon/utils/storage';
 
 type SolveViewProps = {
     problemId: string | null;
@@ -33,6 +37,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     const [problemContent, setProblemContent] = useState<JSX.Element | null>(
         null
     );
+    const [problemStyle, setProblemStyle] = useState<JSX.Element | null>(null);
     const [testCases, setTestCases] = useState<TestCase[]>([]);
     const [languageId, setLanguageId] = useState('0');
     const [editorLanguage, setEditorLanguage] = useState<EditorLanguage>(
@@ -120,18 +125,41 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     }, [languageId]);
 
     useEffect(() => {
-        fetchProblemHtml(
-            problemId,
-            (html) => {
-                setProblemContent(parsingProblemDetail(html));
-                setTestCases(parsingTestCases(html));
-            },
-            (error) => {
-                console.error('문제를 불러오는데 실패했습니다.', error);
-                setProblemContent(<h1>문제를 불러오는데 실패했습니다.</h1>);
+        const loadProblemData = async () => {
+            if (!problemId) return;
+            const loadedProblemContent = await loadAndParseProblemDetail(
+                problemId
+            );
+            const loadedProblemStyle = await loadAndParseProblemMathJaxStyle(
+                problemId
+            );
+
+            if (loadedProblemContent) {
+                setProblemContent(loadedProblemContent);
+                setProblemStyle(loadedProblemStyle);
+            } else {
+                fetchProblemHtml(
+                    problemId,
+                    async (html) => {
+                        const parsedContent = parsingProblemDetail(html);
+                        setProblemContent(parsedContent);
+                        const parsedTestCases = parsingTestCases(html);
+                        setTestCases(parsedTestCases);
+                    },
+                    (error) => {
+                        console.error('문제를 불러오는데 실패했습니다.', error);
+                        setProblemContent(
+                            <h1>문제를 불러오는데 실패했습니다.</h1>
+                        );
+                    }
+                );
             }
-        );
-    }, []);
+        };
+
+        if (problemId) {
+            loadProblemData();
+        }
+    }, [problemId]);
 
     const languageChangeHandle = (
         event: React.ChangeEvent<HTMLSelectElement>
@@ -143,7 +171,12 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     return (
         <div style={{ height: '100%' }}>
             <HorizontalSplitView
-                left={<ProblemPanel content={problemContent} />}
+                left={
+                    <ProblemPanel
+                        content={problemContent}
+                        mathJaxStyle={problemStyle}
+                    />
+                }
                 right={
                     <div
                         style={{
