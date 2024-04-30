@@ -1,7 +1,7 @@
 import {
     getObjectFromLocalStorage,
     saveObjectInLocalStorage,
-} from '../../common/utils/storage';
+} from '@/common/utils/storage';
 import { parsingProblemDetail, parsingStyle } from './parsing';
 
 interface ProblemDetail {

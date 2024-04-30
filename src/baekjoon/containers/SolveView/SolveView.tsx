@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ProblemPanel } from '@/baekjoon/presentations/ProblemPanel';
 import { EditorPanel } from '@/baekjoon/presentations/EditorPanel';
 import { fetchProblemHtml } from '@/baekjoon/apis/problem';
@@ -23,6 +23,10 @@ import { CodeCompileRequest } from '@/common/types/compile';
 import { CodeOpenSelector } from '@/baekjoon/components/CodeOpenSelector';
 import { getDefaultCode } from '@/common/utils/default-code';
 import { EditorLanguage } from '@/common/types/language';
+import { Modal } from '@/baekjoon/presentations/Modal';
+import { TestCaseModalButtonBox } from '@/baekjoon/presentations/TestCaseModalButtonBox';
+import uuid from 'react-uuid';
+import { TestCaseContainer } from '@/baekjoon/presentations/TestCaseContainer';
 import {
     loadAndParseProblemDetail,
     loadAndParseProblemMathJaxStyle,
@@ -39,6 +43,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     );
     const [problemStyle, setProblemStyle] = useState<JSX.Element | null>(null);
     const [testCases, setTestCases] = useState<TestCase[]>([]);
+    const [customTestCases, setCustomTestCases] = useState<TestCase[]>([]);
     const [languageId, setLanguageId] = useState('0');
     const [editorLanguage, setEditorLanguage] = useState<EditorLanguage>(
         convertLanguageIdForEditor(languageId)
@@ -46,9 +51,40 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     const [codeOpen, setCodeOpen] = useState('close');
     const [code, setCode] = useState(getDefaultCode(editorLanguage));
     const [isRunning, setIsRunning] = useState(false);
+    const [testCaseModalOpen, setTestCaseModalOpen] = useState<boolean>(false);
 
     const codeInitialize = () => {
         setCode(getDefaultCode(editorLanguage));
+    };
+
+    const toggleTestCaseModal = () => {
+        setTestCaseModalOpen(!testCaseModalOpen);
+    };
+
+    const addTestCase = () => {
+        if (customTestCases.length >= 10) {
+            alert('테스트 케이스를 10개 이상 추가할 수 없습니다.');
+            return;
+        }
+        setCustomTestCases([
+            ...customTestCases,
+            {
+                uuid: uuid(),
+                input: '',
+                output: '',
+            },
+        ]);
+    };
+
+    const deleteTestCase = (uuid: string) => {
+        setCustomTestCases([
+            ...customTestCases.filter((tc) => tc.uuid !== uuid),
+        ]);
+    };
+
+    // TODO: 로컬 스토리지에 테스트 케이스 저장 로직 작성
+    const saveTestCase = () => {
+        toggleTestCaseModal();
     };
 
     const codeRun = () => {
@@ -61,7 +97,9 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
 
         const lang = convertLanguageIdForSubmitApi(languageId);
 
-        for (const testCase of testCases) {
+        const targetTestCases = [...testCases, ...customTestCases];
+        console.log(targetTestCases);
+        for (const testCase of targetTestCases) {
             const data: CodeCompileRequest = {
                 lang: lang,
                 code: code,
@@ -73,7 +111,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                 data,
                 (output) => {
                     console.log(
-                        `======= 테스트 케이스 ${testCase.no} ========`
+                        `======= 테스트 케이스 ${testCase.uuid} ========`
                     );
                     console.log(`output=${output}`);
                     console.log(`expect=${testCase.output}`);
@@ -142,6 +180,10 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                     loadedProblemContent.props.dangerouslySetInnerHTML.__html
                 );
                 setTestCases(parsedTestCases);
+                const parsedTestCases = parsingTestCases(
+                    loadedProblemContent.props.dangerouslySetInnerHTML.__html
+                );
+                setTestCases(parsedTestCases);
             } else {
                 fetchProblemHtml(
                     problemId,
@@ -174,75 +216,99 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     };
 
     return (
-        <div style={{ height: '100%' }}>
-            <HorizontalSplitView
-                left={
-                    <ProblemPanel
-                        content={problemContent}
-                        mathJaxStyle={problemStyle}
-                    />
-                }
-                right={
-                    <div
-                        style={{
-                            height: '100%',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '5px',
-                        }}
-                    >
+        <>
+            <div style={{ height: '100%' }}>
+                <HorizontalSplitView
+                    left={
+                        <ProblemPanel
+                            content={problemContent}
+                            mathJaxStyle={problemStyle}
+                        />
+                    }
+                    right={
                         <div
                             style={{
+                                height: '100%',
                                 display: 'flex',
-                                alignItems: 'center',
-                                flexWrap: 'wrap',
-                                justifyContent: 'space-between',
+                                flexDirection: 'column',
+                                gap: '5px',
                             }}
                         >
-                            {/* TODO: 코드 공개 여부 백준 사용자 설정 값으로 지정 */}
-                            <CodeOpenSelector
-                                defaultValue={codeOpen}
-                                onChange={setCodeOpen}
-                            />
-                            <LanguageSelectBox
-                                defaultValue='0'
-                                onChange={languageChangeHandle}
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    flexWrap: 'wrap',
+                                    justifyContent: 'space-between',
+                                }}
+                            >
+                                {/* TODO: 코드 공개 여부 백준 사용자 설정 값으로 지정 */}
+                                <CodeOpenSelector
+                                    defaultValue={codeOpen}
+                                    onChange={setCodeOpen}
+                                />
+                                <LanguageSelectBox
+                                    defaultValue='0'
+                                    onChange={languageChangeHandle}
+                                />
+                            </div>
+                            <VerticalSplitView
+                                top={
+                                    <EditorPanel
+                                        language={editorLanguage}
+                                        code={code}
+                                        onCodeUpdate={setCode}
+                                    />
+                                }
+                                bottom={
+                                    <TestCasePanel
+                                        testCases={testCases}
+                                        state='initial'
+                                    />
+                                }
+                                bottomStyle={{
+                                    border: '1px solid #ccc',
+                                    background: '#efefef',
+                                }}
                             />
                         </div>
-                        <VerticalSplitView
-                            top={
-                                <EditorPanel
-                                    language={editorLanguage}
-                                    code={code}
-                                    onCodeUpdate={setCode}
-                                />
-                            }
-                            bottom={
-                                <TestCasePanel
-                                    testCases={testCases}
-                                    state='initial'
-                                />
-                            }
-                            bottomStyle={{
-                                border: '1px solid #ccc',
-                                background: '#efefef',
-                            }}
-                        />
-                    </div>
-                }
-            />
-            <EditorButtonBox
-                codeInitializeHandle={() => {
-                    if (confirm('정말로 초기화하시겠습니까?')) {
-                        codeInitialize();
                     }
-                }}
-                addTestCaseHandle={() => alert('TODO: 테스트 케이스 추가 모달')}
-                runHandle={codeRun}
-                submitHandle={codeSubmit}
-                isRunning={isRunning}
+                />
+                <EditorButtonBox
+                    codeInitializeHandle={() => {
+                        if (confirm('정말로 초기화하시겠습니까?')) {
+                            codeInitialize();
+                        }
+                    }}
+                    addTestCaseHandle={toggleTestCaseModal}
+                    runHandle={codeRun}
+                    submitHandle={codeSubmit}
+                    isRunning={isRunning}
+                />
+            </div>
+
+            {/* 테스트 케이스 추가 모달 */}
+            <Modal
+                width={'80vw'}
+                height={600}
+                title={<h1>테스트 케이스 추가</h1>}
+                content={
+                    <TestCaseContainer
+                        testCases={testCases}
+                        customTestCases={customTestCases}
+                        onDeleteCustomTestCase={deleteTestCase}
+                    />
+                }
+                footer={
+                    <TestCaseModalButtonBox
+                        addTestCaseHandle={addTestCase}
+                        saveTestCaseHandle={saveTestCase}
+                    />
+                }
+                modalOpen={testCaseModalOpen}
+                onClose={toggleTestCaseModal}
             />
-        </div>
+        </>
     );
 };
 

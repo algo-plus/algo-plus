@@ -1,5 +1,6 @@
 import React from 'react';
 import { TestCase } from '@/baekjoon/types/problem';
+import uuid from 'react-uuid';
 
 const getProblemId = (): string | null => {
     const problemIdElement = document.querySelector(
@@ -76,7 +77,7 @@ const parsingTestCases = (html: string): TestCase[] => {
     const count = inputs.length;
     for (let i = 0; i < count; ++i) {
         testCases.push({
-            no: i + 1,
+            uuid: uuid(),
             input: (inputs[i].textContent as string).trim(),
             output: (outputs[i].textContent as string).trim(),
         });
