@@ -51,7 +51,10 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     const [codeOpen, setCodeOpen] = useState('close');
     const [code, setCode] = useState(getDefaultCode(editorLanguage));
     const [isRunning, setIsRunning] = useState(false);
+    const [isInitial, setIsInitial] = useState(true);
     const [testCaseModalOpen, setTestCaseModalOpen] = useState<boolean>(false);
+
+    const [targetTestCases, setTargetTestCases] = useState<TestCase[]>([]);
 
     const codeInitialize = () => {
         setCode(getDefaultCode(editorLanguage));
@@ -87,26 +90,30 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
         toggleTestCaseModal();
     };
 
-    const codeRun = () => {
+    useEffect(() => {
+        setTargetTestCases([...testCases, ...customTestCases]);
+    }, [testCases, customTestCases]);
+
+    const codeRun = async () => {
         if (!code) {
             alert('실행할 코드가 없습니다.');
             return;
         }
 
         setIsRunning(true);
+        setIsInitial(false);
 
         const lang = convertLanguageIdForSubmitApi(languageId);
-
-        const targetTestCases = [...testCases, ...customTestCases];
         console.log(targetTestCases);
-        for (const testCase of targetTestCases) {
+
+        // TODO : 테스트 케이스 한 번에 묶어 전송
+        targetTestCases.map((testCase) => {
             const data: CodeCompileRequest = {
                 lang: lang,
                 code: code,
                 input: testCase.input,
             };
 
-            // TODO: 테스트 케이스 콘솔을 화면 컴포넌트 생성 로직으로 변경
             compile(
                 data,
                 (output) => {
@@ -122,12 +129,12 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                                 : '틀렸습니다'
                         }`
                     );
+                    console.log('테스트 케이스 실행 완료');
+                    setIsRunning(false);
                 },
                 (error) => console.log('error =', error)
             );
-        }
-
-        setIsRunning(false);
+        });
     };
 
     const codeSubmit = () => {
@@ -258,8 +265,8 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                                 }
                                 bottom={
                                     <TestCasePanel
-                                        testCases={testCases}
-                                        state='initial'
+                                        testCases={targetTestCases}
+                                        state={isInitial ? 'initial' : 'run'}
                                     />
                                 }
                                 bottomStyle={{
