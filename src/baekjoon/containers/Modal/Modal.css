@@ -69,4 +69,26 @@
 .codediff-container {
     max-height: 500px;
     overflow-y: auto;
+    margin-bottom: 50px;
+}
+
+.code-block {
+    position: relative;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.code-block-button {
+    margin-top: 5px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.code-block-button button + button {
+    margin-left: 5px;
+}
+
+.code-name {
+    border: none;
 }

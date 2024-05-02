@@ -90,6 +90,13 @@ const Modal = (modalProps: ModalProps) => {
                     updatedBlocks[blockIndex].selectedNewCode = '';
                 }
             }
+
+            if (
+                updatedBlocks[blockIndex].selectedOldCode === '' &&
+                updatedBlocks[blockIndex].selectedNewCode === ''
+            ) {
+                handleDeleteBlock(id);
+            }
             return updatedBlocks;
         });
     };
@@ -145,7 +152,7 @@ const Modal = (modalProps: ModalProps) => {
         }
 
         // 새로운 블록 생성
-        if (lastBlock.isRegistered) {
+        if (codeBlocks.length == 0 || lastBlock.isRegistered) {
             setCodeBlocks([
                 ...codeBlocks,
                 {
@@ -241,16 +248,18 @@ const Modal = (modalProps: ModalProps) => {
                     />
                 </div>
                 {codeBlocks.map((block) => (
-                    <div key={block.id}>
+                    <div key={block.id} className='code-block'>
                         {block.selectedOldCode && (
                             <div>
                                 <h5>
                                     <input
                                         type='text'
+                                        className='code-name'
                                         value={block.oldCodeName}
                                         onChange={(e) =>
                                             handleOldCodeNameChange(e, block.id)
                                         }
+                                        readOnly={block.isRegistered}
                                     />
                                 </h5>
                                 <button
@@ -271,10 +280,12 @@ const Modal = (modalProps: ModalProps) => {
                                 <h5>
                                     <input
                                         type='text'
+                                        className='code-name'
                                         value={block.newCodeName}
                                         onChange={(e) =>
                                             handleNewCodeNameChange(e, block.id)
                                         }
+                                        readOnly={block.isRegistered}
                                     />
                                 </h5>
                                 <button
@@ -307,41 +318,48 @@ const Modal = (modalProps: ModalProps) => {
                                             return updatedBlocks;
                                         });
                                     }}
+                                    readOnly={block.isRegistered}
                                 ></textarea>
                             </div>
                         )}
-                        {(block.selectedOldCode || block.selectedNewCode) &&
-                            !block.isRegistered && (
+                        <div className='code-block-button'>
+                            {(block.selectedOldCode || block.selectedNewCode) &&
+                                !block.isRegistered && (
+                                    <div>
+                                        <button
+                                            type='button'
+                                            className='btn btn-primary'
+                                            onClick={() =>
+                                                handleRegisterBlock(block.id)
+                                            }
+                                        >
+                                            등록
+                                        </button>
+                                    </div>
+                                )}
+                            {block.isRegistered && (
                                 <div>
+                                    <button
+                                        type='button'
+                                        className='btn btn-secondary'
+                                        onClick={() =>
+                                            handleDeleteBlock(block.id)
+                                        }
+                                    >
+                                        삭제
+                                    </button>
                                     <button
                                         type='button'
                                         className='btn btn-primary'
                                         onClick={() =>
-                                            handleRegisterBlock(block.id)
+                                            handleEditBlock(block.id)
                                         }
                                     >
-                                        등록
+                                        수정
                                     </button>
                                 </div>
                             )}
-                        {block.isRegistered && (
-                            <div>
-                                <button
-                                    type='button'
-                                    className='btn btn-warning'
-                                    onClick={() => handleEditBlock(block.id)}
-                                >
-                                    수정
-                                </button>
-                                <button
-                                    type='button'
-                                    className='btn btn-danger'
-                                    onClick={() => handleDeleteBlock(block.id)}
-                                >
-                                    삭제
-                                </button>
-                            </div>
-                        )}
+                        </div>
                     </div>
                 ))}
                 <div>
