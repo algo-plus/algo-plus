@@ -103,6 +103,15 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
 
     // TODO: 로컬 스토리지에 테스트 케이스 저장 로직 작성
     const saveTestCase = () => {
+        for (const testCase of customTestCases) {
+            if (!testCase.input.trim()) {
+                alert('입력이 빈칸일 수 없습니다.');
+                return;
+            } else if (!testCase.output.trim()) {
+                alert('출력이 빈칸일 수 없습니다.');
+                return;
+            }
+        }
         toggleTestCaseModal();
     };
 
