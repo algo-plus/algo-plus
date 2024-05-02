@@ -35,7 +35,6 @@
 .modal-body {
     padding: 10px;
     overflow-y: auto;
-    max-height: '75vh';
 }
 
 .modal-body textarea {

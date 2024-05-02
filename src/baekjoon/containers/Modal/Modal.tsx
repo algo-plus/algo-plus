@@ -225,7 +225,7 @@ const Modal = (modalProps: ModalProps) => {
                     <span aria-hidden='true'>&times;</span>
                 </button>
             </div>
-            <div className='modal-body'>
+            <div className='modal-body' style={{ maxHeight: '75vh' }}>
                 <div className='codediff-container'>
                     <h5>코드 비교 결과:</h5>
                     <ReactDiffViewer
