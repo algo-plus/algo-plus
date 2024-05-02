@@ -1,13 +1,19 @@
 import TestCaseResultElement from '@/baekjoon/components/TestCaseResultElement/TestCaseResultElement';
 import { TestCase } from '@/baekjoon/types/problem';
+import { replaceNewLineToBrTag } from '@/common/utils/string';
 import React from 'react';
 
 interface TestCasePanelProps {
     testCases: TestCase[];
-    state: 'initial' | 'run';
+    state: 'initial' | 'run' | 'error';
+    errorMessage?: string;
 }
 
-const TestCasePanel: React.FC<TestCasePanelProps> = ({ testCases, state }) => {
+const TestCasePanel: React.FC<TestCasePanelProps> = ({
+    testCases,
+    state,
+    errorMessage,
+}) => {
     return (
         <div
             style={{
@@ -17,6 +23,14 @@ const TestCasePanel: React.FC<TestCasePanelProps> = ({ testCases, state }) => {
             {state === 'initial' ? (
                 <p style={{ padding: '10px' }}>
                     실행 결과가 여기에 표시됩니다.
+                </p>
+            ) : state === 'error' && errorMessage ? (
+                <p style={{ padding: '10px', color: 'red' }}>
+                    <span
+                        dangerouslySetInnerHTML={{
+                            __html: replaceNewLineToBrTag(errorMessage),
+                        }}
+                    ></span>
                 </p>
             ) : (
                 testCases.map((testCase, index) => (

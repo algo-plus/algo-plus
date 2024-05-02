@@ -8,7 +8,11 @@ const searchUrl: string = window.location.search;
 
 console.info('url=', url);
 
-if (url.startsWith('/problem/')) {
+if (
+    url.startsWith('/problem/') &&
+    !url.includes('status') &&
+    !url.includes('history')
+) {
     customProblemPage();
 } else if (url.startsWith('/status') && searchUrl.includes('from_mine')) {
     customStatusPage();
