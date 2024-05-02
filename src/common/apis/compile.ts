@@ -8,20 +8,14 @@ const headers: HeadersInit = {
     'X-RapidAPI-Host': process.env.REACT_APP_RAPID_API_HOST as string,
 };
 
-async function compile(
-    data: CodeCompileRequest,
-    success: (output: string) => void,
-    fail: (error: any) => void
-) {
-    fetch(url, {
+async function compile(data: CodeCompileRequest) {
+    const response = await fetch(url, {
         method: 'POST',
         headers: headers,
         body: JSON.stringify(data),
-    })
-        .then((response) => response.json())
-        .then((json) => json.output.trim())
-        .then(success)
-        .catch(fail);
+    });
+    const json = await response.json();
+    return json.output.trim();
 }
 
 export { compile };
