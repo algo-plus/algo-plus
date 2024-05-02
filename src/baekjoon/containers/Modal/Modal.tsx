@@ -21,8 +21,8 @@ const Modal = (modalProps: ModalProps) => {
         console.log('save');
     };
 
-    const oldCode = modalProps.sourceCodes[0] || '';
-    const newCode = modalProps.sourceCodes[1] || '';
+    const oldCode = modalProps.sourceCodes[0]?.code || '';
+    const newCode = modalProps.sourceCodes[1]?.code || '';
 
     const [selectedOldCode, setSelectedOldCode] = useState<string | null>(null);
     const [selectedNewCode, setSelectedNewCode] = useState<string | null>(null);
@@ -121,7 +121,9 @@ const Modal = (modalProps: ModalProps) => {
                             return (
                                 <Prism
                                     style={coy}
-                                    language='java'
+                                    language={
+                                        modalProps.sourceCodes[0]?.lang || ''
+                                    }
                                     wrapLongLines
                                     wrapLines
                                     PreTag='span'

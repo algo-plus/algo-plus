@@ -1,5 +1,10 @@
 type ModalProps = {
-    sourceCodes: (string | null)[];
+    sourceCodes: (CodeProps | null)[];
 };
 
-export type { ModalProps };
+type CodeProps = {
+    code: string | null;
+    lang: string | null;
+};
+
+export type { ModalProps, CodeProps };

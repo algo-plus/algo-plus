@@ -93,7 +93,7 @@ const customStatusPage = async () => {
         );
         root.render(
             <React.StrictMode>
-                <Modal sourceCodes={sourceCodes} />
+                <Modal sourceCodes={sourceCodes}/>
             </React.StrictMode>
         );
     });
