@@ -38,13 +38,8 @@ const removeObjectFromLocalStorage = async (keys: string): Promise<void> => {
     });
 };
 
-const getProblems = async (): Promise<JSX.Element> => {
-    return await getObjectFromLocalStorage('problem');
-};
-
 export {
     getObjectFromLocalStorage,
     saveObjectInLocalStorage,
     removeObjectFromLocalStorage,
-    getProblems,
 };
