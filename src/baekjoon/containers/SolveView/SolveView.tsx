@@ -30,7 +30,7 @@ import { TestCaseContainer } from '@/baekjoon/presentations/TestCaseContainer';
 import {
     loadAndParseProblemDetail,
     loadAndParseProblemMathJaxStyle,
-} from '@/baekjoon/utils/storage';
+} from '@/baekjoon/utils/storage/problem';
 import { addUrlSearchParam, refreshUrl } from '@/common/utils/url';
 
 type SolveViewProps = {

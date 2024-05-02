@@ -4,7 +4,7 @@ import {
     loadAndParseProblemDetail,
     saveProblemMathJaxStyle,
     loadAndParseProblemMathJaxStyle,
-} from '@/baekjoon/utils/storage';
+} from '@/baekjoon/utils/storage/problem';
 
 const fetchCurrentHtml = (): string => {
     return document.documentElement.innerHTML;
