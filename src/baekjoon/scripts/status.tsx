@@ -2,8 +2,44 @@ import { createRoot } from 'react-dom/client';
 import { Modal } from '@/baekjoon/containers/Modal';
 import React from 'react';
 import { fetchCode } from '../apis/source';
+import { getUrlSearchParam } from '@/common/utils/url';
+import {
+    getWrongModalMessage,
+    isJudgingState,
+    isWrongState,
+} from '@/baekjoon/utils/status';
+import WrongResultModal from '../containers/WrongResultModal/WrongResultModal';
 
 const customStatusPage = async () => {
+    if (
+        getUrlSearchParam(window.location.href, 'after_algoplus_submit') ===
+        'true'
+    ) {
+        let timer = setInterval(() => {
+            if (isJudgingState()) {
+            } else {
+                clearInterval(timer);
+                if (isWrongState()) {
+                    const problemId = getUrlSearchParam(
+                        window.location.href,
+                        'problem_id'
+                    );
+                    const message = getWrongModalMessage();
+
+                    if (!problemId) return;
+                    const root = document.createElement('div');
+                    document.body.appendChild(root);
+                    createRoot(root).render(
+                        <WrongResultModal
+                            problemId={problemId}
+                            message={message}
+                        />
+                    );
+                }
+            }
+        }, 500);
+    }
+
     const table = document.querySelector('#status-table');
     if (!table) return;
     const tableHead = table.querySelector('thead');
@@ -98,13 +134,13 @@ const customStatusPage = async () => {
         );
     });
 
-    // FIX: 오답 노트 작성 버튼 위치 고정해야함
     const anchor = document.querySelectorAll('.text-center');
+    const position = anchor.length - 1;
     if (anchor) {
         const container = document.createElement('div');
         container.style.display = 'flex';
         container.appendChild(button);
-        anchor[1].insertBefore(container, anchor[1].firstChild);
+        anchor[position].insertBefore(container, anchor[position].firstChild); //
     }
 };
 
