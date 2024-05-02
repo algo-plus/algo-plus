@@ -2,8 +2,44 @@ import { createRoot } from 'react-dom/client';
 import { Modal } from '@/baekjoon/containers/Modal';
 import React from 'react';
 import { fetchCode } from '../apis/source';
+import { getUrlSearchParam } from '@/common/utils/url';
+import {
+    getWrongModalMessage,
+    isJudgingState,
+    isWrongState,
+} from '@/baekjoon/utils/status';
+import WrongResultModal from '../containers/WrongResultModal/WrongResultModal';
 
 const customStatusPage = async () => {
+    if (
+        getUrlSearchParam(window.location.href, 'after_algoplus_submit') ===
+        'true'
+    ) {
+        let timer = setInterval(() => {
+            if (isJudgingState()) {
+            } else {
+                clearInterval(timer);
+                if (isWrongState()) {
+                    const problemId = getUrlSearchParam(
+                        window.location.href,
+                        'problem_id'
+                    );
+                    const message = getWrongModalMessage();
+
+                    if (!problemId) return;
+                    const root = document.createElement('div');
+                    document.body.appendChild(root);
+                    createRoot(root).render(
+                        <WrongResultModal
+                            problemId={problemId}
+                            message={message}
+                        />
+                    );
+                }
+            }
+        }, 500);
+    }
+
     const table = document.querySelector('#status-table');
     if (!table) return;
     const tableHead = table.querySelector('thead');
@@ -93,7 +129,7 @@ const customStatusPage = async () => {
         );
         root.render(
             <React.StrictMode>
-                <Modal sourceCodes={sourceCodes}/>
+                <Modal sourceCodes={sourceCodes} />
             </React.StrictMode>
         );
     });
