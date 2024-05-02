@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer-continued';
 import './Modal.css';
 import { ModalProps } from '@/baekjoon/types/source';
+import { Prism } from 'react-syntax-highlighter';
+import { coy } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 let startLineIndex: number = -1;
 let endLineIndex: number = -1;
@@ -19,8 +21,8 @@ const Modal = (modalProps: ModalProps) => {
         console.log('save');
     };
 
-    const oldCode = modalProps.sourceCodes[0] || '';
-    const newCode = modalProps.sourceCodes[1] || '';
+    const oldCode = modalProps.sourceCodes[0]?.code || '';
+    const newCode = modalProps.sourceCodes[1]?.code || '';
 
     const [codeBlocks, setCodeBlocks] = useState([
         {
@@ -212,6 +214,30 @@ const Modal = (modalProps: ModalProps) => {
                         compareMethod={DiffMethod.LINES}
                         splitView={true}
                         onLineNumberClick={handleLineNumberClick}
+                        renderContent={(value) => {
+                            return (
+                                <Prism
+                                    style={coy}
+                                    language={
+                                        modalProps.sourceCodes[0]?.lang || ''
+                                    }
+                                    wrapLongLines
+                                    wrapLines
+                                    PreTag='span'
+                                    customStyle={{
+                                        display: 'contents',
+                                        wordBreak: 'break-word',
+                                    }}
+                                    codeTagProps={{
+                                        style: {
+                                            display: 'contents',
+                                        },
+                                    }}
+                                >
+                                    {value}
+                                </Prism>
+                            );
+                        }}
                     />
                 </div>
                 {codeBlocks.map((block) => (
