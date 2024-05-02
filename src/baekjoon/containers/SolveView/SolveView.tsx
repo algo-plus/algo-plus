@@ -50,9 +50,11 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     );
     const [codeOpen, setCodeOpen] = useState('close');
     const [code, setCode] = useState(getDefaultCode(editorLanguage));
-    const [isRunning, setIsRunning] = useState(false);
-    const [isInitial, setIsInitial] = useState(true);
     const [testCaseModalOpen, setTestCaseModalOpen] = useState<boolean>(false);
+
+    const [testCaseState, setTestCaseState] = useState<
+        'initial' | 'running' | 'result'
+    >('initial');
 
     const [targetTestCases, setTargetTestCases] = useState<TestCase[]>([]);
 
@@ -100,8 +102,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
             return;
         }
 
-        setIsRunning(true);
-        setIsInitial(false);
+        setTestCaseState('running');
 
         const lang = convertLanguageIdForSubmitApi(languageId);
         const currentTestCases = [...testCases, ...customTestCases];
@@ -126,7 +127,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
             console.log('error =', error);
         }
 
-        setIsRunning(false);
+        setTestCaseState('result');
     };
 
     const codeSubmit = () => {
@@ -258,7 +259,11 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                                 bottom={
                                     <TestCasePanel
                                         testCases={targetTestCases}
-                                        state={isInitial ? 'initial' : 'run'}
+                                        state={
+                                            testCaseState == 'initial'
+                                                ? 'initial'
+                                                : 'run'
+                                        }
                                     />
                                 }
                                 bottomStyle={{
@@ -278,7 +283,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                     addTestCaseHandle={toggleTestCaseModal}
                     runHandle={codeRun}
                     submitHandle={codeSubmit}
-                    isRunning={isRunning}
+                    isRunning={testCaseState == 'running'}
                 />
             </div>
 
