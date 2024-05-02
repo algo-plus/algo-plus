@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer-continued';
 import './Modal.css';
 import { ModalProps } from '@/baekjoon/types/source';
+import { Prism } from 'react-syntax-highlighter';
+import { coy } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 let startLineIndex: number = -1;
 let endLineIndex: number = -1;
@@ -115,6 +117,28 @@ const Modal = (modalProps: ModalProps) => {
                         compareMethod={DiffMethod.LINES}
                         splitView={true}
                         onLineNumberClick={handleLineNumberClick}
+                        renderContent={(value) => {
+                            return (
+                                <Prism
+                                    style={coy}
+                                    language='java'
+                                    wrapLongLines
+                                    wrapLines
+                                    PreTag='span'
+                                    customStyle={{
+                                        display: 'contents',
+                                        wordBreak: 'break-word',
+                                    }}
+                                    codeTagProps={{
+                                        style: {
+                                            display: 'contents',
+                                        },
+                                    }}
+                                >
+                                    {value}
+                                </Prism>
+                            );
+                        }}
                     />
                 </div>
                 <div>

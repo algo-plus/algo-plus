@@ -10,7 +10,7 @@ console.info('url=', url);
 
 if (url.startsWith('/problem/')) {
     customProblemPage();
-} else if (url.startsWith('/status') && searchUrl.startsWith('?from_mine=')) {
+} else if (url.startsWith('/status') && searchUrl.includes('from_mine')) {
     customStatusPage();
 } else if (url.startsWith('/submit')) {
     customSubmitPage();
