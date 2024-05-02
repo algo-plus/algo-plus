@@ -88,6 +88,13 @@ const Modal = (modalProps: ModalProps) => {
                     updatedBlocks[blockIndex].selectedNewCode = '';
                 }
             }
+
+            if (
+                updatedBlocks[blockIndex].selectedOldCode === '' &&
+                updatedBlocks[blockIndex].selectedNewCode === ''
+            ) {
+                handleDeleteBlock(id);
+            }
             return updatedBlocks;
         });
     };
@@ -143,7 +150,7 @@ const Modal = (modalProps: ModalProps) => {
         }
 
         // 새로운 블록 생성
-        if (lastBlock.isRegistered) {
+        if (codeBlocks.length == 0 || lastBlock.isRegistered) {
             setCodeBlocks([
                 ...codeBlocks,
                 {
@@ -225,6 +232,7 @@ const Modal = (modalProps: ModalProps) => {
                                         onChange={(e) =>
                                             handleOldCodeNameChange(e, block.id)
                                         }
+                                        readOnly={block.isRegistered}
                                     />
                                 </h5>
                                 <button
@@ -249,6 +257,7 @@ const Modal = (modalProps: ModalProps) => {
                                         onChange={(e) =>
                                             handleNewCodeNameChange(e, block.id)
                                         }
+                                        readOnly={block.isRegistered}
                                     />
                                 </h5>
                                 <button
@@ -281,6 +290,7 @@ const Modal = (modalProps: ModalProps) => {
                                             return updatedBlocks;
                                         });
                                     }}
+                                    readOnly={block.isRegistered}
                                 ></textarea>
                             </div>
                         )}
