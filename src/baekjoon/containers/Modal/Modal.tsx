@@ -254,7 +254,7 @@ const Modal = (modalProps: ModalProps) => {
                                 <h5>
                                     <input
                                         type='text'
-                                        className='codeName'
+                                        className='code-name'
                                         value={block.oldCodeName}
                                         onChange={(e) =>
                                             handleOldCodeNameChange(e, block.id)
@@ -280,7 +280,7 @@ const Modal = (modalProps: ModalProps) => {
                                 <h5>
                                     <input
                                         type='text'
-                                        className='codeName'
+                                        className='code-name'
                                         value={block.newCodeName}
                                         onChange={(e) =>
                                             handleNewCodeNameChange(e, block.id)
