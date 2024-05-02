@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { ProblemPanel } from '@/baekjoon/presentations/ProblemPanel';
 import { EditorPanel } from '@/baekjoon/presentations/EditorPanel';
 import { fetchProblemHtml } from '@/baekjoon/apis/problem';
@@ -57,12 +57,12 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     const [codeOpen, setCodeOpen] = useState('close');
     const [code, setCode] = useState(getDefaultCode(editorLanguage));
     const [testCaseModalOpen, setTestCaseModalOpen] = useState<boolean>(false);
-
     const [testCaseState, setTestCaseState] = useState<
         'initial' | 'running' | 'result'
     >('initial');
-
     const [targetTestCases, setTargetTestCases] = useState<TestCase[]>([]);
+    const codeRef = useRef<string>(code);
+    const languageIdRef = useRef<string>(languageId);
 
     const codeInitialize = () => {
         setCode(getDefaultCode(editorLanguage));
@@ -72,8 +72,9 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
         setTestCaseModalOpen(!testCaseModalOpen);
     };
 
-    const codeSaveToLocalStorage = () => {
+    const codeSaveToLocalStorage = (languageId: string, code: string) => {
         if (problemId) saveEditorCode(problemId, languageId, code);
+        console.log(languageId, code);
     };
 
     const addTestCase = () => {
@@ -112,7 +113,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
             return;
         }
 
-        codeSaveToLocalStorage();
+        codeSaveToLocalStorage(languageId, code);
         setTestCaseState('running');
 
         const lang = convertLanguageIdForSubmitApi(languageId);
@@ -147,7 +148,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
             return;
         }
 
-        codeSaveToLocalStorage();
+        codeSaveToLocalStorage(languageId, code);
         const data: SubmitPostRequest = {
             problem_id: problemId,
             language: Number(languageId),
@@ -228,7 +229,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
             const editorLanguage = convertLanguageIdForEditor(selectedLanguage);
             setLanguageId(selectedLanguage);
             setCode(getDefaultCode(editorLanguage));
-            codeSaveToLocalStorage();
+            codeSaveToLocalStorage(languageId, code);
         } else {
             setLanguageId(focusLanguageId);
             const editorLanguage = convertLanguageIdForEditor(focusLanguageId);
@@ -253,6 +254,24 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     const languageFocusHandle = () => {
         setFocusLanguageId(languageId);
     };
+
+    useEffect(() => {
+        codeRef.current = code;
+    }, [code]);
+
+    useEffect(() => {
+        languageIdRef.current = languageId;
+    }, [languageId]);
+
+    useEffect(() => {
+        const tick = () => {
+            console.log('editor code and language save.');
+            codeSaveToLocalStorage(languageIdRef.current, codeRef.current);
+        };
+
+        const timerId = setInterval(tick, 60000);
+        return () => clearInterval(timerId);
+    }, []);
 
     return (
         <>
