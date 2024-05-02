@@ -41,7 +41,6 @@ const loadAndParseProblemMathJaxStyle = async (
     const result = (await getObjectFromLocalStorage(
         problemId + `-style`
     )) as string;
-    console.log('loadAndParseProblemMathJaxStyle:', result);
     return result ? parsingStyle(result) : null;
 };
 
