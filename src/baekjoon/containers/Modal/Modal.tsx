@@ -195,17 +195,8 @@ const Modal = (modalProps: ModalProps) => {
         }
     };
 
+    // TODO: Find another way to remove Bootstrap css.
     const newStyles = {
-        variables: {
-            light: {
-                diffViewerBackground: '#fff',
-                diffViewerColor: '212529',
-                addedBackground: '#e6ffed',
-                addedColor: '#24292e',
-                removedBackground: '#ffeef0',
-                removedColor: '#24292e',
-            },
-        },
         contentText: {
             background: 'transparent',
             border: '0',
@@ -214,7 +205,12 @@ const Modal = (modalProps: ModalProps) => {
             border: '0',
         },
         marker: {
+            background: 'transparent',
             border: '0',
+            '> pre': {
+                border: '0',
+                background: 'transparent',
+            },
         },
     };
 
