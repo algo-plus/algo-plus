@@ -32,6 +32,7 @@ import {
     loadAndParseProblemMathJaxStyle,
 } from '@/baekjoon/utils/storage';
 import { addUrlSearchParam, refreshUrl } from '@/common/utils/url';
+import { checkCompileError } from '@/baekjoon/utils/compile';
 
 type SolveViewProps = {
     problemId: string | null;
@@ -52,9 +53,10 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     const [codeOpen, setCodeOpen] = useState('close');
     const [code, setCode] = useState(getDefaultCode(editorLanguage));
     const [testCaseModalOpen, setTestCaseModalOpen] = useState<boolean>(false);
+    const [compileErrorMessage, setCompileErrorMessage] = useState<string>('');
 
     const [testCaseState, setTestCaseState] = useState<
-        'initial' | 'running' | 'result'
+        'initial' | 'running' | 'result' | 'error'
     >('initial');
 
     const [targetTestCases, setTargetTestCases] = useState<TestCase[]>([]);
@@ -108,6 +110,27 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
         const lang = convertLanguageIdForSubmitApi(languageId);
         const currentTestCases = [...testCases, ...customTestCases];
         setTargetTestCases(currentTestCases);
+
+        // 컴파일 에러 여부 확인
+        if (testCases.length > 0) {
+            const data: CodeCompileRequest = {
+                lang: lang,
+                code: code,
+                input: testCases[0].input,
+            };
+
+            try {
+                const output = await compile(data);
+                if (checkCompileError(lang, output)) {
+                    setTestCaseState('error');
+                    setCompileErrorMessage(output);
+                    return;
+                }
+            } catch (error) {
+                console.log('error =', error);
+                return;
+            }
+        }
 
         try {
             await Promise.all(
@@ -268,8 +291,11 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                                         state={
                                             testCaseState == 'initial'
                                                 ? 'initial'
+                                                : testCaseState == 'error'
+                                                ? 'error'
                                                 : 'run'
                                         }
+                                        errorMessage={compileErrorMessage}
                                     />
                                 }
                                 bottomStyle={{
