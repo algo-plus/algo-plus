@@ -1,10 +1,12 @@
 import React from 'react';
+import './EditorButtonBox.css';
 
 const EditorButtonBox: React.FC<EditorButtonBoxProps> = ({
     codeInitializeHandle,
     addTestCaseHandle,
     runHandle,
     submitHandle,
+    isRunning,
 }) => {
     return (
         <div style={{ display: 'flex', gap: '10px', justifyContent: 'right' }}>
@@ -14,8 +16,12 @@ const EditorButtonBox: React.FC<EditorButtonBoxProps> = ({
             <button className='btn btn-default' onClick={addTestCaseHandle}>
                 테스트 케이스 추가
             </button>
-            <button className='btn btn-default' onClick={runHandle}>
-                실행
+            <button
+                className={`btn btn-default ${isRunning ? 'loading' : ''}`}
+                onClick={runHandle}
+                disabled={isRunning}
+            >
+                {isRunning ? '실행 중...' : '실행'}
             </button>
             <button className='btn btn-primary' onClick={submitHandle}>
                 제출
@@ -29,6 +35,7 @@ interface EditorButtonBoxProps {
     addTestCaseHandle: () => void;
     runHandle: () => void;
     submitHandle: () => void;
+    isRunning: boolean;
 }
 
 export default EditorButtonBox;

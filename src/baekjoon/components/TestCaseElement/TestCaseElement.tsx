@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './TestCaseElement.css';
 import { TestCase } from '@/baekjoon/types/problem';
 
@@ -8,10 +8,17 @@ const TestCaseElement: React.FC<TestCaseElementProps> = ({
     disabled,
     onDelete,
 }) => {
-    const rows = Math.max(
-        testCase.input.split('\n').length,
-        testCase.output.split('\n').length
-    );
+    const [rows, setRows] = useState(getOptimalRows());
+    const resize = () => {
+        setRows(getOptimalRows());
+    };
+
+    function getOptimalRows() {
+        return Math.max(
+            testCase.input.split('\n').length,
+            testCase.output.split('\n').length
+        );
+    }
 
     return (
         <div
@@ -33,6 +40,7 @@ const TestCaseElement: React.FC<TestCaseElementProps> = ({
                     defaultValue={testCase.input}
                     onChange={(event) => {
                         testCase.input = event.target.value;
+                        resize();
                     }}
                 ></textarea>
             </section>
@@ -60,6 +68,7 @@ const TestCaseElement: React.FC<TestCaseElementProps> = ({
                     defaultValue={testCase.output}
                     onChange={(event) => {
                         testCase.output = event.target.value;
+                        resize();
                     }}
                 ></textarea>
             </section>
