@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { ProblemPanel } from '@/baekjoon/presentations/ProblemPanel';
 import { EditorPanel } from '@/baekjoon/presentations/EditorPanel';
 import { fetchProblemHtml } from '@/baekjoon/apis/problem';
@@ -6,7 +6,7 @@ import {
     parsingProblemDetail,
     parsingTestCases,
 } from '@/baekjoon/utils/parsing';
-import { TestCase } from '@/baekjoon/types/problem';
+import { EditorCode, TestCase } from '@/baekjoon/types/problem';
 import { HorizontalSplitView } from '@/baekjoon/presentations/HorizontalSplitView';
 import { VerticalSplitView } from '@/baekjoon/presentations/VerticalSplitView';
 import TestCasePanel from '@/baekjoon/presentations/TestCasePanel/TestCasePanel';
@@ -30,8 +30,12 @@ import { TestCaseContainer } from '@/baekjoon/presentations/TestCaseContainer';
 import {
     loadAndParseProblemDetail,
     loadAndParseProblemMathJaxStyle,
-} from '@/baekjoon/utils/storage';
+} from '@/baekjoon/utils/storage/problem';
 import { addUrlSearchParam, refreshUrl } from '@/common/utils/url';
+import {
+    loadEditorCode,
+    saveEditorCode,
+} from '@/baekjoon/utils/storage/editor';
 
 type SolveViewProps = {
     problemId: string | null;
@@ -45,19 +49,20 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     const [problemStyle, setProblemStyle] = useState<JSX.Element | null>(null);
     const [testCases, setTestCases] = useState<TestCase[]>([]);
     const [customTestCases, setCustomTestCases] = useState<TestCase[]>([]);
-    const [languageId, setLanguageId] = useState('0');
+    const [languageId, setLanguageId] = useState<string>('0');
+    const [focusLanguageId, setFocusLanguageId] = useState<string>('0');
     const [editorLanguage, setEditorLanguage] = useState<EditorLanguage>(
         convertLanguageIdForEditor(languageId)
     );
     const [codeOpen, setCodeOpen] = useState('close');
     const [code, setCode] = useState(getDefaultCode(editorLanguage));
     const [testCaseModalOpen, setTestCaseModalOpen] = useState<boolean>(false);
-
     const [testCaseState, setTestCaseState] = useState<
         'initial' | 'running' | 'result'
     >('initial');
-
     const [targetTestCases, setTargetTestCases] = useState<TestCase[]>([]);
+    const codeRef = useRef<string>(code);
+    const languageIdRef = useRef<string>(languageId);
 
     const codeInitialize = () => {
         setCode(getDefaultCode(editorLanguage));
@@ -65,6 +70,11 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
 
     const toggleTestCaseModal = () => {
         setTestCaseModalOpen(!testCaseModalOpen);
+    };
+
+    const codeSaveToLocalStorage = (languageId: string, code: string) => {
+        if (problemId) saveEditorCode(problemId, languageId, code);
+        console.log(languageId, code);
     };
 
     const addTestCase = () => {
@@ -103,6 +113,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
             return;
         }
 
+        codeSaveToLocalStorage(languageId, code);
         setTestCaseState('running');
 
         const lang = convertLanguageIdForSubmitApi(languageId);
@@ -137,6 +148,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
             return;
         }
 
+        codeSaveToLocalStorage(languageId, code);
         const data: SubmitPostRequest = {
             problem_id: problemId,
             language: Number(languageId),
@@ -162,12 +174,6 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
             console.error
         );
     };
-
-    useEffect(() => {
-        const editorLanguage = convertLanguageIdForEditor(languageId);
-        setEditorLanguage(editorLanguage);
-        setCode(getDefaultCode(editorLanguage));
-    }, [languageId]);
 
     useEffect(() => {
         const loadProblemData = async () => {
@@ -213,9 +219,59 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     const languageChangeHandle = (
         event: React.ChangeEvent<HTMLSelectElement>
     ) => {
-        const selectedLanguage = event.target.value;
-        setLanguageId(selectedLanguage);
+        if (!problemId) return;
+        if (
+            confirm(
+                '언어 변경 시 작성 중인 코드가 지워집니다.\n변경하시겠습니까?'
+            )
+        ) {
+            const selectedLanguage = event.target.value;
+            const editorLanguage = convertLanguageIdForEditor(selectedLanguage);
+            setLanguageId(selectedLanguage);
+            setCode(getDefaultCode(editorLanguage));
+            codeSaveToLocalStorage(languageId, code);
+        } else {
+            setLanguageId(focusLanguageId);
+            const editorLanguage = convertLanguageIdForEditor(focusLanguageId);
+            setEditorLanguage(editorLanguage);
+        }
     };
+
+    useEffect(() => {
+        const editorLanguage = convertLanguageIdForEditor(languageId);
+        setEditorLanguage(editorLanguage);
+    }, [languageId]);
+
+    useEffect(() => {
+        if (!problemId) return;
+        loadEditorCode(problemId).then((value: EditorCode) => {
+            setLanguageId(value.languageId as string);
+            setCode(value.code);
+            console.log(value.code);
+        });
+    }, []);
+
+    const languageFocusHandle = () => {
+        setFocusLanguageId(languageId);
+    };
+
+    useEffect(() => {
+        codeRef.current = code;
+    }, [code]);
+
+    useEffect(() => {
+        languageIdRef.current = languageId;
+    }, [languageId]);
+
+    useEffect(() => {
+        const tick = () => {
+            console.log('editor code and language save.');
+            codeSaveToLocalStorage(languageIdRef.current, codeRef.current);
+        };
+
+        const timerId = setInterval(tick, 60000);
+        return () => clearInterval(timerId);
+    }, []);
 
     return (
         <>
@@ -250,8 +306,9 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                                     onChange={setCodeOpen}
                                 />
                                 <LanguageSelectBox
-                                    defaultValue='0'
+                                    value={languageId}
                                     onChange={languageChangeHandle}
+                                    onFocus={languageFocusHandle}
                                 />
                             </div>
                             <VerticalSplitView

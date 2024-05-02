@@ -5,4 +5,9 @@ type TestCase = {
     result?: string;
 };
 
-export { TestCase };
+type EditorCode = {
+    languageId: string | number;
+    code: string;
+};
+
+export { TestCase, EditorCode };

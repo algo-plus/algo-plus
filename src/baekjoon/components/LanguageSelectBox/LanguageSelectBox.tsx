@@ -1,13 +1,15 @@
 import React, { ChangeEvent } from 'react';
 
 interface LanguageSelectBoxProps {
-    defaultValue: string;
+    value: string;
     onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
+    onFocus: () => void;
 }
 
 const LanguageSelectBox: React.FC<LanguageSelectBoxProps> = ({
-    defaultValue,
+    value,
     onChange,
+    onFocus,
 }) => {
     return (
         <div
@@ -26,8 +28,9 @@ const LanguageSelectBox: React.FC<LanguageSelectBoxProps> = ({
                     data-placeholder='언어를 선택해 주세요'
                     className='language-select chosen-select'
                     data-no_results_text='없는 언어 입니다'
-                    defaultValue={defaultValue}
+                    value={value}
                     onChange={onChange}
+                    onFocus={onFocus}
                     style={{
                         cursor: 'pointer',
                     }}

@@ -2,7 +2,7 @@ import {
     getObjectFromLocalStorage,
     saveObjectInLocalStorage,
 } from '@/common/utils/storage';
-import { parsingProblemDetail, parsingStyle } from './parsing';
+import { parsingProblemDetail, parsingStyle } from '@/baekjoon/utils/parsing';
 
 interface ProblemDetail {
     htmlContent: string;
