@@ -52,6 +52,12 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     const [code, setCode] = useState(getDefaultCode(editorLanguage));
     const [testCaseModalOpen, setTestCaseModalOpen] = useState<boolean>(false);
 
+    const [testCaseState, setTestCaseState] = useState<
+        'initial' | 'running' | 'result'
+    >('initial');
+
+    const [targetTestCases, setTargetTestCases] = useState<TestCase[]>([]);
+
     const codeInitialize = () => {
         setCode(getDefaultCode(editorLanguage));
     };
@@ -86,46 +92,42 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
         toggleTestCaseModal();
     };
 
-    const codeRun = () => {
+    useEffect(() => {
+        setTargetTestCases([...testCases]);
+    }, [testCases]);
+
+    const codeRun = async () => {
         if (!code) {
             alert('실행할 코드가 없습니다.');
             return;
         }
 
-        // temporary log
-        console.log(code);
+        setTestCaseState('running');
 
         const lang = convertLanguageIdForSubmitApi(languageId);
+        const currentTestCases = [...testCases, ...customTestCases];
+        setTargetTestCases(currentTestCases);
 
-        const targetTestCases = [...testCases, ...customTestCases];
-        console.log(targetTestCases);
-        for (const testCase of targetTestCases) {
-            const data: CodeCompileRequest = {
-                lang: lang,
-                code: code,
-                input: testCase.input,
-            };
+        try {
+            await Promise.all(
+                currentTestCases.map(async (testCase) => {
+                    const data: CodeCompileRequest = {
+                        lang: lang,
+                        code: code,
+                        input: testCase.input,
+                    };
 
-            // TODO: 테스트 케이스 콘솔을 화면 컴포넌트 생성 로직으로 변경
-            compile(
-                data,
-                (output) => {
-                    console.log(
-                        `======= 테스트 케이스 ${testCase.uuid} ========`
-                    );
-                    console.log(`output=${output}`);
-                    console.log(`expect=${testCase.output}`);
-                    console.log(
-                        `result=${
-                            output == testCase.output
-                                ? '맞았습니다!'
-                                : '틀렸습니다'
-                        }`
-                    );
-                },
-                (error) => console.log('error =', error)
+                    testCase.result = undefined;
+
+                    const output = await compile(data);
+                    testCase.result = output;
+                })
             );
+        } catch (error) {
+            console.log('error =', error);
         }
+
+        setTestCaseState('result');
     };
 
     const codeSubmit = () => {
@@ -256,8 +258,12 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                                 }
                                 bottom={
                                     <TestCasePanel
-                                        testCases={testCases}
-                                        state='initial'
+                                        testCases={targetTestCases}
+                                        state={
+                                            testCaseState == 'initial'
+                                                ? 'initial'
+                                                : 'run'
+                                        }
                                     />
                                 }
                                 bottomStyle={{
@@ -277,6 +283,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                     addTestCaseHandle={toggleTestCaseModal}
                     runHandle={codeRun}
                     submitHandle={codeSubmit}
+                    isRunning={testCaseState == 'running'}
                 />
             </div>
 

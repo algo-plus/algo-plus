@@ -22,3 +22,33 @@
 .test-case-elem p > span:nth-child(2) {
     width: 100%;
 }
+
+@keyframes pulse {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.5);
+    }
+}
+
+.loading-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50% !important;
+    background-color: black;
+    margin: 2px;
+    animation: pulse 1s infinite ease-in-out;
+}
+
+.loading-dot:nth-child(1) {
+    animation-delay: 0s;
+}
+.loading-dot:nth-child(2) {
+    animation-delay: 0.1s;
+}
+.loading-dot:nth-child(3) {
+    animation-delay: 0.2s;
+}
