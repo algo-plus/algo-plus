@@ -109,10 +109,7 @@ const Modal = (modalProps: ModalProps) => {
         setCodeBlocks(prevBlocks);
     };
 
-    const handleLineNumberClick = (
-        lineId: string,
-        event: React.MouseEvent<HTMLTableCellElement>
-    ) => {
+    const handleLineNumberClick = (lineId: string) => {
         const linePrefix = lineId.substring(0, 2);
         const lineIndex = parseInt(lineId.substring(2), 10) - 1;
 
@@ -216,7 +213,7 @@ const Modal = (modalProps: ModalProps) => {
 
     return (
         <div className='modal-content'>
-            <div className='modal-header' style={{ display: 'flex' }}>
+            <div className='modal-header'>
                 <h4 className='modal-title'>오답 노트 작성</h4>
                 <button
                     type='button'
@@ -228,10 +225,7 @@ const Modal = (modalProps: ModalProps) => {
                     <span aria-hidden='true'>&times;</span>
                 </button>
             </div>
-            <div
-                className='modal-body'
-                style={{ overflowY: 'auto', maxHeight: '75vh' }}
-            >
+            <div className='modal-body'>
                 <div className='codediff-container'>
                     <h5>코드 비교 결과:</h5>
                     <ReactDiffViewer
