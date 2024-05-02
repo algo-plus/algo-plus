@@ -28,6 +28,9 @@
     line-height: 0;
     color: #1f1f1f;
     transition: 0.2s;
+    position: absolute;
+    top: 30px;
+    right: 10px;
 }
 
 .boj-modal-close:hover {

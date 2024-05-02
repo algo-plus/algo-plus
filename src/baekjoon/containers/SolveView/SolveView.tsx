@@ -31,6 +31,7 @@ import {
     loadAndParseProblemDetail,
     loadAndParseProblemMathJaxStyle,
 } from '@/baekjoon/utils/storage';
+import { addUrlSearchParam, refreshUrl } from '@/common/utils/url';
 
 type SolveViewProps = {
     problemId: string | null;
@@ -149,8 +150,13 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
             (response) => {
                 const responseURL = response.request.responseURL;
                 if (responseURL) {
-                    console.log('code submit... responseURL=' + responseURL);
-                    // TODO: 코드 제출 후 로직 작성
+                    const redirectURL = addUrlSearchParam(
+                        responseURL,
+                        'after_algoplus_submit',
+                        'true'
+                    );
+                    console.log('code submit... redirectURL=' + redirectURL);
+                    refreshUrl(redirectURL);
                 }
             },
             console.error
