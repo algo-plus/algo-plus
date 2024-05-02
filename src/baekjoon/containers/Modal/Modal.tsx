@@ -222,12 +222,13 @@ const Modal = (modalProps: ModalProps) => {
                     />
                 </div>
                 {codeBlocks.map((block) => (
-                    <div key={block.id}>
+                    <div key={block.id} className='code-block'>
                         {block.selectedOldCode && (
                             <div>
                                 <h5>
                                     <input
                                         type='text'
+                                        className='codeName'
                                         value={block.oldCodeName}
                                         onChange={(e) =>
                                             handleOldCodeNameChange(e, block.id)
@@ -253,6 +254,7 @@ const Modal = (modalProps: ModalProps) => {
                                 <h5>
                                     <input
                                         type='text'
+                                        className='codeName'
                                         value={block.newCodeName}
                                         onChange={(e) =>
                                             handleNewCodeNameChange(e, block.id)
@@ -294,38 +296,44 @@ const Modal = (modalProps: ModalProps) => {
                                 ></textarea>
                             </div>
                         )}
-                        {(block.selectedOldCode || block.selectedNewCode) &&
-                            !block.isRegistered && (
+                        <div className='code-block-button'>
+                            {(block.selectedOldCode || block.selectedNewCode) &&
+                                !block.isRegistered && (
+                                    <div>
+                                        <button
+                                            type='button'
+                                            className='btn btn-primary'
+                                            onClick={() =>
+                                                handleRegisterBlock(block.id)
+                                            }
+                                        >
+                                            등록
+                                        </button>
+                                    </div>
+                                )}
+                            {block.isRegistered && (
                                 <div>
+                                    <button
+                                        type='button'
+                                        className='btn btn-secondary'
+                                        onClick={() =>
+                                            handleDeleteBlock(block.id)
+                                        }
+                                    >
+                                        삭제
+                                    </button>
                                     <button
                                         type='button'
                                         className='btn btn-primary'
                                         onClick={() =>
-                                            handleRegisterBlock(block.id)
+                                            handleEditBlock(block.id)
                                         }
                                     >
-                                        등록
+                                        수정
                                     </button>
                                 </div>
                             )}
-                        {block.isRegistered && (
-                            <div>
-                                <button
-                                    type='button'
-                                    className='btn btn-warning'
-                                    onClick={() => handleEditBlock(block.id)}
-                                >
-                                    수정
-                                </button>
-                                <button
-                                    type='button'
-                                    className='btn btn-danger'
-                                    onClick={() => handleDeleteBlock(block.id)}
-                                >
-                                    삭제
-                                </button>
-                            </div>
-                        )}
+                        </div>
                     </div>
                 ))}
                 <div>
