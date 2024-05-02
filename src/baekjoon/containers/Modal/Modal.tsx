@@ -195,6 +195,29 @@ const Modal = (modalProps: ModalProps) => {
         }
     };
 
+    const newStyles = {
+        variables: {
+            light: {
+                diffViewerBackground: '#fff',
+                diffViewerColor: '212529',
+                addedBackground: '#e6ffed',
+                addedColor: '#24292e',
+                removedBackground: '#ffeef0',
+                removedColor: '#24292e',
+            },
+        },
+        contentText: {
+            background: 'transparent',
+            border: '0',
+        },
+        lineNumber: {
+            border: '0',
+        },
+        marker: {
+            border: '0',
+        },
+    };
+
     return (
         <div className='modal-content'>
             <div className='modal-header' style={{ display: 'flex' }}>
@@ -221,6 +244,7 @@ const Modal = (modalProps: ModalProps) => {
                         compareMethod={DiffMethod.LINES}
                         splitView={true}
                         onLineNumberClick={handleLineNumberClick}
+                        styles={newStyles}
                         renderContent={(value) => {
                             return (
                                 <Prism
