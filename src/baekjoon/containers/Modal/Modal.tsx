@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer-continued';
 import './Modal.css';
 import { ModalProps } from '@/baekjoon/types/source';
+import { Prism } from 'react-syntax-highlighter';
+import { coy } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 let startLineIndex: number = -1;
 let endLineIndex: number = -1;
@@ -19,8 +21,8 @@ const Modal = (modalProps: ModalProps) => {
         console.log('save');
     };
 
-    const oldCode = modalProps.sourceCodes[0] || '';
-    const newCode = modalProps.sourceCodes[1] || '';
+    const oldCode = modalProps.sourceCodes[0]?.code || '';
+    const newCode = modalProps.sourceCodes[1]?.code || '';
 
     const [codeBlocks, setCodeBlocks] = useState([
         {
@@ -88,6 +90,13 @@ const Modal = (modalProps: ModalProps) => {
                     updatedBlocks[blockIndex].selectedNewCode = '';
                 }
             }
+
+            if (
+                updatedBlocks[blockIndex].selectedOldCode === '' &&
+                updatedBlocks[blockIndex].selectedNewCode === ''
+            ) {
+                handleDeleteBlock(id);
+            }
             return updatedBlocks;
         });
     };
@@ -143,7 +152,7 @@ const Modal = (modalProps: ModalProps) => {
         }
 
         // 새로운 블록 생성
-        if (lastBlock.isRegistered) {
+        if (codeBlocks.length == 0 || lastBlock.isRegistered) {
             setCodeBlocks([
                 ...codeBlocks,
                 {
@@ -186,6 +195,25 @@ const Modal = (modalProps: ModalProps) => {
         }
     };
 
+    // TODO: Find another way to remove Bootstrap css.
+    const newStyles = {
+        contentText: {
+            background: 'transparent',
+            border: '0',
+        },
+        lineNumber: {
+            border: '0',
+        },
+        marker: {
+            background: 'transparent',
+            border: '0',
+            '> pre': {
+                border: '0',
+                background: 'transparent',
+            },
+        },
+    };
+
     return (
         <div className='modal-content'>
             <div className='modal-header' style={{ display: 'flex' }}>
@@ -212,19 +240,46 @@ const Modal = (modalProps: ModalProps) => {
                         compareMethod={DiffMethod.LINES}
                         splitView={true}
                         onLineNumberClick={handleLineNumberClick}
+                        styles={newStyles}
+                        renderContent={(value) => {
+                            return (
+                                <Prism
+                                    style={coy}
+                                    language={
+                                        modalProps.sourceCodes[0]?.lang || ''
+                                    }
+                                    wrapLongLines
+                                    wrapLines
+                                    PreTag='span'
+                                    customStyle={{
+                                        display: 'contents',
+                                        wordBreak: 'break-word',
+                                    }}
+                                    codeTagProps={{
+                                        style: {
+                                            display: 'contents',
+                                        },
+                                    }}
+                                >
+                                    {value}
+                                </Prism>
+                            );
+                        }}
                     />
                 </div>
                 {codeBlocks.map((block) => (
-                    <div key={block.id}>
+                    <div key={block.id} className='code-block'>
                         {block.selectedOldCode && (
                             <div>
                                 <h5>
                                     <input
                                         type='text'
+                                        className='code-name'
                                         value={block.oldCodeName}
                                         onChange={(e) =>
                                             handleOldCodeNameChange(e, block.id)
                                         }
+                                        readOnly={block.isRegistered}
                                     />
                                 </h5>
                                 <button
@@ -245,10 +300,12 @@ const Modal = (modalProps: ModalProps) => {
                                 <h5>
                                     <input
                                         type='text'
+                                        className='code-name'
                                         value={block.newCodeName}
                                         onChange={(e) =>
                                             handleNewCodeNameChange(e, block.id)
                                         }
+                                        readOnly={block.isRegistered}
                                     />
                                 </h5>
                                 <button
@@ -281,41 +338,48 @@ const Modal = (modalProps: ModalProps) => {
                                             return updatedBlocks;
                                         });
                                     }}
+                                    readOnly={block.isRegistered}
                                 ></textarea>
                             </div>
                         )}
-                        {(block.selectedOldCode || block.selectedNewCode) &&
-                            !block.isRegistered && (
+                        <div className='code-block-button'>
+                            {(block.selectedOldCode || block.selectedNewCode) &&
+                                !block.isRegistered && (
+                                    <div>
+                                        <button
+                                            type='button'
+                                            className='btn btn-primary'
+                                            onClick={() =>
+                                                handleRegisterBlock(block.id)
+                                            }
+                                        >
+                                            등록
+                                        </button>
+                                    </div>
+                                )}
+                            {block.isRegistered && (
                                 <div>
+                                    <button
+                                        type='button'
+                                        className='btn btn-secondary'
+                                        onClick={() =>
+                                            handleDeleteBlock(block.id)
+                                        }
+                                    >
+                                        삭제
+                                    </button>
                                     <button
                                         type='button'
                                         className='btn btn-primary'
                                         onClick={() =>
-                                            handleRegisterBlock(block.id)
+                                            handleEditBlock(block.id)
                                         }
                                     >
-                                        등록
+                                        수정
                                     </button>
                                 </div>
                             )}
-                        {block.isRegistered && (
-                            <div>
-                                <button
-                                    type='button'
-                                    className='btn btn-warning'
-                                    onClick={() => handleEditBlock(block.id)}
-                                >
-                                    수정
-                                </button>
-                                <button
-                                    type='button'
-                                    className='btn btn-danger'
-                                    onClick={() => handleDeleteBlock(block.id)}
-                                >
-                                    삭제
-                                </button>
-                            </div>
-                        )}
+                        </div>
                     </div>
                 ))}
                 <div>
