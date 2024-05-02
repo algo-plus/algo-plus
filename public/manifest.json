@@ -37,13 +37,7 @@
                 "oauth/oauth2.js",
                 "oauth/Github.js",
                 "oauth/storage.js",
-                "oauth/enable.js",
-                "oauth/boj/variables.js",
-                "oauth/boj/storage.js",
-                "oauth/boj/parsing.js",
-                "oauth/boj/util.js",
-                "oauth/boj/uploadfunctions.js",
-                "oauth/boj/baekjoon.js"
+                "oauth/enable.js"
             ]
         }
     ],
