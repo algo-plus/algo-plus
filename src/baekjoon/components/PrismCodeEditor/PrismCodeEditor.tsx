@@ -14,7 +14,11 @@ const PrismCodeEditor = forwardRef(
         const editorRef = useRef<PrismEditor>();
 
         useEffect(() => {
-            editorRef.current?.setOptions({ ...props, tabSize: 4 });
+            editorRef.current?.setOptions({
+                ...props,
+                tabSize: 4,
+                wordWrap: true,
+            });
         }, [props]);
 
         useEffect(() => {
