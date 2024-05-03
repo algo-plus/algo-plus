@@ -4,9 +4,11 @@ import { uploadState } from './variables';
 export const isNull = (value: any) => {
     return value === null || value === undefined;
 };
+
 export const getVersion = () => {
     return chrome.runtime.getManifest().version;
 };
+
 export const filter = (arr: any, conditions: object): any => {
     return arr.filter((item: any) => {
         for (const [key, value] of Object.entries(conditions))
@@ -37,6 +39,7 @@ const groupBy = (array: any, key: any) => {
         return rv;
     }, {});
 };
+
 export const isNotEmpty = (obj: any) => {
     if (isEmpty(obj)) return false;
     if (typeof obj !== 'object') return true;
@@ -48,6 +51,7 @@ export const isNotEmpty = (obj: any) => {
     }
     return true;
 };
+
 export const isEmpty = (value: any) => {
     return (
         isNull(value) || (value.hasOwnProperty('length') && value.length === 0)

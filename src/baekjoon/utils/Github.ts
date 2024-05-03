@@ -1,9 +1,7 @@
-export const b64EncodeUnicode = (str: string): string => {
-    return btoa(
-        encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (p1) {
-            return String.fromCharCode(parseInt(`0x${p1}`, 16));
-        })
-    );
+export const b64EncodeUnicode = (str: string) => {
+    const utf8Bytes = new TextEncoder().encode(str);
+    const base64String = btoa(String.fromCharCode(...utf8Bytes));
+    return base64String;
 };
 
 export class GitHub {

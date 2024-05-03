@@ -45,7 +45,7 @@ let loader: any;
 
 const currentUrl = window.location.href;
 
-export const startLoader = () => {
+export const startLoader = async () => {
     loader = setInterval(async () => {
         const enable = await checkEnable();
         if (!enable) stopLoader();
@@ -66,7 +66,6 @@ export const startLoader = () => {
                     console.log('풀이가 맞았습니다. 업로드를 시작합니다.');
                     startUpload();
                     const bojData = await findData();
-                    console.log('bojData: ' + bojData);
                     await beginUpload(bojData);
                 }
             }
@@ -76,13 +75,7 @@ export const startLoader = () => {
 
 const username = findUsername();
 if (!isNull(username)) {
-    if (
-        ['status', `user_id=${username}`, 'problem_id', 'from_mine=1'].every(
-            (key) => currentUrl.includes(key)
-        )
-    )
-        startLoader();
-    else if (currentUrl.match(/\.net\/problem\/\d+/) !== null)
+    if (currentUrl.match(/\.net\/problem\/\d+/) !== null)
         parseProblemDescription();
 }
 
@@ -92,31 +85,29 @@ const stopLoader = () => {
 };
 
 const beginUpload = async (bojData: any) => {
-    if (isNotEmpty(bojData)) {
-        const stats: any = await getStats();
-        const hook: any = await getHook();
+    const stats: any = await getStats();
+    const hook: any = await getHook();
 
-        const currentVersion = stats.version;
-        if (
-            isNull(currentVersion) ||
-            currentVersion !== getVersion() ||
-            isNull(await getStatsSHAfromPath(hook))
-        ) {
-            await versionUpdate();
-        }
-
-        const cachedSHA = await getStatsSHAfromPath(
-            `${hook}/${bojData.directory}/${bojData.fileName}`
-        );
-        const calcSHA = calculateBlobSHA(bojData.code);
-
-        if (cachedSHA == calcSHA) {
-            markUploadedCSS(stats.branches, bojData.directory);
-            console.log(`현재 제출번호를 업로드한 기록이 있습니다.`);
-            return;
-        }
-        await uploadOneSolveProblemOnGit(bojData, markUploadedCSS);
+    const currentVersion = stats.version;
+    if (
+        isNull(currentVersion) ||
+        currentVersion !== getVersion() ||
+        isNull(await getStatsSHAfromPath(hook))
+    ) {
+        await versionUpdate();
     }
+
+    const cachedSHA = await getStatsSHAfromPath(
+        `${hook}/${bojData.directory}/${bojData.fileName}`
+    );
+    const calcSHA = calculateBlobSHA(bojData.code);
+
+    if (cachedSHA == calcSHA) {
+        markUploadedCSS(stats.branches, bojData.directory);
+        console.log(`현재 제출번호를 업로드한 기록이 있습니다.`);
+        return;
+    }
+    await uploadOneSolveProblemOnGit(bojData, markUploadedCSS);
 };
 
 const versionUpdate = async () => {

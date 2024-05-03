@@ -5,7 +5,6 @@ import {
     parseNumberFromString,
     convertSingleCharToDoubleChar,
     unescapeHtml,
-    asyncPool,
 } from '@/baekjoon/utils/utils';
 import { RESULT_CATEGORY, languages, bj_level, uploadState } from './variables';
 import {
@@ -50,6 +49,7 @@ export const findData = async (data: any = null) => {
             )),
         };
         const detail = await makeDetailMessageAndReadme(data);
+        console.log('FindData', data, detail);
         return { ...data, ...detail };
     } catch (error) {
         console.error(error);
@@ -57,7 +57,7 @@ export const findData = async (data: any = null) => {
     return null;
 };
 
-async function makeDetailMessageAndReadme(data: any) {
+const makeDetailMessageAndReadme = async (data: any) => {
     const {
         problemId,
         result,
@@ -115,7 +115,7 @@ async function makeDetailMessageAndReadme(data: any) {
         readme,
         code,
     };
-}
+};
 
 export const findUsername = () => {
     const el: any = document.querySelector('a.username');
@@ -261,7 +261,7 @@ const getProblemDescriptionById = async (problemId: any) => {
     let problem = await getProblemFromStats(problemId);
     if (isNull(problem)) {
         problem = await fetchProblemDescriptionById(problemId);
-        updateProblemsFromStats(problem); // not await
+        updateProblemsFromStats(problem);
     }
     return problem;
 };
@@ -323,81 +323,6 @@ const findProblemInfoAndSubmissionCode = async (
                 markUploadFailedCSS();
             });
     }
-};
-
-const fetchProblemInfoByIds = (problemIds: any) => {
-    const dividedProblemIds = [];
-    for (let i = 0; i < problemIds.length; i += 100) {
-        dividedProblemIds.push(problemIds.slice(i, i + 100));
-    }
-    return asyncPool(1, dividedProblemIds, async (pids: any) => {
-        const result = await fetch(
-            `https://solved.ac/api/v3/problem/lookup?problemIds=${pids.join(
-                '%2C'
-            )}`,
-            { method: 'GET' }
-        );
-        return result.json();
-    }).then((results) => results.flatMap((result) => result));
-};
-
-const fetchProblemDescriptionsByIds = async (problemIds: any) => {
-    return asyncPool(2, problemIds, async (problemId: any) => {
-        return getProblemDescriptionById(problemId);
-    });
-};
-
-const fetchSubmissionCodeByIds = async (submissionIds: any) => {
-    return asyncPool(2, submissionIds, async (submissionId: any) => {
-        return getSubmitCodeById(submissionId);
-    });
-};
-
-const findResultTableByProblemIdAndUsername = async (
-    problemId: any,
-    username: string
-) => {
-    return fetch(
-        `https://www.acmicpc.net/status?from_mine=1&problem_id=${problemId}&user_id=${username}`,
-        { method: 'GET' }
-    )
-        .then((html) => html.text())
-        .then((text) => {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(text, 'text/html');
-            return parsingResultTableList(doc);
-        });
-};
-
-const findUniqueResultTableListByUsername = async (username: string) => {
-    return selectBestSubmissionList(
-        await findResultTableListByUsername(username)
-    );
-};
-
-const findResultTableListByUsername = async (username: string) => {
-    const result = [];
-    let doc = await findHtmlDocumentByUrl(
-        `https://www.acmicpc.net/status?user_id=${username}&result_id=4`
-    );
-    let next_page: any = doc.getElementById('next_page');
-    do {
-        result.push(...parsingResultTableList(doc));
-        if (next_page !== null)
-            doc = await findHtmlDocumentByUrl(next_page.getAttribute('href'));
-    } while ((next_page = doc.getElementById('next_page')) !== null);
-    result.push(...parsingResultTableList(doc));
-
-    return result;
-};
-
-const findHtmlDocumentByUrl = async (url: string) => {
-    return fetch(url, { method: 'GET' })
-        .then((html) => html.text())
-        .then((text) => {
-            const parser = new DOMParser();
-            return parser.parseFromString(text, 'text/html');
-        });
 };
 
 const langVersionRemove = (lang: string, ignores: any): string => {

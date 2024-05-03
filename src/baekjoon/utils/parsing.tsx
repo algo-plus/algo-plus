@@ -6,6 +6,7 @@ const getProblemId = (): string | null => {
     const problemIdElement = document.querySelector(
         'ul.problem-menu li a[href*="/problem"]'
     );
+
     if (problemIdElement && problemIdElement.textContent) {
         const match = problemIdElement.textContent.match(/(\d+)번/);
         if (match) return match[1];
@@ -29,13 +30,13 @@ const parsingProblemDetail = (html: string): JSX.Element => {
     ) as HTMLElement;
 
     if (problemContainer) {
-        // 문제 메뉴, 즐겨찾기 버튼, 알고리즘 분류, 메모 제거
         const elementsToRemove = [
             'ul.problem-menu',
             '.problem-button',
             '#problem_tags',
             '#problem_memo',
         ];
+
         elementsToRemove.forEach((selector) => {
             const elem = problemContainer.querySelector(selector);
             if (elem && elem.parentNode) {
@@ -47,7 +48,7 @@ const parsingProblemDetail = (html: string): JSX.Element => {
 
         return (
             <div
-                className='problem-content'
+                className="problem-content"
                 dangerouslySetInnerHTML={{
                     __html: problemContainer.innerHTML,
                 }}
@@ -61,6 +62,7 @@ const parsingProblemDetail = (html: string): JSX.Element => {
 const parsingStyle = (html: string): JSX.Element => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     const style = doc.querySelector('style');
+
     if (style) {
         return <style>{style.textContent}</style>;
     } else {

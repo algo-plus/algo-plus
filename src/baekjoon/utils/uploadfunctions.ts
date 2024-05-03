@@ -12,8 +12,10 @@ export const uploadOneSolveProblemOnGit = async (
     bojData: any,
     cb: Function
 ): Promise<void> => {
+    console.log('uploadOneSolveProblem starting...');
     const token: any = await getToken();
     const hook: any = await getHook();
+    console.log('uploadOneSolveProblem token, hook', token, hook);
     if (isNull(token) || isNull(hook)) {
         console.error('token or hook is null', token, hook);
         return;
@@ -40,10 +42,13 @@ const upload = async (
     commitMessage: string,
     cb: Function
 ) => {
+    console.log('upload starting...');
     const git = new GitHub(hook, token);
     const stats: any = await getStats();
     let default_branch = stats.branches[hook];
+    console.log('upload default_branch', git, stats, default_branch);
     if (isNull(default_branch)) {
+        console.log('default branch is null');
         default_branch = await git.getDefaultBranchOnRepo();
         stats.branches[hook] = default_branch;
     }

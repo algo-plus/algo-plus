@@ -4,6 +4,7 @@ import './Modal.css';
 import { ModalProps } from '@/baekjoon/types/source';
 import { Prism } from 'react-syntax-highlighter';
 import { coy } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { startLoader } from '@/baekjoon/utils/baekjoon';
 
 let startLineIndex: number = -1;
 let endLineIndex: number = -1;
@@ -19,6 +20,7 @@ const Modal = (modalProps: ModalProps) => {
     };
     const save = () => {
         console.log('save');
+        startLoader();
     };
 
     const oldCode = modalProps.sourceCodes[0]?.code || '';
@@ -196,24 +198,24 @@ const Modal = (modalProps: ModalProps) => {
     };
 
     return (
-        <div className='modal-content'>
-            <div className='modal-header' style={{ display: 'flex' }}>
-                <h4 className='modal-title'>오답 노트 작성</h4>
+        <div className="modal-content">
+            <div className="modal-header" style={{ display: 'flex' }}>
+                <h4 className="modal-title">오답 노트 작성</h4>
                 <button
-                    type='button'
-                    className='close'
-                    data-dismiss='modal'
-                    aria-label='Close'
+                    type="button"
+                    className="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
                     onClick={closeModal}
                 >
-                    <span aria-hidden='true'>&times;</span>
+                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div
-                className='modal-body'
+                className="modal-body"
                 style={{ overflowY: 'auto', maxHeight: '75vh' }}
             >
-                <div className='codediff-container'>
+                <div className="codediff-container">
                     <h5>코드 비교 결과:</h5>
                     <ReactDiffViewer
                         oldValue={oldCode ? oldCode : ''}
@@ -230,7 +232,7 @@ const Modal = (modalProps: ModalProps) => {
                                     }
                                     wrapLongLines
                                     wrapLines
-                                    PreTag='span'
+                                    PreTag="span"
                                     customStyle={{
                                         display: 'contents',
                                         wordBreak: 'break-word',
@@ -248,13 +250,13 @@ const Modal = (modalProps: ModalProps) => {
                     />
                 </div>
                 {codeBlocks.map((block) => (
-                    <div key={block.id} className='code-block'>
+                    <div key={block.id} className="code-block">
                         {block.selectedOldCode && (
                             <div>
                                 <h5>
                                     <input
-                                        type='text'
-                                        className='code-name'
+                                        type="text"
+                                        className="code-name"
                                         value={block.oldCodeName}
                                         onChange={(e) =>
                                             handleOldCodeNameChange(e, block.id)
@@ -263,14 +265,14 @@ const Modal = (modalProps: ModalProps) => {
                                     />
                                 </h5>
                                 <button
-                                    type='button'
-                                    className='close'
-                                    aria-label='Close'
+                                    type="button"
+                                    className="close"
+                                    aria-label="Close"
                                     onClick={() =>
                                         handleCloseCode('old', block.id)
                                     }
                                 >
-                                    <span aria-hidden='true'>&times;</span>
+                                    <span aria-hidden="true">&times;</span>
                                 </button>
                                 <pre>{block.selectedOldCode}</pre>
                             </div>
@@ -279,8 +281,8 @@ const Modal = (modalProps: ModalProps) => {
                             <div>
                                 <h5>
                                     <input
-                                        type='text'
-                                        className='code-name'
+                                        type="text"
+                                        className="code-name"
                                         value={block.newCodeName}
                                         onChange={(e) =>
                                             handleNewCodeNameChange(e, block.id)
@@ -289,14 +291,14 @@ const Modal = (modalProps: ModalProps) => {
                                     />
                                 </h5>
                                 <button
-                                    type='button'
-                                    className='close'
-                                    aria-label='Close'
+                                    type="button"
+                                    className="close"
+                                    aria-label="Close"
                                     onClick={() =>
                                         handleCloseCode('new', block.id)
                                     }
                                 >
-                                    <span aria-hidden='true'>&times;</span>
+                                    <span aria-hidden="true">&times;</span>
                                 </button>
                                 <pre>{block.selectedNewCode}</pre>
                             </div>
@@ -322,13 +324,13 @@ const Modal = (modalProps: ModalProps) => {
                                 ></textarea>
                             </div>
                         )}
-                        <div className='code-block-button'>
+                        <div className="code-block-button">
                             {(block.selectedOldCode || block.selectedNewCode) &&
                                 !block.isRegistered && (
                                     <div>
                                         <button
-                                            type='button'
-                                            className='btn btn-primary'
+                                            type="button"
+                                            className="btn btn-primary"
                                             onClick={() =>
                                                 handleRegisterBlock(block.id)
                                             }
@@ -340,8 +342,8 @@ const Modal = (modalProps: ModalProps) => {
                             {block.isRegistered && (
                                 <div>
                                     <button
-                                        type='button'
-                                        className='btn btn-secondary'
+                                        type="button"
+                                        className="btn btn-secondary"
                                         onClick={() =>
                                             handleDeleteBlock(block.id)
                                         }
@@ -349,8 +351,8 @@ const Modal = (modalProps: ModalProps) => {
                                         삭제
                                     </button>
                                     <button
-                                        type='button'
-                                        className='btn btn-primary'
+                                        type="button"
+                                        className="btn btn-primary"
                                         onClick={() =>
                                             handleEditBlock(block.id)
                                         }
@@ -367,18 +369,18 @@ const Modal = (modalProps: ModalProps) => {
                     <textarea rows={4} cols={50}></textarea>
                 </div>
             </div>
-            <div className='modal-footer'>
+            <div className="modal-footer">
                 <button
-                    type='button'
-                    className='btn btn-secondary'
-                    data-dismiss='modal'
+                    type="button"
+                    className="btn btn-secondary"
+                    data-dismiss="modal"
                     onClick={closeModal}
                 >
                     취소
                 </button>
                 <button
-                    type='button'
-                    className='btn btn-primary'
+                    type="button"
+                    className="btn btn-primary"
                     onClick={save}
                 >
                     저장
