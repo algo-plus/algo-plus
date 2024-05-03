@@ -37,6 +37,13 @@ const PrismCodeEditor = forwardRef(
             return editor.remove;
         }, [props.language]);
 
+        // 에디터 줄 바꿈 없이 에디터 내부에 wrapping 되도록 설정
+        useEffect(() => {
+            if (editorRef.current) {
+                editorRef.current.wrapper.style.wordBreak = 'break-all';
+            }
+        }, [editorRef.current]);
+
         return <div className='prism-editor-react' ref={divRef} />;
     }
 );
