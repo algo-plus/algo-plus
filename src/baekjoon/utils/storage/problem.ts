@@ -8,7 +8,7 @@ interface ProblemDetail {
     htmlContent: string;
 }
 
-const saveProblemMathJaxStyle = async (
+export const saveProblemMathJaxStyle = async (
     problemId: string,
     htmlContent: string
 ): Promise<void> => {
@@ -18,7 +18,7 @@ const saveProblemMathJaxStyle = async (
     await saveObjectInLocalStorage({ [problemId + `-style`]: mathJaxStyle });
 };
 
-const saveProblemDetail = async (
+export const saveProblemDetail = async (
     problemId: string,
     htmlContent: string
 ): Promise<void> => {
@@ -26,7 +26,7 @@ const saveProblemDetail = async (
     await saveObjectInLocalStorage({ [problemId]: problemDetail });
 };
 
-const loadAndParseProblemDetail = async (
+export const loadAndParseProblemDetail = async (
     problemId: string
 ): Promise<JSX.Element | null> => {
     const result = (await getObjectFromLocalStorage(
@@ -35,18 +35,11 @@ const loadAndParseProblemDetail = async (
     return result ? parsingProblemDetail(result.htmlContent) : null;
 };
 
-const loadAndParseProblemMathJaxStyle = async (
+export const loadAndParseProblemMathJaxStyle = async (
     problemId: string
 ): Promise<JSX.Element | null> => {
     const result = (await getObjectFromLocalStorage(
         problemId + `-style`
     )) as string;
     return result ? parsingStyle(result) : null;
-};
-
-export {
-    saveProblemDetail,
-    loadAndParseProblemDetail,
-    saveProblemMathJaxStyle,
-    loadAndParseProblemMathJaxStyle,
 };

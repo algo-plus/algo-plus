@@ -4,6 +4,7 @@ import './Modal.css';
 import { ModalProps } from '@/baekjoon/types/source';
 import { Prism } from 'react-syntax-highlighter';
 import { coy } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { startLoader } from '@/baekjoon/utils/baekjoon';
 
 let startLineIndex: number = -1;
 let endLineIndex: number = -1;
@@ -19,6 +20,7 @@ const Modal = (modalProps: ModalProps) => {
     };
     const save = () => {
         console.log('save');
+        startLoader();
     };
 
     const oldCode = modalProps.sourceCodes[0]?.code || '';
@@ -213,7 +215,7 @@ const Modal = (modalProps: ModalProps) => {
             },
         },
     };
-
+    <s></s>;
     return (
         <div className='modal-content'>
             <div className='modal-header' style={{ display: 'flex' }}>
