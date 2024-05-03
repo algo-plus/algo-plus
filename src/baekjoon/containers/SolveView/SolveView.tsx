@@ -34,7 +34,9 @@ import {
 import { addUrlSearchParam, refreshUrl } from '@/common/utils/url';
 import {
     loadEditorCode,
+    loadTestCases,
     saveEditorCode,
+    saveTestCases,
 } from '@/baekjoon/utils/storage/editor';
 import { checkCompileError } from '@/baekjoon/utils/compile';
 
@@ -77,7 +79,6 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
 
     const codeSaveToLocalStorage = (languageId: string, code: string) => {
         if (problemId) saveEditorCode(problemId, languageId, code);
-        console.log(languageId, code);
     };
 
     const addTestCase = () => {
@@ -112,6 +113,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                 return;
             }
         }
+        if (problemId) saveTestCases(problemId, customTestCases);
         toggleTestCaseModal();
     };
 
@@ -280,7 +282,9 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
         loadEditorCode(problemId).then((value: EditorCode) => {
             setLanguageId(value.languageId as string);
             setCode(value.code);
-            console.log(value.code);
+        });
+        loadTestCases(problemId).then((value: TestCase[]) => {
+            setCustomTestCases(value);
         });
     }, []);
 
