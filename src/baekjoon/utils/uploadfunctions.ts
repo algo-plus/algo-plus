@@ -42,13 +42,10 @@ const upload = async (
     commitMessage: string,
     cb: Function
 ) => {
-    console.log('upload starting...');
     const git = new GitHub(hook, token);
     const stats: any = await getStats();
     let default_branch = stats.branches[hook];
-    console.log('upload default_branch', git, stats, default_branch);
     if (isNull(default_branch)) {
-        console.log('default branch is null');
         default_branch = await git.getDefaultBranchOnRepo();
         stats.branches[hook] = default_branch;
     }

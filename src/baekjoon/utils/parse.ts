@@ -23,7 +23,6 @@ import {
     getSolvedACFromStats,
     updateSolvedACFromStats,
 } from '@/common/utils/baekjoon-storage';
-import {} from './storage';
 
 export const findData = async (data: any = null) => {
     try {
@@ -49,7 +48,6 @@ export const findData = async (data: any = null) => {
             )),
         };
         const detail = await makeDetailMessageAndReadme(data);
-        console.log('FindData', data, detail);
         return { ...data, ...detail };
     } catch (error) {
         console.error(error);
