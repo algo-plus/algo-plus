@@ -27,9 +27,12 @@ const customSubmitPage = () => {
             ) as HTMLInputElement
         ).value;
 
-        const solveView = <SolveView problemId={problemId} csrfKey={csrfKey} />;
-
-        createRoot(root).render(solveView);
+        if (problemId) {
+            const solveView = (
+                <SolveView problemId={problemId} csrfKey={csrfKey} />
+            );
+            createRoot(root).render(solveView);
+        }
 
         if (contentContainer) {
             contentContainer.innerHTML = '';

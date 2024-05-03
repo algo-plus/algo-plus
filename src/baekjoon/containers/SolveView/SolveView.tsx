@@ -41,7 +41,7 @@ import {
 import { checkCompileError } from '@/baekjoon/utils/compile';
 
 type SolveViewProps = {
-    problemId: string | null;
+    problemId: string;
     csrfKey: string | null;
 };
 
@@ -77,10 +77,6 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
         setTestCaseModalOpen(!testCaseModalOpen);
     };
 
-    const codeSaveToLocalStorage = (languageId: string, code: string) => {
-        if (problemId) saveEditorCode(problemId, languageId, code);
-    };
-
     const addTestCase = () => {
         if (customTestCases.length >= 10) {
             alert('테스트 케이스를 10개 이상 추가할 수 없습니다.');
@@ -113,7 +109,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                 return;
             }
         }
-        if (problemId) saveTestCases(problemId, customTestCases);
+        saveTestCases(problemId, customTestCases);
         toggleTestCaseModal();
     };
 
@@ -127,7 +123,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
             return;
         }
 
-        codeSaveToLocalStorage(languageId, code);
+        saveEditorCode(problemId, languageId, code);
         setTestCaseState('running');
 
         const lang = convertLanguageIdForSubmitApi(languageId);
@@ -178,12 +174,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     };
 
     const codeSubmit = () => {
-        if (problemId === null) {
-            alert('문제 정보를 불러올 수 없습니다.');
-            return;
-        }
-
-        codeSaveToLocalStorage(languageId, code);
+        saveEditorCode(problemId, languageId, code);
         const data: SubmitPostRequest = {
             problem_id: problemId,
             language: Number(languageId),
@@ -212,7 +203,6 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
 
     useEffect(() => {
         const loadProblemData = async () => {
-            if (!problemId) return;
             const loadedProblemContent = await loadAndParseProblemDetail(
                 problemId
             );
@@ -246,9 +236,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
             }
         };
 
-        if (problemId) {
-            loadProblemData();
-        }
+        loadProblemData();
     }, [problemId]);
 
     const languageChangeHandle = (
@@ -264,7 +252,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
             const editorLanguage = convertLanguageIdForEditor(selectedLanguage);
             setLanguageId(selectedLanguage);
             setCode(getDefaultCode(editorLanguage));
-            codeSaveToLocalStorage(languageId, code);
+            saveEditorCode(problemId, languageId, code);
         } else {
             setLanguageId(focusLanguageId);
             const editorLanguage = convertLanguageIdForEditor(focusLanguageId);
@@ -278,7 +266,6 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     }, [languageId]);
 
     useEffect(() => {
-        if (!problemId) return;
         loadEditorCode(problemId).then((value: EditorCode) => {
             setLanguageId(value.languageId as string);
             setCode(value.code);
@@ -303,7 +290,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     useEffect(() => {
         const tick = () => {
             console.log('editor code and language save.');
-            codeSaveToLocalStorage(languageIdRef.current, codeRef.current);
+            saveEditorCode(problemId, languageIdRef.current, codeRef.current);
         };
 
         const timerId = setInterval(tick, 60000);
