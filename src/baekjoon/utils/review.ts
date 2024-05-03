@@ -26,6 +26,14 @@ const markdownCodeDiff = (oldCode: string, newCode: string) => {
     return codeDiffContainer;
 };
 
+const markdownCommentBlock = () => {
 
+}
 
-export { markdownCodeDiff };
+const markdownReview = (reviewMarkdownContent: ReviewMarkdownContent) => {
+  const title = "# 오답노트 \n"
+  const diffViewer = markdownCodeDiff(reviewMarkdownContent.oldCode || '', reviewMarkdownContent.newCode || '');
+
+}
+
+export { markdownReview};

@@ -22,6 +22,14 @@ const ReviewModal = (modalProps: ModalProps) => {
 
     const save = () => {
         console.log('save');
+        console.log('.............oldComment', codeBlocks[0].comment as string);
+        const reviewMarkDownContent: ReviewMarkdownContent = {
+            oldCode: oldCode,
+            newCode: newCode,
+            commentBlocks: codeBlocks,
+            comment: comment,
+        };
+        console.log('reviewMarkDownContent', reviewMarkDownContent);
         startLoader();
     };
 
@@ -39,6 +47,8 @@ const ReviewModal = (modalProps: ModalProps) => {
             isRegistered: false,
         },
     ]);
+
+    const [comment, setComment] = useState('');
 
     const handleRegisterBlock = (id: number) => {
         // 선택된 블록을 등록완료로 변경
@@ -382,7 +392,14 @@ const ReviewModal = (modalProps: ModalProps) => {
                 ))}
                 <div>
                     <h5>전체 코멘트</h5>
-                    <textarea rows={4} cols={50}></textarea>
+                    <textarea
+                        rows={4}
+                        cols={50}
+                        value={comment}
+                        onChange={(e) => {
+                            setComment(e.target.value);
+                        }}
+                    ></textarea>
                 </div>
             </div>
             <div className='modal-footer'>
