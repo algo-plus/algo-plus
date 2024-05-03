@@ -48,7 +48,7 @@ const parsingProblemDetail = (html: string): JSX.Element => {
 
         return (
             <div
-                className="problem-content"
+                className='problem-content'
                 dangerouslySetInnerHTML={{
                     __html: problemContainer.innerHTML,
                 }}

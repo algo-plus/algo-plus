@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export const SolveButton = (props: { problemId: string | null }) => {
     const { problemId } = props;
