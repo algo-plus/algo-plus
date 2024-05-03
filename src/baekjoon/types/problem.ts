@@ -3,6 +3,7 @@ type TestCase = {
     input: string;
     output: string;
     result?: string;
+    isMultiAnswer?: boolean;
 };
 
 type EditorCode = {
