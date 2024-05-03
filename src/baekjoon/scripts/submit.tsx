@@ -2,12 +2,21 @@ import 'prism-code-editor/prism/languages/javascript';
 import 'prism-code-editor/prism/languages/java';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { getProblemId } from '@/baekjoon/utils/parsing';
+import {
+    getProblemId,
+    parsingProblemDetail,
+    parsingTestCases,
+} from '@/baekjoon/utils/parsing';
 import SolveView from '@/baekjoon/containers/SolveView/SolveView';
 import { CodeOpen } from '../types/submit';
+import {
+    loadAndParseProblemDetail,
+    loadAndParseProblemMathJaxStyle,
+} from '../utils/storage/problem';
+import { fetchProblemHtml } from '../apis/problem';
 
 const customSubmitPage = () => {
-    const addSplitView = () => {
+    const addSplitView = async () => {
         const root = document.createElement('div');
         const problemId = getProblemId();
 
@@ -40,12 +49,10 @@ const customSubmitPage = () => {
         }
 
         if (problemId) {
-            const solveView = (
-                <SolveView
-                    problemId={problemId}
-                    csrfKey={csrfKey}
-                    codeOpenDefaultValue={codeOpen}
-                />
+            const solveView = await loadProblemData(
+                problemId,
+                csrfKey,
+                codeOpen
             );
             createRoot(root).render(solveView);
         }
@@ -55,6 +62,63 @@ const customSubmitPage = () => {
             contentContainer.style.width = '100%';
             contentContainer.appendChild(problemMenu);
             contentContainer.appendChild(root);
+        }
+    };
+
+    const loadProblemData = async (
+        problemId: string,
+        csrfKey: string,
+        codeOpen: CodeOpen
+    ) => {
+        const loadedProblemContent = await loadAndParseProblemDetail(problemId);
+        const loadedProblemStyle = await loadAndParseProblemMathJaxStyle(
+            problemId
+        );
+
+        if (loadedProblemContent && loadedProblemStyle) {
+            const parsedTestCases = parsingTestCases(
+                loadedProblemContent.props.dangerouslySetInnerHTML.__html
+            );
+            return (
+                <SolveView
+                    problemId={problemId}
+                    problemContent={loadedProblemContent}
+                    problemStyle={loadedProblemStyle}
+                    testCases={parsedTestCases}
+                    csrfKey={csrfKey}
+                    codeOpenDefaultValue={codeOpen}
+                />
+            );
+        } else {
+            fetchProblemHtml(
+                problemId,
+                async (html) => {
+                    const parsedContent = parsingProblemDetail(html);
+                    const parsedTestCases = parsingTestCases(html);
+                    return (
+                        <SolveView
+                            problemId={problemId}
+                            problemContent={parsedContent}
+                            testCases={parsedTestCases}
+                            csrfKey={csrfKey}
+                            codeOpenDefaultValue={codeOpen}
+                        />
+                    );
+                },
+                (error) => {
+                    console.error('문제를 불러오는데 실패했습니다.', error);
+                    return (
+                        <SolveView
+                            problemId={problemId}
+                            problemContent={
+                                <h1>문제를 불러오는데 실패했습니다.</h1>
+                            }
+                            csrfKey={csrfKey}
+                            codeOpenDefaultValue={codeOpen}
+                        />
+                    );
+                }
+            );
         }
     };
 
