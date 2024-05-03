@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer-continued';
-import * as Diff from 'diff';
 import './ReviewModal.css';
 import { ModalProps } from '@/baekjoon/types/source';
 import { Prism } from 'react-syntax-highlighter';
 import { coy } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { startLoader } from '@/baekjoon/utils/baekjoon';
+import { markdownCodeDiff } from '@/baekjoon/utils/review';
 
 let startLineIndex: number = -1;
 let endLineIndex: number = -1;
@@ -21,26 +21,6 @@ const ReviewModal = (modalProps: ModalProps) => {
     };
 
     const save = () => {
-        const diff = Diff.diffLines(oldCode, newCode);
-        const diffBlock = diff.map((part) => {
-            if (part.added) {
-                var addedLines = part.value.split('\n').map((part) => {
-                    return '+' + part + '\n';
-                });
-                addedLines.pop();
-                return addedLines.join('');
-            }
-            if (part.removed) {
-                var removedLines = part.value.split('\n').map((part) => {
-                    return '-' + part + '\n';
-                });
-                removedLines.pop();
-                return removedLines.join('');
-            }
-            return part.value;
-        });
-        const diffBlockMake = diffBlock.join('');
-        console.log('..............................diffBlock:', diffBlockMake);
         console.log('save');
         startLoader();
     };
