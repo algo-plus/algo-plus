@@ -156,7 +156,6 @@ const statusCode = (res, status, name) => {
             break;
 
         default:
-            /* Change mode type to commit */
             chrome.storage.local.set({ mode_type: 'commit' }, () => {
                 $('#error').hide();
                 $('#success').html(
@@ -164,7 +163,6 @@ const statusCode = (res, status, name) => {
                 );
                 $('#success').show();
             });
-            /* Set Repo Hook */
             chrome.storage.local.set({ AlgoPlus_hook: res.full_name }, () => {
                 console.log('Successfully set new repo hook');
             });
@@ -202,7 +200,6 @@ const createRepo = (token, name) => {
     xhr.send(data);
 };
 
-/* Status codes for linking of repo */
 const linkStatusCode = (status, name) => {
     let bool = false;
     switch (status) {
@@ -237,12 +234,6 @@ const linkStatusCode = (status, name) => {
     return bool;
 };
 
-/* 
-      Method for linking hook with an existing repository 
-      Steps:
-      1. Check if existing repository exists and the user has write access to it.
-      2. Link Hook to it (chrome Storage).
-  */
 const linkRepo = (token, name) => {
     const AUTHENTICATION_URL = `https://api.github.com/repos/${name}`;
 
@@ -252,20 +243,14 @@ const linkRepo = (token, name) => {
             const res = JSON.parse(xhr.responseText);
             const bool = linkStatusCode(xhr.status, name);
             if (xhr.status === 200) {
-                // BUG FIX
                 if (!bool) {
-                    // unable to gain access to repo in commit mode. Must switch to hook mode.
-                    /* Set mode type to hook */
                     chrome.storage.local.set({ mode_type: 'hook' }, () => {
                         console.log(`Error linking ${name} to AlgoPlus`);
                     });
-                    /* Set Repo Hook to NONE */
                     chrome.storage.local.set({ AlgoPlus_hook: null }, () => {
                         console.log('Defaulted repo hook to NONE');
                     });
                 } else {
-                    /* Change mode type to commit */
-                    /* Save repo url to chrome storage */
                     chrome.storage.local.set(
                         { mode_type: 'commit', repo: res.html_url },
                         () => {
@@ -276,7 +261,6 @@ const linkRepo = (token, name) => {
                             $('#success').show();
                         }
                     );
-                    /* Set Repo Hook */
                     stats = {};
                     stats.version = chrome.runtime.getManifest().version;
                     stats.submission = {};
@@ -286,7 +270,6 @@ const linkRepo = (token, name) => {
                         { AlgoPlus_hook: res.full_name },
                         () => {
                             console.log('Successfully set new repo hook');
-                            /* Get problems solved count */
                             chrome.storage.local.get('stats', (psolved) => {
                                 const { stats } = psolved;
                             });
@@ -303,7 +286,6 @@ const linkRepo = (token, name) => {
     xhr.send();
 };
 
-/* Check for value of select tag, Get Started disabled by default */
 $('#type').on('change', function () {
     const valueSelected = this.value;
     if (valueSelected) {
@@ -314,7 +296,6 @@ $('#type').on('change', function () {
 });
 
 $('#github-link-button').on('click', () => {
-    /* on click should generate: 1) option 2) repository name */
     if (!option()) {
         $('#error').text(
             'No option selected - Pick an option from dropdown menu below that best suits you!'
@@ -331,17 +312,9 @@ $('#github-link-button').on('click', () => {
         $('#success').text('Attempting to create Hook... Please wait.');
         $('#success').show();
 
-        /* 
-        Perform processing
-        - step 1: Check if current stage === hook.
-        - step 2: store repo name as repoName in chrome storage.
-        - step 3: if (1), POST request to repoName (iff option = create new repo) ; else display error message.
-        - step 4: if proceed from 3, hide hook_mode and display commit_mode (show stats e.g: files pushed/questions-solved/leaderboard)
-      */
         chrome.storage.local.get('AlgoPlus_token', (data) => {
             const token = data.AlgoPlus_token;
             if (token === null || token === undefined) {
-                /* Not authorized yet. */
                 $('#error').text(
                     'Authorization error - Grant AlgoPlus access to your GitHub account to continue (launch extension to proceed)'
                 );
@@ -353,7 +326,6 @@ $('#github-link-button').on('click', () => {
                 chrome.storage.local.get('AlgoPlus_username', (data2) => {
                     const username = data2.AlgoPlus_username;
                     if (!username) {
-                        /* Improper authorization. */
                         $('#error').text(
                             'Improper Authorization error - Grant AlgoPlus access to your GitHub account to continue (launch extension to proceed)'
                         );
@@ -371,41 +343,34 @@ $('#github-link-button').on('click', () => {
         });
     }
 
-    /*프로그래밍 언어별 폴더 정리 옵션 세션 저장*/
     let org_option = $('#org_option').val();
     chrome.storage.local.set({ AlgoPlus_OrgOption: org_option }, () => {
         console.log(`Set Organize by ${org_option}`);
     });
 });
 
-/* Detect mode type */
 chrome.storage.local.get('mode_type', (data) => {
     const mode = data.mode_type;
 
     if (mode && mode === 'commit') {
-        /* Check if still access to repo */
         chrome.storage.local.get('AlgoPlus_token', (data2) => {
             const token = data2.AlgoPlus_token;
             if (token === null || token === undefined) {
-                /* Not authorized yet. */
                 $('#error').text(
                     'Authorization error - Grant AlgoPlus access to your GitHub account to continue (click AlgoPlus extension on the top right to proceed)'
                 );
                 $('#error').show();
                 $('#success').hide();
             } else {
-                /* Get access to repo */
                 chrome.storage.local.get('AlgoPlus_hook', (repoName) => {
                     const hook = repoName.AlgoPlus_hook;
                     if (!hook) {
-                        /* Not authorized yet. */
                         $('#error').text(
                             'Improper Authorization error - Grant AlgoPlus access to your GitHub account to continue (click AlgoPlus extension on the top right to proceed)'
                         );
                         $('#error').show();
                         $('#success').hide();
                     } else {
-                        /* Username exists, at least in storage. Confirm this */
                         linkRepo(token, hook);
                     }
                 });
