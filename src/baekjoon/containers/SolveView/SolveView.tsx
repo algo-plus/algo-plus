@@ -166,7 +166,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                 } catch (error) {
                     setTestCaseState('error');
                     setErrorMessage(
-                        `코드 실행 중 오류가 발생했습니다.\n${error}`
+                        `컴파일 서버에서 오류가 발생했습니다.\n${error}`
                     );
                     return;
                 }
