@@ -23,14 +23,23 @@ const ReviewModal = (modalProps: ModalProps) => {
         const diff = Diff.diffLines(oldCode, newCode);
         const diffBlock = diff.map((part) => {
             if (part.added) {
-                return '+' + part.value;
+                var addedLines = part.value.split('\n').map((part) => {
+                    return '+' + part + '\n';
+                });
+                addedLines.pop();
+                return addedLines.join('');
             }
             if (part.removed) {
-                return '-' + part.value;
+                var removedLines = part.value.split('\n').map((part) => {
+                    return '-' + part + '\n';
+                });
+                removedLines.pop();
+                return removedLines.join('');
             }
             return part.value;
         });
-        console.log('..............................diffBlock:', diffBlock);
+        const diffBlockMake = diffBlock.join('');
+        console.log('..............................diffBlock:', diffBlockMake);
         console.log('save');
     };
 
