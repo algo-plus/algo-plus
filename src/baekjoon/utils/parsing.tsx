@@ -2,10 +2,11 @@ import React from 'react';
 import { TestCase } from '@/baekjoon/types/problem';
 import uuid from 'react-uuid';
 
-const getProblemId = (): string | null => {
+export const getProblemId = (): string | null => {
     const problemIdElement = document.querySelector(
         'ul.problem-menu li a[href*="/problem"]'
     );
+
     if (problemIdElement && problemIdElement.textContent) {
         const match = problemIdElement.textContent.match(/(\d+)번/);
         if (match) return match[1];
@@ -22,20 +23,20 @@ const getProblemId = (): string | null => {
     return null;
 };
 
-const parsingProblemDetail = (html: string): JSX.Element => {
+export const parsingProblemDetail = (html: string): JSX.Element => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     const problemContainer = doc.querySelector(
         '.container.content .row'
     ) as HTMLElement;
 
     if (problemContainer) {
-        // 문제 메뉴, 즐겨찾기 버튼, 알고리즘 분류, 메모 제거
         const elementsToRemove = [
             'ul.problem-menu',
             '.problem-button',
             '#problem_tags',
             '#problem_memo',
         ];
+
         elementsToRemove.forEach((selector) => {
             const elem = problemContainer.querySelector(selector);
             if (elem && elem.parentNode) {
@@ -58,9 +59,10 @@ const parsingProblemDetail = (html: string): JSX.Element => {
     }
 };
 
-const parsingStyle = (html: string): JSX.Element => {
+export const parsingStyle = (html: string): JSX.Element => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     const style = doc.querySelector('style');
+
     if (style) {
         return <style>{style.textContent}</style>;
     } else {
@@ -68,7 +70,7 @@ const parsingStyle = (html: string): JSX.Element => {
     }
 };
 
-const parsingTestCases = (html: string): TestCase[] => {
+export const parsingTestCases = (html: string): TestCase[] => {
     const testCases: TestCase[] = [];
     const doc = new DOMParser().parseFromString(html, 'text/html');
 
@@ -86,5 +88,3 @@ const parsingTestCases = (html: string): TestCase[] => {
     }
     return testCases;
 };
-
-export { getProblemId, parsingProblemDetail, parsingTestCases, parsingStyle };

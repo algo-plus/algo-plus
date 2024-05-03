@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer-continued';
-import './Modal.css';
+import './ReviewModal.css';
 import { ModalProps } from '@/baekjoon/types/source';
 import { Prism } from 'react-syntax-highlighter';
 import { coy } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { startLoader } from '@/baekjoon/utils/baekjoon';
+import { markdownCodeDiff } from '@/baekjoon/utils/review';
 
 let startLineIndex: number = -1;
 let endLineIndex: number = -1;
 let position: String = 'S-';
 
-const Modal = (modalProps: ModalProps) => {
+const ReviewModal = (modalProps: ModalProps) => {
     const closeModal = () => {
         const modalBackdrop = document.querySelector('.modal-backdrop');
         if (modalBackdrop) {
@@ -17,8 +19,10 @@ const Modal = (modalProps: ModalProps) => {
         }
         console.log('close modal');
     };
+
     const save = () => {
         console.log('save');
+        startLoader();
     };
 
     const oldCode = modalProps.sourceCodes[0]?.code || '';
@@ -109,10 +113,7 @@ const Modal = (modalProps: ModalProps) => {
         setCodeBlocks(prevBlocks);
     };
 
-    const handleLineNumberClick = (
-        lineId: string,
-        event: React.MouseEvent<HTMLTableCellElement>
-    ) => {
+    const handleLineNumberClick = (lineId: string) => {
         const linePrefix = lineId.substring(0, 2);
         const lineIndex = parseInt(lineId.substring(2), 10) - 1;
 
@@ -213,10 +214,10 @@ const Modal = (modalProps: ModalProps) => {
             },
         },
     };
-
+    <s></s>;
     return (
         <div className='modal-content'>
-            <div className='modal-header' style={{ display: 'flex' }}>
+            <div className='modal-header'>
                 <h4 className='modal-title'>오답 노트 작성</h4>
                 <button
                     type='button'
@@ -228,10 +229,7 @@ const Modal = (modalProps: ModalProps) => {
                     <span aria-hidden='true'>&times;</span>
                 </button>
             </div>
-            <div
-                className='modal-body'
-                style={{ overflowY: 'auto', maxHeight: '75vh' }}
-            >
+            <div className='modal-body' style={{ maxHeight: '75vh' }}>
                 <div className='codediff-container'>
                     <h5>코드 비교 결과:</h5>
                     <ReactDiffViewer
@@ -408,4 +406,4 @@ const Modal = (modalProps: ModalProps) => {
     );
 };
 
-export default Modal;
+export default ReviewModal;
