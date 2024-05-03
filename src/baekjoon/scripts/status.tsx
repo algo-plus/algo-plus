@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import { Modal } from '@/baekjoon/containers/Modal';
+import { Modal } from '@/baekjoon/containers/ReviewModal';
 import React from 'react';
 import { fetchCode } from '../apis/source';
 import { getUrlSearchParam } from '@/common/utils/url';
