@@ -34,6 +34,7 @@
 
 .modal-body {
     padding: 10px;
+    overflow-y: auto;
 }
 
 .modal-body textarea {
