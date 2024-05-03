@@ -1,10 +1,4 @@
-import {
-    isNull,
-    getVersion,
-    isEmpty,
-    isNotEmpty,
-    calculateBlobSHA,
-} from './utils';
+import { isNull, getVersion, isEmpty, calculateBlobSHA } from './utils';
 
 import {
     getStats,
@@ -26,8 +20,6 @@ import {
     findFromResultTable,
     findData,
 } from './parse';
-
-const debug = false;
 
 const checkEnable = async () => {
     const enable = await getObjectFromLocalStorage('alpEnable');

@@ -31,12 +31,14 @@ const editorLanguageConvertMap: Record<string, EditorLanguage> = {
     '12': 'go',
 };
 
-function convertLanguageIdForSubmitApi(languageId: string): CompilerLanguage {
+export const convertLanguageIdForSubmitApi = (
+    languageId: string
+): CompilerLanguage => {
     return submitApiLanguageConvertMap[languageId];
-}
+};
 
-function convertLanguageIdForEditor(languageId: string): EditorLanguage {
+export const convertLanguageIdForEditor = (
+    languageId: string
+): EditorLanguage => {
     return editorLanguageConvertMap[languageId];
-}
-
-export { convertLanguageIdForSubmitApi, convertLanguageIdForEditor };
+};

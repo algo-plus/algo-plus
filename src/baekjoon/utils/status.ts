@@ -11,31 +11,29 @@ const wrongClassNames = [
     'result-del',
 ];
 
-function isWrongState(): boolean {
+export const isWrongState = (): boolean => {
     const tag = getFirstStatusResultTag();
     if (!tag) return false;
     return wrongClassNames.includes(tag);
-}
+};
 
-function isJudgingState(): boolean {
+export const isJudgingState = (): boolean => {
     const tag = getFirstStatusResultTag();
     if (!tag) return false;
     return judgingClassNames.includes(tag);
-}
+};
 
-function getFirstStatusResultTag(): string | undefined {
+const getFirstStatusResultTag = (): string | undefined => {
     return document.querySelector(
         '#status-table > tbody > tr:first-child .result-text'
     )?.classList[1];
-}
+};
 
-function getWrongModalMessage(): string | null {
+export const getWrongModalMessage = (): string | null => {
     const element = document.querySelector(
         '#status-table > tbody > tr:first-child .result-text'
     );
     if (!element) return null;
     if (element.classList[1] === 'result-wa') return '결과를 확인해 주세요.';
     return element.textContent;
-}
-
-export { isWrongState, isJudgingState, getWrongModalMessage };
+};
