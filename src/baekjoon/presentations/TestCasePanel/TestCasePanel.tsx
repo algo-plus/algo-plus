@@ -40,6 +40,7 @@ const TestCasePanel: React.FC<TestCasePanelProps> = ({
                         input={testCase.input}
                         expectedValue={testCase.output}
                         output={testCase.result}
+                        isMultiAnswer={testCase.isMultiAnswer}
                     />
                 ))
             )}

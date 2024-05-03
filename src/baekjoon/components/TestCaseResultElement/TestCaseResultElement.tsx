@@ -7,6 +7,7 @@ const TestCaseResultElement: React.FC<TestCaseResultElementProps> = ({
     input,
     output,
     expectedValue,
+    isMultiAnswer,
 }) => {
     return (
         <div className='test-case-elem'>
@@ -27,29 +28,50 @@ const TestCaseResultElement: React.FC<TestCaseResultElementProps> = ({
                     }}
                 ></span>
             </p>
-            <p>
-                <span>실행 결과</span>
-                <span
-                    style={
-                        output == expectedValue
-                            ? { color: 'blue' }
-                            : { color: 'red' }
-                    }
-                >
+            {isMultiAnswer ? (
+                <></>
+            ) : (
+                <p>
+                    <span>실행 결과</span>
+                    <span
+                        style={
+                            output == expectedValue
+                                ? { color: 'blue' }
+                                : { color: 'red' }
+                        }
+                    >
+                        {output == undefined ? (
+                            <span>
+                                <span className='loading-dot'></span>
+                                <span className='loading-dot'></span>
+                                <span className='loading-dot'></span>
+                            </span>
+                        ) : output == expectedValue ? (
+                            '테스트를 통과하였습니다.'
+                        ) : (
+                            '테스트를 통과하지 못하였습니다.'
+                        )}
+                    </span>
+                </p>
+            )}
+            {isMultiAnswer ? (
+                <p>
+                    <span>출력</span>
                     {output == undefined ? (
                         <span>
                             <span className='loading-dot'></span>
                             <span className='loading-dot'></span>
                             <span className='loading-dot'></span>
                         </span>
-                    ) : output == expectedValue ? (
-                        '테스트를 통과하였습니다.'
                     ) : (
-                        '테스트를 통과하지 못하였습니다.'
+                        <span
+                            dangerouslySetInnerHTML={{
+                                __html: replaceNewLineToBrTag(output),
+                            }}
+                        ></span>
                     )}
-                </span>
-            </p>
-            {output == undefined || output == expectedValue ? null : (
+                </p>
+            ) : output == undefined || output == expectedValue ? null : (
                 <p>
                     <span>출력</span>
                     <span
@@ -68,6 +90,7 @@ type TestCaseResultElementProps = {
     input: string;
     output?: string;
     expectedValue: string;
+    isMultiAnswer?: boolean;
 };
 
 export default TestCaseResultElement;
