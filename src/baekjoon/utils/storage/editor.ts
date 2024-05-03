@@ -1,8 +1,11 @@
-import { EditorCode } from '@/baekjoon/types/problem';
+import { EditorCode, TestCase } from '@/baekjoon/types/problem';
 import {
     getObjectFromLocalStorage,
     saveObjectInLocalStorage,
 } from '@/common/utils/storage';
+
+const EDITOR_CODE_STORAGE_PREFIX = 'algoplus-editor-save-';
+const TEST_CASE_STORAGE_PREFIX = 'algoplus-test-case-';
 
 const saveEditorCode = async (
     problemId: string | number,
@@ -14,14 +17,33 @@ const saveEditorCode = async (
         code: code,
     };
     await saveObjectInLocalStorage({
-        ['algoplus-editor-save-' + problemId]: data,
+        [EDITOR_CODE_STORAGE_PREFIX + problemId]: data,
     });
 };
 
-const loadEditorCode = async (problemId: string): Promise<EditorCode> => {
-    const key = 'algoplus-editor-save-' + problemId;
+const loadEditorCode = async (
+    problemId: string | number
+): Promise<EditorCode> => {
+    const key = EDITOR_CODE_STORAGE_PREFIX + problemId;
     const result = (await getObjectFromLocalStorage(key)) as EditorCode;
     return result;
 };
 
-export { saveEditorCode, loadEditorCode };
+const saveTestCases = async (
+    problemId: string | number,
+    testCases: TestCase[]
+) => {
+    await saveObjectInLocalStorage({
+        [TEST_CASE_STORAGE_PREFIX + problemId]: testCases,
+    });
+};
+
+const loadTestCases = async (
+    problemId: string | number
+): Promise<TestCase[]> => {
+    const key = TEST_CASE_STORAGE_PREFIX + problemId;
+    const result = (await getObjectFromLocalStorage(key)) as TestCase[];
+    return result ? result : [];
+};
+
+export { saveEditorCode, loadEditorCode, saveTestCases, loadTestCases };

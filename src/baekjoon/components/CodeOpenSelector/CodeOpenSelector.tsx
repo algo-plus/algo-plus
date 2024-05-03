@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
 import './CodeOpenSelector.css';
+import { CodeOpen } from '@/baekjoon/types/submit';
 
 interface CodeOpenProps {
-    defaultValue: string;
-    onChange: (value: string) => void;
+    defaultValue: CodeOpen;
+    onChange: (value: CodeOpen) => void;
 }
 
 const CodeOpenSelector: React.FC<CodeOpenProps> = ({
     defaultValue,
     onChange,
 }) => {
-    const [selectedValue, setSelectedValue] = useState<string>(defaultValue);
+    const [selectedValue, setSelectedValue] = useState<CodeOpen>(defaultValue);
     const handleCodeOpenChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
-        onChange(event.target.value);
-        setSelectedValue(event.target.value);
+        const codeOpen = event.target.value as CodeOpen;
+        onChange(codeOpen);
+        setSelectedValue(codeOpen);
     };
 
     return (
