@@ -1,9 +1,11 @@
 type SubmitPostRequest = {
     problem_id: string;
     language: number;
-    code_open: string;
+    code_open: CodeOpen;
     source: string;
     csrf_key: string;
 };
 
-export type { SubmitPostRequest };
+type CodeOpen = 'open' | 'close' | 'onlyaccepted';
+
+export type { SubmitPostRequest, CodeOpen };

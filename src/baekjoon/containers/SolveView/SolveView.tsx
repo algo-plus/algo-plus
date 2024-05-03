@@ -12,7 +12,7 @@ import { VerticalSplitView } from '@/baekjoon/presentations/VerticalSplitView';
 import TestCasePanel from '@/baekjoon/presentations/TestCasePanel/TestCasePanel';
 import EditorButtonBox from '@/baekjoon/presentations/EditorButtonBox/EditorButtonBox';
 import { LanguageSelectBox } from '@/baekjoon/components/LanguageSelectBox';
-import { SubmitPostRequest } from '@/baekjoon/types/submit';
+import { CodeOpen, SubmitPostRequest } from '@/baekjoon/types/submit';
 import { submit } from '@/baekjoon/apis/submit';
 import { compile } from '@/common/apis/compile';
 import {
@@ -43,9 +43,14 @@ import { checkCompileError } from '@/baekjoon/utils/compile';
 type SolveViewProps = {
     problemId: string;
     csrfKey: string | null;
+    codeOpenDefaultValue: CodeOpen;
 };
 
-const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
+const SolveView: React.FC<SolveViewProps> = ({
+    problemId,
+    csrfKey,
+    codeOpenDefaultValue,
+}) => {
     const [problemContent, setProblemContent] = useState<JSX.Element | null>(
         null
     );
@@ -57,7 +62,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     const [editorLanguage, setEditorLanguage] = useState<EditorLanguage>(
         convertLanguageIdForEditor(languageId)
     );
-    const [codeOpen, setCodeOpen] = useState('close');
+    const [codeOpen, setCodeOpen] = useState<CodeOpen>(codeOpenDefaultValue);
     const [code, setCode] = useState(getDefaultCode(editorLanguage));
     const [testCaseModalOpen, setTestCaseModalOpen] = useState<boolean>(false);
     const [compileErrorMessage, setCompileErrorMessage] = useState<string>('');
@@ -324,7 +329,6 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                                     justifyContent: 'space-between',
                                 }}
                             >
-                                {/* TODO: 코드 공개 여부 백준 사용자 설정 값으로 지정 */}
                                 <CodeOpenSelector
                                     defaultValue={codeOpen}
                                     onChange={setCodeOpen}
