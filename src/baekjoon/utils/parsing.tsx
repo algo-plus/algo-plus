@@ -76,12 +76,14 @@ export const parsingTestCases = (html: string): TestCase[] => {
 
     const inputs = doc.querySelectorAll('[id^="sample-input-"]');
     const outputs = doc.querySelectorAll('[id^="sample-output-"]');
+    const isMultiAnswer = doc.querySelector('.problem-label-spj');
     const count = inputs.length;
     for (let i = 0; i < count; ++i) {
         testCases.push({
             uuid: uuid(),
             input: (inputs[i].textContent as string).trim(),
             output: (outputs[i].textContent as string).trim(),
+            isMultiAnswer: isMultiAnswer != null,
         });
     }
     return testCases;
