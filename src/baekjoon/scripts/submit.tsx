@@ -4,6 +4,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { getProblemId } from '@/baekjoon/utils/parsing';
 import SolveView from '@/baekjoon/containers/SolveView/SolveView';
+import { CodeOpen } from '../types/submit';
 
 const customSubmitPage = () => {
     const addSplitView = () => {
@@ -27,9 +28,27 @@ const customSubmitPage = () => {
             ) as HTMLInputElement
         ).value;
 
-        const solveView = <SolveView problemId={problemId} csrfKey={csrfKey} />;
+        let codeOpen: CodeOpen = 'close';
+        const codeOpenRadios = document.querySelectorAll(
+            'input[name=code_open]'
+        );
+        for (const codeOpenRadio of codeOpenRadios) {
+            const inputElement = codeOpenRadio as HTMLInputElement;
+            if (inputElement.hasAttribute('checked')) {
+                codeOpen = inputElement.value as CodeOpen;
+            }
+        }
 
-        createRoot(root).render(solveView);
+        if (problemId) {
+            const solveView = (
+                <SolveView
+                    problemId={problemId}
+                    csrfKey={csrfKey}
+                    codeOpenDefaultValue={codeOpen}
+                />
+            );
+            createRoot(root).render(solveView);
+        }
 
         if (contentContainer) {
             contentContainer.innerHTML = '';
