@@ -22,20 +22,17 @@ const PrismCodeEditor = forwardRef(
         }, [props]);
 
         useEffect(() => {
-            editorRef.current && updateTheme(editorRef.current, props.theme);
-        }, [props.theme]);
-
-        useEffect(() => {
             const editor = (editorRef.current = basicEditor(
                 divRef.current!,
                 props
             ));
+            editorRef.current && updateTheme(editorRef.current, props.theme);
 
             if (ref)
                 typeof ref == 'function' ? ref(editor) : (ref.current = editor);
 
             return editor.remove;
-        }, [props.language]);
+        }, [props.language, props.theme]);
 
         // 에디터 줄 바꿈 없이 에디터 내부에 wrapping 되도록 설정
         useEffect(() => {
