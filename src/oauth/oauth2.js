@@ -1,4 +1,7 @@
 const oAuth2 = {
+    /**
+     * Initialize
+     */
     init() {
         this.KEY = 'AlgoPlus_token';
         this.ACCESS_TOKEN_URL = 'https://github.com/login/oauth/access_token';
@@ -9,6 +12,9 @@ const oAuth2 = {
         this.SCOPES = ['repo'];
     },
 
+    /**
+     * Begin
+     */
     begin() {
         this.init();
 
