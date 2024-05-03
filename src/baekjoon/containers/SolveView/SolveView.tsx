@@ -65,7 +65,7 @@ const SolveView: React.FC<SolveViewProps> = ({
     const [codeOpen, setCodeOpen] = useState<CodeOpen>(codeOpenDefaultValue);
     const [code, setCode] = useState(getDefaultCode(editorLanguage));
     const [testCaseModalOpen, setTestCaseModalOpen] = useState<boolean>(false);
-    const [compileErrorMessage, setCompileErrorMessage] = useState<string>('');
+    const [errorMessage, setErrorMessage] = useState<string>('');
 
     const [testCaseState, setTestCaseState] = useState<
         'initial' | 'running' | 'result' | 'error'
@@ -135,7 +135,10 @@ const SolveView: React.FC<SolveViewProps> = ({
         const currentTestCases = [...testCases, ...customTestCases];
         setTargetTestCases(currentTestCases);
 
-        // 컴파일 에러 여부 확인
+        currentTestCases.forEach((testCase) => {
+            testCase.result = undefined;
+        });
+
         if (testCases.length > 0) {
             const data: CodeCompileRequest = {
                 lang: lang,
@@ -147,33 +150,40 @@ const SolveView: React.FC<SolveViewProps> = ({
                 const output = await compile(data);
                 if (checkCompileError(lang, output)) {
                     setTestCaseState('error');
-                    setCompileErrorMessage(output);
+                    setErrorMessage(output);
                     return;
+                } else {
+                    testCases[0].result = output;
                 }
             } catch (error) {
-                console.log('error =', error);
+                setTestCaseState('error');
+                setErrorMessage(
+                    `컴파일 서버에서 오류가 발생했습니다.\n${error}`
+                );
                 return;
             }
         }
 
-        try {
-            await Promise.all(
-                currentTestCases.map(async (testCase) => {
-                    const data: CodeCompileRequest = {
-                        lang: lang,
-                        code: code,
-                        input: testCase.input,
-                    };
+        await Promise.all(
+            currentTestCases.slice(1).map(async (testCase) => {
+                const data: CodeCompileRequest = {
+                    lang: lang,
+                    code: code,
+                    input: testCase.input,
+                };
 
-                    testCase.result = undefined;
-
+                try {
                     const output = await compile(data);
-                    testCase.result = output;
-                })
-            );
-        } catch (error) {
-            console.log('error =', error);
-        }
+                    testCase.result = output; // 결과 설정
+                } catch (error) {
+                    setTestCaseState('error');
+                    setErrorMessage(
+                        `컴파일 서버에서 오류가 발생했습니다.\n${error}`
+                    );
+                    return;
+                }
+            })
+        );
 
         setTestCaseState('result');
     };
@@ -357,7 +367,7 @@ const SolveView: React.FC<SolveViewProps> = ({
                                                 ? 'error'
                                                 : 'run'
                                         }
-                                        errorMessage={compileErrorMessage}
+                                        errorMessage={errorMessage}
                                     />
                                 }
                                 bottomStyle={{
