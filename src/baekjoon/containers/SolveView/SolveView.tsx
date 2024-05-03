@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ProblemPanel } from '@/baekjoon/presentations/ProblemPanel';
 import { EditorPanel } from '@/baekjoon/presentations/EditorPanel';
 import { fetchProblemHtml } from '@/baekjoon/apis/problem';
@@ -103,7 +103,6 @@ const SolveView: React.FC<SolveViewProps> = ({
         ]);
     };
 
-    // TODO: 로컬 스토리지에 테스트 케이스 저장 로직 작성
     const saveTestCase = () => {
         for (const testCase of customTestCases) {
             if (!testCase.input.trim()) {
