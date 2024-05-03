@@ -26,14 +26,54 @@ const markdownCodeDiff = (oldCode: string, newCode: string) => {
     return codeDiffContainer;
 };
 
-const markdownCommentBlock = () => {
+const markdownCommentBlock = (commentBlocks: CommentBlocks) => {
+    let commentBlockContainer = '\n\n## 코드리뷰\n\n';
+    let idx = 1;
+    if (
+        commentBlocks.length === 1 &&
+        commentBlocks[0].comment === '' &&
+        !commentBlocks[0].isRegistered
+    ) {
+        return '';
+    }
+    commentBlocks.forEach((commentBlock) => {
+        commentBlockContainer += '### ' + idx + '\n';
 
-}
+        if (commentBlock.selectedOldCode) {
+            commentBlockContainer += '이전코드: \n\n';
+            commentBlockContainer +=
+                '```\n' + commentBlock.selectedOldCode + '\n```\n';
+        }
+        if (commentBlock.selectedNewCode) {
+            commentBlockContainer += '바뀐코드: \n\n';
+            commentBlockContainer +=
+                '```\n' + commentBlock.selectedNewCode + '\n```\n';
+        }
+
+        if (commentBlock.comment) {
+            commentBlockContainer += '\n### 전체 코멘트: \n\n';
+            commentBlockContainer += commentBlock.comment;
+        }
+    });
+    return commentBlockContainer;
+};
 
 const markdownReview = (reviewMarkdownContent: ReviewMarkdownContent) => {
-  const title = "# 오답노트 \n"
-  const diffViewer = markdownCodeDiff(reviewMarkdownContent.oldCode || '', reviewMarkdownContent.newCode || '');
+    const title = '# 오답노트 \n';
+    const diffViewer = markdownCodeDiff(
+        reviewMarkdownContent.oldCode || '',
+        reviewMarkdownContent.newCode || ''
+    );
+    let commentBlock = '';
+    if (reviewMarkdownContent.commentBlocks) {
+        commentBlock = markdownCommentBlock(
+            reviewMarkdownContent.commentBlocks
+        );
+    }
+    const lastComment =
+        '\n\n ## 전체 코멘트 \n\n' + (reviewMarkdownContent.comment || '');
+    const reviewContainer = title + diffViewer + commentBlock + lastComment;
+    return reviewContainer;
+};
 
-}
-
-export { markdownReview};
+export { markdownReview };

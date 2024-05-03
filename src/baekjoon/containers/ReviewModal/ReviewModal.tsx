@@ -5,7 +5,7 @@ import { ModalProps } from '@/baekjoon/types/source';
 import { Prism } from 'react-syntax-highlighter';
 import { coy } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { startLoader } from '@/baekjoon/utils/baekjoon';
-import { markdownCodeDiff } from '@/baekjoon/utils/review';
+import { markdownReview } from '@/baekjoon/utils/review';
 
 let startLineIndex: number = -1;
 let endLineIndex: number = -1;
@@ -22,7 +22,6 @@ const ReviewModal = (modalProps: ModalProps) => {
 
     const save = () => {
         console.log('save');
-        console.log('.............oldComment', codeBlocks[0].comment as string);
         const reviewMarkDownContent: ReviewMarkdownContent = {
             oldCode: oldCode,
             newCode: newCode,
@@ -30,6 +29,10 @@ const ReviewModal = (modalProps: ModalProps) => {
             comment: comment,
         };
         console.log('reviewMarkDownContent', reviewMarkDownContent);
+        console.log(
+            'markdownContent: \n',
+            markdownReview(reviewMarkDownContent)
+        );
         startLoader();
     };
 
