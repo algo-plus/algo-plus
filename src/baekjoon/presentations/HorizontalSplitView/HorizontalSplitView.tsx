@@ -61,7 +61,8 @@ const HorizontalSplitView: React.FC<HorizontalSplitViewProps> = (
         index: number
     ) => {
         const resizerRect = e.currentTarget.getBoundingClientRect();
-        const offset = e.clientX - resizerRect.left;
+        const resizerMiddle = resizerRect.width / 2;
+        const offset = e.clientX - resizerRect.left - resizerMiddle;
         setMouseOffset(offset);
         disableTextSelection();
         setResizingIndex(index);

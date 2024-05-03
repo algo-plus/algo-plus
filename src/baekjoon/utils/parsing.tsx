@@ -44,6 +44,11 @@ export const parsingProblemDetail = (html: string): JSX.Element => {
             }
         });
 
+        const copyButtons = problemContainer.querySelectorAll('.copy-button');
+        copyButtons.forEach(function (button) {
+            button.parentNode?.removeChild(button);
+        });
+
         problemContainer.style.margin = '0';
 
         return (

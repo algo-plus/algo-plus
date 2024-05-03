@@ -62,7 +62,8 @@ const VerticalSplitView: React.FC<VerticalSplitViewProps> = (
         index: number
     ) => {
         const resizerRect = e.currentTarget.getBoundingClientRect();
-        const offset = e.clientY - resizerRect.top;
+        const resizerMiddle = resizerRect.height / 2;
+        const offset = e.clientY - resizerRect.top - resizerMiddle;
         setMouseOffset(offset);
         disableTextSelection();
         setResizingIndex(index);
