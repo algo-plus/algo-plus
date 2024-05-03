@@ -12,10 +12,8 @@ export const uploadOneSolveProblemOnGit = async (
     bojData: any,
     cb: Function
 ): Promise<void> => {
-    console.log('uploadOneSolveProblem starting...');
     const token: any = await getToken();
     const hook: any = await getHook();
-    console.log('uploadOneSolveProblem token, hook', token, hook);
     if (isNull(token) || isNull(hook)) {
         console.error('token or hook is null', token, hook);
         return;

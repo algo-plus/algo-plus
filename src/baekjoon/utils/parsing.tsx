@@ -2,7 +2,7 @@ import React from 'react';
 import { TestCase } from '@/baekjoon/types/problem';
 import uuid from 'react-uuid';
 
-const getProblemId = (): string | null => {
+export const getProblemId = (): string | null => {
     const problemIdElement = document.querySelector(
         'ul.problem-menu li a[href*="/problem"]'
     );
@@ -23,7 +23,7 @@ const getProblemId = (): string | null => {
     return null;
 };
 
-const parsingProblemDetail = (html: string): JSX.Element => {
+export const parsingProblemDetail = (html: string): JSX.Element => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     const problemContainer = doc.querySelector(
         '.container.content .row'
@@ -64,7 +64,7 @@ const parsingProblemDetail = (html: string): JSX.Element => {
     }
 };
 
-const parsingStyle = (html: string): JSX.Element => {
+export const parsingStyle = (html: string): JSX.Element => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     const style = doc.querySelector('style');
 
@@ -75,7 +75,7 @@ const parsingStyle = (html: string): JSX.Element => {
     }
 };
 
-const parsingTestCases = (html: string): TestCase[] => {
+export const parsingTestCases = (html: string): TestCase[] => {
     const testCases: TestCase[] = [];
     const doc = new DOMParser().parseFromString(html, 'text/html');
 
@@ -91,5 +91,3 @@ const parsingTestCases = (html: string): TestCase[] => {
     }
     return testCases;
 };
-
-export { getProblemId, parsingProblemDetail, parsingTestCases, parsingStyle };
