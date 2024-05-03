@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer-continued';
-import Diff from 'diff';
+import * as Diff from 'diff';
 import './ReviewModal.css';
 import { ModalProps } from '@/baekjoon/types/source';
 import { Prism } from 'react-syntax-highlighter';
@@ -20,23 +20,15 @@ const ReviewModal = (modalProps: ModalProps) => {
     };
 
     const save = () => {
-        const diff = Diff.diffWords(oldCode, newCode);
-        const diffBlock = diff.map((part, index) => {
+        const diff = Diff.diffLines(oldCode, newCode);
+        const diffBlock = diff.map((part) => {
             if (part.added) {
-                return (
-                    <span key={index} style={{ backgroundColor: 'lightgreen' }}>
-                        + {part.value}
-                    </span>
-                );
+                return '+' + part.value;
             }
             if (part.removed) {
-                return (
-                    <span key={index} style={{ backgroundColor: 'lightcoral' }}>
-                        - {part.value}
-                    </span>
-                );
+                return '-' + part.value;
             }
-            return <span key={index}>{part.value}</span>;
+            return part.value;
         });
         console.log('..............................diffBlock:', diffBlock);
         console.log('save');
