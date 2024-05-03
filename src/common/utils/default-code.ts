@@ -13,8 +13,8 @@ const defaultCode: Record<EditorLanguage, string> = {
     go: 'package main\n\nimport "fmt"\n\nfunc main() {\n    // 코드를 작성해주세요\n}\n',
 };
 
-function getDefaultCode(language: EditorLanguage): string {
+const getDefaultCode = (language: EditorLanguage): string => {
     return defaultCode[language];
-}
+};
 
 export { getDefaultCode };

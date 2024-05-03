@@ -1,9 +1,18 @@
-class GitHub {
-    constructor(hook, token) {
+export const b64EncodeUnicode = (str: string) => {
+    const utf8Bytes = new TextEncoder().encode(str);
+    const base64String = btoa(String.fromCharCode(...utf8Bytes));
+    return base64String;
+};
+
+export class GitHub {
+    hook = '';
+    token = '';
+
+    constructor(hook: string, token: string) {
         this.update(hook, token);
     }
 
-    update(hook, token) {
+    update(hook: string, token: string) {
         this.hook = hook;
         this.token = token;
     }
@@ -16,20 +25,19 @@ class GitHub {
         return getDefaultBranchOnRepo(this.hook, this.token);
     }
 
-    async createBlob(content, path) {
+    async createBlob(content: string, path: string) {
         return createBlob(this.hook, this.token, content, path);
     }
 
-    async createTree(refSHA, tree_items) {
+    async createTree(refSHA: string, tree_items: object) {
         return createTree(this.hook, this.token, refSHA, tree_items);
     }
 
-    async createCommit(message, treeSHA, refSHA) {
+    async createCommit(message: string, treeSHA: string, refSHA: string) {
         return createCommit(this.hook, this.token, message, treeSHA, refSHA);
     }
 
-    async updateHead(ref, commitSHA) {
-        log('GitHub updateHead', 'ref:', ref, 'commitSHA:', commitSHA);
+    async updateHead(ref: string, commitSHA: string) {
         return updateHead(this.hook, this.token, ref, commitSHA, true);
     }
 
@@ -38,7 +46,10 @@ class GitHub {
     }
 }
 
-async function getDefaultBranchOnRepo(hook, token) {
+async function getDefaultBranchOnRepo(
+    hook: string,
+    token: string
+): Promise<any> {
     return fetch(`https://api.github.com/repos/${hook}`, {
         method: 'GET',
         headers: {
@@ -52,7 +63,11 @@ async function getDefaultBranchOnRepo(hook, token) {
         });
 }
 
-async function getReference(hook, token, branch = 'main') {
+async function getReference(
+    hook: string,
+    token: string,
+    branch = 'main'
+): Promise<any> {
     return fetch(
         `https://api.github.com/repos/${hook}/git/refs/heads/${branch}`,
         {
@@ -68,8 +83,12 @@ async function getReference(hook, token, branch = 'main') {
             return { refSHA: data.object.sha, ref: data.ref };
         });
 }
-
-async function createBlob(hook, token, content, path) {
+async function createBlob(
+    hook: string,
+    token: string,
+    content: string,
+    path: string
+): Promise<any> {
     return fetch(`https://api.github.com/repos/${hook}/git/blobs`, {
         method: 'POST',
         body: JSON.stringify({
@@ -88,7 +107,12 @@ async function createBlob(hook, token, content, path) {
         });
 }
 
-async function createTree(hook, token, refSHA, tree_items) {
+async function createTree(
+    hook: string,
+    token: string,
+    refSHA: string,
+    tree_items: object
+): Promise<any> {
     return fetch(`https://api.github.com/repos/${hook}/git/trees`, {
         method: 'POST',
         body: JSON.stringify({ tree: tree_items, base_tree: refSHA }),
@@ -104,7 +128,13 @@ async function createTree(hook, token, refSHA, tree_items) {
         });
 }
 
-async function createCommit(hook, token, message, treeSHA, refSHA) {
+async function createCommit(
+    hook: string,
+    token: string,
+    message: string,
+    treeSHA: string,
+    refSHA: string
+): Promise<any> {
     return fetch(`https://api.github.com/repos/${hook}/git/commits`, {
         method: 'POST',
         body: JSON.stringify({ message, tree: treeSHA, parents: [refSHA] }),
@@ -120,7 +150,13 @@ async function createCommit(hook, token, message, treeSHA, refSHA) {
         });
 }
 
-async function updateHead(hook, token, ref, commitSHA, force = true) {
+async function updateHead(
+    hook: string,
+    token: string,
+    ref: string,
+    commitSHA: string,
+    force = true
+): Promise<any> {
     return fetch(`https://api.github.com/repos/${hook}/git/${ref}`, {
         method: 'PATCH',
         body: JSON.stringify({ sha: commitSHA, force }),
@@ -136,7 +172,7 @@ async function updateHead(hook, token, ref, commitSHA, force = true) {
         });
 }
 
-async function getTree(hook, token) {
+async function getTree(hook: string, token: string): Promise<any> {
     return fetch(
         `https://api.github.com/repos/${hook}/git/trees/HEAD?recursive=1`,
         {

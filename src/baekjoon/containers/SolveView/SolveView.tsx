@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ProblemPanel } from '@/baekjoon/presentations/ProblemPanel';
 import { EditorPanel } from '@/baekjoon/presentations/EditorPanel';
 import { fetchProblemHtml } from '@/baekjoon/apis/problem';
@@ -12,7 +12,7 @@ import { VerticalSplitView } from '@/baekjoon/presentations/VerticalSplitView';
 import TestCasePanel from '@/baekjoon/presentations/TestCasePanel/TestCasePanel';
 import EditorButtonBox from '@/baekjoon/presentations/EditorButtonBox/EditorButtonBox';
 import { LanguageSelectBox } from '@/baekjoon/components/LanguageSelectBox';
-import { SubmitPostRequest } from '@/baekjoon/types/submit';
+import { CodeOpen, SubmitPostRequest } from '@/baekjoon/types/submit';
 import { submit } from '@/baekjoon/apis/submit';
 import { compile } from '@/common/apis/compile';
 import {
@@ -34,16 +34,23 @@ import {
 import { addUrlSearchParam, refreshUrl } from '@/common/utils/url';
 import {
     loadEditorCode,
+    loadTestCases,
     saveEditorCode,
+    saveTestCases,
 } from '@/baekjoon/utils/storage/editor';
 import { checkCompileError } from '@/baekjoon/utils/compile';
 
 type SolveViewProps = {
-    problemId: string | null;
+    problemId: string;
     csrfKey: string | null;
+    codeOpenDefaultValue: CodeOpen;
 };
 
-const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
+const SolveView: React.FC<SolveViewProps> = ({
+    problemId,
+    csrfKey,
+    codeOpenDefaultValue,
+}) => {
     const [problemContent, setProblemContent] = useState<JSX.Element | null>(
         null
     );
@@ -55,10 +62,10 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     const [editorLanguage, setEditorLanguage] = useState<EditorLanguage>(
         convertLanguageIdForEditor(languageId)
     );
-    const [codeOpen, setCodeOpen] = useState('close');
+    const [codeOpen, setCodeOpen] = useState<CodeOpen>(codeOpenDefaultValue);
     const [code, setCode] = useState(getDefaultCode(editorLanguage));
     const [testCaseModalOpen, setTestCaseModalOpen] = useState<boolean>(false);
-    const [compileErrorMessage, setCompileErrorMessage] = useState<string>('');
+    const [errorMessage, setErrorMessage] = useState<string>('');
 
     const [testCaseState, setTestCaseState] = useState<
         'initial' | 'running' | 'result' | 'error'
@@ -73,11 +80,6 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
 
     const toggleTestCaseModal = () => {
         setTestCaseModalOpen(!testCaseModalOpen);
-    };
-
-    const codeSaveToLocalStorage = (languageId: string, code: string) => {
-        if (problemId) saveEditorCode(problemId, languageId, code);
-        console.log(languageId, code);
     };
 
     const addTestCase = () => {
@@ -101,8 +103,17 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
         ]);
     };
 
-    // TODO: 로컬 스토리지에 테스트 케이스 저장 로직 작성
     const saveTestCase = () => {
+        for (const testCase of customTestCases) {
+            if (!testCase.input.trim()) {
+                alert('입력이 빈칸일 수 없습니다.');
+                return;
+            } else if (!testCase.output.trim()) {
+                alert('출력이 빈칸일 수 없습니다.');
+                return;
+            }
+        }
+        saveTestCases(problemId, customTestCases);
         toggleTestCaseModal();
     };
 
@@ -116,14 +127,17 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
             return;
         }
 
-        codeSaveToLocalStorage(languageId, code);
+        saveEditorCode(problemId, languageId, code);
         setTestCaseState('running');
 
         const lang = convertLanguageIdForSubmitApi(languageId);
         const currentTestCases = [...testCases, ...customTestCases];
         setTargetTestCases(currentTestCases);
 
-        // 컴파일 에러 여부 확인
+        currentTestCases.forEach((testCase) => {
+            testCase.result = undefined;
+        });
+
         if (testCases.length > 0) {
             const data: CodeCompileRequest = {
                 lang: lang,
@@ -135,44 +149,46 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                 const output = await compile(data);
                 if (checkCompileError(lang, output)) {
                     setTestCaseState('error');
-                    setCompileErrorMessage(output);
+                    setErrorMessage(output);
                     return;
+                } else {
+                    testCases[0].result = output;
                 }
             } catch (error) {
-                console.log('error =', error);
+                setTestCaseState('error');
+                setErrorMessage(
+                    `컴파일 서버에서 오류가 발생했습니다.\n${error}`
+                );
                 return;
             }
         }
 
-        try {
-            await Promise.all(
-                currentTestCases.map(async (testCase) => {
-                    const data: CodeCompileRequest = {
-                        lang: lang,
-                        code: code,
-                        input: testCase.input,
-                    };
+        await Promise.all(
+            currentTestCases.slice(1).map(async (testCase) => {
+                const data: CodeCompileRequest = {
+                    lang: lang,
+                    code: code,
+                    input: testCase.input,
+                };
 
-                    testCase.result = undefined;
-
+                try {
                     const output = await compile(data);
-                    testCase.result = output;
-                })
-            );
-        } catch (error) {
-            console.log('error =', error);
-        }
+                    testCase.result = output; // 결과 설정
+                } catch (error) {
+                    setTestCaseState('error');
+                    setErrorMessage(
+                        `컴파일 서버에서 오류가 발생했습니다.\n${error}`
+                    );
+                    return;
+                }
+            })
+        );
 
         setTestCaseState('result');
     };
 
     const codeSubmit = () => {
-        if (problemId === null) {
-            alert('문제 정보를 불러올 수 없습니다.');
-            return;
-        }
-
-        codeSaveToLocalStorage(languageId, code);
+        saveEditorCode(problemId, languageId, code);
         const data: SubmitPostRequest = {
             problem_id: problemId,
             language: Number(languageId),
@@ -201,7 +217,6 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
 
     useEffect(() => {
         const loadProblemData = async () => {
-            if (!problemId) return;
             const loadedProblemContent = await loadAndParseProblemDetail(
                 problemId
             );
@@ -235,9 +250,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
             }
         };
 
-        if (problemId) {
-            loadProblemData();
-        }
+        loadProblemData();
     }, [problemId]);
 
     const languageChangeHandle = (
@@ -253,7 +266,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
             const editorLanguage = convertLanguageIdForEditor(selectedLanguage);
             setLanguageId(selectedLanguage);
             setCode(getDefaultCode(editorLanguage));
-            codeSaveToLocalStorage(languageId, code);
+            saveEditorCode(problemId, languageId, code);
         } else {
             setLanguageId(focusLanguageId);
             const editorLanguage = convertLanguageIdForEditor(focusLanguageId);
@@ -267,11 +280,12 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     }, [languageId]);
 
     useEffect(() => {
-        if (!problemId) return;
         loadEditorCode(problemId).then((value: EditorCode) => {
             setLanguageId(value.languageId as string);
             setCode(value.code);
-            console.log(value.code);
+        });
+        loadTestCases(problemId).then((value: TestCase[]) => {
+            setCustomTestCases(value);
         });
     }, []);
 
@@ -290,7 +304,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
     useEffect(() => {
         const tick = () => {
             console.log('editor code and language save.');
-            codeSaveToLocalStorage(languageIdRef.current, codeRef.current);
+            saveEditorCode(problemId, languageIdRef.current, codeRef.current);
         };
 
         const timerId = setInterval(tick, 60000);
@@ -324,7 +338,6 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                                     justifyContent: 'space-between',
                                 }}
                             >
-                                {/* TODO: 코드 공개 여부 백준 사용자 설정 값으로 지정 */}
                                 <CodeOpenSelector
                                     defaultValue={codeOpen}
                                     onChange={setCodeOpen}
@@ -353,7 +366,7 @@ const SolveView: React.FC<SolveViewProps> = ({ problemId, csrfKey }) => {
                                                 ? 'error'
                                                 : 'run'
                                         }
-                                        errorMessage={compileErrorMessage}
+                                        errorMessage={errorMessage}
                                     />
                                 }
                                 bottomStyle={{
