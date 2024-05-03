@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer-continued';
-import './Modal.css';
+import Diff from 'diff';
+import './ReviewModal.css';
 import { ModalProps } from '@/baekjoon/types/source';
 import { Prism } from 'react-syntax-highlighter';
 import { coy } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -9,7 +10,7 @@ let startLineIndex: number = -1;
 let endLineIndex: number = -1;
 let position: String = 'S-';
 
-const Modal = (modalProps: ModalProps) => {
+const ReviewModal = (modalProps: ModalProps) => {
     const closeModal = () => {
         const modalBackdrop = document.querySelector('.modal-backdrop');
         if (modalBackdrop) {
@@ -17,15 +18,32 @@ const Modal = (modalProps: ModalProps) => {
         }
         console.log('close modal');
     };
+
     const save = () => {
+        const diff = Diff.diffWords(oldCode, newCode);
+        const diffBlock = diff.map((part, index) => {
+            if (part.added) {
+                return (
+                    <span key={index} style={{ backgroundColor: 'lightgreen' }}>
+                        + {part.value}
+                    </span>
+                );
+            }
+            if (part.removed) {
+                return (
+                    <span key={index} style={{ backgroundColor: 'lightcoral' }}>
+                        - {part.value}
+                    </span>
+                );
+            }
+            return <span key={index}>{part.value}</span>;
+        });
+        console.log('..............................diffBlock:', diffBlock);
         console.log('save');
     };
 
     const oldCode = modalProps.sourceCodes[0]?.code || '';
     const newCode = modalProps.sourceCodes[1]?.code || '';
-
-    
-
 
     const [codeBlocks, setCodeBlocks] = useState([
         {
@@ -405,4 +423,4 @@ const Modal = (modalProps: ModalProps) => {
     );
 };
 
-export default Modal;
+export default ReviewModal;

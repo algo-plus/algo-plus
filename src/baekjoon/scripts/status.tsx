@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import { Modal } from '@/baekjoon/containers/ReviewModal';
+import { ReviewModal } from '@/baekjoon/containers/ReviewModal';
 import React from 'react';
 import { fetchCode } from '../apis/source';
 import { getUrlSearchParam } from '@/common/utils/url';
@@ -129,7 +129,7 @@ const customStatusPage = async () => {
         );
         root.render(
             <React.StrictMode>
-                <Modal sourceCodes={sourceCodes} />
+                <ReviewModal sourceCodes={sourceCodes} />
             </React.StrictMode>
         );
     });
