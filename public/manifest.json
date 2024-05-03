@@ -32,7 +32,6 @@
                 "js/vendor.js",
                 "js/main.js",
                 "oauth/authorize.js",
-                "oauth/toast.js",
                 "oauth/util.js",
                 "oauth/oauth2.js",
                 "oauth/Github.js",
