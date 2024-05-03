@@ -3,7 +3,7 @@
  * @returns {string} - 현재 익스텐션의 버전정보
  */
 function getVersion() {
-  return chrome.runtime.getManifest().version;
+    return chrome.runtime.getManifest().version;
 }
 
 /** element가 존재하는지 반환합니다.
@@ -11,7 +11,12 @@ function getVersion() {
  * @returns {boolean} - 존재하면 true, 존재하지 않으면 false
  */
 function elementExists(element) {
-  return element !== undefined && element !== null && element.hasOwnProperty('length') && element.length > 0;
+    return (
+        element !== undefined &&
+        element !== null &&
+        element.hasOwnProperty('length') &&
+        element.length > 0
+    );
 }
 
 /**
@@ -20,7 +25,7 @@ function elementExists(element) {
  * @returns {boolean} - null이면 true, null이 아니면 false
  */
 function isNull(value) {
-  return value === null || value === undefined;
+    return value === null || value === undefined;
 }
 
 /**
@@ -29,7 +34,9 @@ function isNull(value) {
  * @returns {boolean} - 비어있으면 true, 비어있지 않으면 false
  */
 function isEmpty(value) {
-  return isNull(value) || (value.hasOwnProperty('length') && value.length === 0);
+    return (
+        isNull(value) || (value.hasOwnProperty('length') && value.length === 0)
+    );
 }
 
 /** 객체 또는 배열의 모든 요소를 재귀적으로 순회하여 값이 비어있지 않은지 체크합니다.
@@ -38,15 +45,15 @@ function isEmpty(value) {
  * @returns {boolean} - 비어있지 않으면 true, 비어있으면 false
  */
 function isNotEmpty(obj) {
-  if (isEmpty(obj)) return false;
-  if (typeof obj !== 'object') return true;
-  if (obj.length === 0) return false;
-  for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      if (!isNotEmpty(obj[key])) return false;
+    if (isEmpty(obj)) return false;
+    if (typeof obj !== 'object') return true;
+    if (obj.length === 0) return false;
+    for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            if (!isNotEmpty(obj[key])) return false;
+        }
     }
-  }
-  return true;
+    return true;
 }
 /**
  * 문자열을 escape 하여 반환합니다.
@@ -54,22 +61,22 @@ function isNotEmpty(obj) {
  * @returns {string} - escape된 문자열
  */
 function escapeHtml(text) {
-  const map = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#039;',
-  };
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;',
+    };
 
-  return text.replace(/[&<>"']/g, function (m) {
-    return map[m];
-  });
+    return text.replace(/[&<>"']/g, function (m) {
+        return map[m];
+    });
 }
 
 /** 문자열을 escape 하여 반환합니다. */
 String.prototype.escapeHtml = function () {
-  return escapeHtml(this);
+    return escapeHtml(this);
 };
 
 /**
@@ -78,28 +85,31 @@ String.prototype.escapeHtml = function () {
  * @returns {string} - unescape된 문자열
  */
 function unescapeHtml(text) {
-  const unescaped = {
-    '&amp;': '&',
-    '&#38;': '&',
-    '&lt;': '<',
-    '&#60;': '<',
-    '&gt;': '>',
-    '&#62;': '>',
-    '&apos;': "'",
-    '&#39;': "'",
-    '&quot;': '"',
-    '&#34;': '"',
-    '&nbsp;': ' ',
-    '&#160;': ' ',
-  };
-  return text.replace(/&(?:amp|#38|lt|#60|gt|#62|apos|#39|quot|#34|nbsp|#160);/g, function (m) {
-    return unescaped[m];
-  });
+    const unescaped = {
+        '&amp;': '&',
+        '&#38;': '&',
+        '&lt;': '<',
+        '&#60;': '<',
+        '&gt;': '>',
+        '&#62;': '>',
+        '&apos;': "'",
+        '&#39;': "'",
+        '&quot;': '"',
+        '&#34;': '"',
+        '&nbsp;': ' ',
+        '&#160;': ' ',
+    };
+    return text.replace(
+        /&(?:amp|#38|lt|#60|gt|#62|apos|#39|quot|#34|nbsp|#160);/g,
+        function (m) {
+            return unescaped[m];
+        }
+    );
 }
 
 /** 문자열을 unescape 하여 반환합니다. */
 String.prototype.unescapeHtml = function () {
-  return unescapeHtml(this);
+    return unescapeHtml(this);
 };
 
 /** 일반 특수문자를 전각문자로 변환하는 함수
@@ -107,41 +117,41 @@ String.prototype.unescapeHtml = function () {
  * @returns {string} - 전각문자로 변환된 문자열
  */
 function convertSingleCharToDoubleChar(text) {
-  // singleChar to doubleChar mapping
-  const map = {
-    '!': '！',
-    '%': '％',
-    '&': '＆',
-    '(': '（',
-    ')': '）',
-    '*': '＊',
-    '+': '＋',
-    ',': '，',
-    '-': '－',
-    '.': '．',
-    '/': '／',
-    ':': '：',
-    ';': '；',
-    '<': '＜',
-    '=': '＝',
-    '>': '＞',
-    '?': '？',
-    '@': '＠',
-    '[': '［',
-    '\\': '＼',
-    ']': '］',
-    '^': '＾',
-    _: '＿',
-    '`': '｀',
-    '{': '｛',
-    '|': '｜',
-    '}': '｝',
-    '~': '～',
-    ' ': ' ', // 공백만 전각문자가 아닌 FOUR-PER-EM SPACE로 변환
-  };
-  return text.replace(/[!%&()*+,\-./:;<=>?@\[\\\]^_`{|}~ ]/g, function (m) {
-    return map[m];
-  });
+    // singleChar to doubleChar mapping
+    const map = {
+        '!': '！',
+        '%': '％',
+        '&': '＆',
+        '(': '（',
+        ')': '）',
+        '*': '＊',
+        '+': '＋',
+        ',': '，',
+        '-': '－',
+        '.': '．',
+        '/': '／',
+        ':': '：',
+        ';': '；',
+        '<': '＜',
+        '=': '＝',
+        '>': '＞',
+        '?': '？',
+        '@': '＠',
+        '[': '［',
+        '\\': '＼',
+        ']': '］',
+        '^': '＾',
+        _: '＿',
+        '`': '｀',
+        '{': '｛',
+        '|': '｜',
+        '}': '｝',
+        '~': '～',
+        ' ': ' ', // 공백만 전각문자가 아닌 FOUR-PER-EM SPACE로 변환
+    };
+    return text.replace(/[!%&()*+,\-./:;<=>?@\[\\\]^_`{|}~ ]/g, function (m) {
+        return map[m];
+    });
 }
 
 /**
@@ -150,11 +160,14 @@ function convertSingleCharToDoubleChar(text) {
  * @returns {string} - base64로 인코딩된 문자열
  */
 function b64EncodeUnicode(str) {
-  return btoa(
-    encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
-      return String.fromCharCode(`0x${p1}`);
-    }),
-  );
+    return btoa(
+        encodeURIComponent(str).replace(
+            /%([0-9A-F]{2})/g,
+            function (match, p1) {
+                return String.fromCharCode(`0x${p1}`);
+            }
+        )
+    );
 }
 
 /**
@@ -163,22 +176,22 @@ function b64EncodeUnicode(str) {
  * @returns {string} - base64로 디코딩된 문자열
  */
 function b64DecodeUnicode(b64str) {
-  return decodeURIComponent(
-    atob(b64str)
-      .split('')
-      .map(function (c) {
-        return `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`;
-      })
-      .join(''),
-  );
+    return decodeURIComponent(
+        atob(b64str)
+            .split('')
+            .map(function (c) {
+                return `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`;
+            })
+            .join('')
+    );
 }
 
 function parseNumberFromString(str) {
-  const numbers = str.match(/\d+/g);
-  if (isNotEmpty(numbers) && numbers.length > 0) {
-    return Number(numbers[0]);
-  }
-  return NaN;
+    const numbers = str.match(/\d+/g);
+    if (isNotEmpty(numbers) && numbers.length > 0) {
+        return Number(numbers[0]);
+    }
+    return NaN;
 }
 
 /** key 값을 기준으로 array를 그룹핑하여 map으로 반환합니다.
@@ -187,10 +200,10 @@ function parseNumberFromString(str) {
  * @returns {object} - key 기준으로 그룹핑된 객체들 배열을 value로 갖는 map
  */
 function groupBy(array, key) {
-  return array.reduce(function (rv, x) {
-    (rv[x[key]] = rv[x[key]] || []).push(x);
-    return rv;
-  }, {});
+    return array.reduce(function (rv, x) {
+        (rv[x[key]] = rv[x[key]] || []).push(x);
+        return rv;
+    }, {});
 }
 
 /**
@@ -201,15 +214,15 @@ function groupBy(array, key) {
  * @returns {array<object>} : 같은 key 그룹 내의 요소 중 최고의 값을 반환합니다.
  * */
 function maxValuesGroupBykey(arr, key, compare) {
-  const map = groupBy(arr, key);
-  const result = [];
-  for (const [key, value] of Object.entries(map)) {
-    const maxValue = value.reduce((max, current) => {
-      return compare(max, current) > 0 ? max : current;
-    });
-    result.push(maxValue);
-  }
-  return result;
+    const map = groupBy(arr, key);
+    const result = [];
+    for (const [key, value] of Object.entries(map)) {
+        const maxValue = value.reduce((max, current) => {
+            return compare(max, current) > 0 ? max : current;
+        });
+        result.push(maxValue);
+    }
+    return result;
 }
 
 /** 배열 내의 key에 val 값을 포함하고 있는 요소만을 반환합니다.
@@ -218,10 +231,11 @@ function maxValuesGroupBykey(arr, key, compare) {
  * @returns {array} - filtered array
  */
 function filter(arr, conditions) {
-  return arr.filter((item) => {
-    for (const [key, value] of Object.entries(conditions)) if (!item[key].includes(value)) return false;
-    return true;
-  });
+    return arr.filter((item) => {
+        for (const [key, value] of Object.entries(conditions))
+            if (!item[key].includes(value)) return false;
+        return true;
+    });
 }
 
 /** calculate github blob file SHA
@@ -229,7 +243,7 @@ function filter(arr, conditions) {
  * @returns {string} - SHA hash
  */
 function calculateBlobSHA(content) {
-  return sha1(`blob ${new Blob([content]).size}\0${content}`);
+    return sha1(`blob ${new Blob([content]).size}\0${content}`);
 }
 
 /**
@@ -240,21 +254,21 @@ function calculateBlobSHA(content) {
  * @returns {array} - processed array
  */
 async function asyncPool(poolLimit, array, iteratorFn) {
-  const ret = [];
-  const executing = [];
-  for (const item of array) {
-    const p = Promise.resolve().then(() => iteratorFn(item, array));
-    ret.push(p);
+    const ret = [];
+    const executing = [];
+    for (const item of array) {
+        const p = Promise.resolve().then(() => iteratorFn(item, array));
+        ret.push(p);
 
-    if (poolLimit <= array.length) {
-      const e = p.then(() => executing.splice(executing.indexOf(e), 1));
-      executing.push(e);
-      if (executing.length >= poolLimit) {
-        await Promise.race(executing);
-      }
+        if (poolLimit <= array.length) {
+            const e = p.then(() => executing.splice(executing.indexOf(e), 1));
+            executing.push(e);
+            if (executing.length >= poolLimit) {
+                await Promise.race(executing);
+            }
+        }
     }
-  }
-  return Promise.all(ret);
+    return Promise.all(ret);
 }
 
 /**
@@ -264,15 +278,14 @@ async function asyncPool(poolLimit, array, iteratorFn) {
  * @return {array<Object>}
  */
 function combine(a, b) {
-  return a.map((x, i) => ({ ...x, ...b[i] }));
+    return a.map((x, i) => ({ ...x, ...b[i] }));
 }
 
-if (typeof __DEV__ !== "undefined") {
-  var exports = (module.exports = {});
-  exports.filter = filter;
+if (typeof __DEV__ !== 'undefined') {
+    var exports = (module.exports = {});
+    exports.filter = filter;
 }
-
 
 function log(...args) {
-  if (debug) console.log(...args)
+    if (debug) console.log(...args);
 }
