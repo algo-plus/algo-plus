@@ -1,10 +1,9 @@
 import { getProblemId } from '@/baekjoon/utils/parsing';
 import {
     saveProblemDetail,
-    loadAndParseProblemDetail,
     saveProblemMathJaxStyle,
     loadAndParseProblemMathJaxStyle,
-} from '@/baekjoon/utils/storage';
+} from '@/baekjoon/utils/storage/problem';
 
 const fetchCurrentHtml = (): string => {
     return document.documentElement.innerHTML;
@@ -19,19 +18,8 @@ const customProblemPage = async (): Promise<void> => {
         return;
     }
 
-    const problemDetail = await loadAndParseProblemDetail(problemId);
-    const problemMathJaxStyle = await loadAndParseProblemMathJaxStyle(
-        problemId
-    );
-
-    if (!problemDetail) {
-        console.log('No detail found in storage, saving new detail...');
-        await saveProblemDetail(problemId, fetchCurrentHtml());
-    }
-
-    if (!problemMathJaxStyle) {
-        await saveProblemMathJaxStyle(problemId, fetchCurrentHtml());
-    }
+    await saveProblemDetail(problemId, fetchCurrentHtml());
+    await saveProblemMathJaxStyle(problemId, fetchCurrentHtml());
 };
 
 export default customProblemPage;

@@ -2,7 +2,7 @@ import {
     getObjectFromLocalStorage,
     saveObjectInLocalStorage,
 } from '@/common/utils/storage';
-import { parsingProblemDetail, parsingStyle } from './parsing';
+import { parsingProblemDetail, parsingStyle } from '@/baekjoon/utils/parsing';
 
 interface ProblemDetail {
     htmlContent: string;
@@ -41,6 +41,5 @@ export const loadAndParseProblemMathJaxStyle = async (
     const result = (await getObjectFromLocalStorage(
         problemId + `-style`
     )) as string;
-    console.log('loadAndParseProblemMathJaxStyle:', result);
     return result ? parsingStyle(result) : null;
 };

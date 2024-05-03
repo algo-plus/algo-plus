@@ -197,6 +197,25 @@ const Modal = (modalProps: ModalProps) => {
         }
     };
 
+    // TODO: Find another way to remove Bootstrap css.
+    const newStyles = {
+        contentText: {
+            background: 'transparent',
+            border: '0',
+        },
+        lineNumber: {
+            border: '0',
+        },
+        marker: {
+            background: 'transparent',
+            border: '0',
+            '> pre': {
+                border: '0',
+                background: 'transparent',
+            },
+        },
+    };
+
     return (
         <div className="modal-content">
             <div className="modal-header" style={{ display: 'flex' }}>
@@ -223,6 +242,7 @@ const Modal = (modalProps: ModalProps) => {
                         compareMethod={DiffMethod.LINES}
                         splitView={true}
                         onLineNumberClick={handleLineNumberClick}
+                        styles={newStyles}
                         renderContent={(value) => {
                             return (
                                 <Prism
