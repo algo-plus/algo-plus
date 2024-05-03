@@ -311,6 +311,18 @@ const SolveView: React.FC<SolveViewProps> = ({
         return () => clearInterval(timerId);
     }, []);
 
+    useEffect(() => {
+        const handleData = () => {
+            saveEditorCode(problemId, languageIdRef.current, codeRef.current);
+        };
+
+        window.addEventListener('beforeunload', handleData);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleData);
+        };
+    }, []);
+
     return (
         <>
             <div style={{ height: '100%' }}>
