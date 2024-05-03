@@ -112,7 +112,6 @@ const repositoryName = () => {
     return $('#name').val().trim();
 };
 
-/* Status codes for creating of repo */
 const statusCode = (res, status, name) => {
     switch (status) {
         case 304:
