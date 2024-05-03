@@ -1,5 +1,6 @@
 class GitHub {
     constructor(hook, token) {
+        log('GitHub constructor', hook, token);
         this.update(hook, token);
     }
 
@@ -21,10 +22,20 @@ class GitHub {
     }
 
     async createTree(refSHA, tree_items) {
+        log('GitHub createTree', 'refSHA:', refSHA, 'tree_items:', tree_items);
         return createTree(this.hook, this.token, refSHA, tree_items);
     }
 
     async createCommit(message, treeSHA, refSHA) {
+        log(
+            'GitHub createCommit',
+            'message:',
+            message,
+            'treeSHA:',
+            treeSHA,
+            'refSHA:',
+            refSHA
+        );
         return createCommit(this.hook, this.token, message, treeSHA, refSHA);
     }
 
