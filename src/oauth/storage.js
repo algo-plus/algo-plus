@@ -33,7 +33,7 @@ getStats().then((stats) => {
     saveStats(stats);
 });
 
-const getObjectFromLocalStorage = async (key) => {
+async function getObjectFromLocalStorage(key) {
     return new Promise((resolve, reject) => {
         try {
             chrome.storage.local.get(key, function (value) {
@@ -43,9 +43,9 @@ const getObjectFromLocalStorage = async (key) => {
             reject(ex);
         }
     });
-};
+}
 
-const saveObjectInLocalStorage = async (obj) => {
+async function saveObjectInLocalStorage(obj) {
     return new Promise((resolve, reject) => {
         try {
             chrome.storage.local.set(obj, function () {
@@ -55,73 +55,73 @@ const saveObjectInLocalStorage = async (obj) => {
             reject(ex);
         }
     });
-};
+}
 
-const removeObjectFromLocalStorage = async (keys) => {
+async function removeObjectFromLocalStorage(keys) {
     return new Promise((resolve, reject) => {
         try {
-            chrome.storage.local.remove(keys, () => {
+            chrome.storage.local.remove(keys, function () {
                 resolve();
             });
         } catch (ex) {
             reject(ex);
         }
     });
-};
+}
 
-const getObjectFromSyncStorage = async (key) => {
+async function getObjectFromSyncStorage(key) {
     return new Promise((resolve, reject) => {
         try {
-            chrome.storage.sync.get(key, (value) => {
+            chrome.storage.sync.get(key, function (value) {
                 resolve(value[key]);
             });
         } catch (ex) {
             reject(ex);
         }
     });
-};
+}
 
-const saveObjectInSyncStorage = async (obj) => {
+async function saveObjectInSyncStorage(obj) {
     return new Promise((resolve, reject) => {
         try {
-            chrome.storage.sync.set(obj, () => {
+            chrome.storage.sync.set(obj, function () {
                 resolve();
             });
         } catch (ex) {
             reject(ex);
         }
     });
-};
+}
 
-const removeObjectFromSyncStorage = async (keys) => {
+async function removeObjectFromSyncStorage(keys) {
     return new Promise((resolve, reject) => {
         try {
-            chrome.storage.sync.remove(keys, () => {
+            chrome.storage.sync.remove(keys, function () {
                 resolve();
             });
         } catch (ex) {
             reject(ex);
         }
     });
-};
+}
 
-const getToken = async () => {
+async function getToken() {
     return await getObjectFromLocalStorage('AlgoPlus_token');
-};
+}
 
-const getGithubUsername = async () => {
+async function getGithubUsername() {
     return await getObjectFromLocalStorage('AlgoPlus_username');
-};
+}
 
-const getStats = async () => {
+async function getStats() {
     return await getObjectFromLocalStorage('stats');
-};
+}
 
-const getHook = async () => {
+async function getHook() {
     return await getObjectFromLocalStorage('AlgoPlus_hook');
-};
+}
 
-const getOrgOption = async () => {
+async function getOrgOption() {
     try {
         return await getObjectFromLocalStorage('AlgoPlus_OrgOption');
     } catch (ex) {
@@ -131,27 +131,27 @@ const getOrgOption = async () => {
         chrome.storage.local.set({ AlgoPlus_OrgOption: 'platform' }, () => {});
         return 'platform';
     }
-};
+}
 
-const getModeType = async () => {
+async function getModeType() {
     return await getObjectFromLocalStorage('mode_type');
-};
+}
 
-const saveToken = async (token) => {
+async function saveToken(token) {
     return await saveObjectInLocalStorage({ AlgoPlus_token: token });
-};
+}
 
-const saveStats = async (stats) => {
+async function saveStats(stats) {
     return await saveObjectInLocalStorage({ stats });
-};
+}
 
-const updateStatsSHAfromPath = async (path, sha) => {
+async function updateStatsSHAfromPath(path, sha) {
     const stats = await getStats();
     updateObjectDatafromPath(stats.submission, path, sha);
     await saveStats(stats);
-};
+}
 
-const updateObjectDatafromPath = (obj, path, data) => {
+function updateObjectDatafromPath(obj, path, data) {
     let current = obj;
     const pathArray = _swexpertacademyRankRemoveFilter(
         _baekjoonSpaceRemoverFilter(
@@ -167,14 +167,14 @@ const updateObjectDatafromPath = (obj, path, data) => {
         current = current[path];
     }
     current[pathArray.pop()] = data;
-};
+}
 
-const getStatsSHAfromPath = async (path) => {
+async function getStatsSHAfromPath(path) {
     const stats = await getStats();
     return getObjectDatafromPath(stats.submission, path);
-};
+}
 
-const getObjectDatafromPath = (obj, path) => {
+function getObjectDatafromPath(obj, path) {
     let current = obj;
     const pathArray = _swexpertacademyRankRemoveFilter(
         _baekjoonSpaceRemoverFilter(
@@ -190,9 +190,10 @@ const getObjectDatafromPath = (obj, path) => {
         current = current[path];
     }
     return current[pathArray.pop()];
-};
+}
 
-const updateLocalStorageStats = async () => {
+/* github repo에 있는 모든 파일 목록을 가져와서 stats 갱신 */
+async function updateLocalStorageStats() {
     const hook = await getHook();
     const token = await getToken();
     const git = new GitHub(hook, token);
@@ -212,30 +213,31 @@ const updateLocalStorageStats = async () => {
     const default_branch = await git.getDefaultBranchOnRepo();
     stats.branches[hook] = default_branch;
     await saveStats(stats);
+    log('update stats', stats);
     return stats;
-};
+}
 
-const getDirNameByOrgOption = async (dirName, language) => {
+async function getDirNameByOrgOption(dirName, language) {
     if ((await getOrgOption()) === 'language')
         dirName = `${language}/${dirName}`;
     return dirName;
-};
+}
 
-const _baekjoonRankRemoverFilter = (path) => {
+function _baekjoonRankRemoverFilter(path) {
     return path.replace(
         /\/(Unrated|Silver|Bronze|Gold|Platinum|Diamond|Ruby|Master)\//g,
         '/'
     );
-};
+}
 
-const _programmersRankRemoverFilter = (path) => {
+function _programmersRankRemoverFilter(path) {
     return path.replace(/\/(lv[0-9]|unrated)\//g, '/');
-};
+}
 
-const _baekjoonSpaceRemoverFilter = (path) => {
+function _baekjoonSpaceRemoverFilter(path) {
     return path.replace(/( | |&nbsp|&#160|&#8197|%E2%80%85|%20)/g, '');
-};
+}
 
-const _swexpertacademyRankRemoveFilter = (path) => {
+function _swexpertacademyRankRemoveFilter(path) {
     return path.replace(/\/D([0-8]+)\//g, '/');
-};
+}
