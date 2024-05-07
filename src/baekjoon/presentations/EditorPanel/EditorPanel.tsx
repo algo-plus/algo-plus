@@ -14,6 +14,8 @@ const EditorPanel: React.FC<EditorPanelProps> = ({
     language,
     onCodeUpdate,
 }) => {
+    const sunIcon = '☀️';
+    const moonIcon = '🌙';
     const [theme, setTheme] = useState<Theme>('vs-code-light');
 
     return (
@@ -38,7 +40,14 @@ const EditorPanel: React.FC<EditorPanelProps> = ({
                 onUpdate={onCodeUpdate}
             />
             <button
-                style={{ position: 'absolute', top: 0, right: 0 }}
+                className='theme-change-button'
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    backgroundColor:
+                        theme === 'vs-code-dark' ? '#ffffff30' : '#00000030',
+                }}
                 onClick={() =>
                     setTheme(
                         theme === 'vs-code-dark'
@@ -47,7 +56,7 @@ const EditorPanel: React.FC<EditorPanelProps> = ({
                     )
                 }
             >
-                테마 변경
+                {theme === 'vs-code-dark' ? moonIcon : sunIcon}
             </button>
         </div>
     );
