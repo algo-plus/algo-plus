@@ -34,7 +34,7 @@ const writeEnableMsgOnLog = () => {
 
 let loader: any;
 
-export const startLoader = async () => {
+export const startLoader = async (content: string) => {
     loader = setInterval(async () => {
         const enable = await checkEnable();
         if (!enable) stopLoader();
@@ -55,7 +55,7 @@ export const startLoader = async () => {
                     console.log('풀이가 맞았습니다. 업로드를 시작합니다.');
                     startUpload();
                     const bojData = await findData();
-                    await beginUpload(bojData);
+                    await beginUpload(bojData, content);
                 }
             }
         }
@@ -67,7 +67,7 @@ const stopLoader = () => {
     loader = null;
 };
 
-const beginUpload = async (bojData: any) => {
+const beginUpload = async (bojData: any, content: string) => {
     const stats: any = await getStats();
     const hook: any = await getHook();
 
@@ -80,7 +80,7 @@ const beginUpload = async (bojData: any) => {
         await versionUpdate();
     }
 
-    await uploadOneSolveProblemOnGit(bojData, markUploadedCSS);
+    await uploadOneSolveProblemOnGit(bojData, content, markUploadedCSS);
 };
 
 const versionUpdate = async () => {

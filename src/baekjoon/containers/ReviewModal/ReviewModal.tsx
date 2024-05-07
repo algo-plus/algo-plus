@@ -33,7 +33,7 @@ const ReviewModal = (modalProps: ModalProps) => {
             'markdownContent: \n',
             markdownReview(reviewMarkDownContent)
         );
-        startLoader();
+        startLoader(markdownReview(reviewMarkDownContent));
     };
 
     const oldCode = modalProps.sourceCodes[0]?.code || '';
