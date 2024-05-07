@@ -10,6 +10,7 @@ import { GitHub } from './Github';
 
 export const uploadOneSolveProblemOnGit = async (
     bojData: any,
+    content: string,
     cb: Function
 ): Promise<void> => {
     const token: any = await getToken();
@@ -21,7 +22,7 @@ export const uploadOneSolveProblemOnGit = async (
     return upload(
         token,
         hook,
-        bojData.readme,
+        bojData.readme + `\n\n` + content,
         bojData.directory,
         bojData.message,
         cb
