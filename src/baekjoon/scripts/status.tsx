@@ -48,10 +48,12 @@ const customStatusPage = async () => {
     if (!tableBody) return;
 
     const column = tableHead.querySelectorAll('tr');
+    const columnHead = column[0].querySelectorAll('th');
+    columnHead[3].style.width = '16%';
 
     const headerCell = document.createElement('th');
     headerCell.textContent = '오답';
-    headerCell.style.width = '5%';
+    headerCell.style.width = '4%';
 
     column[0].insertBefore(headerCell, column[0].firstChild);
     const rows = tableBody.querySelectorAll('tr');
@@ -60,6 +62,7 @@ const customStatusPage = async () => {
     for (let i = 0; i < rows.length; i++) {
         const row = rows[i];
         const checkboxCell = document.createElement('td');
+        checkboxCell.style.alignContent = 'center';
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.classList.add('note-checkbox');
