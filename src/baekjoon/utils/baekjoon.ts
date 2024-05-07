@@ -89,16 +89,6 @@ const beginUpload = async (bojData: any) => {
         await versionUpdate();
     }
 
-    const cachedSHA = await getStatsSHAfromPath(
-        `${hook}/${bojData.directory}/${bojData.fileName}`
-    );
-    const calcSHA = calculateBlobSHA(bojData.code);
-
-    if (cachedSHA == calcSHA) {
-        markUploadedCSS(stats.branches, bojData.directory);
-        console.log(`현재 제출번호를 업로드한 기록이 있습니다.`);
-        return;
-    }
     await uploadOneSolveProblemOnGit(bojData, markUploadedCSS);
 };
 
