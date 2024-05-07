@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PrismCodeEditor } from '@/baekjoon/components/PrismCodeEditor';
 import { EditorLanguage } from '@/common/types/language';
 import './EditorPanel.css';
+import { loadTheme, saveTheme } from '@/baekjoon/utils/storage/editor';
 
 interface EditorPanelProps {
     code: string;
@@ -16,7 +17,15 @@ const EditorPanel: React.FC<EditorPanelProps> = ({
 }) => {
     const sunIcon = '☀️';
     const moonIcon = '🌙';
-    const [theme, setTheme] = useState<Theme>('vs-code-light');
+    const [theme, setTheme] = useState<Theme>('vs-code-dark');
+
+    useEffect(() => {
+        loadTheme().then((theme) => setTheme(theme as Theme));
+    }, []);
+
+    useEffect(() => {
+        saveTheme(theme);
+    }, [theme]);
 
     return (
         <div
