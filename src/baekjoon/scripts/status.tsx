@@ -87,9 +87,6 @@ const customStatusPage = async () => {
     });
 
     const getSourceCode = async () => {
-        const selectedRows = document.querySelectorAll(
-            '.note-checkbox:checked'
-        );
         const sourceCodeIds = getCheckedSubmissionNumbers();
         const sourceCodes = [];
         for (const id of sourceCodeIds) {
@@ -125,11 +122,6 @@ const customStatusPage = async () => {
         document.body.appendChild(modalDiv);
         const root = createRoot(modalDiv);
         const sourceCodes = await getSourceCode();
-        const checkedSubmissionNumbers = getCheckedSubmissionNumbers();
-        console.log(
-            '..................checkedSubmissionNumbers: ',
-            checkedSubmissionNumbers
-        );
         root.render(
             <React.StrictMode>
                 <ReviewModal sourceCodes={sourceCodes} />
