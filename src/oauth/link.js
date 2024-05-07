@@ -3,9 +3,8 @@ const localButton = document.querySelector('#local-button');
 const githubSetting = document.querySelector('#github-setting');
 const localSetting = document.querySelector('#local-setting');
 const githubAuth = document.querySelector('#github-auth');
-const repoSubmit = document.querySelector('#github-link-button');
 
-localButton.addEventListener('click', function () {
+localButton.addEventListener('click', () => {
     localButton.style.backgroundColor = '#0076c0';
     localButton.style.color = 'white';
     githubButton.style.backgroundColor = 'lightgray';
@@ -14,7 +13,7 @@ localButton.addEventListener('click', function () {
     localSetting.style.display = 'block';
 });
 
-githubButton.addEventListener('click', function () {
+githubButton.addEventListener('click', () => {
     githubButton.style.backgroundColor = '#0076c0';
     githubButton.style.color = 'white';
     localButton.style.backgroundColor = 'lightgray';
@@ -33,6 +32,7 @@ document
             action: 'saveRepository',
             repositoryName: repositoryName,
         });
+        window.alert('추후 업데이트 예정');
     });
 
 chrome.storage.local.get('alpEnable', (data4) => {
@@ -57,6 +57,7 @@ githubAuth.addEventListener('click', function () {
     if (action) {
         oAuth2.begin();
     }
+
     chrome.storage.local.get('AlgoPlus_token', (data) => {
         const token = data.AlgoPlus_token;
         if (token === null || token === undefined) {
@@ -102,7 +103,12 @@ githubAuth.addEventListener('click', function () {
     });
 });
 
-repoSubmit.addEventListener('click', function () {});
+chrome.storage.local.get('pipe_AlgoPlus', (data) => {
+    const pipe_istrue = data.pipe_AlgoPlus;
+    if (pipe_istrue) {
+        $('#auth-success').show();
+    }
+});
 
 const option = () => {
     return $('#type').val();
@@ -165,7 +171,6 @@ const statusCode = (res, status, name) => {
             chrome.storage.local.set({ AlgoPlus_hook: res.full_name }, () => {
                 console.log('Successfully set new repo hook');
             });
-
             break;
     }
 };
@@ -257,6 +262,7 @@ const linkRepo = (token, name) => {
                             $('#success').html(
                                 `Successfully linked <a target="blank" href="${res.html_url}">${name}</a> to AlgoPlus. Start <a href="https://www.acmicpc.net/">BOJ</a> now!`
                             );
+                            $('#auth-success').show();
                             $('#success').show();
                         }
                     );

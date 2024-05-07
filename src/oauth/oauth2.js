@@ -20,7 +20,7 @@ const oAuth2 = {
         chrome.storage.local.set({ pipe_AlgoPlus: true }, () => {
             chrome.tabs.create({ url, selected: true }, function () {
                 window.close();
-                chrome.tabs.getCurrent(function (tab) {});
+                chrome.tabs.getCurrent(() => {});
             });
         });
     },
