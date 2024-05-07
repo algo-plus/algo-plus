@@ -27,7 +27,7 @@ const markdownCodeDiff = (oldCode: string, newCode: string) => {
 };
 
 const markdownCommentBlock = (commentBlocks: CommentBlocks) => {
-    let commentBlockContainer = '\n\n# 💻코드 리뷰\n\n';
+    let commentBlockContainer = '\n\n# 💻 코드 리뷰\n\n';
     let idx = 1;
     if (
         commentBlocks.length === 1 &&
@@ -50,7 +50,7 @@ const markdownCommentBlock = (commentBlocks: CommentBlocks) => {
                 '```\n' + commentBlock.selectedNewCode + '\n```\n';
         }
         if (commentBlock.comment) {
-            commentBlockContainer += '\n### 📄 코멘트: \n\n';
+            commentBlockContainer += '\n### 📄 코멘트: \n\n\n\n';
             commentBlockContainer += commentBlock.comment;
         }
     });
@@ -58,7 +58,7 @@ const markdownCommentBlock = (commentBlocks: CommentBlocks) => {
 };
 
 const markdownReview = (reviewMarkdownContent: ReviewMarkdownContent) => {
-    const title = '#  🚀 오답노트 \n\n';
+    const title = '#  🚀  오답노트 \n\n';
     const diffViewer = markdownCodeDiff(
         reviewMarkdownContent.oldCode || '',
         reviewMarkdownContent.newCode || ''
