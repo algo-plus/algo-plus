@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PrismCodeEditor } from '@/baekjoon/components/PrismCodeEditor';
 import { EditorLanguage } from '@/common/types/language';
 import './EditorPanel.css';
+import { loadTheme, saveTheme } from '@/baekjoon/utils/storage/editor';
 
 interface EditorPanelProps {
     code: string;
@@ -14,7 +15,17 @@ const EditorPanel: React.FC<EditorPanelProps> = ({
     language,
     onCodeUpdate,
 }) => {
-    const [theme, setTheme] = useState<Theme>('vs-code-light');
+    const sunIcon = '☀️';
+    const moonIcon = '🌙';
+    const [theme, setTheme] = useState<Theme>('vs-code-dark');
+
+    useEffect(() => {
+        loadTheme().then((theme) => setTheme(theme as Theme));
+    }, []);
+
+    useEffect(() => {
+        saveTheme(theme);
+    }, [theme]);
 
     return (
         <div
@@ -38,7 +49,14 @@ const EditorPanel: React.FC<EditorPanelProps> = ({
                 onUpdate={onCodeUpdate}
             />
             <button
-                style={{ position: 'absolute', top: 0, right: 0 }}
+                className='theme-change-button'
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    backgroundColor:
+                        theme === 'vs-code-dark' ? '#ffffff30' : '#00000030',
+                }}
                 onClick={() =>
                     setTheme(
                         theme === 'vs-code-dark'
@@ -47,7 +65,7 @@ const EditorPanel: React.FC<EditorPanelProps> = ({
                     )
                 }
             >
-                테마 변경
+                {theme === 'vs-code-dark' ? moonIcon : sunIcon}
             </button>
         </div>
     );

@@ -12,13 +12,10 @@ const PrismCodeEditor = forwardRef(
     (props: SetupOptions, ref: ForwardedRef<PrismEditor>) => {
         const divRef = useRef<HTMLDivElement>(null);
         const editorRef = useRef<PrismEditor>();
+        const options = { ...props, tabSize: 4, wordWrap: true };
 
         useEffect(() => {
-            editorRef.current?.setOptions({
-                ...props,
-                tabSize: 4,
-                wordWrap: true,
-            });
+            editorRef.current?.setOptions(options);
         }, [props]);
 
         useEffect(() => {
@@ -26,20 +23,18 @@ const PrismCodeEditor = forwardRef(
                 divRef.current!,
                 props
             ));
+            if (editorRef.current) {
+            }
+            editorRef.current?.setOptions(options);
             editorRef.current && updateTheme(editorRef.current, props.theme);
-
+            if (editorRef.current) {
+                editorRef.current.wrapper.style.wordBreak = 'break-all';
+            }
             if (ref)
                 typeof ref == 'function' ? ref(editor) : (ref.current = editor);
 
             return editor.remove;
         }, [props.language, props.theme]);
-
-        // 에디터 줄 바꿈 없이 에디터 내부에 wrapping 되도록 설정
-        useEffect(() => {
-            if (editorRef.current) {
-                editorRef.current.wrapper.style.wordBreak = 'break-all';
-            }
-        }, [editorRef.current]);
 
         return <div className='prism-editor-react' ref={divRef} />;
     }
