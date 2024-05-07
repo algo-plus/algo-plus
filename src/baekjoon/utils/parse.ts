@@ -18,8 +18,6 @@ import { getDirNameByOrgOption } from '@/common/utils/storage';
 import {
     updateProblemsFromStats,
     getProblemFromStats,
-    getSubmitCodeFromStats,
-    updateSubmitCodeFromStats,
     getSolvedACFromStats,
     updateSolvedACFromStats,
 } from '@/common/utils/baekjoon-storage';
@@ -66,7 +64,6 @@ const makeDetailMessageAndReadme = async (data: any) => {
         problem_input,
         problem_output,
         submissionTime,
-        code,
         language,
         memory,
         runtime,
@@ -111,7 +108,6 @@ const makeDetailMessageAndReadme = async (data: any) => {
         fileName,
         message,
         readme,
-        code,
     };
 };
 
@@ -184,7 +180,6 @@ export const parsingResultTableList = (doc: any) => {
         obj = { ...obj, ...obj.result, ...obj.problemId };
         list.push(obj);
     }
-    console.log('TableList', list);
     return list;
 };
 
@@ -241,12 +236,6 @@ export const fetchProblemDescriptionById = async (problemId: any) => {
         });
 };
 
-export const fetchSubmitCodeById = async (submissionId: any) => {
-    return fetch(`https://www.acmicpc.net/source/download/${submissionId}`, {
-        method: 'GET',
-    }).then((res) => res.text());
-};
-
 export const fetchSolvedACById = async (problemId: any) => {
     return chrome.runtime.sendMessage({
         sender: 'baekjoon',
@@ -262,15 +251,6 @@ const getProblemDescriptionById = async (problemId: any) => {
         updateProblemsFromStats(problem);
     }
     return problem;
-};
-
-const getSubmitCodeById = async (submissionId: any) => {
-    let code = await getSubmitCodeFromStats(submissionId);
-    if (isNull(code)) {
-        code = await fetchSubmitCodeById(submissionId);
-        updateSubmitCodeFromStats({ submissionId, code });
-    }
-    return code;
 };
 
 const getSolvedACById = async (problemId: any) => {
@@ -290,10 +270,9 @@ const findProblemInfoAndSubmissionCode = async (
     if (!isNull(problemId) && !isNull(submissionId)) {
         return Promise.all([
             getProblemDescriptionById(problemId),
-            getSubmitCodeById(submissionId),
             getSolvedACById(problemId),
         ])
-            .then(([description, code, solvedJson]) => {
+            .then(([description, solvedJson]) => {
                 const problem_tags = solvedJson.tags
                     .flatMap((tag: any) => tag.displayNames)
                     .filter((tag: any) => tag.language === 'ko')
@@ -308,7 +287,6 @@ const findProblemInfoAndSubmissionCode = async (
                     submissionId,
                     title,
                     level,
-                    code,
                     problem_description,
                     problem_input,
                     problem_output,
