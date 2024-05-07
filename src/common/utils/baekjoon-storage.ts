@@ -51,13 +51,10 @@ class TTLCacheStats {
             return;
         }
 
-        const date_yesterday = Date.now() - 86400000; // 1day
+        const date_yesterday = Date.now() - 86400000;
         if (date_yesterday < this.stats[this.name].last_check_date) return;
 
-        const date_week_ago = Date.now() - 7 * 86400000;
-
         this.stats[this.name].last_check_date = Date.now();
-        console.log('stats after deletion', this.stats);
         await this.save();
     }
 
@@ -80,7 +77,6 @@ class TTLCacheStats {
 }
 
 const problemCache = new TTLCacheStats('problem');
-const submitCodeCache = new TTLCacheStats('scode');
 const SolvedACCache = new TTLCacheStats('solvedac');
 
 export const updateProblemsFromStats = async (problem: any) => {
@@ -95,18 +91,6 @@ export const updateProblemsFromStats = async (problem: any) => {
 
 export const getProblemFromStats = async (problemId: any) => {
     return problemCache.get(problemId);
-};
-
-export const updateSubmitCodeFromStats = async (obj: any) => {
-    const data = {
-        id: obj.submissionId,
-        data: obj.code,
-    };
-    await submitCodeCache.update(data);
-};
-
-export const getSubmitCodeFromStats = async (submissionId: any) => {
-    return submitCodeCache.get(submissionId).then((x) => x?.data);
 };
 
 export const updateSolvedACFromStats = async (obj: any) => {

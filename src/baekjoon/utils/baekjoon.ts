@@ -1,4 +1,4 @@
-import { isNull, getVersion, isEmpty, calculateBlobSHA } from './utils';
+import { isNull, getVersion, isEmpty } from './utils';
 
 import {
     getStats,
@@ -15,7 +15,6 @@ import { startUpload, markUploadedCSS } from './utils';
 
 import {
     findUsername,
-    parseProblemDescription,
     isExistResultTable,
     findFromResultTable,
     findData,
@@ -34,8 +33,6 @@ const writeEnableMsgOnLog = () => {
 };
 
 let loader: any;
-
-const currentUrl = window.location.href;
 
 export const startLoader = async () => {
     loader = setInterval(async () => {
@@ -65,12 +62,6 @@ export const startLoader = async () => {
     }, 2000);
 };
 
-const username = findUsername();
-if (!isNull(username)) {
-    if (currentUrl.match(/\.net\/problem\/\d+/) !== null)
-        parseProblemDescription();
-}
-
 const stopLoader = () => {
     clearInterval(loader);
     loader = null;
@@ -93,9 +84,7 @@ const beginUpload = async (bojData: any) => {
 };
 
 const versionUpdate = async () => {
-    console.log('start versionUpdate');
     const stats = await updateLocalStorageStats();
     stats.version = getVersion();
     await saveStats(stats);
-    console.log('stats updated.', stats);
 };

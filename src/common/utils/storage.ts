@@ -104,7 +104,6 @@ export const updateLocalStorageStats = async () => {
     const default_branch = await git.getDefaultBranchOnRepo();
     stats.branches[hook] = default_branch;
     await saveStats(stats);
-    console.log('update stats', stats);
     return stats;
 };
 
@@ -145,7 +144,7 @@ chrome.storage.local.get('isSync', (data) => {
     if (!data || !data.isSync) {
         keys.forEach((key) => {
             chrome.storage.sync.get(key, (data) => {
-                getObjectFromSyncStorage(key).then((data) => {});
+                getObjectFromSyncStorage(key);
                 chrome.storage.local.set({ [key]: data[key] });
             });
         });
