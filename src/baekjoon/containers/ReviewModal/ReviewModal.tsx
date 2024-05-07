@@ -5,7 +5,7 @@ import { ModalProps } from '@/baekjoon/types/source';
 import { Prism } from 'react-syntax-highlighter';
 import { coy } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { startLoader } from '@/baekjoon/utils/baekjoon';
-import { markdownCodeDiff } from '@/baekjoon/utils/review';
+import { markdownReview } from '@/baekjoon/utils/review';
 
 let startLineIndex: number = -1;
 let endLineIndex: number = -1;
@@ -22,6 +22,17 @@ const ReviewModal = (modalProps: ModalProps) => {
 
     const save = () => {
         console.log('save');
+        const reviewMarkDownContent: ReviewMarkdownContent = {
+            oldCode: oldCode,
+            newCode: newCode,
+            commentBlocks: codeBlocks,
+            comment: comment,
+        };
+        console.log('reviewMarkDownContent', reviewMarkDownContent);
+        console.log(
+            'markdownContent: \n',
+            markdownReview(reviewMarkDownContent)
+        );
         startLoader();
     };
 
@@ -39,6 +50,8 @@ const ReviewModal = (modalProps: ModalProps) => {
             isRegistered: false,
         },
     ]);
+
+    const [comment, setComment] = useState('');
 
     const handleRegisterBlock = (id: number) => {
         // 선택된 블록을 등록완료로 변경
@@ -382,7 +395,14 @@ const ReviewModal = (modalProps: ModalProps) => {
                 ))}
                 <div>
                     <h5>전체 코멘트</h5>
-                    <textarea rows={4} cols={50}></textarea>
+                    <textarea
+                        rows={4}
+                        cols={50}
+                        value={comment}
+                        onChange={(e) => {
+                            setComment(e.target.value);
+                        }}
+                    ></textarea>
                 </div>
             </div>
             <div className='modal-footer'>
