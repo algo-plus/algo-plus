@@ -5,6 +5,7 @@ import {
 } from '@/common/utils/storage';
 
 const EDITOR_CODE_STORAGE_PREFIX = 'algoplus-editor-save-';
+const EDITOR_THEME_STORAGE_KEY = 'algoplus-editor-theme-';
 const TEST_CASE_STORAGE_PREFIX = 'algoplus-test-case-';
 
 const saveEditorCode = async (
@@ -46,4 +47,20 @@ const loadTestCases = async (
     return result ? result : [];
 };
 
-export { saveEditorCode, loadEditorCode, saveTestCases, loadTestCases };
+const saveTheme = async (theme: string) => {
+    await saveObjectInLocalStorage({ [EDITOR_THEME_STORAGE_KEY]: theme });
+};
+
+const loadTheme = async (): Promise<string> => {
+    const result = await getObjectFromLocalStorage(EDITOR_THEME_STORAGE_KEY);
+    return result ? result : 'vs-code-dark';
+};
+
+export {
+    saveEditorCode,
+    loadEditorCode,
+    saveTestCases,
+    loadTestCases,
+    saveTheme,
+    loadTheme,
+};
