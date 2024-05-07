@@ -1,5 +1,5 @@
 chrome.storage.local.get('isSync', (data) => {
-    keys = [
+    const keys = [
         'AlgoPlus_token',
         'AlgoPlus_username',
         'pipe_AlgoPlus',
@@ -9,11 +9,11 @@ chrome.storage.local.get('isSync', (data) => {
     ];
     if (!data || !data.isSync) {
         keys.forEach((key) => {
-            chrome.storage.sync.get(key, (data) => {
-                chrome.storage.local.set({ [key]: data[key] });
+            chrome.storage.sync.get(key, (val) => {
+                chrome.storage.local.set({ [key]: val[key] });
             });
         });
-        chrome.storage.local.set({ isSync: true }, (data) => {
+        chrome.storage.local.set({ isSync: true }, () => {
             console.log('AlgoPlus Synced to local values');
         });
     } else {
@@ -106,19 +106,19 @@ async function removeObjectFromSyncStorage(keys) {
 }
 
 async function getToken() {
-    return await getObjectFromLocalStorage('AlgoPlus_token');
+    return getObjectFromLocalStorage('AlgoPlus_token');
 }
 
 async function getGithubUsername() {
-    return await getObjectFromLocalStorage('AlgoPlus_username');
+    return getObjectFromLocalStorage('AlgoPlus_username');
 }
 
 async function getStats() {
-    return await getObjectFromLocalStorage('stats');
+    return getObjectFromLocalStorage('stats');
 }
 
 async function getHook() {
-    return await getObjectFromLocalStorage('AlgoPlus_hook');
+    return getObjectFromLocalStorage('AlgoPlus_hook');
 }
 
 async function getOrgOption() {
@@ -128,21 +128,21 @@ async function getOrgOption() {
         console.log(
             'The way it works has changed with updates. Update your storage. '
         );
-        chrome.storage.local.set({ AlgoPlus_OrgOption: 'platform' }, () => {});
+        chrome.storage.local.set({ AlgoPlus_OrgOption: 'platform' });
         return 'platform';
     }
 }
 
 async function getModeType() {
-    return await getObjectFromLocalStorage('mode_type');
+    return getObjectFromLocalStorage('mode_type');
 }
 
 async function saveToken(token) {
-    return await saveObjectInLocalStorage({ AlgoPlus_token: token });
+    return saveObjectInLocalStorage({ AlgoPlus_token: token });
 }
 
 async function saveStats(stats) {
-    return await saveObjectInLocalStorage({ stats });
+    return saveObjectInLocalStorage({ stats });
 }
 
 async function updateStatsSHAfromPath(path, sha) {
@@ -160,11 +160,11 @@ function updateObjectDatafromPath(obj, path, data) {
     )
         .split('/')
         .filter((p) => p !== '');
-    for (const path of pathArray.slice(0, -1)) {
-        if (isNull(current[path])) {
-            current[path] = {};
+    for (const pArray of pathArray.slice(0, -1)) {
+        if (isNull(current[pArray])) {
+            current[pArray] = {};
         }
-        current = current[path];
+        current = current[pArray];
     }
     current[pathArray.pop()] = data;
 }
@@ -183,16 +183,15 @@ function getObjectDatafromPath(obj, path) {
     )
         .split('/')
         .filter((p) => p !== '');
-    for (const path of pathArray.slice(0, -1)) {
-        if (isNull(current[path])) {
+    for (const pArray of pathArray.slice(0, -1)) {
+        if (isNull(current[pArray])) {
             return null;
         }
-        current = current[path];
+        current = current[pArray];
     }
     return current[pathArray.pop()];
 }
 
-/* github repo에 있는 모든 파일 목록을 가져와서 stats 갱신 */
 async function updateLocalStorageStats() {
     const hook = await getHook();
     const token = await getToken();

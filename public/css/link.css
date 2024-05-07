@@ -77,11 +77,12 @@ body {
     color: red;
 }
 
-/* #github_auth_warning {
-    margin: 30px 0 0 30px;
-    font-size: 14px;
-    color: red;
-} */
+#auth-success {
+    margin: 25px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    color: blue;
+}
 .repo_name {
     margin-top: 10px;
 }
@@ -99,10 +100,9 @@ body {
     transition: border-color 0.3s ease;
 }
 
-/* 선택상자가 포커스를 받았을 때의 스타일 */
 .field select:focus {
-    outline: none; /* 포커스 테두리 제거 */
-    border-color: #66afe9; /* 포커스 시 테두리 색상 변경 */
+    outline: none;
+    border-color: #66afe9;
 }
 
 .field input {
