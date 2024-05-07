@@ -1,4 +1,4 @@
-import { isNull, getVersion, isEmpty, calculateBlobSHA } from './utils';
+import { isNull, getVersion, isEmpty } from './utils';
 
 import {
     getStats,
@@ -15,7 +15,6 @@ import { startUpload, markUploadedCSS } from './utils';
 
 import {
     findUsername,
-    parseProblemDescription,
     isExistResultTable,
     findFromResultTable,
     findData,
@@ -34,8 +33,6 @@ const writeEnableMsgOnLog = () => {
 };
 
 let loader: any;
-
-const currentUrl = window.location.href;
 
 export const startLoader = async () => {
     loader = setInterval(async () => {
@@ -65,12 +62,6 @@ export const startLoader = async () => {
     }, 2000);
 };
 
-const username = findUsername();
-if (!isNull(username)) {
-    if (currentUrl.match(/\.net\/problem\/\d+/) !== null)
-        parseProblemDescription();
-}
-
 const stopLoader = () => {
     clearInterval(loader);
     loader = null;
@@ -89,23 +80,11 @@ const beginUpload = async (bojData: any) => {
         await versionUpdate();
     }
 
-    const cachedSHA = await getStatsSHAfromPath(
-        `${hook}/${bojData.directory}/${bojData.fileName}`
-    );
-    const calcSHA = calculateBlobSHA(bojData.code);
-
-    if (cachedSHA == calcSHA) {
-        markUploadedCSS(stats.branches, bojData.directory);
-        console.log(`현재 제출번호를 업로드한 기록이 있습니다.`);
-        return;
-    }
     await uploadOneSolveProblemOnGit(bojData, markUploadedCSS);
 };
 
 const versionUpdate = async () => {
-    console.log('start versionUpdate');
     const stats = await updateLocalStorageStats();
     stats.version = getVersion();
     await saveStats(stats);
-    console.log('stats updated.', stats);
 };
