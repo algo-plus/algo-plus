@@ -13,14 +13,14 @@ const oAuth2 = {
 
         let url = `${this.AUTHORIZATION_URL}?client_id=${this.CLIENT_ID}&redirect_uri${this.REDIRECT_URL}&scope=`;
 
-        for (let i = 0; i < this.SCOPES.length; i += 1) {
-            url += this.SCOPES[i];
+        for (const scope of this.SCOPES) {
+            url += scope;
         }
 
         chrome.storage.local.set({ pipe_AlgoPlus: true }, () => {
             chrome.tabs.create({ url, selected: true }, function () {
                 window.close();
-                chrome.tabs.getCurrent(function (tab) {});
+                chrome.tabs.getCurrent(() => {});
             });
         });
     },

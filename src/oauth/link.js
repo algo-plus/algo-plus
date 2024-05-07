@@ -3,9 +3,8 @@ const localButton = document.querySelector('#local-button');
 const githubSetting = document.querySelector('#github-setting');
 const localSetting = document.querySelector('#local-setting');
 const githubAuth = document.querySelector('#github-auth');
-const repoSubmit = document.querySelector('#github-link-button');
 
-localButton.addEventListener('click', function () {
+localButton.addEventListener('click', () => {
     localButton.style.backgroundColor = '#0076c0';
     localButton.style.color = 'white';
     githubButton.style.backgroundColor = 'lightgray';
@@ -14,7 +13,7 @@ localButton.addEventListener('click', function () {
     localSetting.style.display = 'block';
 });
 
-githubButton.addEventListener('click', function () {
+githubButton.addEventListener('click', () => {
     githubButton.style.backgroundColor = '#0076c0';
     githubButton.style.color = 'white';
     localButton.style.backgroundColor = 'lightgray';
@@ -23,40 +22,30 @@ githubButton.addEventListener('click', function () {
     localSetting.style.display = 'none';
 });
 
-document
-    .querySelector('#local-name-save')
-    .addEventListener('click', function () {
-        const repositoryName = document.querySelector(
-            '#repositoryNameInput'
-        ).value;
-        chrome.runtime.sendMessage({
-            action: 'saveRepository',
-            repositoryName: repositoryName,
-        });
+document.querySelector('#local-name-save').addEventListener('click', () => {
+    const repoName = document.querySelector('#repositoryNameInput').value;
+    chrome.runtime.sendMessage({
+        action: 'saveRepository',
+        repositoryName: repoName,
     });
+    window.alert('추후 업데이트 예정');
+});
 
 chrome.storage.local.get('alpEnable', (data4) => {
     if (data4.alpEnable === undefined) {
         $('#onffbox').prop('checked', true);
-        chrome.storage.local.set(
-            { alpEnable: $('#onffbox').is(':checked') },
-            () => {}
-        );
+        chrome.storage.local.set({ alpEnable: $('#onffbox').is(':checked') });
     } else {
         $('#onffbox').prop('checked', data4.alpEnable);
-        chrome.storage.local.set(
-            { alpEnable: $('#onffbox').is(':checked') },
-            () => {}
-        );
+        chrome.storage.local.set({ alpEnable: $('#onffbox').is(':checked') });
     }
 });
 
 let action = false;
 
-githubAuth.addEventListener('click', function () {
-    if (action) {
-        oAuth2.begin();
-    }
+githubAuth.addEventListener('click', () => {
+    action && oAuth2.begin();
+
     chrome.storage.local.get('AlgoPlus_token', (data) => {
         const token = data.AlgoPlus_token;
         if (token === null || token === undefined) {
@@ -65,7 +54,7 @@ githubAuth.addEventListener('click', function () {
             const AUTHENTICATION_URL = 'https://api.github.com/user';
 
             const xhr = new XMLHttpRequest();
-            xhr.addEventListener('readystatechange', function () {
+            xhr.addEventListener('readystatechange', () => {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
                         chrome.storage.local.get('mode_type', (data2) => {
@@ -82,7 +71,6 @@ githubAuth.addEventListener('click', function () {
                                         }
                                     }
                                 );
-                            } else {
                             }
                         });
                     } else if (xhr.status === 401) {
@@ -102,7 +90,12 @@ githubAuth.addEventListener('click', function () {
     });
 });
 
-repoSubmit.addEventListener('click', function () {});
+chrome.storage.local.get('pipe_AlgoPlus', (data) => {
+    const pipe_istrue = data.pipe_AlgoPlus;
+    if (pipe_istrue) {
+        $('#auth-success').show();
+    }
+});
 
 const option = () => {
     return $('#type').val();
@@ -165,7 +158,6 @@ const statusCode = (res, status, name) => {
             chrome.storage.local.set({ AlgoPlus_hook: res.full_name }, () => {
                 console.log('Successfully set new repo hook');
             });
-
             break;
     }
 };
@@ -188,7 +180,7 @@ const createRepo = (token, name) => {
         }
     });
 
-    stats = {};
+    const stats = {};
     stats.version = chrome.runtime.getManifest().version;
     stats.submission = {};
     chrome.storage.local.set({ stats });
@@ -257,6 +249,7 @@ const linkRepo = (token, name) => {
                             $('#success').html(
                                 `Successfully linked <a target="blank" href="${res.html_url}">${name}</a> to AlgoPlus. Start <a href="https://www.acmicpc.net/">BOJ</a> now!`
                             );
+                            $('#auth-success').show();
                             $('#success').show();
                         }
                     );
@@ -269,9 +262,6 @@ const linkRepo = (token, name) => {
                         { AlgoPlus_hook: res.full_name },
                         () => {
                             console.log('Successfully set new repo hook');
-                            chrome.storage.local.get('stats', (psolved) => {
-                                const { stats } = psolved;
-                            });
                         }
                     );
                 }
@@ -331,11 +321,7 @@ $('#github-link-button').on('click', () => {
                         $('#error').show();
                         $('#success').hide();
                     } else {
-                        linkRepo(
-                            token,
-                            `${username}/${repositoryName()}`,
-                            false
-                        );
+                        linkRepo(token, `${username}/${repositoryName()}`);
                     }
                 });
             }
@@ -375,6 +361,5 @@ chrome.storage.local.get('mode_type', (data) => {
                 });
             }
         });
-    } else {
     }
 });

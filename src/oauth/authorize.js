@@ -11,8 +11,8 @@ const localAuth = {
 
     parseAccessCode(url) {
         if (url.match(/\?error=(.+)/)) {
-            chrome.tabs.getCurrent(function (tab) {
-                chrome.tabs.remove(tab.id, function () {});
+            chrome.tabs.getCurrent((tab) => {
+                chrome.tabs.remove(tab.id);
             });
         } else {
             const accessCode = url.match(/\?code=([\w\/\-]+)/);
@@ -29,7 +29,7 @@ const localAuth = {
         data.append('code', code);
 
         const xhr = new XMLHttpRequest();
-        xhr.addEventListener('readystatechange', function () {
+        xhr.addEventListener('readystatechange', () => {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     that.finish(
@@ -50,7 +50,7 @@ const localAuth = {
     finish(token) {
         const AUTHENTICATION_URL = 'https://api.github.com/user';
         const xhr = new XMLHttpRequest();
-        xhr.addEventListener('readystatechange', function () {
+        xhr.addEventListener('readystatechange', () => {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     const username = JSON.parse(xhr.responseText).login;
