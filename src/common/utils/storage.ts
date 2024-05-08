@@ -50,7 +50,6 @@ export const updateObjectDatafromPath = (obj: any, path: string, data: any) => {
 };
 export const getStatsSHAfromPath = async (path: string): Promise<string> => {
     const stats: any = await getStats();
-    console.log('11', stats);
     return getObjectDatafromPath(stats.submission, path);
 };
 
@@ -78,7 +77,7 @@ export const getObjectDatafromPath = (obj: any, path: string) => {
         }
         current = current[path];
     }
-    return current[current];
+    return current[pathArray.pop()];
 };
 
 export const updateLocalStorageStats = async () => {
