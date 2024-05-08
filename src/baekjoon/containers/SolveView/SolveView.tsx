@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ProblemPanel } from '@/baekjoon/presentations/ProblemPanel';
 import { EditorPanel } from '@/baekjoon/presentations/EditorPanel';
+import { fetchProblemHtml } from '@/baekjoon/apis/problem';
+import {
+    parsingProblemDetail,
+    parsingTestCases,
+} from '@/baekjoon/utils/parsing';
 import { EditorCode, TestCase } from '@/baekjoon/types/problem';
 import { HorizontalSplitView } from '@/baekjoon/presentations/HorizontalSplitView';
 import { VerticalSplitView } from '@/baekjoon/presentations/VerticalSplitView';
@@ -22,6 +27,10 @@ import { Modal } from '@/baekjoon/presentations/Modal';
 import { TestCaseModalButtonBox } from '@/baekjoon/presentations/TestCaseModalButtonBox';
 import uuid from 'react-uuid';
 import { TestCaseContainer } from '@/baekjoon/presentations/TestCaseContainer';
+import {
+    loadAndParseProblemDetail,
+    loadAndParseProblemMathJaxStyle,
+} from '@/baekjoon/utils/storage/problem';
 import { addUrlSearchParam, refreshUrl } from '@/common/utils/url';
 import {
     loadEditorCode,
@@ -33,21 +42,20 @@ import { checkCompileError } from '@/baekjoon/utils/compile';
 
 type SolveViewProps = {
     problemId: string;
-    problemContent: JSX.Element;
-    problemStyle?: JSX.Element;
-    testCases?: TestCase[];
     csrfKey: string | null;
     codeOpenDefaultValue: CodeOpen;
 };
 
 const SolveView: React.FC<SolveViewProps> = ({
     problemId,
-    problemContent,
-    problemStyle,
-    testCases = [],
     csrfKey,
     codeOpenDefaultValue,
 }) => {
+    const [problemContent, setProblemContent] = useState<JSX.Element | null>(
+        null
+    );
+    const [problemStyle, setProblemStyle] = useState<JSX.Element | null>(null);
+    const [testCases, setTestCases] = useState<TestCase[]>([]);
     const [customTestCases, setCustomTestCases] = useState<TestCase[]>([]);
     const [languageId, setLanguageId] = useState<string>('0');
     const [focusLanguageId, setFocusLanguageId] = useState<string>('0');
@@ -207,6 +215,44 @@ const SolveView: React.FC<SolveViewProps> = ({
         );
     };
 
+    useEffect(() => {
+        const loadProblemData = async () => {
+            const loadedProblemContent = await loadAndParseProblemDetail(
+                problemId
+            );
+            const loadedProblemStyle = await loadAndParseProblemMathJaxStyle(
+                problemId
+            );
+
+            if (loadedProblemContent) {
+                setProblemContent(loadedProblemContent);
+                setProblemStyle(loadedProblemStyle);
+                const parsedTestCases = parsingTestCases(
+                    loadedProblemContent.props.dangerouslySetInnerHTML.__html
+                );
+                setTestCases(parsedTestCases);
+            } else {
+                fetchProblemHtml(
+                    problemId,
+                    async (html) => {
+                        const parsedContent = parsingProblemDetail(html);
+                        setProblemContent(parsedContent);
+                        const parsedTestCases = parsingTestCases(html);
+                        setTestCases(parsedTestCases);
+                    },
+                    (error) => {
+                        console.error('문제를 불러오는데 실패했습니다.', error);
+                        setProblemContent(
+                            <h1>문제를 불러오는데 실패했습니다.</h1>
+                        );
+                    }
+                );
+            }
+        };
+
+        loadProblemData();
+    }, [problemId]);
+
     const languageChangeHandle = (
         event: React.ChangeEvent<HTMLSelectElement>
     ) => {
@@ -284,7 +330,7 @@ const SolveView: React.FC<SolveViewProps> = ({
                     left={
                         <ProblemPanel
                             content={problemContent}
-                            mathJaxStyle={problemStyle ? problemStyle : null}
+                            mathJaxStyle={problemStyle}
                         />
                     }
                     right={
