@@ -29,12 +29,14 @@ const checkEnable = async () => {
 const writeEnableMsgOnLog = () => {
     const errMsg =
         '확장이 활성화되지 않았습니다. 확장을 활성화하고 시도해주세요';
-    console.log(errMsg);
+    alert(errMsg);
 };
 
 let loader: any;
 
-export const startLoader = async (content: string) => {
+export const startLoader = async (content: string, closeModal: Function) => {
+    const loadModal: any = document.getElementById('loaderModal');
+    loadModal.style.display = 'block';
     loader = setInterval(async () => {
         const enable = await checkEnable();
         if (!enable) stopLoader();
@@ -60,6 +62,10 @@ export const startLoader = async (content: string) => {
             }
         }
     }, 2000);
+    setTimeout(() => {
+        loadModal.style.display = 'none';
+        closeModal();
+    }, 3000);
 };
 
 const stopLoader = () => {
