@@ -3,23 +3,21 @@ import {
     saveObjectInLocalStorage,
 } from '@/common/utils/storage';
 import { parsingProblemDetail, parsingStyle } from '@/baekjoon/utils/parsing';
-import { getDiffTime } from '../time';
+import { getDiffTime } from '@/baekjoon/utils/time';
 
 const PROBLEM_STORAGE_KEY: string = 'algo-plus-problem-save4';
 const PROBLEM_STYLE_STORAGE_KEY: string = 'algo-plus-problem-style-save4';
-const EXPIRE_PERIOD: number = 30000;
+const EXPIRE_PERIOD: number = 86400000;
 
 interface ProblemDetail {
     htmlContent: string;
 }
 
 const loadProblemStorage = async (): Promise<Record<string, any>> => {
-    console.log('loadProblemStorage');
     return getObjectFromLocalStorage(PROBLEM_STORAGE_KEY);
 };
 
 const loadProblemStyleStorage = async (): Promise<Record<string, any>> => {
-    console.log('loadProblemStyleStorage');
     return getObjectFromLocalStorage(PROBLEM_STYLE_STORAGE_KEY);
 };
 
@@ -60,8 +58,6 @@ export const loadAndParseProblemDetail = async (
 ): Promise<JSX.Element | null> => {
     const problems = await loadProblemStorage();
     const result = problems[problemId] as ProblemDetail;
-    console.log('loadAndParseProblemDetail', problems);
-    console.log('loadAndParseProblemDetail result', result);
     return result ? parsingProblemDetail(result.htmlContent) : null;
 };
 
@@ -70,8 +66,6 @@ export const loadAndParseProblemMathJaxStyle = async (
 ): Promise<JSX.Element | null> => {
     const problemStyles = await loadProblemStyleStorage();
     const result = problemStyles[problemId] as string;
-    console.log('loadAndParseProblemMathJaxStyle', problemStyles);
-    console.log('loadAndParseProblemMathJaxStyle result', result);
     return result ? parsingStyle(result) : null;
 };
 
