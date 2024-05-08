@@ -1,5 +1,5 @@
 import { isNull, getVersion } from '@/baekjoon/utils/utils';
-import { GitHub } from '@/baekjoon/utils/Github';
+import { GitHub } from '@/baekjoon/utils/github';
 
 interface StorageObject {
     [key: string]: any;
@@ -35,8 +35,8 @@ getStats().then((stats: any) => {
 
 export const updateObjectDatafromPath = (obj: any, path: string, data: any) => {
     let current = obj;
-    const pathArray: any = _swexpertacademyRankRemoveFilter(
-        _baekjoonSpaceRemoverFilter(_baekjoonRankRemoverFilter(path))
+    const pathArray: any = _baekjoonSpaceRemoverFilter(
+        _baekjoonRankRemoverFilter(path)
     )
         .split('/')
         .filter((p: string) => p !== '');
@@ -50,6 +50,7 @@ export const updateObjectDatafromPath = (obj: any, path: string, data: any) => {
 };
 export const getStatsSHAfromPath = async (path: string): Promise<string> => {
     const stats: any = await getStats();
+    console.log('11', stats);
     return getObjectDatafromPath(stats.submission, path);
 };
 
@@ -64,14 +65,10 @@ export const _baekjoonSpaceRemoverFilter = (path: string): string => {
     return path.replace(/( | |&nbsp|&#160|&#8197|%E2%80%85|%20)/g, '');
 };
 
-export const _swexpertacademyRankRemoveFilter = (path: string): string => {
-    return path.replace(/\/D([0-8]+)\//g, '/');
-};
-
 export const getObjectDatafromPath = (obj: any, path: string) => {
     let current = obj;
-    const pathArray: any = _swexpertacademyRankRemoveFilter(
-        _baekjoonSpaceRemoverFilter(_baekjoonRankRemoverFilter(path))
+    const pathArray: any = _baekjoonSpaceRemoverFilter(
+        _baekjoonRankRemoverFilter(path)
     )
         .split('/')
         .filter((p: string) => p !== '');
@@ -81,7 +78,7 @@ export const getObjectDatafromPath = (obj: any, path: string) => {
         }
         current = current[path];
     }
-    return current[pathArray.pop()];
+    return current[current];
 };
 
 export const updateLocalStorageStats = async () => {
