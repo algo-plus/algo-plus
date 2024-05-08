@@ -207,7 +207,6 @@ const SolveView: React.FC<SolveViewProps> = ({
                         'after_algoplus_submit',
                         'true'
                     );
-                    console.log('code submit... redirectURL=' + redirectURL);
                     refreshUrl(redirectURL);
                 }
             },
@@ -303,7 +302,6 @@ const SolveView: React.FC<SolveViewProps> = ({
 
     useEffect(() => {
         const tick = () => {
-            console.log('editor code and language save.');
             saveEditorCode(problemId, languageIdRef.current, codeRef.current);
         };
 
