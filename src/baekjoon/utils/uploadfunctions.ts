@@ -6,7 +6,7 @@ import {
     updateObjectDatafromPath,
     saveStats,
 } from '@/common/utils/storage';
-import { GitHub } from './Github';
+import { GitHub } from './github';
 
 export const uploadOneSolveProblemOnGit = async (
     bojData: any,
@@ -49,7 +49,6 @@ const upload = async (
     const treeSHA = await git.createTree(refSHA, [readme]);
     const commitSHA = await git.createCommit(commitMessage, treeSHA, refSHA);
     await git.updateHead(ref, commitSHA);
-
     updateObjectDatafromPath(
         stats.submission,
         `${hook}/${readme.path}`,

@@ -153,10 +153,8 @@ async function updateStatsSHAfromPath(path, sha) {
 
 function updateObjectDatafromPath(obj, path, data) {
     let current = obj;
-    const pathArray = _swexpertacademyRankRemoveFilter(
-        _baekjoonSpaceRemoverFilter(
-            _programmersRankRemoverFilter(_baekjoonRankRemoverFilter(path))
-        )
+    const pathArray = _baekjoonSpaceRemoverFilter(
+        _baekjoonRankRemoverFilter(path)
     )
         .split('/')
         .filter((p) => p !== '');
@@ -176,10 +174,8 @@ async function getStatsSHAfromPath(path) {
 
 function getObjectDatafromPath(obj, path) {
     let current = obj;
-    const pathArray = _swexpertacademyRankRemoveFilter(
-        _baekjoonSpaceRemoverFilter(
-            _programmersRankRemoverFilter(_baekjoonRankRemoverFilter(path))
-        )
+    const pathArray = _baekjoonSpaceRemoverFilter(
+        _baekjoonRankRemoverFilter(path)
     )
         .split('/')
         .filter((p) => p !== '');
@@ -212,7 +208,6 @@ async function updateLocalStorageStats() {
     const default_branch = await git.getDefaultBranchOnRepo();
     stats.branches[hook] = default_branch;
     await saveStats(stats);
-    log('update stats', stats);
     return stats;
 }
 
@@ -229,14 +224,6 @@ function _baekjoonRankRemoverFilter(path) {
     );
 }
 
-function _programmersRankRemoverFilter(path) {
-    return path.replace(/\/(lv[0-9]|unrated)\//g, '/');
-}
-
 function _baekjoonSpaceRemoverFilter(path) {
     return path.replace(/( | |&nbsp|&#160|&#8197|%E2%80%85|%20)/g, '');
-}
-
-function _swexpertacademyRankRemoveFilter(path) {
-    return path.replace(/\/D([0-8]+)\//g, '/');
 }

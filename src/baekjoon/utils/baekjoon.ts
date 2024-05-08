@@ -70,7 +70,6 @@ const stopLoader = () => {
 const beginUpload = async (bojData: any, content: string) => {
     const stats: any = await getStats();
     const hook: any = await getHook();
-
     const currentVersion = stats.version;
     if (
         isNull(currentVersion) ||
