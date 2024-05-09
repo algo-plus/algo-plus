@@ -6,7 +6,7 @@ import {
     updateObjectDatafromPath,
     saveStats,
 } from '@/common/utils/storage';
-import { GitHub } from './github';
+import { GitHub } from './Github';
 
 export const uploadOneSolveProblemOnGit = async (
     bojData: any,

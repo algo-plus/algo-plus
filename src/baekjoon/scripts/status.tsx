@@ -10,7 +10,12 @@ import {
 } from '@/baekjoon/utils/status';
 import WrongResultModal from '../containers/WrongResultModal/WrongResultModal';
 import { CodeInfoModal } from '../components/CodeInfoModal';
-import { clearReviewCode, loadReviewCode } from '../utils/storage/review';
+import {
+    clearReviewCode,
+    loadReviewCode,
+    removeReviewCode,
+    saveReviewCode,
+} from '../utils/storage/review';
 
 const customStatusPage = async () => {
     if (
@@ -46,15 +51,15 @@ const customStatusPage = async () => {
         'problem_id'
     );
 
-    let reviewCodes = await loadReviewCode();
-    let checkedCodeCount = reviewCodes.length;
+    // let reviewCodes = await loadReviewCode();
+    // let checkedCodeCount = reviewCodes.length;
 
-    if (
-        checkedCodeCount > 0 &&
-        currentProblemId != (reviewCodes[0].problemId as unknown as string)
-    ) {
-        clearReviewCode();
-    }
+    // if (
+    //     checkedCodeCount > 0 &&
+    //     currentProblemId != (reviewCodes[0].problemId as unknown as string)
+    // ) {
+    //     clearReviewCode();
+    // }
 
     const table = document.querySelector('#status-table');
     if (!table) return;
@@ -107,6 +112,7 @@ const customStatusPage = async () => {
                     checkedCount++;
                 }
             });
+            // if (checkedCount + checkedCodeCount > 2) {
             if (checkedCount > 2) {
                 (checkbox as HTMLInputElement).checked = false;
             }
@@ -127,6 +133,13 @@ const customStatusPage = async () => {
                     row.querySelector('.result')?.textContent?.trim() || '';
 
                 if (isChecked) {
+                    saveReviewCode(
+                        problemId as number,
+                        submissionNumber as number,
+                        memory as number,
+                        time as number,
+                        result
+                    );
                     openModal(
                         problemId as number,
                         submissionNumber as number,
@@ -185,7 +198,6 @@ const customStatusPage = async () => {
             </React.StrictMode>
         );
     });
-
     const anchor = document.querySelectorAll('.text-center');
     const position = anchor.length - 1;
     if (anchor) {
@@ -195,6 +207,7 @@ const customStatusPage = async () => {
         anchor[position].insertBefore(container, anchor[position].firstChild); //
     }
 
+    // 코드 리스트 작성 모달 생성
     function openModal(
         problemId: number,
         submissionNumber: number,
@@ -234,6 +247,7 @@ const customStatusPage = async () => {
             modal.root.unmount();
             modalContainer.removeChild(modal.container);
             modalStack.splice(modalIndex, 1);
+            removeReviewCode();
         }
         checkbox.checked = false; // 체크박스 상태 업데이트
     }

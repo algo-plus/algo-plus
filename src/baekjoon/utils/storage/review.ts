@@ -19,12 +19,24 @@ const saveReviewCode = async (
         time: time,
         result: result,
     };
+
     let savedReviewCode = await loadReviewCode();
-    if (savedReviewCode.length < 2) {
+    if (savedReviewCode === undefined) {
+        savedReviewCode = [data];
+        console.log('.............savedReviewCode: ' + savedReviewCode);
         await saveObjectInLocalStorage({
-            [REVIEW_CODE_STORAGE]: savedReviewCode.push(data),
+            [REVIEW_CODE_STORAGE]: savedReviewCode,
+        });
+    } else if (savedReviewCode.length < 2) {
+        savedReviewCode.push(data);
+        console.log('------------------------', savedReviewCode);
+        await saveObjectInLocalStorage({
+            [REVIEW_CODE_STORAGE]: savedReviewCode,
         });
     }
+    savedReviewCode = await loadReviewCode();
+    console.log('.............savedReviewCodeAfterLoad: ' + savedReviewCode);
+    clearReviewCode();
 };
 
 const loadReviewCode = async (): Promise<CodeInfoModalProps[]> => {
@@ -32,7 +44,8 @@ const loadReviewCode = async (): Promise<CodeInfoModalProps[]> => {
     const result = (await getObjectFromLocalStorage(
         key
     )) as CodeInfoModalProps[];
-    return result;
+    console.log('............loadReviewCode:', result.values);
+    return result ? result : [];
 };
 
 const removeReviewCode = async (): Promise<CodeInfoModalProps[]> => {
