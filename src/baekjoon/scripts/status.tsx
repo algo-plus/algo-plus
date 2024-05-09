@@ -9,6 +9,8 @@ import {
     isWrongState,
 } from '@/baekjoon/utils/status';
 import WrongResultModal from '../containers/WrongResultModal/WrongResultModal';
+import { CodeInfoModal } from '../components/CodeInfoModal';
+import { clearReviewCode, loadReviewCode } from '../utils/storage/review';
 
 const customStatusPage = async () => {
     if (
@@ -39,6 +41,20 @@ const customStatusPage = async () => {
             }
         }, 500);
     }
+    const currentProblemId = getUrlSearchParam(
+        window.location.href,
+        'problem_id'
+    );
+
+    let reviewCodes = await loadReviewCode();
+    let checkedCodeCount = reviewCodes.length;
+
+    if (
+        checkedCodeCount > 0 &&
+        currentProblemId != (reviewCodes[0].problemId as unknown as string)
+    ) {
+        clearReviewCode();
+    }
 
     const table = document.querySelector('#status-table');
     if (!table) return;
@@ -47,13 +63,18 @@ const customStatusPage = async () => {
     const tableBody = table.querySelector('tbody');
     if (!tableBody) return;
 
+    // 선택된 코드 리스트 모달
+    const modalContainer = document.createElement('div');
+    modalContainer.className = 'code-modal-backdrop';
+    document.body.appendChild(modalContainer);
+
     const column = tableHead.querySelectorAll('tr');
     const columnHead = column[0].querySelectorAll('th');
     columnHead[3].style.width = '16%';
 
     const headerCell = document.createElement('th');
     headerCell.textContent = '오답';
-    headerCell.style.width = '4%';
+    headerCell.style.width = '5%';
 
     column[0].insertBefore(headerCell, column[0].firstChild);
     const rows = tableBody.querySelectorAll('tr');
@@ -70,9 +91,15 @@ const customStatusPage = async () => {
         row.insertBefore(checkboxCell, row.firstChild);
     }
 
+    let modalStack: Array<{
+        root: ReturnType<typeof createRoot>;
+        container: HTMLElement;
+        checkbox: HTMLInputElement;
+    }> = [];
+
     const checkboxes = document.querySelectorAll('.note-checkbox');
     checkboxes.forEach((checkbox) => {
-        checkbox.addEventListener('click', () => {
+        checkbox.addEventListener('change', (event) => {
             let checkedCount = 0;
             checkboxes.forEach((cb) => {
                 let checked = cb as HTMLInputElement;
@@ -82,6 +109,35 @@ const customStatusPage = async () => {
             });
             if (checkedCount > 2) {
                 (checkbox as HTMLInputElement).checked = false;
+            }
+            const isChecked = (checkbox as HTMLInputElement).checked;
+            const row = checkbox.closest('tr');
+            if (row) {
+                const problemId =
+                    row.querySelector('.problem_title')?.textContent?.trim() ||
+                    0;
+                const submissionNumber =
+                    row.querySelector('td:nth-child(2)')?.textContent?.trim() ||
+                    0;
+                const memory =
+                    row.querySelector('.memory')?.textContent?.trim() || 0;
+                const time =
+                    row.querySelector('.time')?.textContent?.trim() || 0;
+                const result =
+                    row.querySelector('.result')?.textContent?.trim() || '';
+
+                if (isChecked) {
+                    openModal(
+                        problemId as number,
+                        submissionNumber as number,
+                        memory as number,
+                        time as number,
+                        result,
+                        checkbox as HTMLInputElement
+                    );
+                } else {
+                    closeModal(checkbox as HTMLInputElement);
+                }
             }
         });
     });
@@ -108,6 +164,7 @@ const customStatusPage = async () => {
                 checkedSubmissionNumbers.push(submissionNumber);
             }
         });
+        checkedSubmissionNumbers.sort((a, b) => b - a);
         return checkedSubmissionNumbers;
     };
 
@@ -136,6 +193,49 @@ const customStatusPage = async () => {
         container.style.display = 'flex';
         container.appendChild(button);
         anchor[position].insertBefore(container, anchor[position].firstChild); //
+    }
+
+    function openModal(
+        problemId: number,
+        submissionNumber: number,
+        memory: number,
+        time: number,
+        result: string,
+        checkbox: HTMLInputElement
+    ) {
+        const modalContent = document.createElement('div');
+        modalContent.className = 'code-modal-content';
+        modalContainer.appendChild(modalContent);
+        const modalRoot = createRoot(modalContent);
+        modalRoot.render(
+            <React.StrictMode>
+                <CodeInfoModal
+                    problemId={problemId}
+                    submissionNumber={submissionNumber}
+                    memory={memory}
+                    time={time}
+                    result={result}
+                    onClose={() => closeModal(checkbox as HTMLInputElement)}
+                />
+            </React.StrictMode>
+        );
+        modalStack.push({
+            root: modalRoot,
+            container: modalContent,
+            checkbox: checkbox,
+        });
+    }
+
+    function closeModal(checkbox: HTMLInputElement) {
+        // 모달 스택에서 연결된 체크박스를 가진 모달을 찾아 제거
+        const modalIndex = modalStack.findIndex((m) => m.checkbox === checkbox);
+        if (modalIndex !== -1) {
+            const modal = modalStack[modalIndex];
+            modal.root.unmount();
+            modalContainer.removeChild(modal.container);
+            modalStack.splice(modalIndex, 1);
+        }
+        checkbox.checked = false; // 체크박스 상태 업데이트
     }
 };
 
