@@ -9,7 +9,7 @@ html {
     display: flex;
     flex-direction: column;
     width: 360px;
-    height: 200px;
+    height: 220px;
     border-radius: 10%;
 }
 
@@ -43,4 +43,33 @@ html {
     color: white;
     border: none;
     cursor: pointer;
+}
+#socials {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin: 4px auto;
+}
+
+#socials img {
+    cursor: pointer;
+}
+
+#discord-icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    margin-top: 14px;
+}
+
+#github-icon {
+    width: 18px;
+    height: 18px;
+    margin-top: 14px;
+}
+
+#mail-icon {
+    width: 20px;
+    height: 20px;
+    margin-top: 13px;
 }
