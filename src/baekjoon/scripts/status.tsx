@@ -108,7 +108,7 @@ const customStatusPage = async () => {
                 checkedSubmissionNumbers.push(submissionNumber);
             }
         });
-        return checkedSubmissionNumbers;
+        return checkedSubmissionNumbers.sort((a, b) => a - b);
     };
 
     // 오답노트 작성 버튼
