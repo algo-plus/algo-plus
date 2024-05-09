@@ -5,6 +5,29 @@ interface StorageObject {
     [key: string]: any;
 }
 
+chrome.storage.local.get('isSync', (data) => {
+    const keys = [
+        'AlgoPlus_token',
+        'AlgoPlus_username',
+        'pipe_AlgoPlus',
+        'stats',
+        'AlgoPlus_hook',
+        'mode_type',
+    ];
+    if (!data || !data.isSync) {
+        keys.forEach((key) => {
+            chrome.storage.sync.get(key, (val) => {
+                chrome.storage.local.set({ [key]: val[key] });
+            });
+        });
+        chrome.storage.local.set({ isSync: true }, () => {
+            console.log('AlgoPlus Synced to local values');
+        });
+    } else {
+        console.log('AlgoPlus Local storage already synced!');
+    }
+});
+
 export const getObjectFromLocalStorage = async (key: string): Promise<any> => {
     return new Promise<any>((resolve, reject) => {
         try {
