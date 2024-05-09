@@ -11,7 +11,6 @@ const saveReviewCode = async (
     memory: number,
     time: number,
     result: string,
-    checkbox: HTMLInputElement
 ) => {
     const data: CodeInfoModalProps = {
         problemId: problemId,
@@ -19,7 +18,6 @@ const saveReviewCode = async (
         memory: memory,
         time: time,
         result: result,
-        checkbox: checkbox
     };
     let savedReviewCode = await loadReviewCode();
     if (savedReviewCode.length < 2) {

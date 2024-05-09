@@ -16,6 +16,7 @@ import {
     removeReviewCode,
     saveReviewCode,
 } from '../utils/storage/review';
+import './status.css'
 
 const customStatusPage = async () => {
     if (
@@ -77,46 +78,29 @@ const customStatusPage = async () => {
     const columnHead = column[0].querySelectorAll('th');
     columnHead[3].style.width = '16%';
 
-    const headerCell = document.createElement('th');
-    headerCell.textContent = '오답';
-    headerCell.style.width = '5%';
+    const submissionIds = document.querySelectorAll(
+        'table#status-table tbody tr td:first-child'
+    );
 
-    column[0].insertBefore(headerCell, column[0].firstChild);
-    const rows = tableBody.querySelectorAll('tr');
-
-    // 오답 체크박스
-    for (let i = 0; i < rows.length; i++) {
-        const row = rows[i];
-        const checkboxCell = document.createElement('td');
-        checkboxCell.style.alignContent = 'center';
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.classList.add('note-checkbox');
-        checkboxCell.appendChild(checkbox);
-        row.insertBefore(checkboxCell, row.firstChild);
-    }
-
-    let modalStack: Array<{
-        root: ReturnType<typeof createRoot>;
-        container: HTMLElement;
-        checkbox: HTMLInputElement;
-    }> = [];
-
-    const checkboxes = document.querySelectorAll('.note-checkbox');
-    checkboxes.forEach((checkbox) => {
-        checkbox.addEventListener('change', (event) => {
-            let checkedCount = 0;
-            checkboxes.forEach((cb) => {
-                let checked = cb as HTMLInputElement;
-                if (checked.checked) {
-                    checkedCount++;
+    submissionIds.forEach((submissionId) => {
+        submissionId.addEventListener('click', function () {
+            const row = submissionId.closest('tr');
+            if (row) {
+                if (row.style.backgroundColor === 'lightgreen') {
+                    row.style.backgroundColor = '';
+                } else {
+                    row.style.backgroundColor = 'lightgreen';
                 }
-            });
-            if (checkedCount + checkedCodeCount > 2) {
-                (checkbox as HTMLInputElement).checked = false;
             }
-            const isChecked = (checkbox as HTMLInputElement).checked;
-            const row = checkbox.closest('tr');
+            console.log('Clicked submission ID:', submissionId.textContent);
+            console.log(
+                '...............................submissionIdClicked : ',
+                row
+            );
+            console.log(
+                '...............................color: ',
+                row?.style.backgroundColor
+            );
             if (row) {
                 const problemId =
                     row.querySelector('.problem_title')?.textContent?.trim() ||
@@ -131,25 +115,17 @@ const customStatusPage = async () => {
                 const result =
                     row.querySelector('.result')?.textContent?.trim() || '';
 
-                if (isChecked) {
+                if (row.style.backgroundColor === 'lightgreen') {
                     saveReviewCode(
                         problemId as number,
                         submissionNumber as number,
                         memory as number,
                         time as number,
-                        result,
-                        checkbox as HTMLInputElement
-                    );
-                    openModal(
-                        problemId as number,
-                        submissionNumber as number,
-                        memory as number,
-                        time as number,
-                        result,
-                        checkbox as HTMLInputElement
+                        result
                     );
                 } else {
-                    closeModal(checkbox as HTMLInputElement);
+                    closeModal();
+                    removeReviewCode();
                 }
             }
         });
@@ -161,11 +137,8 @@ const customStatusPage = async () => {
             reviewCode.submissionNumber,
             reviewCode.memory,
             reviewCode.time,
-            reviewCode.result,
-            reviewCode.checkbox
+            reviewCode.result
         );
-        const checkcheckbox = reviewCode.checkbox;
-        console.log('.................checkbox: ', checkcheckbox.value);
     });
 
     const getSourceCode = async () => {
@@ -225,8 +198,7 @@ const customStatusPage = async () => {
         submissionNumber: number,
         memory: number,
         time: number,
-        result: string,
-        checkbox: HTMLInputElement
+        result: string
     ) {
         const modalContent = document.createElement('div');
         modalContent.className = 'code-modal-content';
@@ -240,28 +212,14 @@ const customStatusPage = async () => {
                     memory={memory}
                     time={time}
                     result={result}
-                    onClose={() => closeModal(checkbox as HTMLInputElement)}
+                    onClose={() => closeModal()}
                 />
             </React.StrictMode>
         );
-        modalStack.push({
-            root: modalRoot,
-            container: modalContent,
-            checkbox: checkbox,
-        });
     }
 
-    function closeModal(checkbox: HTMLInputElement) {
-        // 모달 스택에서 연결된 체크박스를 가진 모달을 찾아 제거
-        const modalIndex = modalStack.findIndex((m) => m.checkbox === checkbox);
-        if (modalIndex !== -1) {
-            const modal = modalStack[modalIndex];
-            modal.root.unmount();
-            modalContainer.removeChild(modal.container);
-            modalStack.splice(modalIndex, 1);
-            removeReviewCode();
-        }
-        checkbox.checked = false; // 체크박스 상태 업데이트
+    function closeModal() {
+        removeReviewCode();
     }
 };
 

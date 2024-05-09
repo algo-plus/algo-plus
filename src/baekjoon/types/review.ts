@@ -21,5 +21,4 @@ type CodeInfoModalProps = {
     memory: number;
     time: number;
     result: string;
-    checkbox: HTMLInputElement;
 };
