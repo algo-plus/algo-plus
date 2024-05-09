@@ -1,3 +1,5 @@
+import { CodeCompileRequest } from './common/types/compile';
+
 /**
  * solvedac 문제 데이터를 파싱해오는 함수.
  */
@@ -6,6 +8,20 @@ async function SolvedApiCall(problemId: number) {
         `https://solved.ac/api/v3/problem/show?problemId=${problemId}`,
         { method: 'GET' }
     ).then((query) => query.json());
+}
+
+/**
+ *
+ * 컴파일 api를 호출하는 함수
+ */
+async function compile(data: CodeCompileRequest) {
+    return fetch(
+        'https://0hrt6qn6tk.execute-api.ap-northeast-2.amazonaws.com/api/compile',
+        {
+            method: 'POST',
+            body: JSON.stringify(data),
+        }
+    ).then((response) => response.json());
 }
 
 function handleMessage(request: any, sender: any, sendResponse: any) {
@@ -33,10 +49,12 @@ function handleMessage(request: any, sender: any, sendResponse: any) {
         request.closeWebPage === true &&
         request.isSuccess === false
     ) {
-        // TODO: Use tabs.query instead
         alert('유저 인증 관련 오류');
-        chrome.tabs.getSelected(function (tab) {
-            chrome.tabs.remove(tab.id);
+        chrome.tabs.getSelected((tab) => {
+            const tabid: number | undefined = tab.id;
+            if (typeof tabid !== 'undefined') {
+                chrome.tabs.remove(tabid);
+            }
         });
     } else if (
         request &&
@@ -51,6 +69,13 @@ function handleMessage(request: any, sender: any, sendResponse: any) {
     ) {
         chrome.storage.local.set({ repositories: request.repositoryName });
         chrome.storage.local.get((result) => console.log(result));
+    } else if (request && request.action == 'compile') {
+        try {
+            compile(request.data).then((res) => sendResponse(res));
+        } catch (e) {
+            console.error(e);
+            sendResponse('error');
+        }
     }
     return true;
 }
