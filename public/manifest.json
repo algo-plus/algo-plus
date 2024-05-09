@@ -31,10 +31,10 @@
                 "library/FileSaver.min.js",
                 "js/vendor.js",
                 "js/main.js",
+                "oauth/storage.js",
                 "oauth/authorize.js",
                 "oauth/util.js",
-                "oauth/oauth2.js",
-                "oauth/storage.js"
+                "oauth/oauth2.js"
             ]
         }
     ],

@@ -5,6 +5,41 @@ interface StorageObject {
     [key: string]: any;
 }
 
+chrome.storage.local.get('isSync', (data) => {
+    const keys = [
+        'AlgoPlus_token',
+        'AlgoPlus_username',
+        'pipe_AlgoPlus',
+        'stats',
+        'AlgoPlus_hook',
+        'mode_type',
+    ];
+    if (!data || !data.isSync) {
+        keys.forEach((key) => {
+            chrome.storage.sync.get(key, (val) => {
+                chrome.storage.local.set({ [key]: val[key] });
+            });
+        });
+        chrome.storage.local.set({ isSync: true }, () => {
+            console.log('AlgoPlus Synced to local values');
+        });
+    } else {
+        console.log('AlgoPlus Local storage already synced!');
+    }
+});
+
+export const getObjectFromLocalStorage = async (key: string): Promise<any> => {
+    return new Promise<any>((resolve, reject) => {
+        try {
+            chrome.storage.local.get(key, (value: StorageObject) => {
+                resolve(value[key]);
+            });
+        } catch (ex) {
+            reject(ex);
+        }
+    });
+};
+
 export const getStats = async () => {
     return await getObjectFromLocalStorage('stats');
 };
@@ -128,30 +163,6 @@ export const saveStats = async (stats: any) => {
     return await saveObjectInLocalStorage({ stats });
 };
 
-chrome.storage.local.get('isSync', (data) => {
-    const keys = [
-        'AlgoPlus_token',
-        'AlgoPlus_username',
-        'pipe_AlgoPlus',
-        'stats',
-        'AlgoPlus_hook',
-        'mode_type',
-    ];
-    if (!data || !data.isSync) {
-        keys.forEach((key) => {
-            chrome.storage.sync.get(key, (data) => {
-                getObjectFromSyncStorage(key);
-                chrome.storage.local.set({ [key]: data[key] });
-            });
-        });
-        chrome.storage.local.set({ isSync: true }, () => {
-            console.log('AlgoPlus Synced to local values');
-        });
-    } else {
-        console.log('AlgoPlus Local storage already synced!');
-    }
-});
-
 export const getObjectFromSyncStorage = async (key: string) => {
     return new Promise((resolve, reject) => {
         try {
@@ -181,18 +192,6 @@ export const removeObjectFromSyncStorage = async (keys: any) => {
         try {
             chrome.storage.sync.remove(keys, function () {
                 resolve();
-            });
-        } catch (ex) {
-            reject(ex);
-        }
-    });
-};
-
-export const getObjectFromLocalStorage = async (key: string): Promise<any> => {
-    return new Promise<any>((resolve, reject) => {
-        try {
-            chrome.storage.local.get(key, (value: StorageObject) => {
-                resolve(value[key]);
             });
         } catch (ex) {
             reject(ex);

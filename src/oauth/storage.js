@@ -34,7 +34,7 @@ getStats().then((stats) => {
 });
 
 async function getObjectFromLocalStorage(key) {
-    return new Promise((resolve, reject) => {
+    return await new Promise((resolve, reject) => {
         try {
             chrome.storage.local.get(key, function (value) {
                 resolve(value[key]);
@@ -106,19 +106,19 @@ async function removeObjectFromSyncStorage(keys) {
 }
 
 async function getToken() {
-    return getObjectFromLocalStorage('AlgoPlus_token');
+    return await getObjectFromLocalStorage('AlgoPlus_token');
 }
 
 async function getGithubUsername() {
-    return getObjectFromLocalStorage('AlgoPlus_username');
+    return await getObjectFromLocalStorage('AlgoPlus_username');
 }
 
 async function getStats() {
-    return getObjectFromLocalStorage('stats');
+    return await getObjectFromLocalStorage('stats');
 }
 
 async function getHook() {
-    return getObjectFromLocalStorage('AlgoPlus_hook');
+    return await getObjectFromLocalStorage('AlgoPlus_hook');
 }
 
 async function getOrgOption() {
