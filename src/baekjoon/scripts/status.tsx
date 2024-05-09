@@ -116,7 +116,6 @@ const customStatusPage = async () => {
     button.textContent = '오답 노트 작성';
     button.classList.add('btn', 'btn-primary');
     button.addEventListener('click', async () => {
-        console.log('Clicked note btn');
         const modalDiv = document.createElement('div');
         modalDiv.className = 'modal-backdrop';
         document.body.appendChild(modalDiv);
