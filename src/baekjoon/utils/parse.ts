@@ -200,7 +200,6 @@ export const parseProblemDescription = (doc: any = document) => {
             ?.innerHTML.trim?.()
             .unescapeHtml?.() || 'Empty';
     if (problemId && problem_description) {
-        console.log(`문제번호 ${problemId}의 내용을 저장합니다.`);
         updateProblemsFromStats({
             problemId,
             problem_description,

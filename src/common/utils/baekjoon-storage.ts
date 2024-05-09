@@ -43,10 +43,6 @@ class TTLCacheStats {
         if (!this.stats[this.name].last_check_date) {
             this.stats[this.name].last_check_date = Date.now();
             this.save();
-            console.log(
-                'Initialized stats date',
-                this.stats[this.name].last_check_date
-            );
             return;
         }
 

@@ -88,7 +88,6 @@ const customSubmitPage = () => {
 
             if (submitButton) {
                 const solveButton = submitButton.closest('li')?.nextSibling;
-                console.log('solveButton=', solveButton);
                 if (solveButton && solveButton instanceof HTMLLIElement) {
                     solveButton.classList.add('active');
                 }
