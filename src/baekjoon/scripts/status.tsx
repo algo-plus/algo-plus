@@ -190,8 +190,7 @@ const customStatusPage = async () => {
                 checkedSubmissionNumbers.push(submissionNumber);
             }
         });
-        checkedSubmissionNumbers.sort((a, b) => b - a);
-        return checkedSubmissionNumbers;
+        return checkedSubmissionNumbers.sort((a, b) => a - b);
     };
 
     // 오답노트 작성 버튼

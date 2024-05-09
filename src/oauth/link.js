@@ -109,6 +109,7 @@ const statusCode = (res, status, name) => {
     switch (status) {
         case 304:
             $('#success').hide();
+            $('#auth-success').hide();
             $('#error').text(
                 `Error creating ${name} - Unable to modify repository. Try again later!`
             );
@@ -117,6 +118,7 @@ const statusCode = (res, status, name) => {
 
         case 400:
             $('#success').hide();
+            $('#auth-success').hide();
             $('#error').text(
                 `Error creating ${name} - Bad POST request, make sure you're not overriding any existing scripts`
             );
@@ -125,6 +127,7 @@ const statusCode = (res, status, name) => {
 
         case 401:
             $('#success').hide();
+            $('#auth-success').hide();
             $('#error').text(
                 `Error creating ${name} - Unauthorized access to repo. Try again later!`
             );
@@ -133,6 +136,7 @@ const statusCode = (res, status, name) => {
 
         case 403:
             $('#success').hide();
+            $('#auth-success').hide();
             $('#error').text(
                 `Error creating ${name} - Forbidden access to repository. Try again later!`
             );
@@ -141,6 +145,7 @@ const statusCode = (res, status, name) => {
 
         case 422:
             $('#success').hide();
+            $('#auth-success').hide();
             $('#error').text(
                 `Error creating ${name} - Unprocessable Entity. Repository may have already been created. Try Linking instead (select 2nd option).`
             );
@@ -154,6 +159,7 @@ const statusCode = (res, status, name) => {
                     `Successfully created <a target="blank" href="${res.html_url}">${name}</a>. Start <a href="https://www.acmicpc.net/">BOJ</a>!`
                 );
                 $('#success').show();
+                $('#auth-success').show();
             });
             chrome.storage.local.set({ AlgoPlus_hook: res.full_name }, () => {
                 console.log('Successfully set new repo hook');
@@ -196,6 +202,7 @@ const linkStatusCode = (status, name) => {
     switch (status) {
         case 301:
             $('#success').hide();
+            $('#auth-success').hide();
             $('#error').html(
                 `Error linking <a target="blank" href="${`https://github.com/${name}`}">${name}</a> to AlgoPlus. <br> This repository has been moved permenantly. Try creating a new one.`
             );
@@ -204,6 +211,7 @@ const linkStatusCode = (status, name) => {
 
         case 403:
             $('#success').hide();
+            $('#auth-success').hide();
             $('#error').html(
                 `Error linking <a target="blank" href="${`https://github.com/${name}`}">${name}</a> to AlgoPlus. <br> Forbidden action. Please make sure you have the right access to this repository.`
             );
@@ -212,6 +220,7 @@ const linkStatusCode = (status, name) => {
 
         case 404:
             $('#success').hide();
+            $('#auth-success').hide();
             $('#error').html(
                 `Error linking <a target="blank" href="${`https://github.com/${name}`}">${name}</a> to AlgoPlus. <br> Resource not found. Make sure you enter the right repository name.`
             );
@@ -300,6 +309,7 @@ $('#github-link-button').on('click', () => {
         $('#error').hide();
         $('#success').text('Attempting to create Hook... Please wait.');
         $('#success').show();
+        $('#auth-success').show();
 
         chrome.storage.local.get('AlgoPlus_token', (data) => {
             const token = data.AlgoPlus_token;
@@ -309,6 +319,7 @@ $('#github-link-button').on('click', () => {
                 );
                 $('#error').show();
                 $('#success').hide();
+                $('#auth-success').hide();
             } else if (option() === 'new') {
                 createRepo(token, repositoryName());
             } else {
@@ -320,6 +331,7 @@ $('#github-link-button').on('click', () => {
                         );
                         $('#error').show();
                         $('#success').hide();
+                        $('#auth-success').hide();
                     } else {
                         linkRepo(token, `${username}/${repositoryName()}`);
                     }
@@ -346,6 +358,7 @@ chrome.storage.local.get('mode_type', (data) => {
                 );
                 $('#error').show();
                 $('#success').hide();
+                $('#auth-success').hide();
             } else {
                 chrome.storage.local.get('AlgoPlus_hook', (repoName) => {
                     const hook = repoName.AlgoPlus_hook;
@@ -355,6 +368,7 @@ chrome.storage.local.get('mode_type', (data) => {
                         );
                         $('#error').show();
                         $('#success').hide();
+                        $('#auth-success').hide();
                     } else {
                         linkRepo(token, hook);
                     }
