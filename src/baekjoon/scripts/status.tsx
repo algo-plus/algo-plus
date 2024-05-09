@@ -51,15 +51,15 @@ const customStatusPage = async () => {
         'problem_id'
     );
 
-    // let reviewCodes = await loadReviewCode();
-    // let checkedCodeCount = reviewCodes.length;
+    let reviewCodes = await loadReviewCode();
+    let checkedCodeCount = reviewCodes.length;
 
-    // if (
-    //     checkedCodeCount > 0 &&
-    //     currentProblemId != (reviewCodes[0].problemId as unknown as string)
-    // ) {
-    //     clearReviewCode();
-    // }
+    if (
+        checkedCodeCount > 0 &&
+        currentProblemId != (reviewCodes[0].problemId as unknown as string)
+    ) {
+        clearReviewCode();
+    }
 
     const table = document.querySelector('#status-table');
     if (!table) return;
@@ -112,8 +112,7 @@ const customStatusPage = async () => {
                     checkedCount++;
                 }
             });
-            // if (checkedCount + checkedCodeCount > 2) {
-            if (checkedCount > 2) {
+            if (checkedCount + checkedCodeCount > 2) {
                 (checkbox as HTMLInputElement).checked = false;
             }
             const isChecked = (checkbox as HTMLInputElement).checked;
@@ -138,7 +137,8 @@ const customStatusPage = async () => {
                         submissionNumber as number,
                         memory as number,
                         time as number,
-                        result
+                        result,
+                        checkbox as HTMLInputElement
                     );
                     openModal(
                         problemId as number,
@@ -153,6 +153,19 @@ const customStatusPage = async () => {
                 }
             }
         });
+    });
+
+    reviewCodes.forEach((reviewCode) => {
+        openModal(
+            reviewCode.problemId,
+            reviewCode.submissionNumber,
+            reviewCode.memory,
+            reviewCode.time,
+            reviewCode.result,
+            reviewCode.checkbox
+        );
+        const checkcheckbox = reviewCode.checkbox;
+        console.log('.................checkbox: ', checkcheckbox.value);
     });
 
     const getSourceCode = async () => {
