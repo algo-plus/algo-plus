@@ -5,6 +5,13 @@
     "description": "백준, SWEA를 실제 코딩테스트처럼 풀 수 있는 환경을 제공하고, 오답 노트 기능 등 학습에 유용한 기능을 제공하는 크롬 확장 프로그램",
     "version": "1.0.0",
 
+    "icons": {
+        "16": "icons/icon16.png",
+        "32": "icons/icon32.png",
+        "48": "icons/icon48.png",
+        "128": "icons/icon128.png"
+    },
+
     "options_ui": {
         "page": "options.html"
     },
