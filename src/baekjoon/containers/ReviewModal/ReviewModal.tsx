@@ -17,23 +17,16 @@ const ReviewModal = (modalProps: ModalProps) => {
         if (modalBackdrop) {
             modalBackdrop.remove();
         }
-        console.log('close modal');
     };
 
     const save = () => {
-        console.log('save');
         const reviewMarkDownContent: ReviewMarkdownContent = {
             oldCode: oldCode,
             newCode: newCode,
             commentBlocks: codeBlocks,
             comment: comment,
         };
-        console.log('reviewMarkDownContent', reviewMarkDownContent);
-        console.log(
-            'markdownContent: \n',
-            markdownReview(reviewMarkDownContent)
-        );
-        startLoader(markdownReview(reviewMarkDownContent));
+        startLoader(markdownReview(reviewMarkDownContent), closeModal);
     };
 
     const oldCode = modalProps.sourceCodes[0]?.code || '';
@@ -54,7 +47,6 @@ const ReviewModal = (modalProps: ModalProps) => {
     const [comment, setComment] = useState('');
 
     const handleRegisterBlock = (id: number) => {
-        // 선택된 블록을 등록완료로 변경
         setCodeBlocks((prevBlocks) => {
             const updatedBlocks = [...prevBlocks];
             updatedBlocks[id].isRegistered = true;
@@ -421,6 +413,11 @@ const ReviewModal = (modalProps: ModalProps) => {
                 >
                     저장
                 </button>
+            </div>
+            <div id='loaderModal' className='loader-modal'>
+                <div className='loader-content'>
+                    <div className='loader'></div>
+                </div>
             </div>
         </div>
     );

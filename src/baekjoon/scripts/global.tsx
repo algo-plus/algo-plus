@@ -2,8 +2,11 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { SolveButton } from '@/baekjoon/components/SolveButton';
 import { getProblemId } from '@/baekjoon/utils/parsing';
+import { clearProblemStorage } from '@/baekjoon/utils/storage/problem';
 
 const customGlobalPage = (): void => {
+    clearProblemStorage();
+
     const addSolveButton = () => {
         const submitButton = document.querySelector(
             'ul.problem-menu li a[href*="/submit"]'
