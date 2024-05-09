@@ -93,30 +93,6 @@ export const unescapeHtml = (text: string): string => {
     );
 };
 
-export const asyncPool = async (
-    poolLimit: number,
-    array: any,
-    iteratorFn: Function
-) => {
-    const ret = [];
-    const executing: any[] = [];
-    for (const item of array) {
-        const p = Promise.resolve().then(() => iteratorFn(item, array));
-        ret.push(p);
-
-        if (poolLimit <= array.length) {
-            const e: any = p.then(() =>
-                executing.splice(executing.indexOf(e), 1)
-            );
-            executing.push(e);
-            if (executing.length >= poolLimit) {
-                await Promise.race(executing);
-            }
-        }
-    }
-    return Promise.all(ret);
-};
-
 export const convertSingleCharToDoubleChar = (text: string): string => {
     const map: any = {
         '!': '！',
@@ -284,18 +260,19 @@ export function convertResultTableHeader(header: any) {
 export const convertImageTagAbsoluteURL = (doc = document) => {
     if (isNull(doc)) return;
     Array.from(doc.getElementsByTagName('img'), (x) => {
-        x.setAttribute('src', x.currentSrc);
-        return x;
+        if (x.getAttribute('src')?.startsWith('https://onlinejudgeimages')) {
+            return;
+        } else if (
+            x.getAttribute('src')?.startsWith('https://www.acmicpc.net')
+        ) {
+            return;
+        } else {
+            x.setAttribute(
+                'src',
+                'https://onlinejudgeimages.s3-ap-northeast-1.amazonaws.com' +
+                    x.getAttribute('src')
+            );
+            return x;
+        }
     });
-};
-
-export const getDateString = (date: Date): string => {
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    const seconds = date.getSeconds().toString().padStart(2, '0');
-
-    return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}:${seconds}`;
 };

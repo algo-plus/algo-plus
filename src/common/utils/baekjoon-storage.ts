@@ -31,7 +31,6 @@ class TTLCacheStats {
         }
         this.saveTimer = setTimeout(async () => {
             const clone = this.stats[this.name];
-            console.log('Saving stats...', clone);
             await this.forceLoad();
             this.stats[this.name] = clone;
             await saveStats(this.stats);
