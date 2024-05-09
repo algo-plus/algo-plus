@@ -9,7 +9,6 @@ import {
 import { RESULT_CATEGORY, languages, bj_level, uploadState } from './variables';
 import {
     selectBestSubmissionList,
-    getDateString,
     convertResultTableHeader,
     convertImageTagAbsoluteURL,
     markUploadFailedCSS,
@@ -63,10 +62,7 @@ const makeDetailMessageAndReadme = async (data: any) => {
         problem_description,
         problem_input,
         problem_output,
-        submissionTime,
         language,
-        memory,
-        runtime,
     } = data;
     const score = parseNumberFromString(result);
     const directory = await getDirNameByOrgOption(
@@ -77,27 +73,21 @@ const makeDetailMessageAndReadme = async (data: any) => {
         langVersionRemove(language, null)
     );
     const message =
-        `[${level}] Title: ${title}, Time: ${runtime} ms, Memory: ${memory} KB` +
+        `[${level}] Title: ${title}` +
         (isNaN(score) ? ' ' : `, Score: ${score} point `) +
         `AlgoPlus`;
     const category = problem_tags.join(', ');
     const fileName = `${convertSingleCharToDoubleChar(title)}.${
         languages[language]
     }`;
-    const dateInfo = submissionTime ?? getDateString(new Date(Date.now()));
 
     const readme =
         `# [${level}] ${title} - ${problemId} \n\n` +
         `[문제 링크](https://www.acmicpc.net/problem/${problemId}) \n\n` +
-        `### 성능 요약\n\n` +
-        `메모리: ${memory} KB, ` +
-        `시간: ${runtime} ms\n\n` +
         `### 분류\n\n` +
         `${category || 'Empty'}\n\n` +
         (!!problem_description
             ? '' +
-              `### 제출 일자\n\n` +
-              `${dateInfo}\n\n` +
               `### 문제 설명\n\n${problem_description}\n\n` +
               `### 입력 \n\n ${problem_input}\n\n` +
               `### 출력 \n\n ${problem_output}\n\n`
@@ -266,7 +256,6 @@ const findProblemInfoAndSubmissionCode = async (
     problemId: any,
     submissionId: any
 ) => {
-    console.log('in find with promise');
     if (!isNull(problemId) && !isNull(submissionId)) {
         return Promise.all([
             getProblemDescriptionById(problemId),
