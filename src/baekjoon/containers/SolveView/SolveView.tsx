@@ -280,8 +280,10 @@ const SolveView: React.FC<SolveViewProps> = ({
 
     useEffect(() => {
         loadEditorCode(problemId).then((value: EditorCode) => {
-            setLanguageId(value.languageId as string);
-            setCode(value.code);
+            if (value) {
+                setLanguageId(value.languageId as string);
+                setCode(value.code);
+            }
         });
         loadTestCases(problemId).then((value: TestCase[]) => {
             setCustomTestCases(value);
