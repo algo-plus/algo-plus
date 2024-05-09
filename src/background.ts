@@ -26,7 +26,10 @@ function handleMessage(request: any, sender: any, sendResponse: any) {
     ) {
         alert('유저 인증 관련 오류');
         chrome.tabs.getSelected((tab) => {
-            chrome.tabs.remove(tab.id);
+            const tabid: number | undefined = tab.id;
+            if (typeof tabid !== 'undefined') {
+                chrome.tabs.remove(tabid);
+            }
         });
     } else if (
         request &&

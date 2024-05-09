@@ -11,7 +11,6 @@ const fetchCurrentHtml = (): string => {
 
 const customProblemPage = async (): Promise<void> => {
     const problemId = getProblemId();
-    console.log('custom problem page...', problemId);
 
     if (!problemId) {
         console.error('문제 번호를 찾을 수 없습니다.');
