@@ -14,7 +14,6 @@ import EditorButtonBox from '@/baekjoon/presentations/EditorButtonBox/EditorButt
 import { LanguageSelectBox } from '@/baekjoon/components/LanguageSelectBox';
 import { CodeOpen, SubmitPostRequest } from '@/baekjoon/types/submit';
 import { submit } from '@/baekjoon/apis/submit';
-import { compile } from '@/common/apis/compile';
 import {
     convertLanguageIdForEditor,
     convertLanguageIdForSubmitApi,
@@ -150,7 +149,7 @@ const SolveView: React.FC<SolveViewProps> = ({
                     { action: 'compile', data: data },
                     (output) => {
                         const newTestCases = [...currentTestCases];
-                        newTestCases[index + 1].result = output;
+                        newTestCases[index].result = output;
                         setTargetTestCases(newTestCases);
                         if (checkCompileError(lang, output)) {
                             setTestCaseState('error');
