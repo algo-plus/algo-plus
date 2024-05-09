@@ -5,19 +5,19 @@ import {
 import { parsingProblemDetail, parsingStyle } from '@/baekjoon/utils/parsing';
 import { getDiffTime } from '@/baekjoon/utils/time';
 
-const PROBLEM_STORAGE_KEY: string = 'algo-plus-problem-save4';
-const PROBLEM_STYLE_STORAGE_KEY: string = 'algo-plus-problem-style-save4';
+const PROBLEM_STORAGE_KEY: string = 'algo-plus-problem-save';
+const PROBLEM_STYLE_STORAGE_KEY: string = 'algo-plus-problem-style-save';
 const EXPIRE_PERIOD: number = 86400000;
 
 interface ProblemDetail {
     htmlContent: string;
 }
 
-const loadProblemStorage = async (): Promise<Record<string, any>> => {
+const loadProblemStorage = (): Promise<Record<string, any>> => {
     return getObjectFromLocalStorage(PROBLEM_STORAGE_KEY);
 };
 
-const loadProblemStyleStorage = async (): Promise<Record<string, any>> => {
+const loadProblemStyleStorage = (): Promise<Record<string, any>> => {
     return getObjectFromLocalStorage(PROBLEM_STYLE_STORAGE_KEY);
 };
 
@@ -40,6 +40,7 @@ export const saveProblemMathJaxStyle = async (
     problemId: string,
     htmlContent: string
 ): Promise<void> => {
+    console.log('saveProblemMathJaxStyle');
     const mathJaxStyle = htmlContent.match(
         /<style id="MJX-CHTML-styles">[^]*?<\/style>/
     );
@@ -57,6 +58,7 @@ export const loadAndParseProblemDetail = async (
     problemId: string
 ): Promise<JSX.Element | null> => {
     const problems = await loadProblemStorage();
+    if (!problems) return null;
     const result = problems[problemId] as ProblemDetail;
     return result ? parsingProblemDetail(result.htmlContent) : null;
 };
@@ -65,11 +67,13 @@ export const loadAndParseProblemMathJaxStyle = async (
     problemId: string
 ): Promise<JSX.Element | null> => {
     const problemStyles = await loadProblemStyleStorage();
+    if (!problemStyles) return null;
     const result = problemStyles[problemId] as string;
     return result ? parsingStyle(result) : null;
 };
 
 const expireStorage = async (key: string, value: any) => {
+    if (!value) return;
     const now: Date = new Date();
     const lastExpiredDate: Date =
         value['lastExpiredDate'] != undefined
