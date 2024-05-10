@@ -16,7 +16,7 @@ import {
     removeReviewCode,
     saveReviewCode,
 } from '../utils/storage/review';
-import './status.css'
+import './status.css';
 
 const customStatusPage = async () => {
     if (
@@ -86,21 +86,12 @@ const customStatusPage = async () => {
         submissionId.addEventListener('click', function () {
             const row = submissionId.closest('tr');
             if (row) {
-                if (row.style.backgroundColor === 'lightgreen') {
+                if (row.style.backgroundColor === 'lightcyan') {
                     row.style.backgroundColor = '';
                 } else {
-                    row.style.backgroundColor = 'lightgreen';
+                    row.style.backgroundColor = 'lightcyan';
                 }
             }
-            console.log('Clicked submission ID:', submissionId.textContent);
-            console.log(
-                '...............................submissionIdClicked : ',
-                row
-            );
-            console.log(
-                '...............................color: ',
-                row?.style.backgroundColor
-            );
             if (row) {
                 const problemId =
                     row.querySelector('.problem_title')?.textContent?.trim() ||
@@ -115,8 +106,15 @@ const customStatusPage = async () => {
                 const result =
                     row.querySelector('.result')?.textContent?.trim() || '';
 
-                if (row.style.backgroundColor === 'lightgreen') {
+                if (row.style.backgroundColor === 'lightcyan') {
                     saveReviewCode(
+                        problemId as number,
+                        submissionNumber as number,
+                        memory as number,
+                        time as number,
+                        result
+                    );
+                    openModal(
                         problemId as number,
                         submissionNumber as number,
                         memory as number,
