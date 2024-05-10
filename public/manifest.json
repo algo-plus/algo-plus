@@ -50,7 +50,11 @@
         "declarativeNetRequestWithHostAccess"
     ],
 
-    "host_permissions": ["<all_urls>"],
+    "host_permissions": [
+        "https://www.acmicpc.net/",
+        "https://github.com/",
+        "https://solved.ac/api/v3/*"
+    ],
 
     "declarative_net_request": {
         "rule_resources": [
