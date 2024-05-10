@@ -40,7 +40,6 @@ export const saveProblemMathJaxStyle = async (
     problemId: string,
     htmlContent: string
 ): Promise<void> => {
-    console.log('saveProblemMathJaxStyle');
     const mathJaxStyle = htmlContent.match(
         /<style id="MJX-CHTML-styles">[^]*?<\/style>/
     );

@@ -1,8 +1,15 @@
 const setButton: any = document.querySelector('.note_setting');
-
+const discordIcon: any = document.querySelector('#discord-icon');
+const githubIcon: any = document.querySelector('#github-icon');
 setButton.addEventListener('click', function () {
-    // GitHub 페이지로 이동하는 링크 생성
     var githubLink = `chrome-extension://${chrome.runtime.id}/link.html`;
-    // 새 창에서 링크 열기
     window.open(githubLink);
+});
+
+discordIcon.addEventListener('click', function () {
+    window.open('https://discord.gg/w42B5JnJBq');
+});
+
+githubIcon.addEventListener('click', function () {
+    window.open('https://github.com/algo-plus');
 });
