@@ -83,20 +83,29 @@ body {
     font-weight: bold;
     color: blue;
 }
+
 .repo_name {
     margin-top: 10px;
 }
+
 .repo_setting {
     display: flex;
+    justify-content: space-between;
     gap: 70px;
+    margin-right: 40px;
 }
+
+.set_toggle {
+    width: 100%;
+}
+
 .field select {
     padding: 10px;
     font-size: 16px;
     border: 1px solid;
     border-radius: 10px;
     color: #333;
-    width: 500px;
+    width: 100%;
     transition: border-color 0.3s ease;
 }
 
@@ -105,13 +114,17 @@ body {
     border-color: #66afe9;
 }
 
+#repo_long {
+    margin-right: 60px;
+}
+
 .field input {
     padding: 10px;
     font-size: 16px;
     border: 1px solid;
     border-radius: 10px;
     color: #333;
-    width: 94%;
+    width: 100%;
     margin-bottom: 40px;
 }
 

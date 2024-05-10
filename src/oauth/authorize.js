@@ -10,17 +10,19 @@ const localAuth = {
     },
 
     parseAccessCode(url) {
+        // error= 부분이 있는지를 확인 && 있다면 현재 탭 닫기
         if (url.match(/\?error=(.+)/)) {
             chrome.tabs.getCurrent((tab) => {
                 chrome.tabs.remove(tab.id);
             });
-        } else {
+        }
+        // 액세스 코드 추출 && 사용자 식별
+        else {
             const accessCode = url.match(/\?code=([\w\/\-]+)/);
-            if (accessCode) {
-                this.requestToken(accessCode[1]);
-            }
+            accessCode && this.requestToken(accessCode[1]);
         }
     },
+
     requestToken(code) {
         const that = this;
         const data = new FormData();
@@ -32,7 +34,7 @@ const localAuth = {
         xhr.addEventListener('readystatechange', () => {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    that.finish(
+                    that.setHeader(
                         xhr.responseText.match(/access_token=([^&]*)/)[1]
                     );
                 } else {
@@ -47,7 +49,7 @@ const localAuth = {
         xhr.send(data);
     },
 
-    finish(token) {
+    setHeader(token) {
         const AUTHENTICATION_URL = 'https://api.github.com/user';
         const xhr = new XMLHttpRequest();
         xhr.addEventListener('readystatechange', () => {
@@ -73,6 +75,9 @@ const localAuth = {
 localAuth.init();
 const link = window.location.href;
 
+/*
+파이프 체크 후 Auth 활성화
+*/
 if (window.location.host === 'github.com') {
     chrome.storage.local.get('pipe_AlgoPlus', (data) => {
         if (data && data.pipe_AlgoPlus) {
