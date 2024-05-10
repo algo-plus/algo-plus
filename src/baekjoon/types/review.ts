@@ -14,3 +14,11 @@ type CommentBlocks = {
     comment?: string;
     isRegistered?: boolean;
 }[];
+
+type CodeInfoModalProps = {
+    problemId: number;
+    submissionNumber: number;
+    memory: number;
+    time: number;
+    result: string;
+};
