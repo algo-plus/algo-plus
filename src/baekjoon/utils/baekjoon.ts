@@ -22,8 +22,13 @@ import {
 
 const checkEnable = async () => {
     const enable = await getObjectFromLocalStorage('alpEnable');
-    if (!enable) writeEnableMsgOnLog();
+    enable ? uploadSuccessModal() : writeEnableMsgOnLog();
     return enable;
+};
+
+const uploadSuccessModal = () => {
+    const uploadModal: any = document.querySelector('#uploadSuccessModal');
+    uploadModal.style.display = 'block';
 };
 
 const writeEnableMsgOnLog = () => {
@@ -35,7 +40,7 @@ const writeEnableMsgOnLog = () => {
 let loader: any;
 
 export const startLoader = async (content: string, closeModal: Function) => {
-    const loadModal: any = document.getElementById('loaderModal');
+    const loadModal: any = document.querySelector('#loaderModal');
     loadModal.style.display = 'block';
     loader = setInterval(async () => {
         const enable = await checkEnable();

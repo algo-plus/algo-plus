@@ -221,205 +221,225 @@ const ReviewModal = (modalProps: ModalProps) => {
     };
     <s></s>;
     return (
-        <div className='modal-content'>
-            <div className='modal-header'>
-                <h4 className='modal-title'>오답 노트 작성</h4>
-                <button
-                    type='button'
-                    className='close'
-                    data-dismiss='modal'
-                    aria-label='Close'
-                    onClick={closeModal}
-                >
-                    <span aria-hidden='true'>&times;</span>
-                </button>
-            </div>
-            <div className='modal-body' style={{ maxHeight: '75vh' }}>
-                <div className='codediff-container'>
-                    <h5>코드 비교 결과:</h5>
-                    <ReactDiffViewer
-                        oldValue={oldCode ? oldCode : ''}
-                        newValue={newCode ? newCode : ''}
-                        compareMethod={DiffMethod.LINES}
-                        splitView={true}
-                        onLineNumberClick={handleLineNumberClick}
-                        styles={newStyles}
-                        renderContent={(value) => {
-                            return (
-                                <Prism
-                                    style={coy}
-                                    language={
-                                        modalProps.sourceCodes[0]?.lang || ''
-                                    }
-                                    wrapLongLines
-                                    wrapLines
-                                    PreTag='span'
-                                    customStyle={{
-                                        display: 'contents',
-                                        wordBreak: 'break-word',
-                                    }}
-                                    codeTagProps={{
-                                        style: {
-                                            display: 'contents',
-                                        },
-                                    }}
-                                >
-                                    {value}
-                                </Prism>
-                            );
-                        }}
-                    />
+        <>
+            <div className='modal-content'>
+                <div className='modal-header'>
+                    <h4 className='modal-title'>오답 노트 작성</h4>
+                    <button
+                        type='button'
+                        className='close'
+                        data-dismiss='modal'
+                        aria-label='Close'
+                        onClick={closeModal}
+                    >
+                        <span aria-hidden='true'>&times;</span>
+                    </button>
                 </div>
-                {codeBlocks.map((block) => (
-                    <div key={block.id} className='code-block'>
-                        {block.selectedOldCode && (
-                            <div>
-                                <h5>
-                                    <input
-                                        type='text'
-                                        className='code-name'
-                                        value={block.oldCodeName}
-                                        onChange={(e) =>
-                                            handleOldCodeNameChange(e, block.id)
+                <div className='modal-body' style={{ maxHeight: '75vh' }}>
+                    <div className='codediff-container'>
+                        <h5>코드 비교 결과:</h5>
+                        <ReactDiffViewer
+                            oldValue={oldCode ? oldCode : ''}
+                            newValue={newCode ? newCode : ''}
+                            compareMethod={DiffMethod.LINES}
+                            splitView={true}
+                            onLineNumberClick={handleLineNumberClick}
+                            styles={newStyles}
+                            renderContent={(value) => {
+                                return (
+                                    <Prism
+                                        style={coy}
+                                        language={
+                                            modalProps.sourceCodes[0]?.lang ||
+                                            ''
                                         }
-                                        readOnly={block.isRegistered}
-                                    />
-                                </h5>
-                                <button
-                                    type='button'
-                                    className='close'
-                                    aria-label='Close'
-                                    onClick={() =>
-                                        handleCloseCode('old', block.id)
-                                    }
-                                >
-                                    <span aria-hidden='true'>&times;</span>
-                                </button>
-                                <pre>{block.selectedOldCode}</pre>
-                            </div>
-                        )}
-                        {block.selectedNewCode && (
-                            <div>
-                                <h5>
-                                    <input
-                                        type='text'
-                                        className='code-name'
-                                        value={block.newCodeName}
-                                        onChange={(e) =>
-                                            handleNewCodeNameChange(e, block.id)
+                                        wrapLongLines
+                                        wrapLines
+                                        PreTag='span'
+                                        customStyle={{
+                                            display: 'contents',
+                                            wordBreak: 'break-word',
+                                        }}
+                                        codeTagProps={{
+                                            style: {
+                                                display: 'contents',
+                                            },
+                                        }}
+                                    >
+                                        {value}
+                                    </Prism>
+                                );
+                            }}
+                        />
+                    </div>
+                    {codeBlocks.map((block) => (
+                        <div key={block.id} className='code-block'>
+                            {block.selectedOldCode && (
+                                <div>
+                                    <h5>
+                                        <input
+                                            type='text'
+                                            className='code-name'
+                                            value={block.oldCodeName}
+                                            onChange={(e) =>
+                                                handleOldCodeNameChange(
+                                                    e,
+                                                    block.id
+                                                )
+                                            }
+                                            readOnly={block.isRegistered}
+                                        />
+                                    </h5>
+                                    <button
+                                        type='button'
+                                        className='close'
+                                        aria-label='Close'
+                                        onClick={() =>
+                                            handleCloseCode('old', block.id)
                                         }
+                                    >
+                                        <span aria-hidden='true'>&times;</span>
+                                    </button>
+                                    <pre>{block.selectedOldCode}</pre>
+                                </div>
+                            )}
+                            {block.selectedNewCode && (
+                                <div>
+                                    <h5>
+                                        <input
+                                            type='text'
+                                            className='code-name'
+                                            value={block.newCodeName}
+                                            onChange={(e) =>
+                                                handleNewCodeNameChange(
+                                                    e,
+                                                    block.id
+                                                )
+                                            }
+                                            readOnly={block.isRegistered}
+                                        />
+                                    </h5>
+                                    <button
+                                        type='button'
+                                        className='close'
+                                        aria-label='Close'
+                                        onClick={() =>
+                                            handleCloseCode('new', block.id)
+                                        }
+                                    >
+                                        <span aria-hidden='true'>&times;</span>
+                                    </button>
+                                    <pre>{block.selectedNewCode}</pre>
+                                </div>
+                            )}
+                            {(block.selectedOldCode ||
+                                block.selectedNewCode) && (
+                                <div>
+                                    <h5>코멘트</h5>
+                                    <textarea
+                                        rows={4}
+                                        cols={50}
+                                        value={block.comment}
+                                        onChange={(e) => {
+                                            setCodeBlocks((prevBlocks) => {
+                                                const updatedBlocks = [
+                                                    ...prevBlocks,
+                                                ];
+                                                updatedBlocks[
+                                                    block.id
+                                                ].comment = e.target.value;
+                                                return updatedBlocks;
+                                            });
+                                        }}
                                         readOnly={block.isRegistered}
-                                    />
-                                </h5>
-                                <button
-                                    type='button'
-                                    className='close'
-                                    aria-label='Close'
-                                    onClick={() =>
-                                        handleCloseCode('new', block.id)
-                                    }
-                                >
-                                    <span aria-hidden='true'>&times;</span>
-                                </button>
-                                <pre>{block.selectedNewCode}</pre>
-                            </div>
-                        )}
-                        {(block.selectedOldCode || block.selectedNewCode) && (
-                            <div>
-                                <h5>코멘트</h5>
-                                <textarea
-                                    rows={4}
-                                    cols={50}
-                                    value={block.comment}
-                                    onChange={(e) => {
-                                        setCodeBlocks((prevBlocks) => {
-                                            const updatedBlocks = [
-                                                ...prevBlocks,
-                                            ];
-                                            updatedBlocks[block.id].comment =
-                                                e.target.value;
-                                            return updatedBlocks;
-                                        });
-                                    }}
-                                    readOnly={block.isRegistered}
-                                ></textarea>
-                            </div>
-                        )}
-                        <div className='code-block-button'>
-                            {(block.selectedOldCode || block.selectedNewCode) &&
-                                !block.isRegistered && (
+                                    ></textarea>
+                                </div>
+                            )}
+                            <div className='code-block-button'>
+                                {(block.selectedOldCode ||
+                                    block.selectedNewCode) &&
+                                    !block.isRegistered && (
+                                        <div>
+                                            <button
+                                                type='button'
+                                                className='btn btn-primary'
+                                                onClick={() =>
+                                                    handleRegisterBlock(
+                                                        block.id
+                                                    )
+                                                }
+                                            >
+                                                등록
+                                            </button>
+                                        </div>
+                                    )}
+                                {block.isRegistered && (
                                     <div>
+                                        <button
+                                            type='button'
+                                            className='btn btn-secondary'
+                                            onClick={() =>
+                                                handleDeleteBlock(block.id)
+                                            }
+                                        >
+                                            삭제
+                                        </button>
                                         <button
                                             type='button'
                                             className='btn btn-primary'
                                             onClick={() =>
-                                                handleRegisterBlock(block.id)
+                                                handleEditBlock(block.id)
                                             }
                                         >
-                                            등록
+                                            수정
                                         </button>
                                     </div>
                                 )}
-                            {block.isRegistered && (
-                                <div>
-                                    <button
-                                        type='button'
-                                        className='btn btn-secondary'
-                                        onClick={() =>
-                                            handleDeleteBlock(block.id)
-                                        }
-                                    >
-                                        삭제
-                                    </button>
-                                    <button
-                                        type='button'
-                                        className='btn btn-primary'
-                                        onClick={() =>
-                                            handleEditBlock(block.id)
-                                        }
-                                    >
-                                        수정
-                                    </button>
-                                </div>
-                            )}
+                            </div>
                         </div>
+                    ))}
+                    <div>
+                        <h5>전체 코멘트</h5>
+                        <textarea
+                            rows={4}
+                            cols={50}
+                            value={comment}
+                            onChange={(e) => {
+                                setComment(e.target.value);
+                            }}
+                        ></textarea>
                     </div>
-                ))}
-                <div>
-                    <h5>전체 코멘트</h5>
-                    <textarea
-                        rows={4}
-                        cols={50}
-                        value={comment}
-                        onChange={(e) => {
-                            setComment(e.target.value);
-                        }}
-                    ></textarea>
+                </div>
+                <div className='modal-footer'>
+                    <button
+                        type='button'
+                        className='btn btn-secondary'
+                        data-dismiss='modal'
+                        onClick={closeModal}
+                    >
+                        취소
+                    </button>
+                    <button
+                        type='button'
+                        className='btn btn-primary'
+                        onClick={save}
+                    >
+                        저장
+                    </button>
+                </div>
+                <div id='loaderModal' className='loader-modal'>
+                    <div className='loader-content'>
+                        <div className='loader'></div>
+                    </div>
                 </div>
             </div>
-            <div className='modal-footer'>
-                <button
-                    type='button'
-                    className='btn btn-secondary'
-                    data-dismiss='modal'
-                    onClick={closeModal}
-                >
-                    취소
-                </button>
-                <button
-                    type='button'
-                    className='btn btn-primary'
-                    onClick={save}
-                >
-                    저장
-                </button>
-            </div>
-            <div id='loaderModal' className='loader-modal'>
-                <div className='loader-content'>
-                    <div className='loader'></div>
+            <div id='uploadSuccessModal' className='upload-modal'>
+                <div className='upload-modal-content'>
+                    <span className='upload-close'>&times;</span>
+                    <p>업로드가 성공적으로 완료되었습니다!</p>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 
