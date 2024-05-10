@@ -1,5 +1,5 @@
 import React from 'react';
-import './CodeInfoModal.css';
+import './CodeInfoContent.css';
 
 interface ProblemInfoModalProps {
     problemId: number;
@@ -10,7 +10,7 @@ interface ProblemInfoModalProps {
     onClose: () => void;
 }
 
-const CodeInfoModal = ({
+const CodeInfoContent = ({
     problemId,
     submissionNumber,
     memory,
@@ -40,4 +40,4 @@ const CodeInfoModal = ({
     );
 };
 
-export default CodeInfoModal;
+export default CodeInfoContent;

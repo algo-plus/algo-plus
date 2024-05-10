@@ -9,7 +9,7 @@ import {
     isWrongState,
 } from '@/baekjoon/utils/status';
 import WrongResultModal from '../containers/WrongResultModal/WrongResultModal';
-import { CodeInfoModal } from '../components/CodeInfoModal';
+import { CodeInfoContent } from '../components/CodeInfoContent';
 import {
     clearReviewCode,
     loadReviewCode,
@@ -87,27 +87,25 @@ const customStatusPage = async () => {
         submissionId.addEventListener('click', function () {
             const row = submissionId.closest('tr');
             if (row) {
-                if (row.style.backgroundColor === 'lightcyan') {
-                    row.style.backgroundColor = '';
-                } else {
-                    row.style.backgroundColor = 'lightcyan';
-                }
-            }
-            if (row) {
-                const problemId =
-                    row.querySelector('.problem_title')?.textContent?.trim() ||
-                    0;
                 const submissionNumber =
                     row.querySelector('td:nth-child(1)')?.textContent?.trim() ||
                     0;
-                const memory =
-                    row.querySelector('.memory')?.textContent?.trim() || 0;
-                const time =
-                    row.querySelector('.time')?.textContent?.trim() || 0;
-                const result =
-                    row.querySelector('.result')?.textContent?.trim() || '';
-
-                if (row.style.backgroundColor === 'lightcyan') {
+                if (
+                    row.style.backgroundColor !== 'lightcyan' &&
+                    checkedCodeCount < 2
+                ) {
+                    row.style.backgroundColor = 'lightcyan';
+                    checkedCodeCount++;
+                    const problemId =
+                        row
+                            .querySelector('.problem_title')
+                            ?.textContent?.trim() || 0;
+                    const memory =
+                        row.querySelector('.memory')?.textContent?.trim() || 0;
+                    const time =
+                        row.querySelector('.time')?.textContent?.trim() || 0;
+                    const result =
+                        row.querySelector('.result')?.textContent?.trim() || '';
                     saveReviewCode(
                         problemId as number,
                         submissionNumber as number,
@@ -122,7 +120,9 @@ const customStatusPage = async () => {
                         time as number,
                         result
                     );
-                } else {
+                } else if (row.style.backgroundColor === 'lightcyan') {
+                    checkedCodeCount--;
+                    row.style.backgroundColor = '';
                     closeModal(submissionNumber as number);
                     removeReviewCode();
                 }
@@ -143,25 +143,19 @@ const customStatusPage = async () => {
     const getSourceCode = async () => {
         const sourceCodeIds = getCheckedSubmissionNumbers();
         const sourceCodes = [];
-        for (const id of sourceCodeIds) {
+        for (const id of await sourceCodeIds) {
             const sourceCode = await fetchCode(id);
             sourceCodes.push(sourceCode);
         }
         return sourceCodes;
     };
 
-    const getCheckedSubmissionNumbers = () => {
+    const getCheckedSubmissionNumbers = async () => {
         const checkedSubmissionNumbers: number[] = [];
-        const checkboxes = document.querySelectorAll('.note-checkbox:checked');
-        checkboxes.forEach((checkbox) => {
-            const row = checkbox.closest('tr');
-            if (row) {
-                const submissionNumber: number = row.querySelector(
-                    'td:nth-child(2)'
-                )?.textContent as unknown as number;
-                checkedSubmissionNumbers.push(submissionNumber);
-            }
-        });
+        const reviewCodes = await loadReviewCode();
+        for (const reviewCode of reviewCodes) {
+            checkedSubmissionNumbers.push(reviewCode.submissionNumber);
+        }
         return checkedSubmissionNumbers.sort((a, b) => a - b);
     };
 
@@ -206,7 +200,7 @@ const customStatusPage = async () => {
         const modalRoot = createRoot(modalContent);
         modalRoot.render(
             <React.StrictMode>
-                <CodeInfoModal
+                <CodeInfoContent
                     problemId={problemId}
                     submissionNumber={submissionNumber}
                     memory={memory}
@@ -220,11 +214,12 @@ const customStatusPage = async () => {
 
     function closeModal(submissionNumber: number) {
         removeReviewCode();
-        const modalToClose = document.getElementById(
-            `modal-${submissionNumber}`
+        const modalToClose = document.querySelector(
+            `#modal-${submissionNumber}`
         );
         if (modalToClose) {
             modalToClose.remove();
+            checkedCodeCount--;
             const submissionId = document.querySelector(
                 `#solution-${submissionNumber}`
             );
