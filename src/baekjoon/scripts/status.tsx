@@ -83,6 +83,7 @@ const customStatusPage = async () => {
     );
 
     submissionIds.forEach((submissionId) => {
+        (submissionId as HTMLInputElement).style.cursor = 'pointer';
         submissionId.addEventListener('click', function () {
             const row = submissionId.closest('tr');
             if (row) {
@@ -97,7 +98,7 @@ const customStatusPage = async () => {
                     row.querySelector('.problem_title')?.textContent?.trim() ||
                     0;
                 const submissionNumber =
-                    row.querySelector('td:nth-child(2)')?.textContent?.trim() ||
+                    row.querySelector('td:nth-child(1)')?.textContent?.trim() ||
                     0;
                 const memory =
                     row.querySelector('.memory')?.textContent?.trim() || 0;
@@ -122,7 +123,7 @@ const customStatusPage = async () => {
                         result
                     );
                 } else {
-                    closeModal();
+                    closeModal(submissionNumber as number);
                     removeReviewCode();
                 }
             }
@@ -186,7 +187,7 @@ const customStatusPage = async () => {
         const container = document.createElement('div');
         container.style.display = 'flex';
         container.appendChild(button);
-        anchor[position].insertBefore(container, anchor[position].firstChild); //
+        anchor[position].insertBefore(container, anchor[position].firstChild);
     }
 
     // 코드 리스트 작성 모달 생성
@@ -200,6 +201,8 @@ const customStatusPage = async () => {
         const modalContent = document.createElement('div');
         modalContent.className = 'code-modal-content';
         modalContainer.appendChild(modalContent);
+        modalContent.id = `modal-${submissionNumber}`;
+
         const modalRoot = createRoot(modalContent);
         modalRoot.render(
             <React.StrictMode>
@@ -209,14 +212,20 @@ const customStatusPage = async () => {
                     memory={memory}
                     time={time}
                     result={result}
-                    onClose={() => closeModal()}
+                    onClose={() => closeModal(submissionNumber)}
                 />
             </React.StrictMode>
         );
     }
 
-    function closeModal() {
+    function closeModal(submissionNumber: number) {
         removeReviewCode();
+        const modalToClose = document.getElementById(
+            `modal-${submissionNumber}`
+        );
+        if (modalToClose) {
+            modalToClose.remove();
+        }
     }
 };
 

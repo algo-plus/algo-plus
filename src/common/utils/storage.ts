@@ -1,5 +1,5 @@
 import { isNull, getVersion } from '@/baekjoon/utils/utils';
-import { GitHub } from '@/baekjoon/utils/Github';
+import { GitHub } from '@/baekjoon/utils/github';
 
 interface StorageObject {
     [key: string]: any;

@@ -56,10 +56,6 @@ const clearReviewCode = async () => {
     await saveObjectInLocalStorage({
         [REVIEW_CODE_STORAGE]: [],
     });
-    const result = (await getObjectFromLocalStorage(
-        REVIEW_CODE_STORAGE
-    )) as CodeInfoModalProps[];
-    return result;
 };
 
 export { saveReviewCode, loadReviewCode, removeReviewCode, clearReviewCode };

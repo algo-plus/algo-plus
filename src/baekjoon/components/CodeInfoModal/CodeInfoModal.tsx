@@ -24,8 +24,8 @@ const CodeInfoModal = ({
             <p>제출 번호: {submissionNumber}</p>
             {result === '맞았습니다!!' && (
                 <>
-                    <p>메모리: {memory}kb</p>
-                    <p>시간: {time}ms</p>
+                    <p>메모리: {memory} KB</p>
+                    <p>시간: {time} ms</p>
                 </>
             )}
             <p>결과: {result}</p>
@@ -34,7 +34,7 @@ const CodeInfoModal = ({
                 className='btn btn-secondary'
                 onClick={onClose}
             >
-                삭제
+                취소
             </button>
         </>
     );
