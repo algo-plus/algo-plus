@@ -2,3 +2,7 @@
 .table-striped > tbody > tr:nth-child(odd) > th {
     background-color: transparent;
 }
+#status-table tbody tr td:first-child:hover {
+    font-weight: bold;
+    cursor: pointer;
+}

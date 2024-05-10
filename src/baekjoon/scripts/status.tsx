@@ -225,6 +225,15 @@ const customStatusPage = async () => {
         );
         if (modalToClose) {
             modalToClose.remove();
+            const submissionId = document.querySelector(
+                `#solution-${submissionNumber}`
+            );
+            if (submissionId) {
+                const row = submissionId.closest('tr');
+                if (row) {
+                    row.style.backgroundColor = '';
+                }
+            }
         }
     }
 };
