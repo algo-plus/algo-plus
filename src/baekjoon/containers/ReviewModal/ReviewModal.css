@@ -149,17 +149,3 @@
     border: 1px solid #888;
     width: 80%;
 }
-
-.upload-close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.upload-close:hover,
-.upload-close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
