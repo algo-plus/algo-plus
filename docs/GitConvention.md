@@ -41,7 +41,7 @@
 -   **Merge:** 브랜치명 into develop
 -   **!HOTFIX**: 급하게 치명적인 버그를 고쳐야 하는 경우
 
-## Merge Request Template
+## Pull Request Template
 
 ## ✅ DONE
 
