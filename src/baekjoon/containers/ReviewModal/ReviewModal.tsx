@@ -435,7 +435,6 @@ const ReviewModal = (modalProps: ModalProps) => {
             </div>
             <div id='uploadSuccessModal' className='upload-modal'>
                 <div className='upload-modal-content'>
-                    <span className='upload-close'>&times;</span>
                     <p>업로드가 성공적으로 완료되었습니다!</p>
                 </div>
             </div>
