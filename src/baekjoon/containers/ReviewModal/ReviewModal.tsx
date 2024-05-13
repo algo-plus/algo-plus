@@ -318,12 +318,8 @@ const ReviewModal = (modalProps: ModalProps) => {
                                                 )
                                             }
                                             readOnly={block.isRegistered}
-                                            style={{
-                                                width: '100%',
-                                                boxSizing: 'border-box',
-                                            }}
                                         />
-                                        ✏
+                                        🖊
                                     </h5>
                                     <button
                                         type='button'

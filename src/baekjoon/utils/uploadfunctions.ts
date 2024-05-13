@@ -7,6 +7,7 @@ import {
     saveStats,
 } from '@/common/utils/storage';
 import { GitHub } from './github';
+import { clearReviewCode } from './storage/review';
 
 export const uploadOneSolveProblemOnGit = async (
     bojData: any,
@@ -19,6 +20,7 @@ export const uploadOneSolveProblemOnGit = async (
         console.error('token or hook is null', token, hook);
         return;
     }
+    await clearReviewCode();
     return upload(
         token,
         hook,
