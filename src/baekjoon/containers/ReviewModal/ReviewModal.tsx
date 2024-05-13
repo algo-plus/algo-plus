@@ -165,8 +165,8 @@ const ReviewModal = (modalProps: ModalProps) => {
                     id: codeBlocks.length,
                     selectedOldCode: '',
                     selectedNewCode: '',
-                    oldCodeName: '첫 번째 코드',
-                    newCodeName: '두 번째 코드',
+                    oldCodeName: '이전 코드',
+                    newCodeName: '바뀐 코드',
                     comment: '',
                     isRegistered: false,
                 },
@@ -289,6 +289,7 @@ const ReviewModal = (modalProps: ModalProps) => {
                                             }
                                             readOnly={block.isRegistered}
                                         />
+                                        ✏
                                     </h5>
                                     <button
                                         type='button'
@@ -317,7 +318,12 @@ const ReviewModal = (modalProps: ModalProps) => {
                                                 )
                                             }
                                             readOnly={block.isRegistered}
+                                            style={{
+                                                width: '100%',
+                                                boxSizing: 'border-box',
+                                            }}
                                         />
+                                        ✏
                                     </h5>
                                     <button
                                         type='button'
