@@ -6,17 +6,28 @@ import { Prism } from 'react-syntax-highlighter';
 import { coy } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { startLoader } from '@/baekjoon/utils/baekjoon';
 import { markdownReview } from '@/baekjoon/utils/review';
+import { InfoModal } from '../InfoModal';
 
 let startLineIndex: number = -1;
 let endLineIndex: number = -1;
 let position: String = 'S-';
 
 const ReviewModal = (modalProps: ModalProps) => {
+    const [isInfoModalOpen, setInfoModalOpen] = useState(false);
+
     const closeModal = () => {
         const modalBackdrop = document.querySelector('.modal-backdrop');
         if (modalBackdrop) {
             modalBackdrop.remove();
         }
+    };
+
+    const openInfoModal = () => {
+        setInfoModalOpen(true);
+    };
+
+    const closeInfoModal = () => {
+        setInfoModalOpen(false);
     };
 
     const save = () => {
@@ -225,16 +236,32 @@ const ReviewModal = (modalProps: ModalProps) => {
             <div className='modal-content'>
                 <div className='modal-header'>
                     <h4 className='modal-title'>오답 노트 작성</h4>
-                    <button
-                        type='button'
-                        className='close'
-                        data-dismiss='modal'
-                        aria-label='Close'
-                        onClick={closeModal}
-                    >
-                        <span aria-hidden='true'>&times;</span>
-                    </button>
+                    <div className='modal-header-buttons'>
+                        <button
+                            type='button'
+                            className='info'
+                            aria-label='Info'
+                            onClick={openInfoModal}
+                        >
+                            ⓘ
+                        </button>
+                        <button
+                            type='button'
+                            className='close'
+                            data-dismiss='modal'
+                            aria-label='Close'
+                            onClick={closeModal}
+                        >
+                            <span aria-hidden='true'>&times;</span>
+                        </button>
+                    </div>
                 </div>
+
+                <InfoModal
+                    modalOpen={isInfoModalOpen}
+                    onClose={closeInfoModal}
+                />
+
                 <div className='modal-body' style={{ maxHeight: '75vh' }}>
                     <div className='codediff-container'>
                         <h5>코드 비교 결과:</h5>
