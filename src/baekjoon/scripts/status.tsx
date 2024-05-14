@@ -61,6 +61,7 @@ const customStatusPage = async () => {
     ) {
         clearReviewCode();
         reviewCodes = await loadReviewCode();
+        checkedCodeCount = reviewCodes.length;
     }
 
     const table = document.querySelector('#status-table');
