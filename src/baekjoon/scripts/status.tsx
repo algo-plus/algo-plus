@@ -122,10 +122,10 @@ const customStatusPage = async () => {
                     row.querySelector('td:nth-child(1)')?.textContent?.trim() ||
                     0;
                 if (
-                    row.style.backgroundColor !== 'lightcyan' &&
+                    row.style.backgroundColor !== 'rgb(223, 240, 216)' &&
                     checkedCodeCount < 2
                 ) {
-                    row.style.backgroundColor = 'lightcyan';
+                    row.style.backgroundColor = 'rgb(223, 240, 216)';
                     checkedCodeCount++;
                     const problemId =
                         row
@@ -151,7 +151,7 @@ const customStatusPage = async () => {
                         time as number,
                         result
                     );
-                } else if (row.style.backgroundColor === 'lightcyan') {
+                } else if (row.style.backgroundColor === 'rgb(223, 240, 216)') {
                     checkedCodeCount--;
                     row.style.backgroundColor = '';
                     closeModal(submissionNumber as number);
