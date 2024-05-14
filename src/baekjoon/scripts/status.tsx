@@ -128,7 +128,6 @@ const customStatusPage = async () => {
                 ) {
                     checkedCodeCount++;
                     row.style.backgroundColor = 'rgb(223, 240, 216)';
-                    console.log('checkCode: ', checkedCodeCount);
                     const problemId =
                         row
                             .querySelector('.problem_title')
@@ -154,12 +153,10 @@ const customStatusPage = async () => {
                         result
                     );
                 } else if (row.style.backgroundColor === 'rgb(223, 240, 216)') {
-                    console.log('uncheckCode: ', checkedCodeCount);
                     row.style.backgroundColor = '';
                     closeModal(submissionNumber as number);
                     removeReviewCode();
                 } else {
-                    console.log('checkedCode: ', checkedCodeCount);
                     alert('코드는 최대 2개까지만 선택할 수 있습니다.');
                     return;
                 }
