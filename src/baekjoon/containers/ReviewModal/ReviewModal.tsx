@@ -225,15 +225,24 @@ const ReviewModal = (modalProps: ModalProps) => {
             <div className='modal-content'>
                 <div className='modal-header'>
                     <h4 className='modal-title'>오답 노트 작성</h4>
-                    <button
-                        type='button'
-                        className='close'
-                        data-dismiss='modal'
-                        aria-label='Close'
-                        onClick={closeModal}
-                    >
-                        <span aria-hidden='true'>&times;</span>
-                    </button>
+                    <div className='modal-header-buttons'>
+                        <button
+                            type='button'
+                            className='info'
+                            aria-label='Info'
+                        >
+                            ⓘ
+                        </button>
+                        <button
+                            type='button'
+                            className='close'
+                            data-dismiss='modal'
+                            aria-label='Close'
+                            onClick={closeModal}
+                        >
+                            <span aria-hidden='true'>&times;</span>
+                        </button>
+                    </div>
                 </div>
                 <div className='modal-body' style={{ maxHeight: '75vh' }}>
                     <div className='codediff-container'>
