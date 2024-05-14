@@ -80,6 +80,14 @@ const customStatusPage = async () => {
     codeModalContainer.className = 'code-modal-container';
     codeModalBackdrop.appendChild(codeModalContainer);
 
+    const column = tableHead.querySelectorAll('tr');
+    const columnHead = column[0].querySelectorAll('th');
+    columnHead[3].style.width = '16%';
+
+    const submissionIds = document.querySelectorAll(
+        'table#status-table tbody tr td:first-child'
+    );
+
     // 오답노트 작성 버튼
     const button = document.createElement('button');
     button.textContent = '오답 노트 작성';
@@ -103,17 +111,10 @@ const customStatusPage = async () => {
     });
 
     const container = document.createElement('div');
+    container.className = 'save-button-container';
     container.style.display = 'flex';
     container.appendChild(button);
     codeModalContainer.appendChild(container);
-
-    const column = tableHead.querySelectorAll('tr');
-    const columnHead = column[0].querySelectorAll('th');
-    columnHead[3].style.width = '16%';
-
-    const submissionIds = document.querySelectorAll(
-        'table#status-table tbody tr td:first-child'
-    );
 
     submissionIds.forEach((submissionId) => {
         (submissionId as HTMLInputElement).style.cursor = 'pointer';
@@ -204,9 +205,8 @@ const customStatusPage = async () => {
     ) {
         const modalContent = document.createElement('div');
         modalContent.className = 'code-modal-content';
-        codeModalContainer.appendChild(modalContent);
         modalContent.id = `modal-${submissionNumber}`;
-
+        codeModalContainer.insertBefore(modalContent, container);
         const modalRoot = createRoot(modalContent);
         modalRoot.render(
             <React.StrictMode>
