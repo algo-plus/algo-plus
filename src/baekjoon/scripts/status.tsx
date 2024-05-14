@@ -70,9 +70,40 @@ const customStatusPage = async () => {
     if (!tableBody) return;
 
     // 선택된 코드 리스트 모달
-    const modalContainer = document.createElement('div');
-    modalContainer.className = 'code-modal-backdrop';
-    document.body.appendChild(modalContainer);
+    const codeModalBackdrop = document.createElement('div');
+    codeModalBackdrop.className = 'code-modal-backdrop';
+    document.body.appendChild(codeModalBackdrop);
+
+    const codeModalContainer = document.createElement('div');
+    codeModalContainer.className = 'code-modal-container';
+    codeModalBackdrop.appendChild(codeModalContainer);
+
+    // 오답노트 작성 버튼
+    const button = document.createElement('button');
+    button.textContent = '오답 노트 작성';
+    button.classList.add('btn', 'btn-primary');
+
+    button.addEventListener('click', async () => {
+        const sourceCodes = await getSourceCode();
+        if (sourceCodes.length === 0) {
+            alert('제출번호를 눌러 코드를 선택해주세요.(최대 2개)');
+            return;
+        }
+        const modalDiv = document.createElement('div');
+        modalDiv.className = 'modal-backdrop';
+        document.body.appendChild(modalDiv);
+        const root = createRoot(modalDiv);
+        root.render(
+            <React.StrictMode>
+                <ReviewModal sourceCodes={sourceCodes} />
+            </React.StrictMode>
+        );
+    });
+
+    const container = document.createElement('div');
+    container.style.display = 'flex';
+    container.appendChild(button);
+    codeModalContainer.appendChild(container);
 
     const column = tableHead.querySelectorAll('tr');
     const columnHead = column[0].querySelectorAll('th');
@@ -91,10 +122,10 @@ const customStatusPage = async () => {
                     row.querySelector('td:nth-child(1)')?.textContent?.trim() ||
                     0;
                 if (
-                    row.style.backgroundColor !== 'lightcyan' &&
+                    row.style.backgroundColor !== 'rgb(223, 240, 216)' &&
                     checkedCodeCount < 2
                 ) {
-                    row.style.backgroundColor = 'lightcyan';
+                    row.style.backgroundColor = 'rgb(223, 240, 216)';
                     checkedCodeCount++;
                     const problemId =
                         row
@@ -120,11 +151,14 @@ const customStatusPage = async () => {
                         time as number,
                         result
                     );
-                } else if (row.style.backgroundColor === 'lightcyan') {
+                } else if (row.style.backgroundColor === 'rgb(223, 240, 216)') {
                     checkedCodeCount--;
                     row.style.backgroundColor = '';
                     closeModal(submissionNumber as number);
                     removeReviewCode();
+                } else {
+                    alert('코드는 최대 2개까지만 선택할 수 있습니다.');
+                    return;
                 }
             }
         });
@@ -159,31 +193,6 @@ const customStatusPage = async () => {
         return checkedSubmissionNumbers.sort((a, b) => a - b);
     };
 
-    // 오답노트 작성 버튼
-    const button = document.createElement('button');
-    button.textContent = '오답 노트 작성';
-    button.classList.add('btn', 'btn-primary');
-    button.addEventListener('click', async () => {
-        const modalDiv = document.createElement('div');
-        modalDiv.className = 'modal-backdrop';
-        document.body.appendChild(modalDiv);
-        const root = createRoot(modalDiv);
-        const sourceCodes = await getSourceCode();
-        root.render(
-            <React.StrictMode>
-                <ReviewModal sourceCodes={sourceCodes} />
-            </React.StrictMode>
-        );
-    });
-    const anchor = document.querySelectorAll('.text-center');
-    const position = anchor.length - 1;
-    if (anchor) {
-        const container = document.createElement('div');
-        container.style.display = 'flex';
-        container.appendChild(button);
-        anchor[position].insertBefore(container, anchor[position].firstChild);
-    }
-
     // 코드 리스트 작성 모달 생성
     function openModal(
         problemId: number,
@@ -194,7 +203,7 @@ const customStatusPage = async () => {
     ) {
         const modalContent = document.createElement('div');
         modalContent.className = 'code-modal-content';
-        modalContainer.appendChild(modalContent);
+        codeModalContainer.appendChild(modalContent);
         modalContent.id = `modal-${submissionNumber}`;
 
         const modalRoot = createRoot(modalContent);
