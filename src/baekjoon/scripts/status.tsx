@@ -60,6 +60,7 @@ const customStatusPage = async () => {
         currentProblemId != (reviewCodes[0].problemId as unknown as string)
     ) {
         clearReviewCode();
+        reviewCodes = await loadReviewCode();
     }
 
     const table = document.querySelector('#status-table');
