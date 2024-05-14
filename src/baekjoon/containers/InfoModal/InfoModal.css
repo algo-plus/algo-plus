@@ -1,8 +1,8 @@
 .title {
     display: flex;
     align-items: center;
-    justify-content: center; /* 타이틀을 중앙에 정렬 */
-    position: relative; /* 버튼을 위한 상대적 위치 설정 */
+    justify-content: center;
+    position: relative;
     padding: 10px;
 }
 
