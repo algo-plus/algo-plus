@@ -126,7 +126,7 @@ const customStatusPage = async () => {
                     row.style.backgroundColor !== 'rgb(223, 240, 216)' &&
                     checkedCodeCount < 2
                 ) {
-                    checkedCodeCount = checkedCodeCount + 1;
+                    checkedCodeCount++;
                     row.style.backgroundColor = 'rgb(223, 240, 216)';
                     console.log('checkCode: ', checkedCodeCount);
                     const problemId =
