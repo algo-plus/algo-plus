@@ -60,6 +60,8 @@ const customStatusPage = async () => {
         currentProblemId != (reviewCodes[0].problemId as unknown as string)
     ) {
         clearReviewCode();
+        reviewCodes = await loadReviewCode();
+        checkedCodeCount = reviewCodes.length;
     }
 
     const table = document.querySelector('#status-table');
@@ -125,8 +127,8 @@ const customStatusPage = async () => {
                     row.style.backgroundColor !== 'rgb(223, 240, 216)' &&
                     checkedCodeCount < 2
                 ) {
-                    row.style.backgroundColor = 'rgb(223, 240, 216)';
                     checkedCodeCount++;
+                    row.style.backgroundColor = 'rgb(223, 240, 216)';
                     const problemId =
                         row
                             .querySelector('.problem_title')
@@ -152,7 +154,6 @@ const customStatusPage = async () => {
                         result
                     );
                 } else if (row.style.backgroundColor === 'rgb(223, 240, 216)') {
-                    checkedCodeCount--;
                     row.style.backgroundColor = '';
                     closeModal(submissionNumber as number);
                     removeReviewCode();
