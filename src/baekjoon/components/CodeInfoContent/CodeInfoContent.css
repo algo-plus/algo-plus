@@ -12,10 +12,28 @@
 
 .code-modal-content {
     background: snow;
-    padding: 15px;
-    border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 1px;
     margin: 10px;
     pointer-events: auto;
-    width: 230px;
+    width: 214px;
+}
+
+.code-modal-content p {
+    margin: 4px;
+}
+
+.close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: none;
+    background: transparent;
+    font-size: 15px;
+    cursor: pointer;
+    color: #ccc;
+    transition: color 0.3s;
+}
+
+.close-button:hover {
+    color: #888;
 }

@@ -20,7 +20,12 @@ const CodeInfoContent = ({
 }: ProblemInfoModalProps) => {
     return (
         <>
-            <h4>Code Info</h4>
+            <h4 style={{ position: 'relative' }}>
+                Code Info
+                <button className='close-button' onClick={onClose}>
+                    &#x2715; {/* X 문자 */}
+                </button>
+            </h4>
             <p>제출 번호: {submissionNumber}</p>
             {result === '맞았습니다!!' && (
                 <>
@@ -29,13 +34,6 @@ const CodeInfoContent = ({
                 </>
             )}
             <p>결과: {result}</p>
-            <button
-                type='button'
-                className='btn btn-secondary'
-                onClick={onClose}
-            >
-                취소
-            </button>
         </>
     );
 };
