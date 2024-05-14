@@ -1,0 +1,81 @@
+.title {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* 타이틀을 중앙에 정렬 */
+    position: relative; /* 버튼을 위한 상대적 위치 설정 */
+    padding: 10px;
+}
+
+.info-modal .contents {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.picture-with-arrow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hidden-arrow {
+    visibility: hidden;
+}
+
+.info-modal p {
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+}
+
+.prev {
+    height: fit-content;
+    left: 10px;
+    background: transparent;
+    border: 0;
+    font-size: 50px;
+    font-weight: bold;
+    line-height: 0;
+    color: #ccc;
+    transition: 0.2s;
+}
+
+.next {
+    height: fit-content;
+    right: 10px;
+    background: transparent;
+    border: 0;
+    font-size: 50px;
+    font-weight: bold;
+    line-height: 0;
+    color: #ccc;
+    transition: 0.2s;
+}
+
+.prev:hover {
+    color: #888;
+}
+
+.next:hover {
+    color: #888;
+}
+
+.step-indicator {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.circle {
+    width: 15px;
+    height: 15px;
+    border-radius: 50% !important;
+    background-color: #ccc;
+    margin: 0 5px;
+}
+
+.circle.active {
+    background-color: #888;
+}
