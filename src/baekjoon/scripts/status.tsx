@@ -158,7 +158,7 @@ const customStatusPage = async () => {
                 } else if (row.style.backgroundColor === 'rgb(223, 240, 216)') {
                     row.style.backgroundColor = '';
                     closeModal(submissionNumber as number);
-                    removeReviewCode();
+                    removeReviewCode(submissionNumber as number);
                 } else {
                     alert('코드는 최대 2개까지만 선택할 수 있습니다.');
                     return;
@@ -220,10 +220,11 @@ const customStatusPage = async () => {
         const modalContent = document.createElement('div');
         modalContent.className = 'code-modal-content';
         modalContent.id = `modal-${submissionNumber}`;
+        await loadReviewCode();
         if (
             (await loadReviewCode()).length == 2 &&
-            modalContentTemp &&
-            (await loadReviewCode())[1].submissionNumber < submissionNumber
+            modalContentTemp !== null &&
+            (await loadReviewCode())[0].submissionNumber == submissionNumber
         ) {
             codeModalContainer.insertBefore(modalContent, modalContentTemp);
         } else {
@@ -259,7 +260,7 @@ const customStatusPage = async () => {
     }
 
     function closeModal(submissionNumber: number) {
-        removeReviewCode();
+        removeReviewCode(submissionNumber);
         const modalToClose = document.querySelector(
             `#modal-${submissionNumber}`
         );
@@ -280,7 +281,7 @@ const customStatusPage = async () => {
             openNullModal();
         }
     }
-    
+
     function closeNullModal() {
         const modalToClose = document.querySelector(`.code-modal-null`);
         if (modalToClose) {
