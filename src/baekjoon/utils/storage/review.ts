@@ -36,11 +36,15 @@ const loadReviewCode = async (): Promise<CodeInfoModalProps[]> => {
         : [];
 };
 
-const removeReviewCode = async (): Promise<CodeInfoModalProps[]> => {
+const removeReviewCode = async (
+    submissionNumber: number
+): Promise<CodeInfoModalProps[]> => {
     const key = REVIEW_CODE_STORAGE;
     let savedReviewCode = await loadReviewCode();
     if (savedReviewCode.length > 0) {
-        savedReviewCode.pop();
+        savedReviewCode = savedReviewCode.filter(
+            (code) => code.submissionNumber !== submissionNumber
+        );
         await saveObjectInLocalStorage({
             [REVIEW_CODE_STORAGE]: savedReviewCode,
         });
