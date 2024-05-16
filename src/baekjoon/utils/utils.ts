@@ -266,6 +266,10 @@ export const convertImageTagAbsoluteURL = (doc = document) => {
             x.getAttribute('src')?.startsWith('https://www.acmicpc.net')
         ) {
             return;
+        } else if (
+            x.getAttribute('src')?.startsWith('https://upload.acmicpc.net')
+        ) {
+            return;
         } else {
             x.setAttribute(
                 'src',
