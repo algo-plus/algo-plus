@@ -17,6 +17,7 @@ import {
     saveReviewCode,
 } from '../utils/storage/review';
 import './status.css';
+import { CodeNullContent } from '../components/CodeINullContent';
 
 const customStatusPage = async () => {
     if (
@@ -165,25 +166,28 @@ const customStatusPage = async () => {
             }
         });
     });
-
-    reviewCodes.forEach((reviewCode) => {
-        openModal(
-            reviewCode.problemId,
-            reviewCode.submissionNumber,
-            reviewCode.memory,
-            reviewCode.time,
-            reviewCode.result
-        );
-        const lineToColor = document.querySelector(
-            `#solution-${reviewCode.submissionNumber}`
-        );
-        if (lineToColor) {
-            const row = lineToColor.closest('tr');
-            if (row) {
-                row.style.backgroundColor = 'rgb(223, 240, 216)';
+    if (reviewCodes.length > 0) {
+        reviewCodes.forEach((reviewCode) => {
+            openModal(
+                reviewCode.problemId,
+                reviewCode.submissionNumber,
+                reviewCode.memory,
+                reviewCode.time,
+                reviewCode.result
+            );
+            const lineToColor = document.querySelector(
+                `#solution-${reviewCode.submissionNumber}`
+            );
+            if (lineToColor) {
+                const row = lineToColor.closest('tr');
+                if (row) {
+                    row.style.backgroundColor = 'rgb(223, 240, 216)';
+                }
             }
-        }
-    });
+        });
+    } else {
+        openNullModal();
+    }
 
     const getSourceCode = async () => {
         const sourceCodeIds = getCheckedSubmissionNumbers();
@@ -238,6 +242,20 @@ const customStatusPage = async () => {
                 />
             </React.StrictMode>
         );
+        closeNullModal();
+    }
+
+    // 코드 리스트 안내 모달 생성
+    async function openNullModal() {
+        const modalContent = document.createElement('div');
+        modalContent.className = 'code-modal-null';
+        codeModalContainer.insertBefore(modalContent, container);
+        const modalRoot = createRoot(modalContent);
+        modalRoot.render(
+            <React.StrictMode>
+                <CodeNullContent />
+            </React.StrictMode>
+        );
     }
 
     function closeModal(submissionNumber: number) {
@@ -257,6 +275,16 @@ const customStatusPage = async () => {
                     row.style.backgroundColor = '';
                 }
             }
+        }
+        if (checkedCodeCount == 0) {
+            openNullModal();
+        }
+    }
+    
+    function closeNullModal() {
+        const modalToClose = document.querySelector(`.code-modal-null`);
+        if (modalToClose) {
+            modalToClose.remove();
         }
     }
 };
