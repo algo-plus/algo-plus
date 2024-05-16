@@ -230,7 +230,7 @@ const ReviewModal = (modalProps: ModalProps) => {
             },
         },
     };
-    <s></s>;
+
     return (
         <>
             <div className='modal-content'>

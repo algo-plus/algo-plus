@@ -17,6 +17,7 @@ import {
     saveReviewCode,
 } from '../utils/storage/review';
 import './status.css';
+import { CodeNullContent } from '../components/CodeINullContent';
 
 const customStatusPage = async () => {
     if (
@@ -80,6 +81,14 @@ const customStatusPage = async () => {
     codeModalContainer.className = 'code-modal-container';
     codeModalBackdrop.appendChild(codeModalContainer);
 
+    const column = tableHead.querySelectorAll('tr');
+    const columnHead = column[0].querySelectorAll('th');
+    columnHead[3].style.width = '16%';
+
+    const submissionIds = document.querySelectorAll(
+        'table#status-table tbody tr td:first-child'
+    );
+
     // 오답노트 작성 버튼
     const button = document.createElement('button');
     button.textContent = '오답 노트 작성';
@@ -103,21 +112,14 @@ const customStatusPage = async () => {
     });
 
     const container = document.createElement('div');
+    container.className = 'save-button-container';
     container.style.display = 'flex';
     container.appendChild(button);
     codeModalContainer.appendChild(container);
 
-    const column = tableHead.querySelectorAll('tr');
-    const columnHead = column[0].querySelectorAll('th');
-    columnHead[3].style.width = '16%';
-
-    const submissionIds = document.querySelectorAll(
-        'table#status-table tbody tr td:first-child'
-    );
-
     submissionIds.forEach((submissionId) => {
         (submissionId as HTMLInputElement).style.cursor = 'pointer';
-        submissionId.addEventListener('click', function () {
+        submissionId.addEventListener('click', async function () {
             const row = submissionId.closest('tr');
             if (row) {
                 const submissionNumber =
@@ -164,16 +166,28 @@ const customStatusPage = async () => {
             }
         });
     });
-
-    reviewCodes.forEach((reviewCode) => {
-        openModal(
-            reviewCode.problemId,
-            reviewCode.submissionNumber,
-            reviewCode.memory,
-            reviewCode.time,
-            reviewCode.result
-        );
-    });
+    if (reviewCodes.length > 0) {
+        reviewCodes.forEach((reviewCode) => {
+            openModal(
+                reviewCode.problemId,
+                reviewCode.submissionNumber,
+                reviewCode.memory,
+                reviewCode.time,
+                reviewCode.result
+            );
+            const lineToColor = document.querySelector(
+                `#solution-${reviewCode.submissionNumber}`
+            );
+            if (lineToColor) {
+                const row = lineToColor.closest('tr');
+                if (row) {
+                    row.style.backgroundColor = 'rgb(223, 240, 216)';
+                }
+            }
+        });
+    } else {
+        openNullModal();
+    }
 
     const getSourceCode = async () => {
         const sourceCodeIds = getCheckedSubmissionNumbers();
@@ -195,18 +209,26 @@ const customStatusPage = async () => {
     };
 
     // 코드 리스트 작성 모달 생성
-    function openModal(
+    async function openModal(
         problemId: number,
         submissionNumber: number,
         memory: number,
         time: number,
         result: string
     ) {
+        const modalContentTemp = document.querySelector('.code-modal-content');
         const modalContent = document.createElement('div');
         modalContent.className = 'code-modal-content';
-        codeModalContainer.appendChild(modalContent);
         modalContent.id = `modal-${submissionNumber}`;
-
+        if (
+            (await loadReviewCode()).length == 2 &&
+            modalContentTemp &&
+            (await loadReviewCode())[1].submissionNumber < submissionNumber
+        ) {
+            codeModalContainer.insertBefore(modalContent, modalContentTemp);
+        } else {
+            codeModalContainer.insertBefore(modalContent, container);
+        }
         const modalRoot = createRoot(modalContent);
         modalRoot.render(
             <React.StrictMode>
@@ -218,6 +240,20 @@ const customStatusPage = async () => {
                     result={result}
                     onClose={() => closeModal(submissionNumber)}
                 />
+            </React.StrictMode>
+        );
+        closeNullModal();
+    }
+
+    // 코드 리스트 안내 모달 생성
+    async function openNullModal() {
+        const modalContent = document.createElement('div');
+        modalContent.className = 'code-modal-null';
+        codeModalContainer.insertBefore(modalContent, container);
+        const modalRoot = createRoot(modalContent);
+        modalRoot.render(
+            <React.StrictMode>
+                <CodeNullContent />
             </React.StrictMode>
         );
     }
@@ -239,6 +275,16 @@ const customStatusPage = async () => {
                     row.style.backgroundColor = '';
                 }
             }
+        }
+        if (checkedCodeCount == 0) {
+            openNullModal();
+        }
+    }
+    
+    function closeNullModal() {
+        const modalToClose = document.querySelector(`.code-modal-null`);
+        if (modalToClose) {
+            modalToClose.remove();
         }
     }
 };
