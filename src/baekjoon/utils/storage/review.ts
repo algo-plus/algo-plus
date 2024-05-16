@@ -10,7 +10,7 @@ const saveReviewCode = async (
     submissionNumber: number,
     memory: number,
     time: number,
-    result: string,
+    result: string
 ) => {
     const data: CodeInfoModalProps = {
         problemId: problemId,
@@ -26,15 +26,14 @@ const saveReviewCode = async (
             [REVIEW_CODE_STORAGE]: savedReviewCode,
         });
     }
-
 };
 
 const loadReviewCode = async (): Promise<CodeInfoModalProps[]> => {
     const key = REVIEW_CODE_STORAGE;
-    const result = (await getObjectFromLocalStorage(
-        key
-    )) as CodeInfoModalProps[];
-    return result ? result : [];
+    let result = (await getObjectFromLocalStorage(key)) as CodeInfoModalProps[];
+    return result
+        ? result.sort((a, b) => b.submissionNumber - a.submissionNumber)
+        : [];
 };
 
 const removeReviewCode = async (): Promise<CodeInfoModalProps[]> => {

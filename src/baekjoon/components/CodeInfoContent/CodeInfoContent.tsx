@@ -21,7 +21,7 @@ const CodeInfoContent = ({
     return (
         <>
             <h4 style={{ position: 'relative' }}>
-                Code Info
+                선택된 코드
                 <button className='close-button' onClick={onClose}>
                     &#x2715; {/* X 문자 */}
                 </button>
