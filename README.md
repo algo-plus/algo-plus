@@ -29,6 +29,7 @@ Baekjoon Chrome Extension으로, 백준 사이트에 부가 기능을 제공합�
     - 코딩 스타일, 커밋 메시지 conventions 등 코딩 규칙 명시
     - 이슈 등록 및 Pull Request 제출 절차 가이드
 
+[기여 가이드](./docs/ContributorGuide.md)
 
 ## 전제조건
 
