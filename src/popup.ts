@@ -11,5 +11,5 @@ discordIcon.addEventListener('click', function () {
 });
 
 githubIcon.addEventListener('click', function () {
-    window.open('https://github.com/algo-plus');
+    window.open('https://github.com/algo-plus/algo-plus');
 });
