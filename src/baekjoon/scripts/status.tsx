@@ -118,7 +118,7 @@ const customStatusPage = async () => {
 
     submissionIds.forEach((submissionId) => {
         (submissionId as HTMLInputElement).style.cursor = 'pointer';
-        submissionId.addEventListener('click', function () {
+        submissionId.addEventListener('click', async function () {
             const row = submissionId.closest('tr');
             if (row) {
                 const submissionNumber =
@@ -196,17 +196,26 @@ const customStatusPage = async () => {
     };
 
     // 코드 리스트 작성 모달 생성
-    function openModal(
+    async function openModal(
         problemId: number,
         submissionNumber: number,
         memory: number,
         time: number,
         result: string
     ) {
+        const modalContentTemp = document.querySelector('.code-modal-content');
         const modalContent = document.createElement('div');
         modalContent.className = 'code-modal-content';
         modalContent.id = `modal-${submissionNumber}`;
-        codeModalContainer.insertBefore(modalContent, container);
+        if (
+            (await loadReviewCode()).length == 2 &&
+            modalContentTemp &&
+            (await loadReviewCode())[1].submissionNumber < submissionNumber
+        ) {
+            codeModalContainer.insertBefore(modalContent, modalContentTemp);
+        } else {
+            codeModalContainer.insertBefore(modalContent, container);
+        }
         const modalRoot = createRoot(modalContent);
         modalRoot.render(
             <React.StrictMode>
