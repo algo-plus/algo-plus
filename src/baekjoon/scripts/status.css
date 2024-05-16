@@ -1,0 +1,22 @@
+.table-striped > tbody > tr:nth-child(odd) > td,
+.table-striped > tbody > tr:nth-child(odd) > th {
+    background-color: transparent;
+}
+#status-table tbody tr td:first-child:hover {
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.code-modal-container {
+    background: snow;
+    padding: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    pointer-events: auto;
+    width: 250px;
+}
+
+.code-modal-container div {
+    justify-content: center;
+}
