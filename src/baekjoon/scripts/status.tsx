@@ -174,6 +174,15 @@ const customStatusPage = async () => {
             reviewCode.time,
             reviewCode.result
         );
+        const lineToColor = document.querySelector(
+            `#solution-${reviewCode.submissionNumber}`
+        );
+        if (lineToColor) {
+            const row = lineToColor.closest('tr');
+            if (row) {
+                row.style.backgroundColor = 'rgb(223, 240, 216)';
+            }
+        }
     });
 
     const getSourceCode = async () => {
