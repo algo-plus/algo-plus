@@ -175,7 +175,7 @@ const createRepo = (token, name) => {
         private: true,
         auto_init: true,
         description:
-            'This is an auto push repository for Baekjoon Online Judge created with [AlgoPlus](https://github.com/{url}).',
+            'This is an auto push repository for Baekjoon Online Judge created with [AlgoPlus](https://github.com/algo-plus/algo-plus).',
     };
     data = JSON.stringify(data);
 
