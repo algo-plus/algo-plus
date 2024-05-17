@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Extract Version
-        run: echo "::set-output name=version::$(jq -r .version manifest.json)"
+        run: echo "::set-output name=version::$(jq -r .version public/manifest.json)"
 
       - name: Check out Setting
         uses: actions/checkout@v4      
