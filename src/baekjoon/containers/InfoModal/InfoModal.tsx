@@ -11,7 +11,7 @@ const InfoModal = ({ modalOpen, onClose }: InfoModalProps) => {
     const [step, setStep] = useState(0);
     const modalContents = [
         {
-            picture: process.env.REVIEW_NOTE_GUIDE_IMAGE1,
+            picture: 'https://github.com/algo-plus/algo-plus/assets/80024307/f181c319-3883-4591-ac67-aa7629638e1b',
             content: (
                 <p>
                     코멘트를 달 코드 영역의 시작 인덱스와 끝 인덱스를
@@ -20,7 +20,7 @@ const InfoModal = ({ modalOpen, onClose }: InfoModalProps) => {
             ),
         },
         {
-            picture: process.env.REVIEW_NOTE_GUIDE_IMAGE2,
+            picture: 'https://github.com/algo-plus/algo-plus/assets/80024307/a4819990-2c38-4406-a78f-d47ac4191914',
             content: (
                 <p>
                     코드 영역은 최대 두 개까지 선택할 수 있습니다.
@@ -30,7 +30,7 @@ const InfoModal = ({ modalOpen, onClose }: InfoModalProps) => {
             ),
         },
         {
-            picture: process.env.REVIEW_NOTE_GUIDE_IMAGE3,
+            picture: 'https://github.com/algo-plus/algo-plus/assets/80024307/6f52fc9d-3a8e-4852-96f1-9721a47cd194',
             content: (
                 <p>
                     원하는 코멘트를 모두 작성했다면 저장 버튼을 눌러 깃허브
