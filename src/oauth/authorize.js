@@ -3,8 +3,8 @@ const localAuth = {
         this.KEY = 'AlgoPlus_token';
         this.ACCESS_TOKEN_URL = 'https://github.com/login/oauth/access_token';
         this.AUTHORIZATION_URL = 'https://github.com/login/oauth/authorize';
-        this.CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID;
-        this.CLIENT_SECRET = process.env.REACT_APP_GITHUB_CLIENT_SECRET;
+        this.CLIENT_ID = 'Ov23liebEEJHz6LWjLOY'
+        this.CLIENT_SECRET = 'a340c9c116a31b3cd4218c7bae3df75ae28090d5'
         this.REDIRECT_URL = 'https://github.com/';
         this.SCOPES = ['repo'];
     },
