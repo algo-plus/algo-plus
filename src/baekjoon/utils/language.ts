@@ -2,7 +2,7 @@ import { CompilerLanguage } from '@/common/types/compile';
 import { EditorLanguage } from '@/common/types/language';
 
 const submitApiLanguageConvertMap: Record<string, CompilerLanguage> = {
-    '0': 'c',
+    '0': 'c_cpp',
     '95': 'c_cpp',
     '86': 'csharp',
     '3': 'java',
