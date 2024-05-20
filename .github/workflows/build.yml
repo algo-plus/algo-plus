@@ -1,0 +1,26 @@
+name: GitHub Action Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    
+      - name: Check out Setting
+        uses: actions/checkout@v4      
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.11.0
+      - run: npm ci
+      - run: npm run build
