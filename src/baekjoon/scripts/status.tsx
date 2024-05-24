@@ -26,28 +26,26 @@ const customStatusPage = async () => {
     ) {
         let timer = setInterval(() => {
             if (isJudgingState()) {
-            } else {
-                clearInterval(timer);
-                if (isWrongState()) {
-                    const problemId = getUrlSearchParam(
-                        window.location.href,
-                        'problem_id'
-                    );
-                    const message = getWrongModalMessage();
-
-                    if (!problemId) return;
-                    const root = document.createElement('div');
-                    document.body.appendChild(root);
-                    createRoot(root).render(
-                        <WrongResultModal
-                            problemId={problemId}
-                            message={message}
-                        />
-                    );
-                }
+                return;
             }
+            clearInterval(timer);
+            if (isWrongState()) {
+                return;
+            }
+            const problemId = getUrlSearchParam(
+                window.location.href,
+                'problem_id'
+            );
+            if (!problemId) return;
+            const message = getWrongModalMessage();
+            const root = document.createElement('div');
+            document.body.appendChild(root);
+            createRoot(root).render(
+                <WrongResultModal problemId={problemId} message={message} />
+            );
         }, 500);
     }
+
     const currentProblemId = getUrlSearchParam(
         window.location.href,
         'problem_id'
@@ -65,12 +63,11 @@ const customStatusPage = async () => {
         checkedCodeCount = reviewCodes.length;
     }
 
-    const table = document.querySelector('#status-table');
-    if (!table) return;
-    const tableHead = table.querySelector('thead');
-    if (!tableHead) return;
-    const tableBody = table.querySelector('tbody');
-    if (!tableBody) return;
+    const table = document.querySelector('#status-table') as HTMLTableElement;
+    const tableHead = table.querySelector('thead') as HTMLTableSectionElement;
+
+    table.classList.remove('table-striped');
+    table.classList.add('algoplus-status-table');
 
     // 선택된 코드 리스트 모달
     const codeModalBackdrop = document.createElement('div');
