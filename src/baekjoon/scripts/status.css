@@ -3,6 +3,10 @@
     cursor: pointer;
 }
 
+.algoplus-code-select {
+    background-color: #dff0d8 !important;
+}
+
 .code-modal-container {
     background: snow;
     padding: 10px;

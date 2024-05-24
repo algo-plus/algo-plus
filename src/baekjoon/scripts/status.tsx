@@ -63,11 +63,16 @@ const customStatusPage = async () => {
         checkedCodeCount = reviewCodes.length;
     }
 
+    // custom status table
     const table = document.querySelector('#status-table') as HTMLTableElement;
-    const tableHead = table.querySelector('thead') as HTMLTableSectionElement;
-
     table.classList.remove('table-striped');
     table.classList.add('algoplus-status-table');
+
+    const tableHead = table.querySelector('thead') as HTMLTableSectionElement;
+    const tableResultHeader = tableHead.querySelector(
+        'tr > th:nth-child(4)'
+    ) as HTMLElement;
+    tableResultHeader.style.width = '16%';
 
     // 선택된 코드 리스트 모달
     const codeModalBackdrop = document.createElement('div');
@@ -77,14 +82,6 @@ const customStatusPage = async () => {
     const codeModalContainer = document.createElement('div');
     codeModalContainer.className = 'code-modal-container';
     codeModalBackdrop.appendChild(codeModalContainer);
-
-    const column = tableHead.querySelectorAll('tr');
-    const columnHead = column[0].querySelectorAll('th');
-    columnHead[3].style.width = '16%';
-
-    const submissionIds = document.querySelectorAll(
-        'table#status-table tbody tr td:first-child'
-    );
 
     // 오답노트 작성 버튼
     const button = document.createElement('button');
@@ -114,55 +111,47 @@ const customStatusPage = async () => {
     container.appendChild(button);
     codeModalContainer.appendChild(container);
 
+    // add submit code select event
+    const submissionIds = document.querySelectorAll(
+        'table#status-table tbody tr td:first-child'
+    );
+
     submissionIds.forEach((submissionId) => {
-        (submissionId as HTMLInputElement).style.cursor = 'pointer';
         submissionId.addEventListener('click', async function () {
-            const row = submissionId.closest('tr');
-            if (row) {
-                const submissionNumber =
-                    row.querySelector('td:nth-child(1)')?.textContent?.trim() ||
-                    0;
-                if (
-                    row.style.backgroundColor !== 'rgb(223, 240, 216)' &&
-                    checkedCodeCount < 2
-                ) {
-                    checkedCodeCount++;
-                    row.style.backgroundColor = 'rgb(223, 240, 216)';
-                    const problemId =
-                        row
-                            .querySelector('.problem_title')
-                            ?.textContent?.trim() || 0;
-                    const memory =
-                        row.querySelector('.memory')?.textContent?.trim() || 0;
-                    const time =
-                        row.querySelector('.time')?.textContent?.trim() || 0;
-                    const result =
-                        row.querySelector('.result')?.textContent?.trim() || '';
-                    saveReviewCode(
-                        problemId as number,
-                        submissionNumber as number,
-                        memory as number,
-                        time as number,
-                        result
-                    );
-                    openModal(
-                        problemId as number,
-                        submissionNumber as number,
-                        memory as number,
-                        time as number,
-                        result
-                    );
-                } else if (row.style.backgroundColor === 'rgb(223, 240, 216)') {
-                    row.style.backgroundColor = '';
-                    closeModal(submissionNumber as number);
-                    removeReviewCode(submissionNumber as number);
-                } else {
-                    alert('코드는 최대 2개까지만 선택할 수 있습니다.');
-                    return;
-                }
+            const row = submissionId.closest('tr') as HTMLElement;
+            const submissionNumber = (row
+                .querySelector('td:nth-child(1)')
+                ?.textContent?.trim() || 0) as number;
+
+            if (row.classList.contains('algoplus-code-select')) {
+                row.classList.remove('algoplus-code-select');
+                closeModal(submissionNumber as number);
+                removeReviewCode(submissionNumber as number);
+                return;
             }
+            if (checkedCodeCount >= 2) {
+                alert('코드는 최대 2개까지만 선택할 수 있습니다.');
+                return;
+            }
+
+            checkedCodeCount++;
+            row.classList.add('algoplus-code-select');
+
+            const problemId = (row
+                .querySelector('.problem_title')
+                ?.textContent?.trim() || 0) as number;
+            const memory = (row.querySelector('.memory')?.textContent?.trim() ||
+                0) as number;
+            const time = (row.querySelector('.time')?.textContent?.trim() ||
+                0) as number;
+            const result =
+                row.querySelector('.result')?.textContent?.trim() || '';
+
+            saveReviewCode(problemId, submissionNumber, memory, time, result);
+            openModal(problemId, submissionNumber, memory, time, result);
         });
     });
+
     if (reviewCodes.length > 0) {
         reviewCodes.forEach((reviewCode) => {
             openModal(
