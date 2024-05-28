@@ -190,7 +190,13 @@ const SolveView: React.FC<SolveViewProps> = ({
                     const newTestCases = [...currentTestCases];
                     newTestCases[0].result = output;
                     setTargetTestCases(newTestCases);
-                    if (checkCompileError(lang, output)) {
+                    if (output === 'error') {
+                        setTestCaseState('error');
+                        setErrorMessage(
+                            `컴파일 서버에서 오류가 발생했습니다.\n`
+                        );
+                        resolve(true);
+                    } else if (checkCompileError(lang, output)) {
                         setTestCaseState('error');
                         setErrorMessage(output);
                         resolve(true);
