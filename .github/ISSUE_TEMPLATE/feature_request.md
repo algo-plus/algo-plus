@@ -3,7 +3,7 @@ name: Feature request
 about: Suggest an idea for this project
 title: ADD
 labels: enhancement
-assignees: sw-jelly, AiBiC-Data, h-spear, paul-lee-dev, mjje27
+assignees: sw-jelly, kwonho0217, h-spear, paul-lee-dev, mjje27
 
 ---
 

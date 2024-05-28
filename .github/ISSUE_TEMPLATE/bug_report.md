@@ -2,8 +2,8 @@
 name: Bug report
 about: Create a report to help us improve
 title: BUG
-labels: bug
-assignees: AiBiC-Data, h-spear, mjje27, paul-lee-dev, sw-jelly
+labels: bug, enhancement
+assignees: sw-jelly, kwonho0217, h-spear, paul-lee-dev, mjje27
 
 ---
 
