@@ -122,7 +122,6 @@ const customStatusPage = async () => {
             const submissionNumber = (row
                 .querySelector('td:nth-child(1)')
                 ?.textContent?.trim() || 0) as number;
-
             if (row.classList.contains('algoplus-code-select')) {
                 row.classList.remove('algoplus-code-select');
                 closeModal(submissionNumber as number);
@@ -167,7 +166,7 @@ const customStatusPage = async () => {
             if (lineToColor) {
                 const row = lineToColor.closest('tr');
                 if (row) {
-                    row.style.backgroundColor = 'rgb(223, 240, 216)';
+                    row.classList.add('algoplus-code-select');
                 }
             }
         });
@@ -259,7 +258,7 @@ const customStatusPage = async () => {
             if (submissionId) {
                 const row = submissionId.closest('tr');
                 if (row) {
-                    row.style.backgroundColor = '';
+                    row.classList.remove('algoplus-code-select');
                 }
             }
         }
