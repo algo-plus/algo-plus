@@ -9,9 +9,13 @@ interface InfoModalProps {
 
 const InfoModal = ({ modalOpen, onClose }: InfoModalProps) => {
     const [step, setStep] = useState(0);
+    const help1 = chrome.runtime.getURL('asset/help1.png');
+    const help2 = chrome.runtime.getURL('asset/help2.png');
+    const help3 = chrome.runtime.getURL('asset/help3.png');
+
     const modalContents = [
         {
-            picture: 'https://github.com/algo-plus/algo-plus/assets/80024307/f181c319-3883-4591-ac67-aa7629638e1b',
+            picture: help1,
             content: (
                 <p>
                     코멘트를 달 코드 영역의 시작 인덱스와 끝 인덱스를
@@ -20,7 +24,7 @@ const InfoModal = ({ modalOpen, onClose }: InfoModalProps) => {
             ),
         },
         {
-            picture: 'https://github.com/algo-plus/algo-plus/assets/80024307/a4819990-2c38-4406-a78f-d47ac4191914',
+            picture: help2,
             content: (
                 <p>
                     코드 영역은 최대 두 개까지 선택할 수 있습니다.
@@ -30,7 +34,7 @@ const InfoModal = ({ modalOpen, onClose }: InfoModalProps) => {
             ),
         },
         {
-            picture: 'https://github.com/algo-plus/algo-plus/assets/80024307/6f52fc9d-3a8e-4852-96f1-9721a47cd194',
+            picture: help3,
             content: (
                 <p>
                     원하는 코멘트를 모두 작성했다면 저장 버튼을 눌러 깃허브
