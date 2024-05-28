@@ -142,7 +142,7 @@ const SolveView: React.FC<SolveViewProps> = ({
         const firstCaseError = await checkFirstCase(currentTestCases);
         if (firstCaseError) return;
 
-        Promise.all(
+        await Promise.all(
             currentTestCases.slice(1).map((testCase, index) => {
                 const data = {
                     lang: lang,
