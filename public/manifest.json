@@ -64,6 +64,14 @@
         "https://0hrt6qn6tk.execute-api.ap-northeast-2.amazonaws.com/api/compile"
     ],
 
+    "web_accessible_resources": [
+        {
+            "resources": ["asset/*.png"],
+            "extension_ids": ["*"],
+            "matches": ["*://*/*"]
+        }
+    ],
+
     "declarative_net_request": {
         "rule_resources": [
             {
