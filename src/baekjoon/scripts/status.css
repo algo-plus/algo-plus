@@ -1,11 +1,10 @@
-.table-striped > tbody > tr:nth-child(odd) > td,
-.table-striped > tbody > tr:nth-child(odd) > th {
-    background-color: transparent;
-}
-#status-table tbody tr td:first-child:hover {
-    font-weight: bold;
+.algoplus-status-table tbody tr:hover {
+    background-color: #f3f3f3;
     cursor: pointer;
-    text-decoration: underline;
+}
+
+.algoplus-code-select {
+    background-color: #dff0d8 !important;
 }
 
 .code-modal-container {
