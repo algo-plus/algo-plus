@@ -24,25 +24,22 @@ const customStatusPage = async () => {
         getUrlSearchParam(window.location.href, 'after_algoplus_submit') ===
         'true'
     ) {
+        const problemId = getUrlSearchParam(window.location.href, 'problem_id');
+        if (!problemId) return;
+
         let timer = setInterval(() => {
             if (isJudgingState()) {
                 return;
             }
             clearInterval(timer);
             if (isWrongState()) {
-                return;
+                const message = getWrongModalMessage();
+                const root = document.createElement('div');
+                document.body.appendChild(root);
+                createRoot(root).render(
+                    <WrongResultModal problemId={problemId} message={message} />
+                );
             }
-            const problemId = getUrlSearchParam(
-                window.location.href,
-                'problem_id'
-            );
-            if (!problemId) return;
-            const message = getWrongModalMessage();
-            const root = document.createElement('div');
-            document.body.appendChild(root);
-            createRoot(root).render(
-                <WrongResultModal problemId={problemId} message={message} />
-            );
         }, 500);
     }
 
