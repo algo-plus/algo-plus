@@ -50,6 +50,7 @@ githubAuth.addEventListener('click', () => {
         const token = data.AlgoPlus_token;
         if (token === null || token === undefined) {
             action = true;
+            alert('한번 더 눌러주세요!');
         } else {
             const AUTHENTICATION_URL = 'https://api.github.com/user';
 
