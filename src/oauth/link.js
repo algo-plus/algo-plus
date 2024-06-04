@@ -41,17 +41,12 @@ chrome.storage.local.get('alpEnable', (data4) => {
     }
 });
 
-let action = false;
 
 githubAuth.addEventListener('click', () => {
-    action && oAuth2.begin();
     
     chrome.storage.local.get('AlgoPlus_token', (data) => {
         const token = data.AlgoPlus_token;
-        if (token === null || token === undefined) {
-            action = true;
-            alert('한번 더 눌러주세요!');
-        } else {
+            oAuth2.begin();
             const AUTHENTICATION_URL = 'https://api.github.com/user';
 
             const xhr = new XMLHttpRequest();
@@ -87,7 +82,6 @@ githubAuth.addEventListener('click', () => {
             xhr.open('GET', AUTHENTICATION_URL, true);
             xhr.setRequestHeader('Authorization', `token ${token}`);
             xhr.send();
-        }
     });
 });
 
