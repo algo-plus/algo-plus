@@ -142,6 +142,7 @@ body {
 
 #success {
     margin: 8px 10px 0 0;
+    font-size: 14px;
 }
 
 #github-link-button {
