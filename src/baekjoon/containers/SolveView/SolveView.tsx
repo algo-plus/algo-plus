@@ -221,6 +221,13 @@ const SolveView: React.FC<SolveViewProps> = ({
         );
     };
 
+    const changeLanguage = (languageId: string) => {
+        const editorLanguage = convertLanguageIdForEditor(languageId);
+        setLanguageId(languageId);
+        setCode(getDefaultCode(editorLanguage));
+        saveEditorCode(problemId, languageId, code);
+    };
+
     useEffect(() => {
         const loadProblemData = async () => {
             const loadedProblemContent = await loadAndParseProblemDetail(
@@ -281,16 +288,12 @@ const SolveView: React.FC<SolveViewProps> = ({
         setEditorLanguage(editorLanguage);
     }, [languageId]);
 
-    const changeLanguage = (languageId: string) => {
-        const editorLanguage = convertLanguageIdForEditor(languageId);
-        setLanguageId(languageId);
-        setCode(getDefaultCode(editorLanguage));
-        saveEditorCode(problemId, languageId, code);
-    };
-
     useEffect(() => {
         loadEditorCode(problemId).then((value: EditorCode) => {
-            if (value) {
+            const languageDefaultCode = getDefaultCode(
+                convertLanguageIdForEditor(value.languageId as string)
+            );
+            if (value && value.code != languageDefaultCode) {
                 setLanguageId(value.languageId as string);
                 setCode(value.code);
             } else {
