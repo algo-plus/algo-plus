@@ -6,6 +6,7 @@ import {
 
 const EDITOR_CODE_STORAGE_PREFIX = 'algoplus-editor-save-';
 const EDITOR_THEME_STORAGE_KEY = 'algoplus-editor-theme-';
+const EDITOR_DEFAULT_LANGUAGE_KEY = 'algoplus-default-language-';
 const TEST_CASE_STORAGE_PREFIX = 'algoplus-test-case-';
 
 const saveEditorCode = async (
@@ -56,6 +57,17 @@ const loadTheme = async (): Promise<string> => {
     return result ? result : 'vs-code-dark';
 };
 
+const saveDefaultLanguageId = async (languageId: string) => {
+    await saveObjectInLocalStorage({
+        [EDITOR_DEFAULT_LANGUAGE_KEY]: languageId,
+    });
+};
+
+const loadDefaultLanguageId = async (): Promise<string> => {
+    const result = await getObjectFromLocalStorage(EDITOR_DEFAULT_LANGUAGE_KEY);
+    return result ? result : 'c';
+};
+
 export {
     saveEditorCode,
     loadEditorCode,
@@ -63,4 +75,6 @@ export {
     loadTestCases,
     saveTheme,
     loadTheme,
+    saveDefaultLanguageId,
+    loadDefaultLanguageId,
 };

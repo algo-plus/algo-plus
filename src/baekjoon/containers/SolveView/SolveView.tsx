@@ -37,6 +37,8 @@ import {
     loadTestCases,
     saveEditorCode,
     saveTestCases,
+    loadDefaultLanguageId,
+    saveDefaultLanguageId,
 } from '@/baekjoon/utils/storage/editor';
 import { checkCompileError } from '@/baekjoon/utils/compile';
 
@@ -120,6 +122,11 @@ const SolveView: React.FC<SolveViewProps> = ({
     useEffect(() => {
         setTargetTestCases([...testCases]);
     }, [testCases]);
+
+    const saveEditorDefaultLanguage = () => {
+        saveDefaultLanguageId(languageId);
+        alert('현재 언어를 기본값으로 설정했습니다."');
+    };
 
     const codeRun = async () => {
         if (!code) {
@@ -261,11 +268,7 @@ const SolveView: React.FC<SolveViewProps> = ({
                 '언어 변경 시 작성 중인 코드가 지워집니다.\n변경하시겠습니까?'
             )
         ) {
-            const selectedLanguage = event.target.value;
-            const editorLanguage = convertLanguageIdForEditor(selectedLanguage);
-            setLanguageId(selectedLanguage);
-            setCode(getDefaultCode(editorLanguage));
-            saveEditorCode(problemId, languageId, code);
+            changeLanguage(event.target.value);
         } else {
             setLanguageId(focusLanguageId);
             const editorLanguage = convertLanguageIdForEditor(focusLanguageId);
@@ -278,11 +281,22 @@ const SolveView: React.FC<SolveViewProps> = ({
         setEditorLanguage(editorLanguage);
     }, [languageId]);
 
+    const changeLanguage = (languageId: string) => {
+        const editorLanguage = convertLanguageIdForEditor(languageId);
+        setLanguageId(languageId);
+        setCode(getDefaultCode(editorLanguage));
+        saveEditorCode(problemId, languageId, code);
+    };
+
     useEffect(() => {
         loadEditorCode(problemId).then((value: EditorCode) => {
             if (value) {
                 setLanguageId(value.languageId as string);
                 setCode(value.code);
+            } else {
+                loadDefaultLanguageId().then((languageId: string) => {
+                    changeLanguage(languageId);
+                });
             }
         });
         loadTestCases(problemId).then((value: TestCase[]) => {
@@ -358,6 +372,9 @@ const SolveView: React.FC<SolveViewProps> = ({
                                     value={languageId}
                                     onChange={languageChangeHandle}
                                     onFocus={languageFocusHandle}
+                                    onChangeDefaultLanguage={
+                                        saveEditorDefaultLanguage
+                                    }
                                 />
                             </div>
                             <VerticalSplitView

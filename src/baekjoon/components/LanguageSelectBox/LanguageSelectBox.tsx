@@ -4,12 +4,14 @@ interface LanguageSelectBoxProps {
     value: string;
     onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
     onFocus: () => void;
+    onChangeDefaultLanguage: () => void;
 }
 
 const LanguageSelectBox: React.FC<LanguageSelectBoxProps> = ({
     value,
     onChange,
     onFocus,
+    onChangeDefaultLanguage,
 }) => {
     return (
         <div
@@ -20,6 +22,7 @@ const LanguageSelectBox: React.FC<LanguageSelectBoxProps> = ({
                 marginRight: '10px',
             }}
         >
+            <a onClick={onChangeDefaultLanguage}>현재 언어를 기본값으로 설정</a>
             <label className='control-label'>언어</label>
             <div>
                 <select
