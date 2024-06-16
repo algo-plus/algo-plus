@@ -22,7 +22,9 @@ const LanguageSelectBox: React.FC<LanguageSelectBoxProps> = ({
                 marginRight: '10px',
             }}
         >
-            <a onClick={onChangeDefaultLanguage}>현재 언어를 기본값으로 설정</a>
+            <a onClick={onChangeDefaultLanguage} style={{ cursor: 'pointer' }}>
+                현재 언어를 기본값으로 설정
+            </a>
             <label className='control-label'>언어</label>
             <div>
                 <select
