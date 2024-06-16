@@ -290,10 +290,13 @@ const SolveView: React.FC<SolveViewProps> = ({
 
     useEffect(() => {
         loadEditorCode(problemId).then((value: EditorCode) => {
-            const languageDefaultCode = getDefaultCode(
-                convertLanguageIdForEditor(value.languageId as string)
-            );
-            if (value && value.code != languageDefaultCode) {
+            if (
+                value &&
+                value.code !=
+                    getDefaultCode(
+                        convertLanguageIdForEditor(value.languageId as string)
+                    )
+            ) {
                 setLanguageId(value.languageId as string);
                 setCode(value.code);
             } else {
