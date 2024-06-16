@@ -65,7 +65,7 @@ const saveDefaultLanguageId = async (languageId: string) => {
 
 const loadDefaultLanguageId = async (): Promise<string> => {
     const result = await getObjectFromLocalStorage(EDITOR_DEFAULT_LANGUAGE_KEY);
-    return result ? result : 'c';
+    return result ? result : '0';
 };
 
 export {
