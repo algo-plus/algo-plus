@@ -125,7 +125,7 @@ const SolveView: React.FC<SolveViewProps> = ({
 
     const saveEditorDefaultLanguage = () => {
         saveDefaultLanguageId(languageId);
-        alert('현재 언어를 기본값으로 설정했습니다."');
+        alert('현재 언어를 기본값으로 설정했습니다.');
     };
 
     const codeRun = async () => {
