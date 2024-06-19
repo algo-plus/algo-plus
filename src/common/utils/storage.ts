@@ -41,7 +41,10 @@ export const getObjectFromLocalStorage = async (key: string): Promise<any> => {
 };
 
 export const getStats = async () => {
-    return await getObjectFromLocalStorage('stats');
+    let stats = await getObjectFromLocalStorage('stats');
+    if (isNull(stats)) stats = {};
+    if (isNull(stats.branches)) stats.branches = {};
+    return stats;
 };
 
 export const getToken = async () => {
@@ -120,6 +123,11 @@ export const updateLocalStorageStats = async () => {
     const token: any = await getToken();
     const git = new GitHub(hook, token);
     const stats: any = await getStats();
+
+    if (isNull(stats.branches)) {
+        stats.branches = {};
+    }
+
     const tree_items: any[] = [];
     await git.getTree().then((tree) => {
         tree.forEach((item: any) => {
@@ -132,7 +140,12 @@ export const updateLocalStorageStats = async () => {
     tree_items.forEach((item) => {
         updateObjectDatafromPath(submission, `${hook}/${item.path}`, item.sha);
     });
-    const default_branch = await git.getDefaultBranchOnRepo();
+    const default_branch= await git.getDefaultBranchOnRepo();
+
+    if (isNull(stats.branches[hook])) {
+        stats.branches[hook] = {};
+    }
+
     stats.branches[hook] = default_branch;
     await saveStats(stats);
     return stats;

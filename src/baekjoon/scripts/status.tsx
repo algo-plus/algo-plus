@@ -91,10 +91,11 @@ const customStatusPage = async () => {
     button.addEventListener('click', async () => {
         const enable = await getObjectFromLocalStorage('alpEnable');
         if(!enable) {
+            clearReviewCode();
+            location.reload();
             alert('오답노트 작성을 위해서는 깃허브 연결이 필요합니다.');
             return enable;
         }
-            
         const sourceCodes = await getSourceCode();
         if (sourceCodes.length === 0) {
             alert('제출번호를 눌러 코드를 선택해주세요.(최대 2개)');
