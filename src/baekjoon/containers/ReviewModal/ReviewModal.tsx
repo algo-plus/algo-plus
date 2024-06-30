@@ -7,6 +7,7 @@ import { coy } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { startLoader } from '@/baekjoon/utils/baekjoon';
 import { markdownReview } from '@/baekjoon/utils/review';
 import { InfoModal } from '../InfoModal';
+import { createRoot } from 'react-dom/client';
 
 let startLineIndex: number = -1;
 let endLineIndex: number = -1;
@@ -20,6 +21,26 @@ const ReviewModal = (modalProps: ModalProps) => {
         if (modalBackdrop) {
             modalBackdrop.remove();
         }
+    };
+
+    const changeOrderWarn = () => {
+        if (confirm('작성한 내용이 사라집니다. 진행하시겠습니까?')) {
+            changeOrder();
+        }
+    };
+
+    const changeOrder = () => {
+        closeModal();
+        const modalDiv = document.createElement('div');
+        modalDiv.className = 'modal-backdrop';
+        document.body.appendChild(modalDiv);
+        const root = createRoot(modalDiv);
+        const newModalProps = modalProps.sourceCodes.reverse();
+        root.render(
+            <React.StrictMode>
+                <ReviewModal sourceCodes={newModalProps} />
+            </React.StrictMode>
+        );
     };
 
     const openInfoModal = () => {
@@ -237,6 +258,16 @@ const ReviewModal = (modalProps: ModalProps) => {
                 <div className='modal-header'>
                     <h4 className='modal-title'>오답 노트 작성</h4>
                     <div className='modal-header-buttons'>
+                        {modalProps.sourceCodes.length > 1 && (
+                            <button
+                                type='button'
+                                className='change'
+                                aria-label='Change'
+                                onClick={changeOrderWarn}
+                            >
+                                ⇄
+                            </button>
+                        )}
                         <button
                             type='button'
                             className='info'

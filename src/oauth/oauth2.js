@@ -23,5 +23,8 @@ const oAuth2 = {
                 chrome.tabs.getCurrent(() => {});
             });
         });
+        chrome.storage.local.set(
+            { gitHub: true }
+        );
     },
 };

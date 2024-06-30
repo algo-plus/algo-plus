@@ -20,7 +20,7 @@ export const uploadOneSolveProblemOnGit = async (
         console.error('token or hook is null', token, hook);
         return;
     }
-    await clearReviewCode();
+    await clearReviewCode(); // 오답노트 저장된 코드 제거
     return upload(
         token,
         hook,
@@ -60,4 +60,5 @@ const upload = async (
     if (typeof cb === 'function') {
         cb(stats.branches, directory);
     }
+    location.reload(); // 페이지 새로고침
 };
