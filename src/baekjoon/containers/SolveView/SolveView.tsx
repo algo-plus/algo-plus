@@ -132,87 +132,48 @@ const SolveView: React.FC<SolveViewProps> = ({
             alert('실행할 코드가 없습니다.');
             return;
         }
-
         saveEditorCode(problemId, languageId, code);
         setTestCaseState('running');
-
         const lang = convertLanguageIdForSubmitApi(languageId);
         const currentTestCases = [...testCases, ...customTestCases];
         setTargetTestCases(currentTestCases);
-
-        if (currentTestCases.length === 0) return;
 
         currentTestCases.forEach((testCase) => {
             testCase.result = undefined;
         });
 
-        const firstCaseError = await checkFirstCase(currentTestCases);
-        if (firstCaseError) return;
-
-        await Promise.all(
-            currentTestCases.slice(1).map((testCase, index) => {
-                const data = {
+        Promise.all(
+            currentTestCases.map(async (testCase, index) => {
+                const data: CodeCompileRequest = {
                     lang: lang,
                     code: code,
                     input: testCase.input,
                 };
 
-                return new Promise((resolve, reject) => {
-                    chrome.runtime.sendMessage(
-                        { action: 'compile', data: data },
-                        (output) => {
-                            const newTestCases = [...currentTestCases];
-                            newTestCases[index + 1].result = output;
-                            setTargetTestCases(newTestCases);
-                            if (output === 'error') {
-                                setTestCaseState('error');
-                                setErrorMessage(
-                                    `컴파일 서버에서 오류가 발생했습니다.\n`
-                                );
-                                reject(output);
-                            } else {
-                                resolve(output);
-                            }
+                chrome.runtime.sendMessage(
+                    { action: 'compile', data: data },
+                    (output) => {
+                        const newTestCases = [...currentTestCases];
+                        newTestCases[index].result = output;
+                        setTargetTestCases(newTestCases);
+                        if (checkCompileError(lang, output)) {
+                            setTestCaseState('error');
+                            setErrorMessage(output);
+                            return;
                         }
-                    );
-                });
+                        if (output == 'error') {
+                            setTestCaseState('error');
+                            setErrorMessage(
+                                `컴파일 서버에서 오류가 발생했습니다.\n`
+                            );
+                            return;
+                        }
+                    }
+                );
             })
         );
 
         setTestCaseState('result');
-    };
-
-    const checkFirstCase = (currentTestCases: TestCase[]) => {
-        const lang = convertLanguageIdForSubmitApi(languageId);
-        const data = {
-            lang: lang,
-            code: code,
-            input: currentTestCases[0].input,
-        };
-
-        return new Promise((resolve) => {
-            chrome.runtime.sendMessage(
-                { action: 'compile', data: data },
-                (output) => {
-                    const newTestCases = [...currentTestCases];
-                    newTestCases[0].result = output;
-                    setTargetTestCases(newTestCases);
-                    if (output === 'error') {
-                        setTestCaseState('error');
-                        setErrorMessage(
-                            `컴파일 서버에서 오류가 발생했습니다.\n`
-                        );
-                        resolve(true);
-                    } else if (checkCompileError(lang, output)) {
-                        setTestCaseState('error');
-                        setErrorMessage(output);
-                        resolve(true);
-                    } else {
-                        resolve(false);
-                    }
-                }
-            );
-        });
     };
 
     const codeSubmit = () => {
