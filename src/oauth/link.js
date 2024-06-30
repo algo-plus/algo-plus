@@ -41,16 +41,12 @@ chrome.storage.local.get('alpEnable', (data4) => {
     }
 });
 
-let action = false;
 
 githubAuth.addEventListener('click', () => {
-    action && oAuth2.begin();
-
+    
     chrome.storage.local.get('AlgoPlus_token', (data) => {
         const token = data.AlgoPlus_token;
-        if (token === null || token === undefined) {
-            action = true;
-        } else {
+            oAuth2.begin();
             const AUTHENTICATION_URL = 'https://api.github.com/user';
 
             const xhr = new XMLHttpRequest();
@@ -86,16 +82,13 @@ githubAuth.addEventListener('click', () => {
             xhr.open('GET', AUTHENTICATION_URL, true);
             xhr.setRequestHeader('Authorization', `token ${token}`);
             xhr.send();
-        }
     });
 });
 
-chrome.storage.local.get('pipe_AlgoPlus', (data) => {
-    const pipe_istrue = data.pipe_AlgoPlus;
-    if (pipe_istrue) {
-        $('#auth-success').show();
-    }
+chrome.storage.local.get('gitHub', (data) => {
+    data.gitHub===true &&  $('#auth-success').show();
 });
+
 
 const option = () => {
     return $('#type').val();
