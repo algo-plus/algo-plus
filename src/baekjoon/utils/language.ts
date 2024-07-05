@@ -1,6 +1,5 @@
 import { CompilerLanguage } from '@/common/types/compile';
 import { EditorLanguage, ReferenceLanguage } from '@/common/types/language';
-import language from 'react-syntax-highlighter/dist/esm/languages/hljs/1c';
 
 const submitApiLanguageConvertMap: Record<string, CompilerLanguage> = {
     '0': 'c',
