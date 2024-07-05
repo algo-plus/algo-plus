@@ -17,12 +17,13 @@ import { submit } from '@/baekjoon/apis/submit';
 import { compile } from '@/common/apis/compile';
 import {
     convertLanguageIdForEditor,
+    convertLanguageIdForReference,
     convertLanguageIdForSubmitApi,
 } from '@/baekjoon/utils/language';
 import { CodeCompileRequest } from '@/common/types/compile';
 import { CodeOpenSelector } from '@/baekjoon/components/CodeOpenSelector';
 import { getDefaultCode } from '@/common/utils/default-code';
-import { EditorLanguage } from '@/common/types/language';
+import { EditorLanguage, ReferenceLanguage } from '@/common/types/language';
 import { Modal } from '@/baekjoon/presentations/Modal';
 import { TestCaseModalButtonBox } from '@/baekjoon/presentations/TestCaseModalButtonBox';
 import uuid from 'react-uuid';
@@ -41,6 +42,7 @@ import {
     saveDefaultLanguageId,
 } from '@/baekjoon/utils/storage/editor';
 import { checkCompileError } from '@/baekjoon/utils/compile';
+import { getReferenceUrl } from '@/common/utils/language-reference-url';
 
 type SolveViewProps = {
     problemId: string;
@@ -63,6 +65,11 @@ const SolveView: React.FC<SolveViewProps> = ({
     const [focusLanguageId, setFocusLanguageId] = useState<string>('0');
     const [editorLanguage, setEditorLanguage] = useState<EditorLanguage>(
         convertLanguageIdForEditor(languageId)
+    );
+    const [referenceLanguage, setReferenceLanguage] =
+        useState<ReferenceLanguage>(convertLanguageIdForReference(languageId));
+    const [referenceUrl, setReferenceUrl] = useState<string>(
+        getReferenceUrl(referenceLanguage)
     );
     const [codeOpen, setCodeOpen] = useState<CodeOpen>(codeOpenDefaultValue);
     const [code, setCode] = useState(getDefaultCode(editorLanguage));
@@ -194,6 +201,10 @@ const SolveView: React.FC<SolveViewProps> = ({
         setTestCaseState('result');
     };
 
+    const openReferenceUrl = () => {
+        window.open(referenceUrl, '_blank');
+    };
+
     const codeSubmit = () => {
         saveEditorCode(problemId, languageId, code);
         const data: SubmitPostRequest = {
@@ -223,8 +234,10 @@ const SolveView: React.FC<SolveViewProps> = ({
 
     const changeLanguage = (languageId: string) => {
         const editorLanguage = convertLanguageIdForEditor(languageId);
+        const referenceLanguage = convertLanguageIdForReference(languageId);
         setLanguageId(languageId);
         setCode(getDefaultCode(editorLanguage));
+        setReferenceUrl(getReferenceUrl(referenceLanguage));
         saveEditorCode(problemId, languageId, code);
     };
 
@@ -421,6 +434,7 @@ const SolveView: React.FC<SolveViewProps> = ({
                     addTestCaseHandle={toggleTestCaseModal}
                     runHandle={codeRun}
                     submitHandle={codeSubmit}
+                    openReferenceUrl={openReferenceUrl}
                     isRunning={testCaseState == 'running'}
                 />
             </div>
