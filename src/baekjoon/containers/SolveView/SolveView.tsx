@@ -4,6 +4,7 @@ import { EditorPanel } from '@/baekjoon/presentations/EditorPanel';
 import { fetchProblemHtml } from '@/baekjoon/apis/problem';
 import {
     parsingProblemDetail,
+    parsingStyle,
     parsingTestCases,
 } from '@/baekjoon/utils/parsing';
 import { EditorCode, TestCase } from '@/baekjoon/types/problem';
@@ -250,6 +251,8 @@ const SolveView: React.FC<SolveViewProps> = ({
                     async (html) => {
                         const parsedContent = parsingProblemDetail(html);
                         setProblemContent(parsedContent);
+                        const parsedStyle = parsingStyle(html);
+                        setProblemStyle(parsedStyle);
                         const parsedTestCases = parsingTestCases(html);
                         setTestCases(parsedTestCases);
                     },
