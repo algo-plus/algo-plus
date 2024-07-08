@@ -10,4 +10,18 @@ type EditorLanguage =
     | 'swift'
     | 'go';
 
-export { EditorLanguage };
+type ReferenceLanguage =
+    | 'c'
+    | 'cpp'
+    | 'csharp'
+    | 'java8'
+    | 'java11'
+    | 'python'
+    | 'pypy'
+    | 'js'
+    | 'kotlin'
+    | 'ruby'
+    | 'swift'
+    | 'go';
+
+export { EditorLanguage, ReferenceLanguage };
