@@ -15,17 +15,13 @@ import EditorButtonBox from '@/baekjoon/presentations/EditorButtonBox/EditorButt
 import { LanguageSelectBox } from '@/baekjoon/components/LanguageSelectBox';
 import { CodeOpen, SubmitPostRequest } from '@/baekjoon/types/submit';
 import { submit } from '@/baekjoon/apis/submit';
-import { compile, compile2 } from '@/common/apis/compile'; // TODO: update jdoodle api
+import { compile } from '@/common/apis/compile';
 import {
     convertLanguageIdForEditor,
     convertLanguageIdForReference,
     convertLanguageIdForSubmitApi,
-    convertLanguageIdForSubmitApi2,
 } from '@/baekjoon/utils/language';
-import {
-    CodeCompileRequest,
-    CodeCompileRequest2,
-} from '@/common/types/compile'; // TODO: update jdoodle api
+import { CodeCompileRequest } from '@/common/types/compile';
 import { CodeOpenSelector } from '@/baekjoon/components/CodeOpenSelector';
 import { getDefaultCode } from '@/common/utils/default-code';
 import { EditorLanguage, ReferenceLanguage } from '@/common/types/language';
@@ -46,10 +42,7 @@ import {
     loadDefaultLanguageId,
     saveDefaultLanguageId,
 } from '@/baekjoon/utils/storage/editor';
-import {
-    checkCompileError,
-    checkCompileError2,
-} from '@/baekjoon/utils/compile';
+import { checkCompileError } from '@/baekjoon/utils/compile';
 import { getReferenceUrl } from '@/common/utils/language-reference-url';
 
 type SolveViewProps = {
@@ -162,9 +155,9 @@ const SolveView: React.FC<SolveViewProps> = ({
 
         if (testCases.length > 0) {
             const data: CodeCompileRequest = {
-                lang: lang,
-                code: code,
-                input: testCases[0].input,
+                script: code,
+                stdin: testCases[0].input,
+                language: lang,
             };
 
             try {
@@ -188,81 +181,13 @@ const SolveView: React.FC<SolveViewProps> = ({
         await Promise.all(
             currentTestCases.slice(1).map(async (testCase) => {
                 const data: CodeCompileRequest = {
-                    lang: lang,
-                    code: code,
-                    input: testCase.input,
-                };
-
-                try {
-                    const output = await compile(data);
-                    testCase.result = output; // 결과 설정
-                } catch (error) {
-                    setTestCaseState('error');
-                    setErrorMessage(
-                        `컴파일 서버에서 오류가 발생했습니다.\n${error}`
-                    );
-                    return;
-                }
-            })
-        );
-
-        setTestCaseState('result');
-    };
-
-    // TODO: update jdoodle api
-
-    const codeRun2 = async () => {
-        if (!code) {
-            alert('실행할 코드가 없습니다.');
-            return;
-        }
-
-        saveEditorCode(problemId, languageId, code);
-        setTestCaseState('running');
-
-        const lang = convertLanguageIdForSubmitApi2(languageId);
-        const currentTestCases = [...testCases, ...customTestCases];
-        setTargetTestCases(currentTestCases);
-
-        currentTestCases.forEach((testCase) => {
-            testCase.result = undefined;
-        });
-
-        if (testCases.length > 0) {
-            const data: CodeCompileRequest2 = {
-                script: code,
-                stdin: testCases[0].input,
-                language: lang,
-            };
-
-            try {
-                const output = await compile2(data);
-                if (checkCompileError2(lang, output)) {
-                    setTestCaseState('error');
-                    setErrorMessage(output);
-                    return;
-                } else {
-                    testCases[0].result = output;
-                }
-            } catch (error) {
-                setTestCaseState('error');
-                setErrorMessage(
-                    `컴파일 서버에서 오류가 발생했습니다.\n${error}`
-                );
-                return;
-            }
-        }
-
-        await Promise.all(
-            currentTestCases.slice(1).map(async (testCase) => {
-                const data: CodeCompileRequest2 = {
                     script: code,
                     stdin: testCase.input,
                     language: lang,
                 };
 
                 try {
-                    const output = await compile2(data);
+                    const output = await compile(data);
                     testCase.result = output; // 결과 설정
                 } catch (error) {
                     setTestCaseState('error');
@@ -512,8 +437,7 @@ const SolveView: React.FC<SolveViewProps> = ({
                         }
                     }}
                     addTestCaseHandle={toggleTestCaseModal}
-                    // runHandle={codeRun}
-                    runHandle={codeRun2}
+                    runHandle={codeRun}
                     submitHandle={codeSubmit}
                     openReferenceUrl={openReferenceUrl}
                     isRunning={testCaseState == 'running'}

@@ -1,28 +1,10 @@
 type CodeCompileRequest = {
-    lang: CompilerLanguage;
-    code: string;
-    input?: string | null;
-};
-
-type CodeCompileRequest2 = {
     script: string;
     stdin?: string | null;
-    language: CompilerLanguage2;
+    language: CompilerLanguage;
 };
 
 type CompilerLanguage =
-    | 'c'
-    | 'c_cpp'
-    | 'csharp'
-    | 'java'
-    | 'python'
-    | 'nodejs'
-    | 'kotlin'
-    | 'ruby'
-    | 'swift'
-    | 'golang';
-
-type CompilerLanguage2 =
     | 'c'
     | 'cpp'
     | 'csharp'
@@ -36,7 +18,5 @@ type CompilerLanguage2 =
 
 export type {
     CodeCompileRequest,
-    CompilerLanguage,
-    CodeCompileRequest2,
-    CompilerLanguage2,
+    CompilerLanguage
 };
