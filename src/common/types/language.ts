@@ -11,8 +11,10 @@ type EditorLanguage =
     | 'go';
 
 type ReferenceLanguage =
-    | 'c'
-    | 'cpp'
+    | 'c11'
+    | 'c99'
+    | 'cpp17'
+    | 'cpp20'
     | 'csharp'
     | 'java8'
     | 'java11'

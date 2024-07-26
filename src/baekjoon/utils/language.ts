@@ -3,6 +3,8 @@ import { EditorLanguage, ReferenceLanguage } from '@/common/types/language';
 
 const submitApiLanguageConvertMap: Record<string, CompilerLanguage> = {
     '0': 'c',
+    '75': 'c',
+    '84': 'c_cpp',
     '95': 'c_cpp',
     '86': 'csharp',
     '3': 'java',
@@ -18,6 +20,8 @@ const submitApiLanguageConvertMap: Record<string, CompilerLanguage> = {
 
 const editorLanguageConvertMap: Record<string, EditorLanguage> = {
     '0': 'c',
+    '75': 'c',
+    '84': 'cpp',
     '95': 'cpp',
     '86': 'csharp',
     '3': 'java',
@@ -32,8 +36,10 @@ const editorLanguageConvertMap: Record<string, EditorLanguage> = {
 };
 
 const ReferenceLanguageConvertMap: Record<string, ReferenceLanguage> = {
-    '0': 'c',
-    '95': 'cpp',
+    '0': 'c99',
+    '75': 'c11',
+    '84': 'cpp17',
+    '95': 'cpp20',
     '86': 'csharp',
     '3': 'java8',
     '93': 'java11',

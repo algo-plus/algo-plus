@@ -40,8 +40,14 @@ const LanguageSelectBox: React.FC<LanguageSelectBoxProps> = ({
                         cursor: 'pointer',
                     }}
                 >
+                    <option value='75' data-mime='text/x-csrc'>
+                        C11
+                    </option>
                     <option value='0' data-mime='text/x-csrc'>
                         C99
+                    </option>
+                    <option value='84' data-mime='text/x-c++src'>
+                        C++17
                     </option>
                     <option value='95' data-mime='text/x-c++src'>
                         C++20
