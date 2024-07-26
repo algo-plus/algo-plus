@@ -3,7 +3,7 @@ const localButton = document.querySelector('#local-button');
 const githubSetting = document.querySelector('#github-setting');
 const localSetting = document.querySelector('#local-setting');
 const githubAuth = document.querySelector('#github-auth');
-const inputText = document.getElementById('name');
+const inputText = document.querySelector('#name');
 const maskingCheck = document.querySelector('#masking_check');
 
 localButton.addEventListener('click', () => {
