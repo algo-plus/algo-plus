@@ -6,14 +6,14 @@ type CodeCompileRequest = {
 
 type CompilerLanguage =
     | 'c'
-    | 'cpp'
+    | 'c_cpp'
     | 'csharp'
     | 'java'
-    | 'python3'
+    | 'python'
     | 'nodejs'
     | 'kotlin'
     | 'ruby'
     | 'swift'
-    | 'go';
+    | 'golang';
 
 export type { CodeCompileRequest, CompilerLanguage };

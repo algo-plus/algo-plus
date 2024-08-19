@@ -15,6 +15,7 @@ import EditorButtonBox from '@/baekjoon/presentations/EditorButtonBox/EditorButt
 import { LanguageSelectBox } from '@/baekjoon/components/LanguageSelectBox';
 import { CodeOpen, SubmitPostRequest } from '@/baekjoon/types/submit';
 import { submit } from '@/baekjoon/apis/submit';
+import { compile } from '@/common/apis/compile';
 import {
     convertLanguageIdForEditor,
     convertLanguageIdForReference,
@@ -140,8 +141,10 @@ const SolveView: React.FC<SolveViewProps> = ({
             alert('실행할 코드가 없습니다.');
             return;
         }
+
         saveEditorCode(problemId, languageId, code);
         setTestCaseState('running');
+
         const lang = convertLanguageIdForSubmitApi(languageId);
         const currentTestCases = [...testCases, ...customTestCases];
         setTargetTestCases(currentTestCases);
@@ -150,34 +153,49 @@ const SolveView: React.FC<SolveViewProps> = ({
             testCase.result = undefined;
         });
 
-        Promise.all(
-            currentTestCases.map(async (testCase, index) => {
+        if (testCases.length > 0) {
+            const data: CodeCompileRequest = {
+                lang: lang,
+                code: code,
+                input: testCases[0].input,
+            };
+
+            try {
+                const output = await compile(data);
+                if (checkCompileError(lang, output)) {
+                    setTestCaseState('error');
+                    setErrorMessage(output);
+                    return;
+                } else {
+                    testCases[0].result = output;
+                }
+            } catch (error) {
+                setTestCaseState('error');
+                setErrorMessage(
+                    `컴파일 서버에서 오류가 발생했습니다.\n${error}`
+                );
+                return;
+            }
+        }
+
+        await Promise.all(
+            currentTestCases.slice(1).map(async (testCase) => {
                 const data: CodeCompileRequest = {
                     lang: lang,
                     code: code,
                     input: testCase.input,
                 };
 
-                chrome.runtime.sendMessage(
-                    { action: 'compile', data: data },
-                    (output) => {
-                        const newTestCases = [...currentTestCases];
-                        newTestCases[index].result = output;
-                        setTargetTestCases(newTestCases);
-                        if (checkCompileError(lang, output)) {
-                            setTestCaseState('error');
-                            setErrorMessage(output);
-                            return;
-                        }
-                        if (output == 'error') {
-                            setTestCaseState('error');
-                            setErrorMessage(
-                                `컴파일 서버에서 오류가 발생했습니다.\n`
-                            );
-                            return;
-                        }
-                    }
-                );
+                try {
+                    const output = await compile(data);
+                    testCase.result = output; // 결과 설정
+                } catch (error) {
+                    setTestCaseState('error');
+                    setErrorMessage(
+                        `컴파일 서버에서 오류가 발생했습니다.\n${error}`
+                    );
+                    return;
+                }
             })
         );
 
