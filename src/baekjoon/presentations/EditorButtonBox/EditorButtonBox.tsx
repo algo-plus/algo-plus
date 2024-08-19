@@ -3,6 +3,7 @@ import './EditorButtonBox.css';
 
 const EditorButtonBox: React.FC<EditorButtonBoxProps> = ({
     codeInitializeHandle,
+    openReferenceUrl,
     addTestCaseHandle,
     runHandle,
     submitHandle,
@@ -12,6 +13,9 @@ const EditorButtonBox: React.FC<EditorButtonBoxProps> = ({
         <div style={{ display: 'flex', gap: '10px', justifyContent: 'right' }}>
             <button className='btn btn-default' onClick={codeInitializeHandle}>
                 초기화
+            </button>
+            <button className='btn btn-default' onClick={openReferenceUrl}>
+                공식 문서
             </button>
             <button className='btn btn-default' onClick={addTestCaseHandle}>
                 테스트 케이스 추가
@@ -32,6 +36,7 @@ const EditorButtonBox: React.FC<EditorButtonBoxProps> = ({
 
 interface EditorButtonBoxProps {
     codeInitializeHandle: () => void;
+    openReferenceUrl: () => void;
     addTestCaseHandle: () => void;
     runHandle: () => void;
     submitHandle: () => void;

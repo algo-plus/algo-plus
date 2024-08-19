@@ -116,6 +116,14 @@ body {
 
 #repo_long {
     margin-right: 60px;
+    height: 40px;
+}
+
+#masking_check{
+    display: flex;
+    color: #098409;
+    justify-content: end;
+    margin: 10px 50px;
 }
 
 .field input {

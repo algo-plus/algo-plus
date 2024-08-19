@@ -1,29 +1,8 @@
-import { CodeCompileRequest } from './common/types/compile';
-
-/**
- * solvedac 문제 데이터를 파싱해오는 함수.
- */
 async function SolvedApiCall(problemId: number) {
     return fetch(
         `https://solved.ac/api/v3/problem/show?problemId=${problemId}`,
         { method: 'GET' }
     ).then((query) => query.json());
-}
-
-/**
- *
- * 컴파일 api를 호출하는 함수
- */
-async function compile(data: CodeCompileRequest) {
-    return fetch(
-        'https://snctz97usk.execute-api.ap-northeast-2.amazonaws.com/api/jdoodle',
-        {
-            method: 'POST',
-            body: JSON.stringify(data),
-        }
-    )
-        .then((response) => response.json())
-        .then((json) => json.output.trim());
 }
 
 function handleMessage(request: any, sender: any, sendResponse: any) {
@@ -65,13 +44,6 @@ function handleMessage(request: any, sender: any, sendResponse: any) {
     ) {
         chrome.storage.local.set({ repositories: request.repositoryName });
         chrome.storage.local.get((result) => console.log(result));
-    } else if (request && request.action == 'compile') {
-        try {
-            compile(request.data).then((res) => sendResponse(res));
-        } catch (e) {
-            console.error(e);
-            sendResponse('error');
-        }
     }
     return true;
 }

@@ -3,6 +3,8 @@ const localButton = document.querySelector('#local-button');
 const githubSetting = document.querySelector('#github-setting');
 const localSetting = document.querySelector('#local-setting');
 const githubAuth = document.querySelector('#github-auth');
+const inputText = document.querySelector('#name');
+const maskingCheck = document.querySelector('#masking_check');
 
 localButton.addEventListener('click', () => {
     localButton.style.backgroundColor = '#0076c0';
@@ -21,6 +23,17 @@ githubButton.addEventListener('click', () => {
     githubSetting.style.display = 'block';
     localSetting.style.display = 'none';
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    inputText.addEventListener('input', (e) => {
+        const text = e.target.value;
+        maskingCheck.textContent = maskKorean(text);
+    });
+});
+    
+function maskKorean(text) {
+    return 'Your new repository will be created as  '+ text.replace(/[\u3131-\u318E\uAC00-\uD7A3]+/g, '-');
+}
 
 document.querySelector('#local-name-save').addEventListener('click', () => {
     const repoName = document.querySelector('#repositoryNameInput').value;
