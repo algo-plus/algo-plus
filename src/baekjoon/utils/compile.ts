@@ -1,20 +1,20 @@
 import { CompilerLanguage } from '@/common/types/compile';
 
 const CompileErrorFormatConvertMap: Record<CompilerLanguage, string> = {
-    c: 'prog.c:',
-    cpp: 'prog.cpp:',
-    csharp: './prog.cs',
-    java: 'submission/Main.java',
-    python3: 'File "./prog.py',
-    nodejs: '/tmp/',
-    kotlin: 'OpenJDK 64-Bit Server VM warning:',
-    ruby: '# _/tmp/',
-    swift: './prog.rb',
-    go: '# _/tmp/',
+    c: 'main.c',
+    cpp: 'jdoodle.cpp',
+    csharp: '/home/Program.cs',
+    java: 'Main.java',
+    python3: '/home/jdoodle.py',
+    nodejs: '/home/jdoodle.js',
+    kotlin: 'JDoodle.kt',
+    ruby: 'jdoodle.rb',
+    swift: 'jdoodle.swift',
+    go: 'jdoodle.go',
 };
 
 const checkCompileError = (lang: CompilerLanguage, output: string): boolean => {
-    return output.startsWith(CompileErrorFormatConvertMap[lang]);
+    return output.includes(CompileErrorFormatConvertMap[lang]);
 };
 
 export { checkCompileError };
