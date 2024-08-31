@@ -61,7 +61,7 @@
         "https://www.acmicpc.net/",
         "https://github.com/",
         "https://solved.ac/api/v3/*",
-        "https://0hrt6qn6tk.execute-api.ap-northeast-2.amazonaws.com/api/compile"
+        "https://snctz97usk.execute-api.ap-northeast-2.amazonaws.com/api/jdoodle"
     ],
 
     "web_accessible_resources": [
