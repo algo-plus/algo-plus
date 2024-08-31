@@ -35,11 +35,20 @@ function maskKorean(text) {
     return 'Your new repository will be created as  '+ text.replace(/[\u3131-\u318E\uAC00-\uD7A3]+/g, '-');
 }
 
+function setPath(path){
+    chrome.storage.local.set({ savePath: path }, () => {
+        console.log('Path saved to local storage');
+      });
+}
+
 document.querySelector('#local-name-save').addEventListener('click', () => {
     const repoName = document.querySelector('#repositoryNameInput').value;
+    setPath(repoName);
+
     chrome.runtime.sendMessage({
         action: 'saveRepository',
         repositoryName: repoName,
+        content: '1234'
     });
     window.alert('추후 업데이트 예정');
 });

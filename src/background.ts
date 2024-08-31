@@ -48,4 +48,47 @@ function handleMessage(request: any, sender: any, sendResponse: any) {
     return true;
 }
 
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === 'saveRepository') {
+        chrome.storage.local.get('savePath', (result) => {
+            const path = result.savePath;
+            if (path) {
+                const blob = new Blob([request.content], { type: 'text/markdown' });
+                let today = new Date();
+
+                const fileName = 'AlgoPlus' + today.getFullYear() + (today.getMonth() + 1) + today.getDate();
+
+                // Convert Blob to Data URL
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const dataUrl = reader.result; // This will be the data URL
+
+                    // Check if dataUrl is a string before proceeding
+                    if (typeof dataUrl === 'string') {
+                        chrome.downloads.download({
+                            url: dataUrl,
+                            filename: `AlgoPlus${today.getFullYear()}${(today.getMonth() + 1).toString().padStart(2, '0')}${today.getDate().toString().padStart(2, '0')}.md`,
+                            saveAs: true, // Show the save dialog to the user
+                        }, (downloadId) => {
+                            if (downloadId) {
+                                console.log('Download initiated with ID:', downloadId);
+                                sendResponse({ status: 'success' });
+                            } else {
+                                sendResponse({ status: 'error', message: 'Download failed' });
+                            }
+                        });
+                    } else {
+                        sendResponse({ status: 'error', message: 'Failed to create data URL' });
+                    }
+                };
+                reader.readAsDataURL(blob); // Convert the blob to a data URL
+            } else {
+                sendResponse({ status: 'error', message: 'No path set in local storage' });
+            }
+        });
+        return true; // To indicate that we will send a response asynchronously
+    }
+});
+
+
 chrome.runtime.onMessage.addListener(handleMessage);

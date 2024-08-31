@@ -52,6 +52,7 @@
 
     "permissions": [
         "storage",
+        "downloads",
         "unlimitedStorage",
         "declarativeNetRequest",
         "declarativeNetRequestWithHostAccess"
