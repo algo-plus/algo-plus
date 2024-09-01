@@ -51,7 +51,7 @@ const ReviewModal = (modalProps: ModalProps) => {
         setInfoModalOpen(false);
     };
 
-    const save = () => {
+    const upload = () => {
         const reviewMarkDownContent: ReviewMarkdownContent = {
             oldCode: oldCode,
             newCode: newCode,
@@ -59,6 +59,13 @@ const ReviewModal = (modalProps: ModalProps) => {
             comment: comment,
         };
         startLoader(markdownReview(reviewMarkDownContent), closeModal);
+    };
+
+    const localSave = () => {
+        chrome.runtime.sendMessage({
+            action: 'saveRepository',
+            content: '1234'
+        });
     };
 
     const oldCode = modalProps.sourceCodes[0]?.code || '';
@@ -482,9 +489,16 @@ const ReviewModal = (modalProps: ModalProps) => {
                     <button
                         type='button'
                         className='btn btn-primary'
-                        onClick={save}
+                        onClick={upload}
                     >
-                        저장
+                        깃허브 업로드
+                    </button>
+                    <button
+                        type='button'
+                        className='btn btn-primary'
+                        onClick={localSave}
+                    >
+                        로컬 저장
                     </button>
                 </div>
                 <div id='loaderModal' className='loader-modal'>
