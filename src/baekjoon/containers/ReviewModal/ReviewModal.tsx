@@ -62,9 +62,16 @@ const ReviewModal = (modalProps: ModalProps) => {
     };
 
     const localSave = () => {
+        const reviewMarkDownContent: ReviewMarkdownContent = {
+            oldCode: oldCode,
+            newCode: newCode,
+            commentBlocks: codeBlocks,
+            comment: comment,
+        };
+
         chrome.runtime.sendMessage({
             action: 'saveRepository',
-            content: '1234'
+            content: markdownReview(reviewMarkDownContent)
         });
     };
 

@@ -53,19 +53,17 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         const blob = new Blob([request.content], { type: 'text/markdown' });
         let today = new Date();
 
-        // Convert Blob to Data URL
         const reader = new FileReader();
         reader.onloadend = () => {
-            const dataUrl = reader.result; // This will be the data URL
-            // Check if dataUrl is a string before proceeding
+            const dataUrl = reader.result;
+
             if (typeof dataUrl === 'string') {
                 chrome.downloads.download({
                     url: dataUrl,
                     filename: `AlgoPlus${today.getFullYear()}${(today.getMonth() + 1).toString().padStart(2, '0')}${today.getDate().toString().padStart(2, '0')}.md`,
-                    saveAs: true, // Show the save dialog to the user
+                    saveAs: true,
                     }, (downloadId) => {
                         if (downloadId) {
-                            console.log('Download initiated with ID:', downloadId);
                             sendResponse({ status: 'success' });
                         } else {
                             sendResponse({ status: 'error', message: 'Download failed' });
@@ -75,8 +73,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                     sendResponse({ status: 'error', message: 'Failed to create data URL' });
                 }
             };
-        reader.readAsDataURL(blob); // Convert the blob to a data URL
-    return true; // To indicate that we will send a response asynchronously
+        reader.readAsDataURL(blob);
+    return true;
     }
 });
 
