@@ -35,15 +35,6 @@ function maskKorean(text) {
     return 'Your new repository will be created as  '+ text.replace(/[\u3131-\u318E\uAC00-\uD7A3]+/g, '-');
 }
 
-document.querySelector('#local-name-save').addEventListener('click', () => {
-    const repoName = document.querySelector('#repositoryNameInput').value;
-    chrome.runtime.sendMessage({
-        action: 'saveRepository',
-        repositoryName: repoName,
-    });
-    window.alert('추후 업데이트 예정');
-});
-
 chrome.storage.local.get('alpEnable', (data4) => {
     if (data4.alpEnable === undefined) {
         $('#onffbox').prop('checked', true);
