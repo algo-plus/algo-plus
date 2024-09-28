@@ -1,3 +1,4 @@
+import { postprecessOutput } from './baekjoon/utils/compile';
 import { CodeCompileRequest } from './common/types/compile';
 
 /**
@@ -23,7 +24,8 @@ async function compile(data: CodeCompileRequest) {
         }
     )
         .then((response) => response.json())
-        .then((json) => json.output.trim());
+        .then((json) => json.output.trim())
+        .then((output) => postprecessOutput(data.language, output));
 }
 
 function handleMessage(request: any, sender: any, sendResponse: any) {
