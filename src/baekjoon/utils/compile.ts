@@ -2,6 +2,7 @@ import { CompilerLanguage } from '@/common/types/compile';
 
 const CompileErrorFormatConvertMap: Record<CompilerLanguage, string> = {
     c: 'main.c',
+    cpp17: 'jdoodle.cpp',
     cpp: 'jdoodle.cpp',
     csharp: '/home/Program.cs',
     java: 'Main.java',

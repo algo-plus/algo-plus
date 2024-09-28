@@ -1,11 +1,14 @@
 type CodeCompileRequest = {
-    lang: CompilerLanguage;
-    code: string;
-    input?: string | null;
+    language: CompilerLanguage;
+    script: string;
+    versionIndex: string;
+    stdin?: string | null;
+    compileOnly?: boolean;
 };
 
 type CompilerLanguage =
     | 'c'
+    | 'cpp17'
     | 'cpp'
     | 'csharp'
     | 'java'
