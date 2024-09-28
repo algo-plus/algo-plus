@@ -16,7 +16,7 @@ async function SolvedApiCall(problemId: number) {
  */
 async function compile(data: CodeCompileRequest) {
     return fetch(
-        'https://snctz97usk.execute-api.ap-northeast-2.amazonaws.com/api/jdoodle',
+        'https://xk4e9t1zac.execute-api.ap-northeast-2.amazonaws.com/execution/JdoodleCaller',
         {
             method: 'POST',
             body: JSON.stringify(data),
