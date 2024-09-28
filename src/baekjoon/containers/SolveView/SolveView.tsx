@@ -42,7 +42,10 @@ import {
     loadDefaultLanguageId,
     saveDefaultLanguageId,
 } from '@/baekjoon/utils/storage/editor';
-import { checkCompileError } from '@/baekjoon/utils/compile';
+import {
+    checkCompileError,
+    preprocessSourceCode,
+} from '@/baekjoon/utils/compile';
 import { getReferenceUrl } from '@/common/utils/language-reference-url';
 
 type SolveViewProps = {
@@ -147,6 +150,7 @@ const SolveView: React.FC<SolveViewProps> = ({
 
         const language = convertLanguageIdForSubmitApi(languageId);
         const versionIndex = convertLanguageVersionForSubmitApi(languageId);
+        const script = preprocessSourceCode(language, code);
         const currentTestCases = [...testCases, ...customTestCases];
         setTargetTestCases(currentTestCases);
 
@@ -159,7 +163,7 @@ const SolveView: React.FC<SolveViewProps> = ({
                 const data: CodeCompileRequest = {
                     language: language,
                     versionIndex: versionIndex,
-                    script: code,
+                    script: script,
                     stdin: testCase.input,
                 };
 
