@@ -1,19 +1,9 @@
 const githubButton = document.querySelector('#github-button');
-const localButton = document.querySelector('#local-button');
 const githubSetting = document.querySelector('#github-setting');
 const localSetting = document.querySelector('#local-setting');
 const githubAuth = document.querySelector('#github-auth');
 const inputText = document.querySelector('#name');
 const maskingCheck = document.querySelector('#masking_check');
-
-localButton.addEventListener('click', () => {
-    localButton.style.backgroundColor = '#0076c0';
-    localButton.style.color = 'white';
-    githubButton.style.backgroundColor = 'lightgray';
-    githubButton.style.color = 'gray';
-    githubSetting.style.display = 'none';
-    localSetting.style.display = 'block';
-});
 
 githubButton.addEventListener('click', () => {
     githubButton.style.backgroundColor = '#0076c0';
