@@ -50,7 +50,7 @@ const upload = async (
     const isoString = today.toISOString().slice(0, 19); 
     
     const { refSHA, ref } = await git.getReference(default_branch);
-    const readme = await git.createBlob(readmeText, `${directory}/README${isoString}.md`);
+    const readme = await git.createBlob(readmeText, `${directory}/README_${isoString}.md`);
     const treeSHA = await git.createTree(refSHA, [readme]);
     const commitSHA = await git.createCommit(commitMessage, treeSHA, refSHA);
 
