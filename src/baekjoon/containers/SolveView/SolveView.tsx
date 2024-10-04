@@ -19,6 +19,7 @@ import {
     convertLanguageIdForEditor,
     convertLanguageIdForReference,
     convertLanguageIdForSubmitApi,
+    convertLanguageVersionForSubmitApi,
 } from '@/baekjoon/utils/language';
 import { CodeCompileRequest } from '@/common/types/compile';
 import { CodeOpenSelector } from '@/baekjoon/components/CodeOpenSelector';
@@ -41,7 +42,10 @@ import {
     loadDefaultLanguageId,
     saveDefaultLanguageId,
 } from '@/baekjoon/utils/storage/editor';
-import { checkCompileError } from '@/baekjoon/utils/compile';
+import {
+    checkCompileError,
+    preprocessSourceCode,
+} from '@/baekjoon/utils/compile';
 import { getReferenceUrl } from '@/common/utils/language-reference-url';
 
 type SolveViewProps = {
@@ -144,7 +148,9 @@ const SolveView: React.FC<SolveViewProps> = ({
         saveEditorCode(problemId, languageId, code);
         setTestCaseState('running');
 
-        const lang = convertLanguageIdForSubmitApi(languageId);
+        const language = convertLanguageIdForSubmitApi(languageId);
+        const versionIndex = convertLanguageVersionForSubmitApi(languageId);
+        const script = preprocessSourceCode(language, code);
         const currentTestCases = [...testCases, ...customTestCases];
         setTargetTestCases(currentTestCases);
 
@@ -155,9 +161,10 @@ const SolveView: React.FC<SolveViewProps> = ({
         Promise.all(
             currentTestCases.map(async (testCase, index) => {
                 const data: CodeCompileRequest = {
-                    lang: lang,
-                    code: code,
-                    input: testCase.input,
+                    language: language,
+                    versionIndex: versionIndex,
+                    script: script,
+                    stdin: testCase.input,
                 };
 
                 chrome.runtime.sendMessage(
@@ -166,7 +173,7 @@ const SolveView: React.FC<SolveViewProps> = ({
                         const newTestCases = [...currentTestCases];
                         newTestCases[index].result = output;
                         setTargetTestCases(newTestCases);
-                        if (checkCompileError(lang, output)) {
+                        if (checkCompileError(language, output)) {
                             setTestCaseState('error');
                             setErrorMessage(output);
                             return;

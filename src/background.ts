@@ -1,3 +1,4 @@
+import { postprecessOutput } from './baekjoon/utils/compile';
 import { CodeCompileRequest } from './common/types/compile';
 
 /**
@@ -16,14 +17,15 @@ async function SolvedApiCall(problemId: number) {
  */
 async function compile(data: CodeCompileRequest) {
     return fetch(
-        'https://snctz97usk.execute-api.ap-northeast-2.amazonaws.com/api/jdoodle',
+        'https://xk4e9t1zac.execute-api.ap-northeast-2.amazonaws.com/execution/JdoodleCaller',
         {
             method: 'POST',
             body: JSON.stringify(data),
         }
     )
         .then((response) => response.json())
-        .then((json) => json.output.trim());
+        .then((json) => json.output.trim())
+        .then((output) => postprecessOutput(data.language, output));
 }
 
 function handleMessage(request: any, sender: any, sendResponse: any) {
