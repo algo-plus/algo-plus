@@ -16,13 +16,10 @@ async function SolvedApiCall(problemId: number) {
  * 컴파일 api를 호출하는 함수
  */
 async function compile(data: CodeCompileRequest) {
-    return fetch(
-        'https://xk4e9t1zac.execute-api.ap-northeast-2.amazonaws.com/execution/JdoodleCaller',
-        {
-            method: 'POST',
-            body: JSON.stringify(data),
-        }
-    )
+    return fetch(process.env.JDOODLE_API_URL as string, {
+        method: 'POST',
+        body: JSON.stringify(data),
+    })
         .then((response) => response.json())
         .then((json) => json.output.trim())
         .then((output) => postprecessOutput(data.language, output));
