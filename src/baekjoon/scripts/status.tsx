@@ -8,9 +8,7 @@ import {
     isJudgingState,
     isWrongState,
 } from '@/baekjoon/utils/status';
-import {
-    getObjectFromLocalStorage,
-} from '@/common/utils/storage';
+import { getObjectFromLocalStorage } from '@/common/utils/storage';
 import WrongResultModal from '../containers/WrongResultModal/WrongResultModal';
 import { CodeInfoContent } from '../components/CodeInfoContent';
 import {
@@ -21,12 +19,20 @@ import {
 } from '../utils/storage/review';
 import './status.css';
 import { CodeNullContent } from '../components/CodeINullContent';
+import { loadTheme } from '@/baekjoon/utils/storage/editor';
 
 const customStatusPage = async () => {
     if (
         getUrlSearchParam(window.location.href, 'after_algoplus_submit') ===
         'true'
     ) {
+        /* 다크 테마 */
+        loadTheme().then((theme) => {
+            if (theme === 'vs-code-dark') {
+                document.body.classList.add('algoplus-dark-theme');
+            }
+        });
+
         const problemId = getUrlSearchParam(window.location.href, 'problem_id');
         if (!problemId) return;
 
@@ -90,7 +96,7 @@ const customStatusPage = async () => {
 
     button.addEventListener('click', async () => {
         const enable = await getObjectFromLocalStorage('alpEnable');
-        if(!enable) {
+        if (!enable) {
             clearReviewCode();
             location.reload();
             alert('오답노트 작성을 위해서는 깃허브 연결이 필요합니다.');

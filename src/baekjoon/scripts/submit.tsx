@@ -96,6 +96,16 @@ const customSubmitPage = () => {
         }
     };
 
+    const newListItem = document.createElement('li');
+    newListItem.style.padding = '10px 15px';
+
+    const darkThemeDescription = document.createElement('span');
+    darkThemeDescription.innerHTML =
+        'Algo Plus 다크 모드는 <b>문제 풀기</b> 탭에서만 적용됩니다.';
+    darkThemeDescription.style.color = 'white';
+    newListItem.appendChild(darkThemeDescription);
+    document.querySelector('.problem-menu')?.appendChild(newListItem);
+
     window.addEventListener('load', checkActiveState);
 };
 
