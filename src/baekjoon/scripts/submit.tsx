@@ -4,7 +4,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { getProblemId } from '@/baekjoon/utils/parsing';
 import SolveView from '@/baekjoon/containers/SolveView/SolveView';
-import { CodeOpen } from '../types/submit';
+import { CodeOpen } from '@/baekjoon/types/submit';
 
 const customSubmitPage = () => {
     const addSplitView = () => {

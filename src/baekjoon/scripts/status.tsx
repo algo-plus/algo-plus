@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import { ReviewModal } from '@/baekjoon/containers/ReviewModal';
 import React from 'react';
-import { fetchCode } from '../apis/source';
+import { fetchCode } from '@/baekjoon/apis/source';
 import { getUrlSearchParam } from '@/common/utils/url';
 import {
     getWrongModalMessage,
@@ -9,16 +9,16 @@ import {
     isWrongState,
 } from '@/baekjoon/utils/status';
 import { getObjectFromLocalStorage } from '@/common/utils/storage';
-import WrongResultModal from '../containers/WrongResultModal/WrongResultModal';
-import { CodeInfoContent } from '../components/CodeInfoContent';
+import WrongResultModal from '@/baekjoon/containers/WrongResultModal/WrongResultModal';
+import { CodeInfoContent } from '@/baekjoon/components/CodeInfoContent';
 import {
     clearReviewCode,
     loadReviewCode,
     removeReviewCode,
     saveReviewCode,
-} from '../utils/storage/review';
+} from '@/baekjoon/utils/storage/review';
 import './status.css';
-import { CodeNullContent } from '../components/CodeINullContent';
+import { CodeNullContent } from '@/baekjoon/components/CodeINullContent';
 import { loadTheme } from '@/baekjoon/utils/storage/editor';
 
 const customStatusPage = async () => {
