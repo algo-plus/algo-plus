@@ -1,19 +1,24 @@
 type CodeCompileRequest = {
-    lang: CompilerLanguage;
-    code: string;
-    input?: string | null;
+    language: CompilerLanguage;
+    script: string;
+    versionIndex: string;
+    clientId: string;
+    clientSecret: string;
+    stdin?: string | null;
+    compileOnly?: boolean;
 };
 
 type CompilerLanguage =
     | 'c'
-    | 'c_cpp'
+    | 'cpp17'
+    | 'cpp'
     | 'csharp'
     | 'java'
-    | 'python'
+    | 'python3'
     | 'nodejs'
     | 'kotlin'
     | 'ruby'
     | 'swift'
-    | 'golang';
+    | 'go';
 
 export type { CodeCompileRequest, CompilerLanguage };

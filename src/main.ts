@@ -6,8 +6,6 @@ import customSubmitPage from '@/baekjoon/scripts/submit';
 const url: string = window.location.pathname;
 const searchUrl: string = window.location.search;
 
-console.info('url=', url);
-
 if (
     url.startsWith('/problem/') &&
     !url.includes('status') &&

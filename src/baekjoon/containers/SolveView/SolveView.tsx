@@ -15,11 +15,11 @@ import EditorButtonBox from '@/baekjoon/presentations/EditorButtonBox/EditorButt
 import { LanguageSelectBox } from '@/baekjoon/components/LanguageSelectBox';
 import { CodeOpen, SubmitPostRequest } from '@/baekjoon/types/submit';
 import { submit } from '@/baekjoon/apis/submit';
-import { compile } from '@/common/apis/compile';
 import {
     convertLanguageIdForEditor,
     convertLanguageIdForReference,
     convertLanguageIdForSubmitApi,
+    convertLanguageVersionForSubmitApi,
 } from '@/baekjoon/utils/language';
 import { CodeCompileRequest } from '@/common/types/compile';
 import { CodeOpenSelector } from '@/baekjoon/components/CodeOpenSelector';
@@ -42,7 +42,10 @@ import {
     loadDefaultLanguageId,
     saveDefaultLanguageId,
 } from '@/baekjoon/utils/storage/editor';
-import { checkCompileError } from '@/baekjoon/utils/compile';
+import {
+    checkCompileError,
+    preprocessSourceCode,
+} from '@/baekjoon/utils/compile';
 import { getReferenceUrl } from '@/common/utils/language-reference-url';
 
 type SolveViewProps = {
@@ -145,7 +148,9 @@ const SolveView: React.FC<SolveViewProps> = ({
         saveEditorCode(problemId, languageId, code);
         setTestCaseState('running');
 
-        const lang = convertLanguageIdForSubmitApi(languageId);
+        const language = convertLanguageIdForSubmitApi(languageId);
+        const versionIndex = convertLanguageVersionForSubmitApi(languageId);
+        const script = preprocessSourceCode(language, code);
         const currentTestCases = [...testCases, ...customTestCases];
         setTargetTestCases(currentTestCases);
 
@@ -153,49 +158,37 @@ const SolveView: React.FC<SolveViewProps> = ({
             testCase.result = undefined;
         });
 
-        if (testCases.length > 0) {
-            const data: CodeCompileRequest = {
-                lang: lang,
-                code: code,
-                input: testCases[0].input,
-            };
-
-            try {
-                const output = await compile(data);
-                if (checkCompileError(lang, output)) {
-                    setTestCaseState('error');
-                    setErrorMessage(output);
-                    return;
-                } else {
-                    testCases[0].result = output;
-                }
-            } catch (error) {
-                setTestCaseState('error');
-                setErrorMessage(
-                    `컴파일 서버에서 오류가 발생했습니다.\n${error}`
-                );
-                return;
-            }
-        }
-
-        await Promise.all(
-            currentTestCases.slice(1).map(async (testCase) => {
+        Promise.all(
+            currentTestCases.map(async (testCase, index) => {
                 const data: CodeCompileRequest = {
-                    lang: lang,
-                    code: code,
-                    input: testCase.input,
+                    language: language,
+                    versionIndex: versionIndex,
+                    script: script,
+                    clientId: process.env.JDOODLE_CLIENT_ID as string,
+                    clientSecret: process.env.JDOODLE_CLIENT_SECRET as string,
+                    stdin: testCase.input,
                 };
 
-                try {
-                    const output = await compile(data);
-                    testCase.result = output; // 결과 설정
-                } catch (error) {
-                    setTestCaseState('error');
-                    setErrorMessage(
-                        `컴파일 서버에서 오류가 발생했습니다.\n${error}`
-                    );
-                    return;
-                }
+                chrome.runtime.sendMessage(
+                    { action: 'compile', data: data },
+                    (output) => {
+                        const newTestCases = [...currentTestCases];
+                        newTestCases[index].result = output;
+                        setTargetTestCases(newTestCases);
+                        if (checkCompileError(language, output)) {
+                            setTestCaseState('error');
+                            setErrorMessage(output);
+                            return;
+                        }
+                        if (output == 'error') {
+                            setTestCaseState('error');
+                            setErrorMessage(
+                                `컴파일 서버에서 오류가 발생했습니다.\n`
+                            );
+                            return;
+                        }
+                    }
+                );
             })
         );
 
