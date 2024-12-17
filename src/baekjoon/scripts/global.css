@@ -84,11 +84,11 @@
 }
 
 .algoplus-dark-theme .test-case-success {
-    color: green !important;
+    color: rgb(67, 132, 64) !important;
 }
 
 .algoplus-dark-theme .test-case-wrong {
-    color: pink !important;
+    color: rgb(248, 100, 86) !important;
 }
 
 .algoplus-dark-theme .form-control {
