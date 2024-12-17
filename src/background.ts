@@ -18,6 +18,7 @@ async function SolvedApiCall(problemId: number) {
 async function compile(data: CodeCompileRequest) {
     return fetch(process.env.JDOODLE_API_URL as string, {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
     })
         .then((response) => response.json())
@@ -85,25 +86,40 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             const dataUrl = reader.result;
 
             if (typeof dataUrl === 'string') {
-                chrome.downloads.download({
-                    url: dataUrl,
-                    filename: `AlgoPlus${today.getFullYear()}${(today.getMonth() + 1).toString().padStart(2, '0')}${today.getDate().toString().padStart(2, '0')}.md`,
-                    saveAs: true,
-                    }, (downloadId) => {
+                chrome.downloads.download(
+                    {
+                        url: dataUrl,
+                        filename: `AlgoPlus${today.getFullYear()}${(
+                            today.getMonth() + 1
+                        )
+                            .toString()
+                            .padStart(2, '0')}${today
+                            .getDate()
+                            .toString()
+                            .padStart(2, '0')}.md`,
+                        saveAs: true,
+                    },
+                    (downloadId) => {
                         if (downloadId) {
                             sendResponse({ status: 'success' });
                         } else {
-                            sendResponse({ status: 'error', message: 'Download failed' });
+                            sendResponse({
+                                status: 'error',
+                                message: 'Download failed',
+                            });
                         }
-                    });
-                } else {
-                    sendResponse({ status: 'error', message: 'Failed to create data URL' });
-                }
-            };
+                    }
+                );
+            } else {
+                sendResponse({
+                    status: 'error',
+                    message: 'Failed to create data URL',
+                });
+            }
+        };
         reader.readAsDataURL(blob);
-    return true;
+        return true;
     }
 });
-
 
 chrome.runtime.onMessage.addListener(handleMessage);
