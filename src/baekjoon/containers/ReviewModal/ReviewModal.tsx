@@ -6,7 +6,7 @@ import { Prism } from 'react-syntax-highlighter';
 import { coy } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { startLoader } from '@/baekjoon/utils/baekjoon';
 import { markdownReview } from '@/baekjoon/utils/review';
-import { InfoModal } from '../InfoModal';
+import { InfoModal } from '@/baekjoon/containers/InfoModal';
 import { createRoot } from 'react-dom/client';
 
 let startLineIndex: number = -1;
@@ -71,7 +71,7 @@ const ReviewModal = (modalProps: ModalProps) => {
 
         chrome.runtime.sendMessage({
             action: 'saveRepository',
-            content: markdownReview(reviewMarkDownContent)
+            content: markdownReview(reviewMarkDownContent),
         });
     };
 

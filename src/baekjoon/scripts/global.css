@@ -1,0 +1,115 @@
+/* 다크 모드를 위한 스타일 설정 */
+.algoplus-dark-theme > .wrapper {
+    background-color: #1f1f1f;
+    color: white;
+}
+
+.algoplus-dark-theme a {
+    color: rgb(137, 196, 232);
+}
+
+.algoplus-dark-theme .problem-menu > li > a:hover,
+.algoplus-dark-theme .problem-menu > li > a:active {
+    background-color: #4f4f4f;
+    color: white;
+}
+
+.algoplus-dark-theme .headline > h2,
+.algoplus-dark-theme .panel.left * {
+    color: white;
+}
+
+.algoplus-dark-theme pre,
+.algoplus-dark-theme .test-case-element > textarea[disabled] {
+    background-color: #3f3f3f !important;
+    color: white !important;
+}
+
+.algoplus-dark-theme .test-case-element > textarea {
+    background-color: #7f7f7f !important;
+    color: white !important;
+}
+
+.algoplus-dark-theme .resizer {
+    background-color: #7f7f7f;
+}
+
+.algoplus-dark-theme .resizer:active,
+.algoplus-dark-theme .resizer:hover {
+    background-color: #4d92cb;
+}
+
+.algoplus-dark-theme select {
+    background-color: #3f3f3f;
+    border: 1px solid #eee;
+}
+
+.algoplus-dark-theme .panel.bottom {
+    background-color: #2f2f2f !important;
+    border-color: #3f3f3f !important;
+}
+
+.algoplus-dark-theme .panel.bottom h4,
+.algoplus-dark-theme .panel.bottom p {
+    color: white !important;
+}
+
+.algoplus-dark-theme .btn-default {
+    background-color: #5f5f5f !important;
+    border-color: #3f3f3f;
+    color: white;
+}
+
+.algoplus-dark-theme .btn-default:hover,
+.algoplus-dark-theme .btn-default:active {
+    background-color: #8f8f8f !important;
+}
+
+.algoplus-dark-theme .boj-modal {
+    background-color: #2f2f2f;
+    border-color: #eee;
+}
+
+.algoplus-dark-theme .boj-modal .modal-title > h1,
+.algoplus-dark-theme .boj-modal-close {
+    color: white;
+}
+
+.algoplus-dark-theme .boj-modal-close:hover {
+    color: #ff6262;
+}
+
+.algoplus-dark-theme .loading-dot {
+    background-color: white !important;
+}
+
+.algoplus-dark-theme .test-case-success {
+    color: rgb(67, 132, 64) !important;
+}
+
+.algoplus-dark-theme .test-case-wrong {
+    color: rgb(248, 100, 86) !important;
+}
+
+.algoplus-dark-theme .form-control {
+    color: white !important;
+}
+
+.algoplus-dark-theme input[type='text'] {
+    background-color: #2f2f2f;
+    border-color: #eee;
+}
+
+.algoplus-dark-theme .alert-success {
+    background-color: #3f3f3f;
+    border-color: transparent;
+    color: white;
+}
+
+.algoplus-dark-theme .table tbody tr:hover {
+    background-color: #4f4f4f;
+}
+
+.algoplus-dark-theme .table tbody tr.algoplus-code-select {
+    background-color: #1d3a00 !important;
+}
