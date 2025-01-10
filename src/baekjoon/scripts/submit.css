@@ -39,11 +39,7 @@
 
 .algoplus-dark-theme .headline > h2 {
     color: #fff;
-    border-bottom-color: #0076c0 !important;
-}
-
-.algoplus-dark-theme pre {
-    border-color: rgba(128, 128, 128, 0.05) !important;
+    border-bottom-color: #b5b5b5 !important;
 }
 
 .algoplus-dark-theme blockquote {
@@ -56,12 +52,13 @@
 }
 
 .algoplus-dark-theme #problem-info td {
-    border-top-color: #4a4a4a !important;
+    border-top-color: #2d2d2d !important;
 }
 
 .algoplus-dark-theme pre,
 .algoplus-dark-theme .test-case-element > textarea[disabled] {
-    background-color: #3f3f3f !important;
+    background-color: rgba(128, 128, 128, 0.05) !important;
+    border-color: #3c3c3c !important;
     color: white !important;
 }
 
