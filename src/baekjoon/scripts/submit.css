@@ -12,6 +12,16 @@
     width: 10px !important;
 }
 
+.btn-primary {
+    color: #fff !important;
+    background-color: #428bca !important;
+    border-color: #357ebd !important;
+}
+
+.btn-primary:hover {
+    background-color: #20649e !important;
+}
+
 /* 다크 모드를 위한 스타일 설정 */
 .algoplus-dark-theme #solve-view {
     background-color: #222222;
@@ -223,12 +233,6 @@
     color: #333 !important;
     background-color: #fff !important;
     border-color: #ccc !important;
-}
-
-.algoplus-light-theme .btn-primary {
-    color: #fff !important;
-    background-color: #428bca !important;
-    border-color: #357ebd !important;
 }
 
 .algoplus-light-theme .btn-link {
