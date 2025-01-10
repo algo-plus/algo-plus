@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client';
 import { SolveButton } from '@/baekjoon/components/SolveButton';
 import { getProblemId } from '@/baekjoon/utils/parsing';
 import { clearProblemStorage } from '@/baekjoon/utils/storage/problem';
-import './global.css';
 
 const customGlobalPage = (): void => {
     clearProblemStorage();
