@@ -19,7 +19,6 @@ import {
 } from '@/baekjoon/utils/storage/review';
 import './status.css';
 import { CodeNullContent } from '@/baekjoon/components/CodeINullContent';
-import { loadTheme } from '@/baekjoon/utils/storage/editor';
 
 const customStatusPage = async () => {
     if (
