@@ -1,0 +1,239 @@
+.container.content {
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+}
+
+.printable {
+    display: none;
+}
+
+::-webkit-scrollbar {
+    width: 10px !important;
+}
+
+.btn-primary {
+    color: #fff !important;
+    background-color: #428bca !important;
+    border-color: #357ebd !important;
+}
+
+.btn-primary:hover {
+    background-color: #20649e !important;
+}
+
+/* 다크 모드를 위한 스타일 설정 */
+.algoplus-dark-theme #solve-view {
+    background-color: #222222;
+    color: white;
+}
+
+.algoplus-dark-theme .headline > h2,
+.algoplus-dark-theme .panel.left * {
+    color: white;
+}
+
+.algoplus-dark-theme .headline {
+    border-bottom-color: #4a4a4a !important;
+}
+
+.algoplus-dark-theme .headline > h2 {
+    color: #fff;
+    border-bottom-color: #b5b5b5 !important;
+}
+
+.algoplus-dark-theme blockquote {
+    border-left-color: #4a4a4a !important;
+}
+
+.algoplus-dark-theme .page-header,
+.algoplus-dark-theme #problem-info th {
+    border-bottom-color: #4a4a4a !important;
+}
+
+.algoplus-dark-theme #problem-info td {
+    border-top-color: #2d2d2d !important;
+}
+
+.algoplus-dark-theme pre,
+.algoplus-dark-theme .test-case-element > textarea[disabled] {
+    background-color: rgba(128, 128, 128, 0.05) !important;
+    border-color: #3c3c3c !important;
+    color: white !important;
+}
+
+.algoplus-dark-theme .test-case-element > textarea {
+    background-color: #5f5f5f !important;
+    color: white !important;
+}
+
+.algoplus-dark-theme .resizer {
+    background-color: #7f7f7f;
+}
+
+.algoplus-dark-theme .resizer:active,
+.algoplus-dark-theme .resizer:hover {
+    background-color: #4d92cb;
+}
+
+.algoplus-dark-theme ::-webkit-scrollbar-track {
+    background-color: transparent !important;
+}
+
+.algoplus-dark-theme .panel.right a {
+    color: #89c4e8 !important;
+}
+
+.algoplus-dark-theme select {
+    background-color: #3f3f3f;
+    border: 1px solid #eee;
+}
+
+.algoplus-dark-theme .panel.bottom {
+    background-color: #2f2f2f !important;
+    border-color: #3f3f3f !important;
+}
+
+.algoplus-dark-theme .panel.bottom h4,
+.algoplus-dark-theme .panel.bottom p {
+    color: white !important;
+}
+
+.algoplus-dark-theme .btn-default {
+    background-color: #5f5f5f !important;
+    border-color: #3f3f3f;
+    color: white;
+}
+
+.algoplus-dark-theme .btn-default:hover,
+.algoplus-dark-theme .btn-default:active {
+    background-color: #8f8f8f !important;
+}
+
+.algoplus-dark-theme .boj-modal {
+    background-color: #2f2f2f;
+    border-color: #eee;
+}
+
+.algoplus-dark-theme .boj-modal .modal-title > h1,
+.algoplus-dark-theme .boj-modal-close {
+    color: white;
+}
+
+.algoplus-dark-theme .boj-modal-close:hover {
+    color: #ff6262;
+}
+
+.algoplus-dark-theme .loading-dot {
+    background-color: white !important;
+}
+
+.algoplus-dark-theme .test-case-success {
+    color: rgb(67, 132, 64) !important;
+}
+
+.algoplus-dark-theme .test-case-wrong {
+    color: rgb(248, 100, 86) !important;
+}
+
+.algoplus-dark-theme .form-control {
+    color: white !important;
+}
+
+.algoplus-dark-theme input[type='text'] {
+    background-color: #2f2f2f;
+    border-color: #eee;
+}
+
+.algoplus-dark-theme .alert-success {
+    background-color: #3f3f3f;
+    border-color: transparent;
+    color: white;
+}
+
+.algoplus-dark-theme .table tbody tr:hover {
+    background-color: #4f4f4f;
+}
+
+.algoplus-dark-theme .table tbody tr.algoplus-code-select {
+    background-color: #1d3a00 !important;
+}
+
+.algoplus-dark-theme .btn-link {
+    color: #428bca !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
+}
+
+/* 라이트 모드를 위한 스타일 설정 */
+.algoplus-light-theme #solve-view {
+    background-color: white;
+    color: #333 !important;
+}
+
+.algoplus-light-theme #problem_title {
+    color: #585f69;
+}
+
+.algoplus-light-theme .headline {
+    border-bottom-color: #e4e9f0 !important;
+}
+
+.algoplus-light-theme .headline > h2 {
+    color: #585f69;
+    border-bottom-color: #0076c0 !important;
+}
+
+.algoplus-light-theme blockquote {
+    border-left-color: #eee !important;
+}
+
+.algoplus-light-theme .page-header,
+.algoplus-light-theme #problem-info th {
+    border-bottom-color: #eee !important;
+}
+
+.algoplus-light-theme #problem-info td {
+    border-top-color: #eee !important;
+}
+
+.algoplus-light-theme #problem_description *,
+.algoplus-light-theme #problem_input *,
+.algoplus-light-theme #problem_output *,
+.algoplus-light-theme #source *,
+.algoplus-light-theme .boj-modal .modal-title > h1,
+.algoplus-light-theme .boj-modal-close {
+    color: #555 !important;
+}
+
+.algoplus-light-theme pre {
+    border-color: #ccc !important;
+}
+
+.algoplus-light-theme ::-webkit-scrollbar-thumb:hover {
+    background-color: #555 !important;
+}
+
+.algoplus-light-theme ::-webkit-scrollbar-track {
+    background-color: transparent !important;
+}
+
+.algoplus-light-theme .panel.right a {
+    color: #0076c0 !important;
+}
+
+.algoplus-light-theme .panel.right * {
+    color: #555 !important;
+}
+
+.algoplus-light-theme .btn-default {
+    color: #333 !important;
+    background-color: #fff !important;
+    border-color: #ccc !important;
+}
+
+.algoplus-light-theme .btn-link {
+    color: #428bca !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
+}

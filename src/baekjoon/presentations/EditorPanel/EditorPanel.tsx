@@ -27,8 +27,10 @@ const EditorPanel: React.FC<EditorPanelProps> = ({
         saveTheme(theme);
         if (theme === 'vs-code-dark') {
             document.body.classList.add('algoplus-dark-theme');
+            document.body.classList.remove('algoplus-light-theme');
         } else {
             document.body.classList.remove('algoplus-dark-theme');
+            document.body.classList.add('algoplus-light-theme');
         }
     }, [theme]);
 

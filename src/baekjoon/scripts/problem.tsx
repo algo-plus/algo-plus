@@ -2,7 +2,6 @@ import { getProblemId } from '@/baekjoon/utils/parsing';
 import {
     saveProblemDetail,
     saveProblemMathJaxStyle,
-    loadAndParseProblemMathJaxStyle,
 } from '@/baekjoon/utils/storage/problem';
 
 const fetchCurrentHtml = (): string => {

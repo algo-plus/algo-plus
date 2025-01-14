@@ -19,20 +19,12 @@ import {
 } from '@/baekjoon/utils/storage/review';
 import './status.css';
 import { CodeNullContent } from '@/baekjoon/components/CodeINullContent';
-import { loadTheme } from '@/baekjoon/utils/storage/editor';
 
 const customStatusPage = async () => {
     if (
         getUrlSearchParam(window.location.href, 'after_algoplus_submit') ===
         'true'
     ) {
-        /* 다크 테마 */
-        loadTheme().then((theme) => {
-            if (theme === 'vs-code-dark') {
-                document.body.classList.add('algoplus-dark-theme');
-            }
-        });
-
         const problemId = getUrlSearchParam(window.location.href, 'problem_id');
         if (!problemId) return;
 

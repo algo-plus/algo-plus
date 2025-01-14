@@ -47,6 +47,7 @@ import {
     preprocessSourceCode,
 } from '@/baekjoon/utils/compile';
 import { getReferenceUrl } from '@/common/utils/language-reference-url';
+import './SolveView.css';
 
 type SolveViewProps = {
     problemId: string;
@@ -354,7 +355,7 @@ const SolveView: React.FC<SolveViewProps> = ({
 
     return (
         <>
-            <div style={{ height: '100%' }}>
+            <div id='solve-view'>
                 <HorizontalSplitView
                     left={
                         <ProblemPanel
