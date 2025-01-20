@@ -8,6 +8,7 @@ import { startLoader } from '@/baekjoon/utils/baekjoon';
 import { markdownReview } from '@/baekjoon/utils/review';
 import { InfoModal } from '@/baekjoon/containers/InfoModal';
 import { createRoot } from 'react-dom/client';
+import { getObjectFromLocalStorage } from '@/common/utils/storage';
 
 let startLineIndex: number = -1;
 let endLineIndex: number = -1;
@@ -51,7 +52,13 @@ const ReviewModal = (modalProps: ModalProps) => {
         setInfoModalOpen(false);
     };
 
-    const upload = () => {
+    const upload = async() => {
+        const enable = await getObjectFromLocalStorage('alpEnable');
+        if (!enable) {
+            alert('오답노트 작성을 위해서는 깃허브 연결이 필요합니다.');
+            return enable;
+        }
+
         const reviewMarkDownContent: ReviewMarkdownContent = {
             oldCode: oldCode,
             newCode: newCode,
