@@ -90,7 +90,7 @@ const checkServerError = (output: string): boolean => {
 const processErrorCode = (status: number): string => {
     if (status == 429) {
         return errorMessages[0];
-    } else if (status < 500) {
+    } else if (status < 410) {
         return errorMessages[2];
     }
     return errorMessages[1];
