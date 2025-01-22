@@ -47,6 +47,26 @@ const postprecessOutput = (
         const parts = output.split('Time Elapsed')[1].split('\n', 1);
         output = parts.length > 1 ? parts[1] : parts[0];
     }
+    if (language === 'java' && output.includes('Note: Main.java')) {
+        output = output.split('Note: Main.java')[0];
+    }
+    if (
+        language === 'csharp' &&
+        output.includes('Compilation succeeded') &&
+        output.includes('warning(s)')
+    ) {
+        const parts = output.split('warning(s)')[1].split('jdoodle.cs')[0];
+
+        const answer = parts
+            .split('\n')
+            .map((line) => line.trim())
+            .filter((line) => line.length > 0);
+
+        output = answer.length > 0 ? answer[0] : '';
+    }
+    if (language === 'swift' && output.includes(': warning: ')) {
+        output = output.split('\njdoodle.swift')[0];
+    }
     if (output.includes('JDoodle - output Limit reached.')) {
         output = '출력 초과';
     }
