@@ -14,6 +14,16 @@ const CompileErrorFormatConvertMap: Record<CompilerLanguage, string> = {
     go: 'jdoodle.go',
 };
 
+const errorMessages: string[] = [
+    `Algo Plus - 서비스 이용 한도 초과 안내\n
+    현재 이용량 증가로 인해 일일 코드 실행 호출 한도가 초과되었습니다.
+    한도는 매일 오전 9시에 자동으로 초기화됩니다.\n
+    더 나은 서비스와 안정적인 환경을 제공하기 위해 최선을 다하겠습니다.
+    너른 양해 부탁드립니다.`,
+    '서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
+    '올바르지 않은 요청입니다. 같은 문제가 계속 발생한다면 관리자에게 문의해주세요.\n\n문의: algoplus.official@gmail.com',
+];
+
 /* JDoodle compile API 동작을 위한 별도의 처리가 필요한 경우 코드를 전처리 */
 const preprocessSourceCode = (
     language: CompilerLanguage,
@@ -53,4 +63,23 @@ const checkCompileError = (lang: CompilerLanguage, output: string): boolean => {
     return output.includes(CompileErrorFormatConvertMap[lang]);
 };
 
-export { preprocessSourceCode, postprecessOutput, checkCompileError };
+const checkServerError = (output: string): boolean => {
+    return errorMessages.includes(output);
+};
+
+const processErrorCode = (status: number): string => {
+    if (status == 429) {
+        return errorMessages[0];
+    } else if (status < 500) {
+        return errorMessages[2];
+    }
+    return errorMessages[1];
+};
+
+export {
+    preprocessSourceCode,
+    postprecessOutput,
+    checkCompileError,
+    checkServerError,
+    processErrorCode,
+};

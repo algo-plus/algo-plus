@@ -1,4 +1,4 @@
-import { postprecessOutput } from './baekjoon/utils/compile';
+import { postprecessOutput, processErrorCode } from './baekjoon/utils/compile';
 import { CodeCompileRequest } from './common/types/compile';
 
 /**
@@ -21,9 +21,13 @@ async function compile(data: CodeCompileRequest) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
     })
-        .then((response) => response.json())
+        .then((response) => {
+            if (!response.ok) throw new Error(response.status.toString());
+            return response.json();
+        })
         .then((json) => json.output.trim())
-        .then((output) => postprecessOutput(data.language, output));
+        .then((output) => postprecessOutput(data.language, output))
+        .catch((e) => processErrorCode(e.message));
 }
 
 function handleMessage(request: any, sender: any, sendResponse: any) {
