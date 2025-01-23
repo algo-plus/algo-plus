@@ -24,6 +24,13 @@ const errorMessages: string[] = [
     '올바르지 않은 요청입니다. 같은 문제가 계속 발생한다면 관리자에게 문의해주세요.\n\n문의: algoplus.official@gmail.com',
 ];
 
+const trimLineByLine = (text: string): string => {
+    return text
+        .split('\n')
+        .map((line) => line.trim())
+        .join('\n');
+};
+
 /* JDoodle compile API 동작을 위한 별도의 처리가 필요한 경우 코드를 전처리 */
 const preprocessSourceCode = (
     language: CompilerLanguage,
@@ -97,6 +104,7 @@ const processErrorCode = (status: number): string => {
 };
 
 export {
+    trimLineByLine,
     preprocessSourceCode,
     postprecessOutput,
     checkCompileError,
