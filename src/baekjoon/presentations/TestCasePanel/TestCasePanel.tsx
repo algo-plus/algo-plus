@@ -25,7 +25,10 @@ const TestCasePanel: React.FC<TestCasePanelProps> = ({
                     실행 결과가 여기에 표시됩니다.
                 </p>
             ) : state === 'error' && errorMessage ? (
-                <p style={{ padding: '10px', color: 'red' }}>
+                <p
+                    className='test-case-panel-error-message'
+                    style={{ padding: '10px', color: 'red' }}
+                >
                     <span
                         dangerouslySetInnerHTML={{
                             __html: replaceNewLineToBrTag(errorMessage),
