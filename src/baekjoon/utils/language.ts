@@ -24,7 +24,7 @@ const submitApiVersionConvertMap: Record<string, string> = {
     '84': '1',
     '95': '1',
     '86': '3',
-    '3': '0',
+    '3': '3',
     '93': '3',
     '28': '5',
     '73': '5',
