@@ -91,6 +91,7 @@ const repositoryName = () => {
 };
 
 const statusCode = (res, status, name) => {
+    console.log(status)
     switch (status) {
         case 304:
             $('#success').hide();
@@ -259,6 +260,15 @@ const linkRepo = (token, name) => {
                         }
                     );
                 }
+            }else if(xhr.status === 401){
+                //캐시 비우기
+                // chrome.storage.local.remove("AlgoPlus_username");
+                // chrome.storage.local.remove(AlgoPlus_token);
+                // chrome.storage.local.remove(pipe_AlgoPlus);
+                // chrome.storage.local.remove(repositories);
+                chrome.storage.local.remove("isSync");
+
+                return;
             }
         }
     });
