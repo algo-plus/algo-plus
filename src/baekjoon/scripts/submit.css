@@ -41,6 +41,11 @@ html[theme='dark'] .test-case-wrong {
     color: rgb(248, 100, 86) !important;
 }
 
+html[theme='dark'] .test-case-panel-error-message,
+html[theme='dark'] .test-case-panel-error-message * {
+    color: rgb(248, 100, 86) !important;
+}
+
 html[theme='dark'] .form-control {
     color: white !important;
 }
