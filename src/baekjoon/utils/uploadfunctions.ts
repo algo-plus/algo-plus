@@ -50,10 +50,16 @@ const upload = async (
     const isoString = today.toISOString().slice(0, 19); 
     
     const { refSHA, ref } = await git.getReference(default_branch);
+
+    if(refSHA ==null && ref == null) {
+        alert("깃허브 연결이 되지 않아 업로드가 되지 않았습니다.");
+        return;
+    }
+    
     const readme = await git.createBlob(readmeText, `${directory}/README_${isoString}.md`);
     const treeSHA = await git.createTree(refSHA, [readme]);
     const commitSHA = await git.createCommit(commitMessage, treeSHA, refSHA);
-
+    
     await git.updateHead(ref, commitSHA);
 
     updateObjectDatafromPath(

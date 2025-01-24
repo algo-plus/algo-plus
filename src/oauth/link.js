@@ -2,16 +2,25 @@ const githubSetting = document.querySelector('#github-setting');
 const githubAuth = document.querySelector('#github-auth');
 const inputText = document.querySelector('#name');
 const maskingCheck = document.querySelector('#masking_check');
+const typeCheck = document.querySelector('#type');
 
 document.addEventListener('DOMContentLoaded', () => {
     inputText.addEventListener('input', (e) => {
         const text = e.target.value;
-        maskingCheck.textContent = maskKorean(text);
+        if(typeCheck.value==='new'){
+            maskingCheck.textContent = maskKoreanNewRepo(text);
+        }else{
+            maskingCheck.textContent = maskKoreanExistRepo(text);
+        }
     });
 });
     
-function maskKorean(text) {
+function maskKoreanNewRepo(text) {
     return 'Your new repository will be created as  '+ text.replace(/[\u3131-\u318E\uAC00-\uD7A3]+/g, '-');
+}
+
+function maskKoreanExistRepo(text) {
+    return 'Your repository will be linked to the '+ text.replace(/[\u3131-\u318E\uAC00-\uD7A3]+/g, '-');
 }
 
 chrome.storage.local.get('alpEnable', (data4) => {
@@ -82,6 +91,7 @@ const repositoryName = () => {
 };
 
 const statusCode = (res, status, name) => {
+    console.log(status)
     switch (status) {
         case 304:
             $('#success').hide();
@@ -250,6 +260,15 @@ const linkRepo = (token, name) => {
                         }
                     );
                 }
+            }else if(xhr.status === 401){
+                //캐시 비우기
+                // chrome.storage.local.remove("AlgoPlus_username");
+                // chrome.storage.local.remove(AlgoPlus_token);
+                // chrome.storage.local.remove(pipe_AlgoPlus);
+                // chrome.storage.local.remove(repositories);
+                chrome.storage.local.remove("isSync");
+
+                return;
             }
         }
     });
