@@ -1,0 +1,16 @@
+.review-note-pop-up__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    gap: 8px;
+    height: 100%;
+}
+
+.review-note-pop-up__button {
+    color: #fcfcfc;
+    background-color: #2e2e2e;
+    border-radius: 8px !important;
+    height: 30px;
+    width: 220px;
+}

@@ -22,3 +22,10 @@ type CodeInfoModalProps = {
     time: number;
     result: string;
 };
+
+type CodeInfo = {
+    submissionId: string;
+    memory: string;
+    time: string;
+    result: string;
+};
