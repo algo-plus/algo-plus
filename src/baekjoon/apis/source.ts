@@ -7,7 +7,7 @@ function parseLang(str: string) {
     return parsed;
 }
 
-const fetchCode = async (submitId: number) => {
+const fetchCode = async (submitId: number | string) => {
     const url = `https://www.acmicpc.net/source/${submitId}`;
     try {
         const res = await fetch(url);
