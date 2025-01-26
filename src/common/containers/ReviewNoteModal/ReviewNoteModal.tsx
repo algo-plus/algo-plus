@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './ReviewNoteModal.css';
 import { Modal } from '@/common/presentations/Modal';
 import { SourceCode } from '@/common/types/source';
@@ -12,15 +12,31 @@ type ReviewNoteModalProps = {
     sourceCodes: SourceCode[];
 };
 
-const ReviewNoteModal: React.FC<ReviewNoteModalProps> = ({
-    modalOpen,
-    onClose,
-    codeDescriptions,
-    sourceCodes,
-}: ReviewNoteModalProps) => {
+const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
+    props: ReviewNoteModalProps
+) => {
     const buttonCommonStyle: React.CSSProperties = {
         width: '100px',
     };
+    const [sourceCodes, setSourceCodes] = useState<SourceCode[]>(
+        props.sourceCodes
+    );
+    const [codeDescriptions, setCodeDescriptions] = useState<string[]>(
+        props.codeDescriptions
+    );
+
+    useEffect(() => {
+        setSourceCodes(props.sourceCodes);
+        setCodeDescriptions(props.codeDescriptions);
+    }, [props.sourceCodes, props.codeDescriptions]);
+
+    const changeOrder = () => {
+        if (confirm('작성한 내용이 사라집니다. 진행하시겠습니까?')) {
+            setSourceCodes((prev) => [...prev].reverse());
+            setCodeDescriptions((prev) => [...prev].reverse());
+        }
+    };
+
     return (
         <Modal
             title={<h1 style={{ textAlign: 'center' }}>오답노트 작성</h1>}
@@ -30,6 +46,12 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = ({
                         <p className='code-description'>
                             <span>{codeDescriptions[0]}</span>
                             <span>{codeDescriptions[1]}</span>
+                            <button
+                                className='change-order-button'
+                                onClick={changeOrder}
+                            >
+                                ⇄
+                            </button>
                         </p>
                         <CodeDiffViewer sourceCodes={sourceCodes} />
                     </div>
@@ -49,8 +71,8 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = ({
                     />
                 </div>
             }
-            modalOpen={modalOpen}
-            onClose={onClose}
+            modalOpen={props.modalOpen}
+            onClose={props.onClose}
         />
     );
 };
