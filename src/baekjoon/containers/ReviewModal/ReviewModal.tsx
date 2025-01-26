@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer-continued';
 import './ReviewModal.css';
-import { ModalProps } from '@/baekjoon/types/source';
+import { ModalProps } from '@/common/types/source';
 import { Prism } from 'react-syntax-highlighter';
 import { coy } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { startLoader } from '@/baekjoon/utils/baekjoon';
 import { markdownReview } from '@/baekjoon/utils/review';
 import { InfoModal } from '@/baekjoon/containers/InfoModal';
 import { createRoot } from 'react-dom/client';
-import { getHook, getObjectFromLocalStorage, getStats, getToken } from '@/common/utils/storage';
+import {
+    getHook,
+    getObjectFromLocalStorage,
+    getStats,
+    getToken,
+} from '@/common/utils/storage';
 import { GitHub } from '@/baekjoon/utils/github';
 
 let startLineIndex: number = -1;
@@ -27,23 +32,23 @@ const ReviewModal = (modalProps: ModalProps) => {
 
     // const uploadCheck = async () => {
 
-        // const token: any = await getToken();
-        // const hook: any = await getHook();
-        
-        //  const git = new GitHub(hook, token);
-        //  const stats: any = await getStats();
+    // const token: any = await getToken();
+    // const hook: any = await getHook();
 
-        //  let default_branch = stats.branches[hook];
+    //  const git = new GitHub(hook, token);
+    //  const stats: any = await getStats();
 
-        // stats.branches[hook] = default_branch ?? await git.getDefaultBranchOnRepo();
+    //  let default_branch = stats.branches[hook];
 
-        //  const { refSHA, ref } = await git.getReference(default_branch);
-        //  if(refSHA ==null && ref == null) {
-        //     // 깃허브 업로드 버튼 없애기
-        //     const target = document.querySelector('#githubUploadBtn');
-            
-        //     return;
-        // }
+    // stats.branches[hook] = default_branch ?? await git.getDefaultBranchOnRepo();
+
+    //  const { refSHA, ref } = await git.getReference(default_branch);
+    //  if(refSHA ==null && ref == null) {
+    //     // 깃허브 업로드 버튼 없애기
+    //     const target = document.querySelector('#githubUploadBtn');
+
+    //     return;
+    // }
     // }
 
     const changeOrderWarn = () => {
@@ -74,7 +79,7 @@ const ReviewModal = (modalProps: ModalProps) => {
         setInfoModalOpen(false);
     };
 
-    const upload = async() => {
+    const upload = async () => {
         const enable = await getObjectFromLocalStorage('alpEnable');
         if (!enable) {
             alert('오답노트 작성을 위해서는 깃허브 연결이 필요합니다.');

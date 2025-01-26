@@ -4,17 +4,18 @@ import { PopUp } from '@/common/presentations/PopUp';
 import { CodeInfoContent } from '@/baekjoon/components/CodeInfoContent';
 import { CodeNullContent } from '@/baekjoon/components/CodeNullContent';
 import { fetchCode } from '@/baekjoon/apis/source';
-import { ReviewModal } from '../ReviewModal';
-import { CodeProps } from '@/baekjoon/types/source';
 import { Button } from '@/common/components/Button';
+import { ReviewNoteModal } from '@/common/containers/ReviewNoteModal';
+import { SourceCode } from '@/common/types/source';
 
 type ReviewNotePopUpProps = {};
 
 const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = () => {
     const [submissionIds, setSubmissionIds] = useState<string[]>([]);
     const [codeInfos, setCodeInfos] = useState<CodeInfo[]>([]);
-    const [sourceCodes, setSourceCodes] = useState<CodeProps[]>([]);
-    const [reviewModalOpen, setReviewModalOpen] = useState<boolean>(false);
+    const [sourceCodes, setSourceCodes] = useState<SourceCode[]>([]);
+    const [reviewNoteModalOpen, setReviewNoteModalOpen] =
+        useState<boolean>(false);
 
     const getSubmissionElements = useCallback(() => {
         return document.querySelectorAll(
@@ -38,8 +39,8 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = () => {
         );
     }, []);
 
-    const toggleReviewModal = () => {
-        setReviewModalOpen(!reviewModalOpen);
+    const toggleReviewNoteModal = () => {
+        setReviewNoteModalOpen(!reviewNoteModalOpen);
     };
 
     const handleSubmissionClick = useCallback(
@@ -109,9 +110,9 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = () => {
             return;
         }
 
-        const sourceCodes = (await getSourceCodes()) as CodeProps[];
+        const sourceCodes = (await getSourceCodes()) as SourceCode[];
         setSourceCodes(sourceCodes);
-        toggleReviewModal();
+        toggleReviewNoteModal();
     };
 
     useEffect(() => {
@@ -188,11 +189,14 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = () => {
                     </div>
                 }
             />
-            {reviewModalOpen ? (
-                <ReviewModal sourceCodes={sourceCodes} />
-            ) : (
-                <></>
-            )}
+            <ReviewNoteModal
+                codeDescriptions={submissionIds.map(
+                    (submissionId) => `제출 번호 : ${submissionId}`
+                )}
+                sourceCodes={sourceCodes}
+                modalOpen={reviewNoteModalOpen}
+                onClose={toggleReviewNoteModal}
+            />
         </>
     );
 };

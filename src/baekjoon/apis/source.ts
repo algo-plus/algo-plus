@@ -1,4 +1,4 @@
-import { CodeProps } from '@/baekjoon/types/source';
+import { SourceCode } from '@/common/types/source';
 
 function parseLang(str: string) {
     const parsed = str.slice(7, str.length);
@@ -23,11 +23,11 @@ const fetchCode = async (submitId: number | string) => {
             console.error('No lang found');
             return null;
         }
-        const codeProp: CodeProps = {
+        const SourceCode: SourceCode = {
             lang: parseLang(lang),
             code: code.textContent,
         };
-        return codeProp;
+        return SourceCode;
     } catch (error) {
         console.error('Error fetching code:', error);
         return null;

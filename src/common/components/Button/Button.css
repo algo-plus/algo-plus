@@ -4,4 +4,9 @@
     border-radius: 8px !important;
     height: 30px;
     width: 220px;
+    transition: 0.5 all;
+}
+
+.review-note-pop-up__button:hover {
+    background-color: #000000;
 }

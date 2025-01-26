@@ -1,0 +1,9 @@
+.algoplus-diff-viewer-container {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-bottom: 50px;
+}
+
+.algoplus-diff-viewer-container tbody > tr > td > pre {
+    padding: 0;
+}
