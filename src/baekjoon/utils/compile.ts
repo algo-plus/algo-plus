@@ -50,11 +50,25 @@ const postprecessOutput = (
     output: string
 ): string => {
     if (output.includes('JDoodle.kt') && !output.startsWith('\nJDoodle.kt')) {
-        output = output.split('JDoodle.kt')[0];
+        output = output.split('JDoodle.kt')[0].trim();
     }
     if (language === 'csharp' && output.includes('0 Error(s)')) {
         const parts = output.split('Time Elapsed')[1].split('\n', 1);
         output = parts.length > 1 ? parts[1] : parts[0];
+    }
+    if (
+        language === 'c' &&
+        output.includes('main.c:') &&
+        output.includes('warning: ')
+    ) {
+        output = output.split('main.c:')[0].trim();
+    }
+    if (
+        (language === 'cpp17' || language === 'cpp') &&
+        output.includes('jdoodle.cpp:') &&
+        output.includes('warning: ')
+    ) {
+        output = output.split('jdoodle.cpp:')[0].trim();
     }
     if (language === 'java' && output.includes('Note: Main.java')) {
         output = output.split('Note: Main.java')[0].trim();
