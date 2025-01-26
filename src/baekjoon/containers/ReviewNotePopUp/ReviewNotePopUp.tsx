@@ -6,6 +6,7 @@ import { CodeNullContent } from '@/baekjoon/components/CodeNullContent';
 import { fetchCode } from '@/baekjoon/apis/source';
 import { ReviewModal } from '../ReviewModal';
 import { CodeProps } from '@/baekjoon/types/source';
+import { Button } from '@/common/components/Button';
 
 type ReviewNotePopUpProps = {};
 
@@ -183,12 +184,7 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = () => {
                         ) : (
                             <></>
                         )}
-                        <button
-                            className='review-note-pop-up__button'
-                            onClick={writeReview}
-                        >
-                            오답노트 작성
-                        </button>
+                        <Button text='오답노트 작성' onClick={writeReview} />
                     </div>
                 }
             />
