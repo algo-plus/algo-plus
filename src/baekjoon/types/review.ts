@@ -27,5 +27,6 @@ type CodeInfo = {
     submissionId: string;
     memory: string;
     time: string;
+    language: string;
     result: string;
 };

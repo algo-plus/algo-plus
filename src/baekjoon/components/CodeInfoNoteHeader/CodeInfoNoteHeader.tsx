@@ -1,28 +1,23 @@
 import React from 'react';
-import './CodeInfoContent.css';
+import './CodeInfoNoteHeader.css';
 
-interface CodeInfoContentProps {
+interface CodeInfoNoteHeaderProps {
     submissionId: string;
     memory: string;
     time: string;
     language: string;
     result: string;
-    onClose: () => void;
 }
 
-const CodeInfoContent = ({
+const CodeInfoNoteHeader = ({
     submissionId,
     memory,
     time,
-    result,
     language,
-    onClose,
-}: CodeInfoContentProps) => {
+    result,
+}: CodeInfoNoteHeaderProps) => {
     return (
-        <div className='algoplus-code-info-content'>
-            <button className='close-button' onClick={onClose}>
-                &#x2715;
-            </button>
+        <div className='algoplus-code-info-header'>
             <p>
                 제출 번호 : <b>{submissionId}</b>
             </p>
@@ -59,4 +54,4 @@ const CodeInfoContent = ({
     );
 };
 
-export default CodeInfoContent;
+export default CodeInfoNoteHeader;

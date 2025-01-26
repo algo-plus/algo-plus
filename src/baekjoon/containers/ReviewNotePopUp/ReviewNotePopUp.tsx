@@ -7,6 +7,7 @@ import { fetchCode } from '@/baekjoon/apis/source';
 import { Button } from '@/common/components/Button';
 import { ReviewNoteModal } from '@/common/containers/ReviewNoteModal';
 import { SourceCode } from '@/common/types/source';
+import { CodeInfoNoteHeader } from '@/baekjoon/components/CodeInfoNoteHeader';
 
 type ReviewNotePopUpProps = {};
 
@@ -85,6 +86,10 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = () => {
                         result:
                             row
                                 .querySelector('.result-text')
+                                ?.textContent?.trim() || '',
+                        language:
+                            row
+                                .querySelector('td:nth-child(7) a')
                                 ?.textContent?.trim() || '',
                     };
                     return codeInfo;
@@ -175,6 +180,7 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = () => {
                                         submissionId={codeInfo.submissionId}
                                         memory={codeInfo.memory}
                                         time={codeInfo.time}
+                                        language={codeInfo.language}
                                         result={codeInfo.result}
                                         onClose={() => {
                                             deleteCode(codeInfo.submissionId);
@@ -190,9 +196,16 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = () => {
                 }
             />
             <ReviewNoteModal
-                codeDescriptions={submissionIds.map(
-                    (submissionId) => `제출 번호 : ${submissionId}`
-                )}
+                codeDescriptions={codeInfos.map((codeInfo, index) => (
+                    <CodeInfoNoteHeader
+                        key={codeInfo.submissionId}
+                        submissionId={codeInfo.submissionId}
+                        memory={codeInfo.memory}
+                        time={codeInfo.time}
+                        language={codeInfo.language}
+                        result={codeInfo.result}
+                    />
+                ))}
                 sourceCodes={sourceCodes}
                 modalOpen={reviewNoteModalOpen}
                 onClose={toggleReviewNoteModal}
