@@ -31,6 +31,13 @@
     color: #585f69 !important;
 }
 
+.modal-content h4,
+.modal-content h5,
+.modal-content .modal-body pre,
+.modal-content .modal-body textarea {
+    color: #585f69 !important;
+}
+
 .modal-header {
     display: flex;
     justify-content: space-between;
