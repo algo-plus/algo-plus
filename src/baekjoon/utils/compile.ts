@@ -4,10 +4,10 @@ const CompileErrorFormatConvertMap: Record<CompilerLanguage, string> = {
     c: 'main.c',
     cpp17: 'jdoodle.cpp',
     cpp: 'jdoodle.cpp',
-    csharp: '/home/Program.cs',
+    csharp: 'jdoodle.cs',
     java: 'Main.java',
-    python3: '/home/jdoodle.py',
-    nodejs: '/home/jdoodle.js',
+    python3: 'jdoodle.py',
+    nodejs: 'jdoodle.js',
     kotlin: 'JDoodle.kt',
     ruby: 'jdoodle.rb',
     swift: 'jdoodle.swift',
@@ -55,24 +55,18 @@ const postprecessOutput = (
         output = parts.length > 1 ? parts[1] : parts[0];
     }
     if (language === 'java' && output.includes('Note: Main.java')) {
-        output = output.split('Note: Main.java')[0];
+        output = output.split('Note: Main.java')[0].trim();
     }
     if (
         language === 'csharp' &&
         output.includes('Compilation succeeded') &&
         output.includes('warning(s)')
     ) {
-        const parts = output.split('warning(s)')[1].split('jdoodle.cs')[0];
-
-        const answer = parts
-            .split('\n')
-            .map((line) => line.trim())
-            .filter((line) => line.length > 0);
-
-        output = answer.length > 0 ? answer[0] : '';
+        const parts = output.split('warning(s)\n')[1].split('jdoodle.cs')[0];
+        output = parts.split('\n').join('\n').trim();
     }
     if (language === 'swift' && output.includes(': warning: ')) {
-        output = output.split('\njdoodle.swift')[0];
+        output = output.split('\njdoodle.swift')[0].trim();
     }
     if (output.includes('JDoodle - output Limit reached.')) {
         output = '출력 초과';
