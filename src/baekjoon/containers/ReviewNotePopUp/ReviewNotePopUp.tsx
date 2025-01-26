@@ -81,8 +81,9 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = () => {
                             row.querySelector('.time')?.textContent?.trim() ||
                             '',
                         result:
-                            row.querySelector('.result')?.textContent?.trim() ||
-                            '',
+                            row
+                                .querySelector('.result-text')
+                                ?.textContent?.trim() || '',
                     };
                     return codeInfo;
                 }
