@@ -1,4 +1,8 @@
-import { postprecessOutput } from './baekjoon/utils/compile';
+import {
+    postprecessOutput,
+    processErrorCode,
+    trimLineByLine,
+} from './baekjoon/utils/compile';
 import { CodeCompileRequest } from './common/types/compile';
 
 /**
@@ -18,11 +22,16 @@ async function SolvedApiCall(problemId: number) {
 async function compile(data: CodeCompileRequest) {
     return fetch(process.env.JDOODLE_API_URL as string, {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
     })
-        .then((response) => response.json())
-        .then((json) => json.output.trim())
-        .then((output) => postprecessOutput(data.language, output));
+        .then((response) => {
+            if (!response.ok) throw new Error(response.status.toString());
+            return response.json();
+        })
+        .then((json) => trimLineByLine(json.output))
+        .then((output) => postprecessOutput(data.language, output))
+        .catch((e) => processErrorCode(e.message));
 }
 
 function handleMessage(request: any, sender: any, sendResponse: any) {
@@ -74,5 +83,51 @@ function handleMessage(request: any, sender: any, sendResponse: any) {
     }
     return true;
 }
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === 'saveRepository') {
+        const blob = new Blob([request.content], { type: 'text/markdown' });
+        let today = new Date();
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const dataUrl = reader.result;
+
+            if (typeof dataUrl === 'string') {
+                chrome.downloads.download(
+                    {
+                        url: dataUrl,
+                        filename: `AlgoPlus${today.getFullYear()}${(
+                            today.getMonth() + 1
+                        )
+                            .toString()
+                            .padStart(2, '0')}${today
+                            .getDate()
+                            .toString()
+                            .padStart(2, '0')}.md`,
+                        saveAs: true,
+                    },
+                    (downloadId) => {
+                        if (downloadId) {
+                            sendResponse({ status: 'success' });
+                        } else {
+                            sendResponse({
+                                status: 'error',
+                                message: 'Download failed',
+                            });
+                        }
+                    }
+                );
+            } else {
+                sendResponse({
+                    status: 'error',
+                    message: 'Failed to create data URL',
+                });
+            }
+        };
+        reader.readAsDataURL(blob);
+        return true;
+    }
+});
 
 chrome.runtime.onMessage.addListener(handleMessage);

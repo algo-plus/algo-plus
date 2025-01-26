@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { SubmitPostRequest } from '../types/submit';
+import { SubmitPostRequest } from '@/baekjoon/types/submit';
 
 async function submit(
     data: SubmitPostRequest,

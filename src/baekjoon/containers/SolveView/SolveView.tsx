@@ -43,10 +43,12 @@ import {
     saveDefaultLanguageId,
 } from '@/baekjoon/utils/storage/editor';
 import {
+    checkServerError,
     checkCompileError,
     preprocessSourceCode,
 } from '@/baekjoon/utils/compile';
 import { getReferenceUrl } from '@/common/utils/language-reference-url';
+import './SolveView.css';
 
 type SolveViewProps = {
     problemId: string;
@@ -175,16 +177,12 @@ const SolveView: React.FC<SolveViewProps> = ({
                         const newTestCases = [...currentTestCases];
                         newTestCases[index].result = output;
                         setTargetTestCases(newTestCases);
-                        if (checkCompileError(language, output)) {
+                        if (
+                            checkServerError(output) ||
+                            checkCompileError(language, output)
+                        ) {
                             setTestCaseState('error');
                             setErrorMessage(output);
-                            return;
-                        }
-                        if (output == 'error') {
-                            setTestCaseState('error');
-                            setErrorMessage(
-                                `컴파일 서버에서 오류가 발생했습니다.\n`
-                            );
                             return;
                         }
                     }
@@ -354,7 +352,7 @@ const SolveView: React.FC<SolveViewProps> = ({
 
     return (
         <>
-            <div style={{ height: '100%' }}>
+            <div id='solve-view'>
                 <HorizontalSplitView
                     left={
                         <ProblemPanel

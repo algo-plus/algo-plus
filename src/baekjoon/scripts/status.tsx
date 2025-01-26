@@ -1,26 +1,23 @@
 import { createRoot } from 'react-dom/client';
 import { ReviewModal } from '@/baekjoon/containers/ReviewModal';
 import React from 'react';
-import { fetchCode } from '../apis/source';
+import { fetchCode } from '@/baekjoon/apis/source';
 import { getUrlSearchParam } from '@/common/utils/url';
 import {
     getWrongModalMessage,
     isJudgingState,
     isWrongState,
 } from '@/baekjoon/utils/status';
-import {
-    getObjectFromLocalStorage,
-} from '@/common/utils/storage';
-import WrongResultModal from '../containers/WrongResultModal/WrongResultModal';
-import { CodeInfoContent } from '../components/CodeInfoContent';
+import WrongResultModal from '@/baekjoon/containers/WrongResultModal/WrongResultModal';
+import { CodeInfoContent } from '@/baekjoon/components/CodeInfoContent';
 import {
     clearReviewCode,
     loadReviewCode,
     removeReviewCode,
     saveReviewCode,
-} from '../utils/storage/review';
+} from '@/baekjoon/utils/storage/review';
 import './status.css';
-import { CodeNullContent } from '../components/CodeINullContent';
+import { CodeNullContent } from '@/baekjoon/components/CodeINullContent';
 
 const customStatusPage = async () => {
     if (
@@ -89,13 +86,6 @@ const customStatusPage = async () => {
     button.classList.add('btn', 'btn-primary');
 
     button.addEventListener('click', async () => {
-        const enable = await getObjectFromLocalStorage('alpEnable');
-        if(!enable) {
-            clearReviewCode();
-            location.reload();
-            alert('오답노트 작성을 위해서는 깃허브 연결이 필요합니다.');
-            return enable;
-        }
         const sourceCodes = await getSourceCode();
         if (sourceCodes.length === 0) {
             alert('제출번호를 눌러 코드를 선택해주세요.(최대 2개)');

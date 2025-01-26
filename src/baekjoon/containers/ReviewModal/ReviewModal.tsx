@@ -6,8 +6,10 @@ import { Prism } from 'react-syntax-highlighter';
 import { coy } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { startLoader } from '@/baekjoon/utils/baekjoon';
 import { markdownReview } from '@/baekjoon/utils/review';
-import { InfoModal } from '../InfoModal';
+import { InfoModal } from '@/baekjoon/containers/InfoModal';
 import { createRoot } from 'react-dom/client';
+import { getHook, getObjectFromLocalStorage, getStats, getToken } from '@/common/utils/storage';
+import { GitHub } from '@/baekjoon/utils/github';
 
 let startLineIndex: number = -1;
 let endLineIndex: number = -1;
@@ -22,6 +24,27 @@ const ReviewModal = (modalProps: ModalProps) => {
             modalBackdrop.remove();
         }
     };
+
+    // const uploadCheck = async () => {
+
+        // const token: any = await getToken();
+        // const hook: any = await getHook();
+        
+        //  const git = new GitHub(hook, token);
+        //  const stats: any = await getStats();
+
+        //  let default_branch = stats.branches[hook];
+
+        // stats.branches[hook] = default_branch ?? await git.getDefaultBranchOnRepo();
+
+        //  const { refSHA, ref } = await git.getReference(default_branch);
+        //  if(refSHA ==null && ref == null) {
+        //     // 깃허브 업로드 버튼 없애기
+        //     const target = document.querySelector('#githubUploadBtn');
+            
+        //     return;
+        // }
+    // }
 
     const changeOrderWarn = () => {
         if (confirm('작성한 내용이 사라집니다. 진행하시겠습니까?')) {
@@ -51,7 +74,13 @@ const ReviewModal = (modalProps: ModalProps) => {
         setInfoModalOpen(false);
     };
 
-    const save = () => {
+    const upload = async() => {
+        const enable = await getObjectFromLocalStorage('alpEnable');
+        if (!enable) {
+            alert('오답노트 작성을 위해서는 깃허브 연결이 필요합니다.');
+            return enable;
+        }
+
         const reviewMarkDownContent: ReviewMarkdownContent = {
             oldCode: oldCode,
             newCode: newCode,
@@ -59,6 +88,20 @@ const ReviewModal = (modalProps: ModalProps) => {
             comment: comment,
         };
         startLoader(markdownReview(reviewMarkDownContent), closeModal);
+    };
+
+    const localSave = () => {
+        const reviewMarkDownContent: ReviewMarkdownContent = {
+            oldCode: oldCode,
+            newCode: newCode,
+            commentBlocks: codeBlocks,
+            comment: comment,
+        };
+
+        chrome.runtime.sendMessage({
+            action: 'saveRepository',
+            content: markdownReview(reviewMarkDownContent),
+        });
     };
 
     const oldCode = modalProps.sourceCodes[0]?.code || '';
@@ -251,6 +294,7 @@ const ReviewModal = (modalProps: ModalProps) => {
             },
         },
     };
+    // uploadCheck();
 
     return (
         <>
@@ -482,9 +526,17 @@ const ReviewModal = (modalProps: ModalProps) => {
                     <button
                         type='button'
                         className='btn btn-primary'
-                        onClick={save}
+                        id='githubUploadBtn'
+                        onClick={upload}
                     >
-                        저장
+                        깃허브 업로드
+                    </button>
+                    <button
+                        type='button'
+                        className='btn btn-primary'
+                        onClick={localSave}
+                    >
+                        로컬 저장
                     </button>
                 </div>
                 <div id='loaderModal' className='loader-modal'>

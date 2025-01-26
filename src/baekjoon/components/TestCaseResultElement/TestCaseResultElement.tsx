@@ -34,10 +34,10 @@ const TestCaseResultElement: React.FC<TestCaseResultElementProps> = ({
                 <p>
                     <span>실행 결과</span>
                     <span
-                        style={
+                        className={
                             output == expectedValue
-                                ? { color: 'blue' }
-                                : { color: 'red' }
+                                ? 'test-case-success'
+                                : 'test-case-wrong'
                         }
                     >
                         {output == undefined ? (

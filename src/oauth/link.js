@@ -1,48 +1,27 @@
-const githubButton = document.querySelector('#github-button');
-const localButton = document.querySelector('#local-button');
 const githubSetting = document.querySelector('#github-setting');
-const localSetting = document.querySelector('#local-setting');
 const githubAuth = document.querySelector('#github-auth');
 const inputText = document.querySelector('#name');
 const maskingCheck = document.querySelector('#masking_check');
-
-localButton.addEventListener('click', () => {
-    localButton.style.backgroundColor = '#0076c0';
-    localButton.style.color = 'white';
-    githubButton.style.backgroundColor = 'lightgray';
-    githubButton.style.color = 'gray';
-    githubSetting.style.display = 'none';
-    localSetting.style.display = 'block';
-});
-
-githubButton.addEventListener('click', () => {
-    githubButton.style.backgroundColor = '#0076c0';
-    githubButton.style.color = 'white';
-    localButton.style.backgroundColor = 'lightgray';
-    localButton.style.color = 'gray';
-    githubSetting.style.display = 'block';
-    localSetting.style.display = 'none';
-});
+const typeCheck = document.querySelector('#type');
 
 document.addEventListener('DOMContentLoaded', () => {
     inputText.addEventListener('input', (e) => {
         const text = e.target.value;
-        maskingCheck.textContent = maskKorean(text);
+        if(typeCheck.value==='new'){
+            maskingCheck.textContent = maskKoreanNewRepo(text);
+        }else{
+            maskingCheck.textContent = maskKoreanExistRepo(text);
+        }
     });
 });
     
-function maskKorean(text) {
+function maskKoreanNewRepo(text) {
     return 'Your new repository will be created as  '+ text.replace(/[\u3131-\u318E\uAC00-\uD7A3]+/g, '-');
 }
 
-document.querySelector('#local-name-save').addEventListener('click', () => {
-    const repoName = document.querySelector('#repositoryNameInput').value;
-    chrome.runtime.sendMessage({
-        action: 'saveRepository',
-        repositoryName: repoName,
-    });
-    window.alert('추후 업데이트 예정');
-});
+function maskKoreanExistRepo(text) {
+    return 'Your repository will be linked to the '+ text.replace(/[\u3131-\u318E\uAC00-\uD7A3]+/g, '-');
+}
 
 chrome.storage.local.get('alpEnable', (data4) => {
     if (data4.alpEnable === undefined) {
@@ -112,6 +91,7 @@ const repositoryName = () => {
 };
 
 const statusCode = (res, status, name) => {
+    console.log(status)
     switch (status) {
         case 304:
             $('#success').hide();
@@ -280,6 +260,15 @@ const linkRepo = (token, name) => {
                         }
                     );
                 }
+            }else if(xhr.status === 401){
+                //캐시 비우기
+                // chrome.storage.local.remove("AlgoPlus_username");
+                // chrome.storage.local.remove(AlgoPlus_token);
+                // chrome.storage.local.remove(pipe_AlgoPlus);
+                // chrome.storage.local.remove(repositories);
+                chrome.storage.local.remove("isSync");
+
+                return;
             }
         }
     });

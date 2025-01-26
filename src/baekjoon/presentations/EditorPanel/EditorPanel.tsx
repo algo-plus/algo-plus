@@ -25,6 +25,13 @@ const EditorPanel: React.FC<EditorPanelProps> = ({
 
     useEffect(() => {
         saveTheme(theme);
+        if (theme === 'vs-code-dark') {
+            document.body.classList.add('algoplus-dark-theme');
+            document.body.classList.remove('algoplus-light-theme');
+        } else {
+            document.body.classList.remove('algoplus-dark-theme');
+            document.body.classList.add('algoplus-light-theme');
+        }
     }, [theme]);
 
     return (
@@ -38,7 +45,7 @@ const EditorPanel: React.FC<EditorPanelProps> = ({
                 fontSize: '16px',
                 border:
                     '1px solid ' +
-                    (theme === 'vs-code-dark' ? '#1F1F1F' : '#cccccc'),
+                    (theme === 'vs-code-dark' ? '#3F3F3F' : '#cccccc'),
             }}
         >
             <PrismCodeEditor

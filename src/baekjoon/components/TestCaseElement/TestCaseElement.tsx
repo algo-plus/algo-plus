@@ -42,6 +42,7 @@ const TestCaseElement: React.FC<TestCaseElementProps> = ({
                         testCase.input = event.target.value;
                         resize();
                     }}
+                    spellCheck='false'
                 ></textarea>
             </section>
             <section className='test-case-element'>
@@ -70,6 +71,7 @@ const TestCaseElement: React.FC<TestCaseElementProps> = ({
                         testCase.output = event.target.value;
                         resize();
                     }}
+                    spellCheck='false'
                 ></textarea>
             </section>
         </div>

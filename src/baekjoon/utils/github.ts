@@ -78,9 +78,20 @@ async function getReference(
             },
         }
     )
-        .then((res) => res.json())
+    // .then((res) => res.json())
+    .then((res) => {
+        if (res.status === 401) {
+            chrome.storage.local.remove("isSync");
+            // 401 에러 처리
+            return 'error';
+        }
+        return res.json();
+    })
         .then((data) => {
-            return { refSHA: data.object.sha, ref: data.ref };
+            if( data!=='error' ) {
+                return { refSHA: data.object.sha, ref: data.ref };
+            }
+            return { refSHA: null, ref: null };
         });
 }
 async function createBlob(

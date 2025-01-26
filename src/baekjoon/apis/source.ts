@@ -1,4 +1,4 @@
-import { CodeProps } from '../types/source';
+import { CodeProps } from '@/baekjoon/types/source';
 
 function parseLang(str: string) {
     const parsed = str.slice(7, str.length);
