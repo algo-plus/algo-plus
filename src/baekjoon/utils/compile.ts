@@ -1,4 +1,5 @@
 import { CompilerLanguage } from '@/common/types/compile';
+import { error } from 'jquery';
 
 const CompileErrorFormatConvertMap: Record<CompilerLanguage, string> = {
     c: 'main.c',
@@ -14,15 +15,16 @@ const CompileErrorFormatConvertMap: Record<CompilerLanguage, string> = {
     go: 'jdoodle.go',
 };
 
-const errorMessages: string[] = [
-    `Algo Plus - 서비스 이용 한도 초과 안내\n
+const errorMessages: Record<string, string> = {
+    limit_exceeded: `Algo Plus - 서비스 이용 한도 초과 안내\n
     현재 이용량 증가로 인해 일일 코드 실행 호출 한도가 초과되었습니다.
     한도는 매일 오전 9시에 자동으로 초기화됩니다.\n
     더 나은 서비스와 안정적인 환경을 제공하기 위해 최선을 다하겠습니다.
     너른 양해 부탁드립니다.`,
-    '서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
-    '올바르지 않은 요청입니다. 같은 문제가 계속 발생한다면 관리자에게 문의해주세요.\n\n문의: algoplus.official@gmail.com',
-];
+    server_error: '서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
+    invalid_request:
+        '올바르지 않은 요청입니다. 같은 문제가 계속 발생한다면 관리자에게 문의해주세요.\n\n문의: algoplus.official@gmail.com',
+};
 
 const trimLineByLine = (text: string): string => {
     return text
@@ -85,16 +87,18 @@ const checkCompileError = (lang: CompilerLanguage, output: string): boolean => {
 };
 
 const checkServerError = (output: string): boolean => {
-    return errorMessages.includes(output);
+    return Object.entries(errorMessages).some(([key, message]) =>
+        output.includes(message)
+    );
 };
 
 const processErrorCode = (status: number): string => {
     if (status == 429) {
-        return errorMessages[0];
+        return errorMessages.limit_exceeded;
     } else if (status < 410) {
-        return errorMessages[2];
+        return errorMessages.invalid_request;
     }
-    return errorMessages[1];
+    return errorMessages.server_error;
 };
 
 export {
