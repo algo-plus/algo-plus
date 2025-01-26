@@ -22,6 +22,7 @@
 
 /* BOJ Extended와 디자인 충돌을 해결하기 위한 스타일 설정 */
 html[theme='dark'] p,
-html[theme='dark'] li {
+html[theme='dark'] li,
+html[theme='dark'] .algoplus-modal h1 {
     color: #555 !important;
 }

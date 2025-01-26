@@ -1,6 +1,5 @@
 import React from 'react';
 import './Button.css';
-import style from 'react-syntax-highlighter/dist/esm/styles/hljs/a11y-dark';
 
 const Button = (props: {
     text: string;
@@ -10,7 +9,7 @@ const Button = (props: {
     return (
         <button
             className='review-note-pop-up__button'
-            style={{ ...style }}
+            style={{ ...props.style }}
             onClick={props.onClick}
         >
             {props.text}
