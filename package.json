@@ -27,7 +27,8 @@
         "react-dom": "^18.2.0",
         "react-syntax-highlighter": "^15.5.0",
         "react-uuid": "^2.0.0",
-        "sha1": "^1.1.1"
+        "sha1": "^1.1.1",
+        "uuid": "^11.0.5"
     },
     "devDependencies": {
         "@types/chrome": "0.0.158",
@@ -39,6 +40,7 @@
         "@types/react-dom": "^18.0.11",
         "@types/react-syntax-highlighter": "^15.5.11",
         "@types/sha1": "^1.1.5",
+        "@types/uuid": "^10.0.0",
         "copy-webpack-plugin": "^9.0.1",
         "css-loader": "^7.1.1",
         "glob": "^7.1.6",
