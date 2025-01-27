@@ -5,13 +5,6 @@
     position: relative;
 }
 
-.algoplus-review-note-content .code-description span {
-    width: 100%;
-    padding: 0 16px;
-    font-weight: 700;
-    text-align: center;
-}
-
 .algoplus-review-note-button-box {
     width: 100%;
     display: flex;
@@ -30,4 +23,7 @@
 
 .change-order-button:hover {
     color: #0c00bb;
+}
+.review-note-write-container {
+    width: 100%;
 }

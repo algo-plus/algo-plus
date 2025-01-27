@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer-continued';
 import './ReviewModal.css';
-import { ModalProps } from '@/common/types/source';
 import { Prism } from 'react-syntax-highlighter';
 import { coy } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { startLoader } from '@/baekjoon/utils/baekjoon';
@@ -15,10 +14,14 @@ import {
     getToken,
 } from '@/common/utils/storage';
 import { GitHub } from '@/baekjoon/utils/github';
+import { SourceCode } from '@/common/types/source';
 
 let startLineIndex: number = -1;
 let endLineIndex: number = -1;
 let position: String = 'S-';
+type ModalProps = {
+    sourceCodes: (SourceCode | null)[];
+};
 
 const ReviewModal = (modalProps: ModalProps) => {
     const [isInfoModalOpen, setInfoModalOpen] = useState(false);
