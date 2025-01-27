@@ -25,6 +25,12 @@ const ReviewNoteBlock: React.FC<ReviewNoteBlockProps> = ({
     );
     const [comment, setComment] = useState<string>(codeBlock.comment);
 
+    const onBlockDelete = () => {
+        if (confirm('블록을 삭제하시겠습니까?')) {
+            onDelete();
+        }
+    };
+
     return (
         <div className={`review-note-block ${readonly ? 'readonly' : ''}`}>
             <ReviewWriteCodeBlock
@@ -59,7 +65,7 @@ const ReviewNoteBlock: React.FC<ReviewNoteBlockProps> = ({
                         ></Button>
                         <Button
                             text='삭제'
-                            onClick={onDelete}
+                            onClick={onBlockDelete}
                             style={{ width: '100%' }}
                         ></Button>
                     </div>

@@ -43,6 +43,12 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
         setCodeBlocks((prevCodeBlocks) => [...prevCodeBlocks, codeBlock]);
     };
 
+    const deleteCodeBlock = (id: string) => {
+        setCodeBlocks((prevCodeBlocks) =>
+            prevCodeBlocks.filter((codeBlock) => codeBlock.id !== id)
+        );
+    };
+
     const changeOrder = () => {
         if (confirm('작성한 내용이 사라집니다. 진행하시겠습니까?')) {
             setSourceCodes((prev) => [...prev].reverse());
@@ -91,7 +97,10 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
                                     setCurrentCodeBlock(new CodeBlock());
                                 }}
                             />
-                            <ReviewNotes codeBlocks={codeBlocks} />
+                            <ReviewNotes
+                                codeBlocks={codeBlocks}
+                                onDelete={deleteCodeBlock}
+                            />
                         </div>
                     </div>
                 </>

@@ -6,24 +6,36 @@ import { ReviewNoteBlock } from '../ReviewNoteBlock';
 
 type ReviewNotesProps = {
     codeBlocks: CodeBlock[];
+    onDelete: (id: string) => void;
 };
 
 const ReviewNotes: React.FC<ReviewNotesProps> = ({
     codeBlocks,
+    onDelete,
 }: ReviewNotesProps) => {
     return (
         <>
-            {codeBlocks.map((codeBlock, index) => (
+            {codeBlocks.length > 0 ? (
                 <>
                     <hr />
-                    <ReviewNoteBlock
-                        key={index}
-                        codeBlock={codeBlock}
-                        onUpdate={() => {}}
-                        onDelete={() => {}}
-                    />
+                    <h2 style={{ textAlign: 'center', marginBottom: '10px' }}>
+                        작성한 노트
+                    </h2>
+                    {codeBlocks.map((codeBlock, index) => (
+                        <>
+                            {index > 0 ? <hr /> : <></>}
+                            <ReviewNoteBlock
+                                key={codeBlock.id}
+                                codeBlock={codeBlock}
+                                onUpdate={() => {}}
+                                onDelete={() => onDelete(codeBlock.id)}
+                            />
+                        </>
+                    ))}
                 </>
-            ))}
+            ) : (
+                <></>
+            )}
         </>
     );
 };

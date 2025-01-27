@@ -1,9 +1,12 @@
+import uuid from 'react-uuid';
+
 type SourceCode = {
     code: string | null;
     lang: string | null;
 };
 
 class CodeBlock {
+    id: string = uuid();
     oldCode: string = '';
     oldCodeName: string = '이전 코드';
     newCode: string = '';

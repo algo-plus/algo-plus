@@ -48,6 +48,9 @@ const ReviewWriteBlock: React.FC<ReviewWriteBlockProps> = ({
             {oldCode || newCode ? (
                 <>
                     <hr />
+                    <h2 style={{ textAlign: 'center', marginBottom: '10px' }}>
+                        노트 작성
+                    </h2>
                     <div className='review-note-write-container'>
                         <ReviewWriteCodeBlock
                             icon='✏️'

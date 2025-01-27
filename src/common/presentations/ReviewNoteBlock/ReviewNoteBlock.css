@@ -1,6 +1,7 @@
 .review-note-block {
     padding: 15px;
     border-radius: 10px !important;
+    background-color: #fafafa;
 }
 
 .review-note-block.readonly {
