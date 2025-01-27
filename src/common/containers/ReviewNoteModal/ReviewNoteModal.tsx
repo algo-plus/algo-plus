@@ -11,6 +11,7 @@ import { CodeDiffViewer } from '@/common/presentations/CodeDiffViewer';
 import { Button } from '@/common/components/Button';
 import { ReviewWriteBlock } from '@/common/presentations/ReviewWriteBlock';
 import { ReviewNotes } from '@/common/presentations/ReviewNotes';
+import { ReviewWriteCommentBlock } from '@/common/components/ReviewWriteCommentBlock';
 
 type ReviewNoteModalProps = {
     modalOpen: boolean;
@@ -33,6 +34,7 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
     const [currentCodeBlock, setCurrentCodeBlock] = useState<CodeBlock>(
         new CodeBlock()
     );
+    const [comment, setComment] = useState<string>('');
 
     useEffect(() => {
         setSourceCodes(props.sourceCodes);

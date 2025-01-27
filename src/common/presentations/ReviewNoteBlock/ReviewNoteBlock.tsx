@@ -33,20 +33,28 @@ const ReviewNoteBlock: React.FC<ReviewNoteBlockProps> = ({
 
     return (
         <div className={`review-note-block ${readonly ? 'readonly' : ''}`}>
-            <ReviewWriteCodeBlock
-                icon='✏️'
-                codeName={oldCodeName}
-                code={codeBlock.oldCode}
-                onChangeCodeName={(codeName) => setOldCodeName(codeName)}
-                readonly={readonly}
-            />
-            <ReviewWriteCodeBlock
-                icon='🖊️'
-                codeName={newCodeName}
-                code={codeBlock.newCode}
-                onChangeCodeName={(codeName) => setNewCodeName(codeName)}
-                readonly={readonly}
-            />
+            {codeBlock.oldCode ? (
+                <ReviewWriteCodeBlock
+                    icon='✏️'
+                    codeName={oldCodeName}
+                    code={codeBlock.oldCode}
+                    onChangeCodeName={(codeName) => setOldCodeName(codeName)}
+                    readonly={readonly}
+                />
+            ) : (
+                <></>
+            )}
+            {codeBlock.newCode ? (
+                <ReviewWriteCodeBlock
+                    icon='🖊️'
+                    codeName={newCodeName}
+                    code={codeBlock.newCode}
+                    onChangeCodeName={(codeName) => setNewCodeName(codeName)}
+                    readonly={readonly}
+                />
+            ) : (
+                <></>
+            )}
             {codeBlock.oldCode || codeBlock.newCode ? (
                 <>
                     <ReviewWriteCommentBlock

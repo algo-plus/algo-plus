@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './ReviewWriteCommentBlock.css';
+import AutoResizableTextarea from '../AutoResizableTextarea/AutoResizableTextarea';
 
 type ReviewWriteCommentBlockProps = {
     icon?: string;
@@ -11,15 +12,6 @@ type ReviewWriteCommentBlockProps = {
 const ReviewWriteCommentBlock: React.FC<ReviewWriteCommentBlockProps> = (
     props: ReviewWriteCommentBlockProps
 ) => {
-    const [rows, setRows] = useState(getOptimalRows());
-    const resize = (comment: string) => {
-        setRows(Math.max(getOptimalRows(), comment.split('\n').length));
-    };
-
-    function getOptimalRows() {
-        return props.comment.split('\n').length;
-    }
-
     return (
         <div
             className={`review-write-comment-block ${
@@ -30,16 +22,11 @@ const ReviewWriteCommentBlock: React.FC<ReviewWriteCommentBlockProps> = (
                 <label>{props.icon}</label>
                 <p>코멘트</p>
             </div>
-            <textarea
-                rows={rows}
-                onChange={(event) => {
-                    props.onChangeComment(event.target.value);
-                    resize(event.target.value);
-                }}
-                spellCheck='false'
+            <AutoResizableTextarea
+                onChange={(event) => props.onChangeComment(event.target.value)}
                 defaultValue={props.comment}
                 disabled={props.readonly}
-            ></textarea>
+            />
         </div>
     );
 };
