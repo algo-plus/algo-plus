@@ -11,7 +11,7 @@ import { CodeDiffViewer } from '@/common/presentations/CodeDiffViewer';
 import { Button } from '@/common/components/Button';
 import { ReviewWriteBlock } from '@/common/presentations/ReviewWriteBlock';
 import { ReviewNotes } from '@/common/presentations/ReviewNotes';
-import { ReviewWriteCommentBlock } from '@/common/components/ReviewWriteCommentBlock';
+import ReviewOverallCommentBlock from '@/common/presentations/ReviewOverallCommentBlock/ReviewOverallCommentBlock';
 
 type ReviewNoteModalProps = {
     modalOpen: boolean;
@@ -91,6 +91,7 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
                             handleRangeSelection={handleRangeSelection}
                         />
                         <div className='review-note'>
+                            <ReviewOverallCommentBlock />
                             <ReviewWriteBlock
                                 codeBlock={currentCodeBlock}
                                 setCodeBlock={setCurrentCodeBlock}

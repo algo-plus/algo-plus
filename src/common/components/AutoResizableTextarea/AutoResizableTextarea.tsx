@@ -5,6 +5,7 @@ type AutoResizableTextareaProps = {
     defaultRow?: number;
     onChange?: (event: ChangeEvent<HTMLTextAreaElement>) => void;
     defaultValue?: string;
+    placeholder?: string;
     disabled?: boolean;
 };
 
@@ -43,6 +44,7 @@ const AutoResizableTextarea: React.FC<AutoResizableTextareaProps> = (
             spellCheck='false'
             defaultValue={value}
             disabled={props.disabled}
+            placeholder={props.placeholder}
         ></textarea>
     );
 };
