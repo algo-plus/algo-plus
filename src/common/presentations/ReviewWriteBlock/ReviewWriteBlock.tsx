@@ -38,43 +38,59 @@ const ReviewWriteBlock: React.FC<ReviewWriteBlockProps> = ({
             newCodeName: newCodeName,
             comment: comment,
         };
+        setComment('');
         setCodeBlock(registered);
         onRegistReviewBlock(registered);
     };
 
     return (
-        <div className='review-note-write-container'>
-            <ReviewWriteCodeBlock
-                icon='✏️'
-                codeName={oldCodeName}
-                code={oldCode}
-                onChangeCodeName={(codeName) => setOldCodeName(codeName)}
-            />
-            <ReviewWriteCodeBlock
-                icon='🖊️'
-                codeName={newCodeName}
-                code={newCode}
-                onChangeCodeName={(codeName) => setNewCodeName(codeName)}
-            />
+        <>
             {oldCode || newCode ? (
                 <>
-                    <ReviewWriteCommentBlock
-                        icon='📝'
-                        comment={comment}
-                        onChangeComment={(comment) => setComment(comment)}
-                    />
-                    <div className='button-container'>
-                        <Button
-                            text='등록'
-                            onClick={registReviewBlock}
-                            style={{ width: '100%' }}
-                        ></Button>
+                    <hr />
+                    <div className='review-note-write-container'>
+                        <ReviewWriteCodeBlock
+                            icon='✏️'
+                            codeName={oldCodeName}
+                            code={oldCode}
+                            onChangeCodeName={(codeName) =>
+                                setOldCodeName(codeName)
+                            }
+                        />
+                        <ReviewWriteCodeBlock
+                            icon='🖊️'
+                            codeName={newCodeName}
+                            code={newCode}
+                            onChangeCodeName={(codeName) =>
+                                setNewCodeName(codeName)
+                            }
+                        />
+                        {oldCode || newCode ? (
+                            <>
+                                <ReviewWriteCommentBlock
+                                    icon='📝'
+                                    comment={comment}
+                                    onChangeComment={(comment) =>
+                                        setComment(comment)
+                                    }
+                                />
+                                <div className='button-container'>
+                                    <Button
+                                        text='등록'
+                                        onClick={registReviewBlock}
+                                        style={{ width: '100%' }}
+                                    ></Button>
+                                </div>
+                            </>
+                        ) : (
+                            <></>
+                        )}
                     </div>
                 </>
             ) : (
                 <></>
             )}
-        </div>
+        </>
     );
 };
 

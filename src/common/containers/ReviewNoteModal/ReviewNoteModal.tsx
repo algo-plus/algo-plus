@@ -10,6 +10,7 @@ import {
 import { CodeDiffViewer } from '@/common/presentations/CodeDiffViewer';
 import { Button } from '@/common/components/Button';
 import { ReviewWriteBlock } from '@/common/presentations/ReviewWriteBlock';
+import { ReviewNotes } from '@/common/presentations/ReviewNotes';
 
 type ReviewNoteModalProps = {
     modalOpen: boolean;
@@ -38,10 +39,15 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
         setCodeDescriptions(props.codeDescriptions);
     }, [props.sourceCodes, props.codeDescriptions]);
 
+    const addCodeBlock = (codeBlock: CodeBlock) => {
+        setCodeBlocks((prevCodeBlocks) => [...prevCodeBlocks, codeBlock]);
+    };
+
     const changeOrder = () => {
         if (confirm('작성한 내용이 사라집니다. 진행하시겠습니까?')) {
             setSourceCodes((prev) => [...prev].reverse());
             setCodeDescriptions((prev) => [...prev].reverse());
+            setCurrentCodeBlock(new CodeBlock());
         }
     };
 
@@ -55,8 +61,6 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
             [side === DiffViewerSide.LEFT ? 'oldCode' : 'newCode']: code,
         });
     };
-
-    useEffect(() => console.log(codeBlocks), [codeBlocks]);
 
     return (
         <Modal
@@ -78,15 +82,16 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
                             sourceCodes={sourceCodes}
                             handleRangeSelection={handleRangeSelection}
                         />
-                        <hr />
                         <div className='review-note'>
                             <ReviewWriteBlock
                                 codeBlock={currentCodeBlock}
                                 setCodeBlock={setCurrentCodeBlock}
                                 onRegistReviewBlock={(codeBlock) => {
-                                    console.log(codeBlock);
+                                    addCodeBlock(codeBlock);
+                                    setCurrentCodeBlock(new CodeBlock());
                                 }}
                             />
+                            <ReviewNotes codeBlocks={codeBlocks} />
                         </div>
                     </div>
                 </>

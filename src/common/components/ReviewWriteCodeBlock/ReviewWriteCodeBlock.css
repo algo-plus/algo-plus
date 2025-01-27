@@ -27,6 +27,10 @@
     outline: none;
 }
 
-.review-write-code-block .code-name-input:focus-within {
+.review-write-code-block:not(.readonly) .code-name-input:focus-within {
     border-color: #0065d1 !important;
+}
+
+.review-write-code-block pre {
+    background-color: #ffffff;
 }

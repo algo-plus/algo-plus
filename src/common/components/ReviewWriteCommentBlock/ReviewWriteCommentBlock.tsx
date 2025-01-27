@@ -5,6 +5,7 @@ type ReviewWriteCommentBlockProps = {
     icon?: string;
     comment: string;
     onChangeComment: (comment: string) => void;
+    readonly?: boolean;
 };
 
 const ReviewWriteCommentBlock: React.FC<ReviewWriteCommentBlockProps> = (
@@ -20,7 +21,11 @@ const ReviewWriteCommentBlock: React.FC<ReviewWriteCommentBlockProps> = (
     }
 
     return (
-        <div className='review-write-comment-block'>
+        <div
+            className={`review-write-comment-block ${
+                props.readonly ? 'readonly' : ''
+            }`}
+        >
             <div className='review-write-comment-block__header'>
                 <label>{props.icon}</label>
                 <p>코멘트</p>
@@ -33,6 +38,7 @@ const ReviewWriteCommentBlock: React.FC<ReviewWriteCommentBlockProps> = (
                 }}
                 spellCheck='false'
                 defaultValue={props.comment}
+                disabled={props.readonly}
             ></textarea>
         </div>
     );
