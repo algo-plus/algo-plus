@@ -52,22 +52,30 @@ const ReviewWriteBlock: React.FC<ReviewWriteBlockProps> = ({
                         노트 작성
                     </h2>
                     <div className='review-note-write-container'>
-                        <ReviewWriteCodeBlock
-                            icon='✏️'
-                            codeName={oldCodeName}
-                            code={oldCode}
-                            onChangeCodeName={(codeName) =>
-                                setOldCodeName(codeName)
-                            }
-                        />
-                        <ReviewWriteCodeBlock
-                            icon='🖊️'
-                            codeName={newCodeName}
-                            code={newCode}
-                            onChangeCodeName={(codeName) =>
-                                setNewCodeName(codeName)
-                            }
-                        />
+                        {oldCode ? (
+                            <ReviewWriteCodeBlock
+                                icon='✏️'
+                                codeName={oldCodeName}
+                                code={oldCode}
+                                onChangeCodeName={(codeName) =>
+                                    setOldCodeName(codeName)
+                                }
+                            />
+                        ) : (
+                            <></>
+                        )}
+                        {newCode ? (
+                            <ReviewWriteCodeBlock
+                                icon='🖊️'
+                                codeName={newCodeName}
+                                code={newCode}
+                                onChangeCodeName={(codeName) =>
+                                    setNewCodeName(codeName)
+                                }
+                            />
+                        ) : (
+                            <></>
+                        )}
                         {oldCode || newCode ? (
                             <>
                                 <ReviewWriteCommentBlock
