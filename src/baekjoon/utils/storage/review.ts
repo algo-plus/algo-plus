@@ -1,3 +1,4 @@
+import { CodeStorageSaveInfo } from '@/baekjoon/types/review';
 import {
     getObjectFromLocalStorage,
     saveObjectInLocalStorage,
@@ -12,7 +13,7 @@ const saveReviewCode = async (
     time: number,
     result: string
 ) => {
-    const data: CodeInfoModalProps = {
+    const data: CodeStorageSaveInfo = {
         problemId: problemId,
         submissionNumber: submissionNumber,
         memory: memory,
@@ -28,9 +29,11 @@ const saveReviewCode = async (
     }
 };
 
-const loadReviewCode = async (): Promise<CodeInfoModalProps[]> => {
+const loadReviewCode = async (): Promise<CodeStorageSaveInfo[]> => {
     const key = REVIEW_CODE_STORAGE;
-    let result = (await getObjectFromLocalStorage(key)) as CodeInfoModalProps[];
+    let result = (await getObjectFromLocalStorage(
+        key
+    )) as CodeStorageSaveInfo[];
     return result
         ? result.sort((a, b) => b.submissionNumber - a.submissionNumber)
         : [];
@@ -38,7 +41,7 @@ const loadReviewCode = async (): Promise<CodeInfoModalProps[]> => {
 
 const removeReviewCode = async (
     submissionNumber: number
-): Promise<CodeInfoModalProps[]> => {
+): Promise<CodeStorageSaveInfo[]> => {
     const key = REVIEW_CODE_STORAGE;
     let savedReviewCode = await loadReviewCode();
     if (savedReviewCode.length > 0) {
@@ -51,7 +54,7 @@ const removeReviewCode = async (
     }
     const result = (await getObjectFromLocalStorage(
         key
-    )) as CodeInfoModalProps[];
+    )) as CodeStorageSaveInfo[];
     return result;
 };
 

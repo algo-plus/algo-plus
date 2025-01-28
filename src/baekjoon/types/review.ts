@@ -1,4 +1,4 @@
-type CodeInfoModalProps = {
+type CodeStorageSaveInfo = {
     problemId: number;
     submissionNumber: number;
     memory: number;
@@ -13,3 +13,5 @@ type CodeInfo = {
     language: string;
     result: string;
 };
+
+export type { CodeStorageSaveInfo, CodeInfo };

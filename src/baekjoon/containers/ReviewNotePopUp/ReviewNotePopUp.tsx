@@ -8,6 +8,7 @@ import { Button } from '@/common/components/Button';
 import { ReviewNoteModal } from '@/common/containers/ReviewNoteModal';
 import { SourceCode } from '@/common/types/source';
 import { CodeInfoNoteHeader } from '@/baekjoon/components/CodeInfoNoteHeader';
+import { CodeInfo } from '@/baekjoon/types/review';
 
 type ReviewNotePopUpProps = {};
 
