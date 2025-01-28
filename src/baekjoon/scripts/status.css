@@ -21,8 +21,23 @@
 }
 
 /* BOJ Extended와 디자인 충돌을 해결하기 위한 스타일 설정 */
-html[theme='dark'] p,
-html[theme='dark'] li,
-html[theme='dark'] .algoplus-modal h1 {
+html[theme='dark'] .algoplus-pop-up p,
+html[theme='dark'] .algoplus-modal h1,
+html[theme='dark'] .algoplus-modal h2,
+html[theme='dark'] .algoplus-modal input,
+html[theme='dark'] .algoplus-modal pre,
+html[theme='dark'] .algoplus-modal textarea,
+html[theme='dark'] .algoplus-modal p,
+html[theme='dark'] .algoplus-modal .change-order-button,
+html[theme='dark'] .algoplus-overlay-notification p {
     color: #555 !important;
+}
+
+html[theme='dark'] .algoplus-modal hr {
+    border-color: #eee !important;
+}
+
+html[theme='dark'] .algoplus-modal textarea,
+html[theme='dark'] .algoplus-modal pre {
+    border-color: #ccc !important;
 }
