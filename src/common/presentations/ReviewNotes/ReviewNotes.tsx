@@ -21,15 +21,14 @@ const ReviewNotes: React.FC<ReviewNotesProps> = ({
                         작성한 노트
                     </h2>
                     {commentBlocks.map((commentBlock, index) => (
-                        <>
-                            {index > 0 ? <hr /> : <></>}
+                        <React.Fragment key={commentBlock.id}>
+                            {index > 0 && <hr />}
                             <ReviewNoteBlock
-                                key={commentBlock.id}
                                 commentBlock={commentBlock}
                                 onUpdate={() => {}}
                                 onDelete={() => onDelete(commentBlock.id)}
                             />
-                        </>
+                        </React.Fragment>
                     ))}
                 </>
             ) : (
