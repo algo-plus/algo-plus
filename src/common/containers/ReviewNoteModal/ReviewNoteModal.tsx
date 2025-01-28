@@ -18,6 +18,8 @@ import ReviewOverallCommentBlock, {
 import { markdownReview } from '@/baekjoon/utils/review';
 import { getObjectFromLocalStorage } from '@/common/utils/storage';
 import { startLoader } from '@/baekjoon/utils/baekjoon';
+import { Spinner } from '@/common/components/Spinner';
+import { OverlayNotification } from '@/common/components/OverlayNotification';
 
 type ReviewNoteModalProps = {
     modalOpen: boolean;
@@ -110,62 +112,72 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
     };
 
     return (
-        <Modal
-            title={<h1 style={{ textAlign: 'center' }}>오답노트 작성</h1>}
-            content={
-                <>
-                    <div className='algoplus-review-note-content'>
-                        <div className='code-description'>
-                            {codeDescriptions[0]}
-                            {codeDescriptions[1]}
-                            <button
-                                className='change-order-button'
-                                onClick={changeOrder}
-                            >
-                                ⇄
-                            </button>
+        <>
+            <Modal
+                title={<h1 style={{ textAlign: 'center' }}>오답노트 작성</h1>}
+                content={
+                    <>
+                        <div className='algoplus-review-note-content'>
+                            <div className='code-description'>
+                                {codeDescriptions[0]}
+                                {codeDescriptions[1]}
+                                <button
+                                    className='change-order-button'
+                                    onClick={changeOrder}
+                                >
+                                    ⇄
+                                </button>
+                            </div>
+                            <CodeDiffViewer
+                                sourceCodes={sourceCodes}
+                                handleRangeSelection={handleRangeSelection}
+                            />
+                            <div className='review-note'>
+                                <ReviewOverallCommentBlock
+                                    ref={reviewOverallCommentBlockRef}
+                                />
+                                <ReviewWriteBlock
+                                    commentBlock={currentCommentBlock}
+                                    setCommentBlock={setCurrentCommentBlock}
+                                    onRegistReviewBlock={(commentBlock) => {
+                                        addCommentBlock(commentBlock);
+                                        setCurrentCommentBlock(
+                                            new CommentBlock()
+                                        );
+                                    }}
+                                />
+                                <ReviewNotes
+                                    commentBlocks={commentBlocks}
+                                    onDelete={deleteCommentBlock}
+                                />
+                            </div>
                         </div>
-                        <CodeDiffViewer
-                            sourceCodes={sourceCodes}
-                            handleRangeSelection={handleRangeSelection}
+                    </>
+                }
+                footer={
+                    <div className='algoplus-review-note-button-box'>
+                        <Button
+                            style={{ ...buttonCommonStyle }}
+                            text='깃허브 업로드'
+                            onClick={uploadToGithub}
                         />
-                        <div className='review-note'>
-                            <ReviewOverallCommentBlock
-                                ref={reviewOverallCommentBlockRef}
-                            />
-                            <ReviewWriteBlock
-                                commentBlock={currentCommentBlock}
-                                setCommentBlock={setCurrentCommentBlock}
-                                onRegistReviewBlock={(commentBlock) => {
-                                    addCommentBlock(commentBlock);
-                                    setCurrentCommentBlock(new CommentBlock());
-                                }}
-                            />
-                            <ReviewNotes
-                                commentBlocks={commentBlocks}
-                                onDelete={deleteCommentBlock}
-                            />
-                        </div>
+                        <Button
+                            style={{ ...buttonCommonStyle }}
+                            text='파일로 저장'
+                            onClick={localSave}
+                        />
                     </div>
-                </>
-            }
-            footer={
-                <div className='algoplus-review-note-button-box'>
-                    <Button
-                        style={{ ...buttonCommonStyle }}
-                        text='깃허브 업로드'
-                        onClick={uploadToGithub}
-                    />
-                    <Button
-                        style={{ ...buttonCommonStyle }}
-                        text='파일로 저장'
-                        onClick={localSave}
-                    />
-                </div>
-            }
-            modalOpen={props.modalOpen}
-            onClose={props.onClose}
-        />
+                }
+                modalOpen={props.modalOpen}
+                onClose={props.onClose}
+            />
+            <Spinner id='review-note-upload-spinner' show={false} />
+            <OverlayNotification
+                id='review-note-success-notification'
+                show={false}
+                message='업로드가 성공적으로 완료되었습니다!'
+            />
+        </>
     );
 };
 

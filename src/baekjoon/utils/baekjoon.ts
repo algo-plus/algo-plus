@@ -20,28 +20,10 @@ import {
     findData,
 } from './parse';
 
-const checkEnable = async () => {
-    const enable = await getObjectFromLocalStorage('alpEnable');
-    enable ? uploadSuccessModal() : writeEnableMsgOnLog();
-    return enable;
-};
-
-const uploadSuccessModal = () => {
-    // const uploadModal: any = document.querySelector('#uploadSuccessModal');
-    // uploadModal.style.display = 'block';
-};
-
-const writeEnableMsgOnLog = () => {
-    const errMsg =
-        '확장이 활성화되지 않았습니다. 확장을 활성화하고 시도해주세요';
-    alert(errMsg);
-};
-
-let loader: any;
+let loader: ReturnType<typeof setInterval> | null = null;
 
 export const startLoader = async (content: string, closeEvent: Function) => {
-    // const loadModal: any = document.querySelector('#loaderModal');
-    // loadModal.style.display = 'block';
+    showUploadSpinner();
     loader = setInterval(async () => {
         const enable = await checkEnable();
         if (!enable) stopLoader();
@@ -68,14 +50,49 @@ export const startLoader = async (content: string, closeEvent: Function) => {
         }
     }, 2000);
     setTimeout(() => {
-        // loadModal.style.display = 'none';
         closeEvent();
     }, 3000);
 };
 
 const stopLoader = () => {
-    clearInterval(loader);
-    loader = null;
+    if (loader !== null) {
+        clearInterval(loader);
+        loader = null;
+    }
+};
+
+const checkEnable = async () => {
+    const enable = await getObjectFromLocalStorage('alpEnable');
+    hideUploadSpinner();
+    enable ? showUploadSuccessNotification() : writeEnableMsgOnLog();
+    return enable;
+};
+
+const showUploadSuccessNotification = () => {
+    const uploadSuccessNotification = document.querySelector(
+        '#review-note-success-notification'
+    ) as HTMLDivElement;
+    uploadSuccessNotification.style.display = 'block';
+};
+
+const writeEnableMsgOnLog = () => {
+    const errMsg =
+        '확장이 활성화되지 않았습니다. 확장을 활성화하고 시도해주세요';
+    alert(errMsg);
+};
+
+const showUploadSpinner = () => {
+    getSpinnerElement().style.display = 'block';
+};
+
+const hideUploadSpinner = () => {
+    getSpinnerElement().style.display = 'none';
+};
+
+const getSpinnerElement = (): HTMLDivElement => {
+    return document.querySelector(
+        '#review-note-upload-spinner'
+    ) as HTMLDivElement;
 };
 
 const beginUpload = async (bojData: any, content: string) => {
