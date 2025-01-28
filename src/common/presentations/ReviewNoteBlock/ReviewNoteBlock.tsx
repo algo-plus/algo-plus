@@ -1,29 +1,29 @@
 import React, { useState } from 'react';
 import './ReviewNoteBlock.css';
-import { CodeBlock } from '@/common/types/source';
+import { CommentBlock } from '@/common/types/source';
 import { ReviewWriteCodeBlock } from '@/common/components/ReviewWriteCodeBlock';
 import { ReviewWriteCommentBlock } from '@/common/components/ReviewWriteCommentBlock';
 import { Button } from '@/common/components/Button';
 
 type ReviewNoteBlockProps = {
-    codeBlock: CodeBlock;
+    commentBlock: CommentBlock;
     onUpdate: () => void;
     onDelete: () => void;
 };
 
 const ReviewNoteBlock: React.FC<ReviewNoteBlockProps> = ({
-    codeBlock,
+    commentBlock,
     onUpdate,
     onDelete,
 }: ReviewNoteBlockProps) => {
     const [readonly, setReadonly] = useState<boolean>(true);
     const [oldCodeName, setOldCodeName] = useState<string>(
-        codeBlock.oldCodeName
+        commentBlock.oldCodeName
     );
     const [newCodeName, setNewCodeName] = useState<string>(
-        codeBlock.newCodeName
+        commentBlock.newCodeName
     );
-    const [comment, setComment] = useState<string>(codeBlock.comment);
+    const [comment, setComment] = useState<string>(commentBlock.comment);
 
     const onBlockDelete = () => {
         if (confirm('블록을 삭제하시겠습니까?')) {
@@ -33,29 +33,29 @@ const ReviewNoteBlock: React.FC<ReviewNoteBlockProps> = ({
 
     return (
         <div className={`review-note-block ${readonly ? 'readonly' : ''}`}>
-            {codeBlock.oldCode ? (
+            {commentBlock.oldCode ? (
                 <ReviewWriteCodeBlock
                     icon='✏️'
                     codeName={oldCodeName}
-                    code={codeBlock.oldCode}
+                    code={commentBlock.oldCode}
                     onChangeCodeName={(codeName) => setOldCodeName(codeName)}
                     readonly={readonly}
                 />
             ) : (
                 <></>
             )}
-            {codeBlock.newCode ? (
+            {commentBlock.newCode ? (
                 <ReviewWriteCodeBlock
                     icon='🖊️'
                     codeName={newCodeName}
-                    code={codeBlock.newCode}
+                    code={commentBlock.newCode}
                     onChangeCodeName={(codeName) => setNewCodeName(codeName)}
                     readonly={readonly}
                 />
             ) : (
                 <></>
             )}
-            {codeBlock.oldCode || codeBlock.newCode ? (
+            {commentBlock.oldCode || commentBlock.newCode ? (
                 <>
                     <ReviewWriteCommentBlock
                         icon='📝'

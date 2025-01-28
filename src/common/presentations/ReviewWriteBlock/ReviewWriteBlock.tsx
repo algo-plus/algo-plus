@@ -1,45 +1,45 @@
 import React, { useEffect, useState } from 'react';
 import './ReviewWriteBlock.css';
-import { CodeBlock } from '@/common/types/source';
+import { CommentBlock } from '@/common/types/source';
 import ReviewWriteCodeBlock from '@/common/components/ReviewWriteCodeBlock/ReviewWriteCodeBlock';
 import { ReviewWriteCommentBlock } from '@/common/components/ReviewWriteCommentBlock';
 import { Button } from '@/common/components/Button';
 
 type ReviewWriteBlockProps = {
-    codeBlock: CodeBlock;
-    setCodeBlock: (codeBlock: CodeBlock) => void;
-    onRegistReviewBlock: (codeBlock: CodeBlock) => void;
+    commentBlock: CommentBlock;
+    setCommentBlock: (commentBlock: CommentBlock) => void;
+    onRegistReviewBlock: (commentBlock: CommentBlock) => void;
 };
 
 const ReviewWriteBlock: React.FC<ReviewWriteBlockProps> = ({
-    codeBlock,
-    setCodeBlock,
+    commentBlock,
+    setCommentBlock,
     onRegistReviewBlock,
 }: ReviewWriteBlockProps) => {
     const [oldCodeName, setOldCodeName] = useState<string>(
-        codeBlock.oldCodeName
+        commentBlock.oldCodeName
     );
-    const [oldCode, setOldCode] = useState<string>(codeBlock.oldCode);
+    const [oldCode, setOldCode] = useState<string>(commentBlock.oldCode);
     const [newCodeName, setNewCodeName] = useState<string>(
-        codeBlock.newCodeName
+        commentBlock.newCodeName
     );
-    const [newCode, setNewCode] = useState<string>(codeBlock.newCode);
+    const [newCode, setNewCode] = useState<string>(commentBlock.newCode);
     const [comment, setComment] = useState<string>('');
 
     useEffect(() => {
-        setOldCode(codeBlock.oldCode);
-        setNewCode(codeBlock.newCode);
-    }, [codeBlock]);
+        setOldCode(commentBlock.oldCode);
+        setNewCode(commentBlock.newCode);
+    }, [commentBlock]);
 
     const registReviewBlock = () => {
-        const registered: CodeBlock = {
-            ...codeBlock,
+        const registered: CommentBlock = {
+            ...commentBlock,
             oldCodeName: oldCodeName,
             newCodeName: newCodeName,
             comment: comment,
         };
         setComment('');
-        setCodeBlock(registered);
+        setCommentBlock(registered);
         onRegistReviewBlock(registered);
     };
 

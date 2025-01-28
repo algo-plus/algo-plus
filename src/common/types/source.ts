@@ -5,16 +5,15 @@ type SourceCode = {
     lang: string | null;
 };
 
-class CodeBlock {
+class CommentBlock {
     id: string = uuid();
     oldCode: string = '';
     oldCodeName: string = '이전 코드';
     newCode: string = '';
     newCodeName: string = '변경 코드';
     comment: string = '';
-    isRegistered: boolean = false;
 
-    constructor(data: Partial<CodeBlock> = {}) {
+    constructor(data: Partial<CommentBlock> = {}) {
         Object.assign(this, data);
     }
 }
@@ -26,5 +25,12 @@ const DiffViewerSide = {
 
 type DiffViewerSideType = (typeof DiffViewerSide)[keyof typeof DiffViewerSide];
 
-export type { SourceCode, DiffViewerSideType };
-export { DiffViewerSide, CodeBlock };
+type ReviewMarkdownContent = {
+    oldCode?: string;
+    newCode?: string;
+    commentBlocks?: CommentBlock[];
+    comment?: string;
+};
+
+export type { SourceCode, DiffViewerSideType, ReviewMarkdownContent };
+export { DiffViewerSide, CommentBlock };

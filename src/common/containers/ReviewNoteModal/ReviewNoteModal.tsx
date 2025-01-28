@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import './ReviewNoteModal.css';
 import { Modal } from '@/common/presentations/Modal';
 import {
-    CodeBlock,
+    CommentBlock,
     DiffViewerSide,
     DiffViewerSideType,
+    ReviewMarkdownContent,
     SourceCode,
 } from '@/common/types/source';
 import { CodeDiffViewer } from '@/common/presentations/CodeDiffViewer';
@@ -12,6 +13,7 @@ import { Button } from '@/common/components/Button';
 import { ReviewWriteBlock } from '@/common/presentations/ReviewWriteBlock';
 import { ReviewNotes } from '@/common/presentations/ReviewNotes';
 import ReviewOverallCommentBlock from '@/common/presentations/ReviewOverallCommentBlock/ReviewOverallCommentBlock';
+import { markdownReview } from '@/baekjoon/utils/review';
 
 type ReviewNoteModalProps = {
     modalOpen: boolean;
@@ -30,10 +32,9 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
     const [codeDescriptions, setCodeDescriptions] = useState<
         (string | JSX.Element)[]
     >([]);
-    const [codeBlocks, setCodeBlocks] = useState<CodeBlock[]>([]);
-    const [currentCodeBlock, setCurrentCodeBlock] = useState<CodeBlock>(
-        new CodeBlock()
-    );
+    const [commentBlocks, setCommentBlocks] = useState<CommentBlock[]>([]);
+    const [currentCommentBlock, setCurrentCommentBlock] =
+        useState<CommentBlock>(new CommentBlock());
     const [comment, setComment] = useState<string>('');
 
     useEffect(() => {
@@ -41,13 +42,16 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
         setCodeDescriptions(props.codeDescriptions);
     }, [props.sourceCodes, props.codeDescriptions]);
 
-    const addCodeBlock = (codeBlock: CodeBlock) => {
-        setCodeBlocks((prevCodeBlocks) => [...prevCodeBlocks, codeBlock]);
+    const addCommentBlock = (commentBlock: CommentBlock) => {
+        setCommentBlocks((prevCommentBlocks) => [
+            ...prevCommentBlocks,
+            commentBlock,
+        ]);
     };
 
-    const deleteCodeBlock = (id: string) => {
-        setCodeBlocks((prevCodeBlocks) =>
-            prevCodeBlocks.filter((codeBlock) => codeBlock.id !== id)
+    const deleteCommentBlock = (id: string) => {
+        setCommentBlocks((prevCommentBlocks) =>
+            prevCommentBlocks.filter((commentBlock) => commentBlock.id !== id)
         );
     };
 
@@ -55,7 +59,7 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
         if (confirm('작성한 내용이 사라집니다. 진행하시겠습니까?')) {
             setSourceCodes((prev) => [...prev].reverse());
             setCodeDescriptions((prev) => [...prev].reverse());
-            setCurrentCodeBlock(new CodeBlock());
+            setCurrentCommentBlock(new CommentBlock());
         }
     };
 
@@ -64,9 +68,24 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
         range: number[],
         code: string
     ) => {
-        setCurrentCodeBlock({
-            ...currentCodeBlock,
+        setCurrentCommentBlock({
+            ...currentCommentBlock,
             [side === DiffViewerSide.LEFT ? 'oldCode' : 'newCode']: code,
+        });
+    };
+
+    const localSave = () => {
+        const reviewMarkDownContent: ReviewMarkdownContent = {
+            oldCode: sourceCodes[0].code as string,
+            newCode: sourceCodes[1].code as string,
+            commentBlocks: commentBlocks,
+            comment: comment,
+        };
+
+        console.log(reviewMarkDownContent);
+        chrome.runtime.sendMessage({
+            action: 'saveRepository',
+            content: markdownReview(reviewMarkDownContent),
         });
     };
 
@@ -93,16 +112,16 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
                         <div className='review-note'>
                             <ReviewOverallCommentBlock />
                             <ReviewWriteBlock
-                                codeBlock={currentCodeBlock}
-                                setCodeBlock={setCurrentCodeBlock}
-                                onRegistReviewBlock={(codeBlock) => {
-                                    addCodeBlock(codeBlock);
-                                    setCurrentCodeBlock(new CodeBlock());
+                                commentBlock={currentCommentBlock}
+                                setCommentBlock={setCurrentCommentBlock}
+                                onRegistReviewBlock={(commentBlock) => {
+                                    addCommentBlock(commentBlock);
+                                    setCurrentCommentBlock(new CommentBlock());
                                 }}
                             />
                             <ReviewNotes
-                                codeBlocks={codeBlocks}
-                                onDelete={deleteCodeBlock}
+                                commentBlocks={commentBlocks}
+                                onDelete={deleteCommentBlock}
                             />
                         </div>
                     </div>
@@ -118,7 +137,7 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
                     <Button
                         style={{ ...buttonCommonStyle }}
                         text='파일로 저장'
-                        onClick={() => {}}
+                        onClick={localSave}
                     />
                 </div>
             }

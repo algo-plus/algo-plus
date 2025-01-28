@@ -1,3 +1,4 @@
+import { CommentBlock, ReviewMarkdownContent } from '@/common/types/source';
 import * as Diff from 'diff';
 
 const markdownCodeDiff = (oldCode: string, newCode: string) => {
@@ -26,28 +27,22 @@ const markdownCodeDiff = (oldCode: string, newCode: string) => {
     return codeDiffContainer;
 };
 
-const markdownCommentBlock = (commentBlocks: CommentBlocks) => {
+const markdownCommentBlock = (commentBlocks: CommentBlock[]) => {
     let commentBlockContainer = '\n\n# 💻 코드 리뷰\n\n';
     let idx = 1;
-    if (
-        commentBlocks.length === 1 &&
-        commentBlocks[0].comment === '' &&
-        !commentBlocks[0].isRegistered
-    ) {
+    if (commentBlocks.length === 1 && commentBlocks[0].comment === '') {
         return '';
     }
     commentBlocks.forEach((commentBlock) => {
         commentBlockContainer += '\n\n\n## 🎯 ' + idx++ + '번 코드\n';
 
-        if (commentBlock.selectedOldCode) {
-            commentBlockContainer += '### 🌗 이전코드: \n\n';
-            commentBlockContainer +=
-                '```\n' + commentBlock.selectedOldCode + '\n```\n';
+        if (commentBlock.oldCode) {
+            commentBlockContainer += `### 🌗 ${commentBlock.oldCodeName}: \n\n`;
+            commentBlockContainer += '```\n' + commentBlock.oldCode + '\n```\n';
         }
-        if (commentBlock.selectedNewCode) {
-            commentBlockContainer += '### 🌖 바뀐코드: \n\n';
-            commentBlockContainer +=
-                '```\n' + commentBlock.selectedNewCode + '\n```\n';
+        if (commentBlock.newCode) {
+            commentBlockContainer += `### 🌖 ${commentBlock.newCodeName}: \n\n`;
+            commentBlockContainer += '```\n' + commentBlock.newCode + '\n```\n';
         }
         if (commentBlock.comment) {
             commentBlockContainer += '\n### 📄 코멘트: \n\n\n\n';
@@ -70,7 +65,7 @@ const markdownReview = (reviewMarkdownContent: ReviewMarkdownContent) => {
         );
     }
     const lastComment =
-        '\n\n\n ## 🏆 전체 코멘트 \n\n' + (reviewMarkdownContent.comment || '');
+        '\n\n\n ## 🏆 메모 \n\n' + (reviewMarkdownContent.comment || '');
     const reviewContainer = title + diffViewer + commentBlock + lastComment;
     return reviewContainer;
 };
