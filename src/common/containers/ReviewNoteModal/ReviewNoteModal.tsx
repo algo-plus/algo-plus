@@ -12,7 +12,9 @@ import { CodeDiffViewer } from '@/common/presentations/CodeDiffViewer';
 import { Button } from '@/common/components/Button';
 import { ReviewWriteBlock } from '@/common/presentations/ReviewWriteBlock';
 import { ReviewNotes } from '@/common/presentations/ReviewNotes';
-import ReviewOverallCommentBlock from '@/common/presentations/ReviewOverallCommentBlock/ReviewOverallCommentBlock';
+import ReviewOverallCommentBlock, {
+    ReviewOverallCommentBlockRef,
+} from '@/common/presentations/ReviewOverallCommentBlock/ReviewOverallCommentBlock';
 import { markdownReview } from '@/baekjoon/utils/review';
 
 type ReviewNoteModalProps = {
@@ -35,7 +37,8 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
     const [commentBlocks, setCommentBlocks] = useState<CommentBlock[]>([]);
     const [currentCommentBlock, setCurrentCommentBlock] =
         useState<CommentBlock>(new CommentBlock());
-    const commentRef = React.useRef<HTMLTextAreaElement>(null);
+    const reviewOverallCommentBlockRef =
+        useRef<ReviewOverallCommentBlockRef>(null);
 
     useEffect(() => {
         setSourceCodes(props.sourceCodes);
@@ -60,6 +63,10 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
             setSourceCodes((prev) => [...prev].reverse());
             setCodeDescriptions((prev) => [...prev].reverse());
             setCurrentCommentBlock(new CommentBlock());
+            setCommentBlocks([]);
+            if (reviewOverallCommentBlockRef.current) {
+                reviewOverallCommentBlockRef.current.setValue('');
+            }
         }
     };
 
@@ -79,10 +86,9 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
             oldCode: sourceCodes[0].code as string,
             newCode: sourceCodes[1].code as string,
             commentBlocks: commentBlocks,
-            comment: commentRef.current?.value,
+            comment: reviewOverallCommentBlockRef.current?.getValue(),
         };
 
-        console.log(reviewMarkDownContent);
         chrome.runtime.sendMessage({
             action: 'saveRepository',
             content: markdownReview(reviewMarkDownContent),
@@ -111,7 +117,7 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
                         />
                         <div className='review-note'>
                             <ReviewOverallCommentBlock
-                                commentRef={commentRef}
+                                ref={reviewOverallCommentBlockRef}
                             />
                             <ReviewWriteBlock
                                 commentBlock={currentCommentBlock}

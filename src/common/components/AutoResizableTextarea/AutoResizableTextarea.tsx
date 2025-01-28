@@ -1,4 +1,9 @@
-import React, { useState, ChangeEvent, forwardRef } from 'react';
+import React, {
+    useState,
+    ChangeEvent,
+    forwardRef,
+    useImperativeHandle,
+} from 'react';
 import './AutoResizableTextarea.css';
 
 type AutoResizableTextareaProps = {
@@ -9,8 +14,13 @@ type AutoResizableTextareaProps = {
     disabled?: boolean;
 };
 
+export type AutoResizableTextareaRef = {
+    setValue: (value: string) => void;
+    getValue: () => string;
+};
+
 const AutoResizableTextarea = forwardRef<
-    HTMLTextAreaElement,
+    AutoResizableTextareaRef,
     AutoResizableTextareaProps
 >((props, ref) => {
     const MIN_ROW: number = 2;
@@ -33,9 +43,18 @@ const AutoResizableTextarea = forwardRef<
         return value.split('\n').length;
     }
 
+    useImperativeHandle(ref, () => ({
+        setValue: (value: string) => {
+            setValue(value);
+            resize(value);
+        },
+        getValue: () => {
+            return value;
+        },
+    }));
+
     return (
         <textarea
-            ref={ref}
             className='algoplus-auto-resizable'
             rows={rows}
             onChange={(event) => {
