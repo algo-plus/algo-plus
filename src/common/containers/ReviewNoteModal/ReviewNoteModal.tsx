@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './ReviewNoteModal.css';
 import { Modal } from '@/common/presentations/Modal';
 import {
@@ -35,7 +35,7 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
     const [commentBlocks, setCommentBlocks] = useState<CommentBlock[]>([]);
     const [currentCommentBlock, setCurrentCommentBlock] =
         useState<CommentBlock>(new CommentBlock());
-    const [comment, setComment] = useState<string>('');
+    const commentRef = React.useRef<HTMLTextAreaElement>(null);
 
     useEffect(() => {
         setSourceCodes(props.sourceCodes);
@@ -79,7 +79,7 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
             oldCode: sourceCodes[0].code as string,
             newCode: sourceCodes[1].code as string,
             commentBlocks: commentBlocks,
-            comment: comment,
+            comment: commentRef.current?.value,
         };
 
         console.log(reviewMarkDownContent);
@@ -110,7 +110,9 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
                             handleRangeSelection={handleRangeSelection}
                         />
                         <div className='review-note'>
-                            <ReviewOverallCommentBlock />
+                            <ReviewOverallCommentBlock
+                                commentRef={commentRef}
+                            />
                             <ReviewWriteBlock
                                 commentBlock={currentCommentBlock}
                                 setCommentBlock={setCurrentCommentBlock}
