@@ -27,8 +27,8 @@ const checkEnable = async () => {
 };
 
 const uploadSuccessModal = () => {
-    const uploadModal: any = document.querySelector('#uploadSuccessModal');
-    uploadModal.style.display = 'block';
+    // const uploadModal: any = document.querySelector('#uploadSuccessModal');
+    // uploadModal.style.display = 'block';
 };
 
 const writeEnableMsgOnLog = () => {
@@ -39,9 +39,9 @@ const writeEnableMsgOnLog = () => {
 
 let loader: any;
 
-export const startLoader = async (content: string, closeModal: Function) => {
-    const loadModal: any = document.querySelector('#loaderModal');
-    loadModal.style.display = 'block';
+export const startLoader = async (content: string, closeEvent: Function) => {
+    // const loadModal: any = document.querySelector('#loaderModal');
+    // loadModal.style.display = 'block';
     loader = setInterval(async () => {
         const enable = await checkEnable();
         if (!enable) stopLoader();
@@ -59,7 +59,7 @@ export const startLoader = async (content: string, closeModal: Function) => {
                     resultCategory.includes(RESULT_CATEGORY.RESULT_ACCEPTED)
                 ) {
                     stopLoader();
-                    console.log('풀이가 맞았습니다. 업로드를 시작합니다.');
+                    console.log('깃허브 업로드를 시작합니다.');
                     startUpload();
                     const bojData = await findData();
                     await beginUpload(bojData, content);
@@ -68,8 +68,8 @@ export const startLoader = async (content: string, closeModal: Function) => {
         }
     }, 2000);
     setTimeout(() => {
-        loadModal.style.display = 'none';
-        closeModal();
+        // loadModal.style.display = 'none';
+        closeEvent();
     }, 3000);
 };
 

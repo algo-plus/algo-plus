@@ -52,7 +52,9 @@ const markdownCommentBlock = (commentBlocks: CommentBlock[]) => {
     return commentBlockContainer;
 };
 
-const markdownReview = (reviewMarkdownContent: ReviewMarkdownContent) => {
+const markdownReview = (
+    reviewMarkdownContent: ReviewMarkdownContent
+): string => {
     const title = '#  🚀  오답노트 \n\n';
     const diffViewer = markdownCodeDiff(
         reviewMarkdownContent.oldCode || '',

@@ -16,6 +16,8 @@ import ReviewOverallCommentBlock, {
     ReviewOverallCommentBlockRef,
 } from '@/common/presentations/ReviewOverallCommentBlock/ReviewOverallCommentBlock';
 import { markdownReview } from '@/baekjoon/utils/review';
+import { getObjectFromLocalStorage } from '@/common/utils/storage';
+import { startLoader } from '@/baekjoon/utils/baekjoon';
 
 type ReviewNoteModalProps = {
     modalOpen: boolean;
@@ -81,18 +83,30 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
         });
     };
 
-    const localSave = () => {
-        const reviewMarkDownContent: ReviewMarkdownContent = {
+    const getMarkdownContent = (): string => {
+        const reviewNoteContent: ReviewMarkdownContent = {
             oldCode: sourceCodes[0].code as string,
             newCode: sourceCodes[1].code as string,
             commentBlocks: commentBlocks,
             comment: reviewOverallCommentBlockRef.current?.getValue(),
         };
+        return markdownReview(reviewNoteContent);
+    };
 
+    const localSave = () => {
         chrome.runtime.sendMessage({
             action: 'saveRepository',
-            content: markdownReview(reviewMarkDownContent),
+            content: getMarkdownContent(),
         });
+    };
+
+    const uploadToGithub = async () => {
+        const enable = await getObjectFromLocalStorage('alpEnable');
+        if (!enable) {
+            alert('깃허브 업로드를 위해서는 깃허브 연결이 필요합니다.');
+            return enable;
+        }
+        startLoader(getMarkdownContent(), () => {});
     };
 
     return (
@@ -140,7 +154,7 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
                     <Button
                         style={{ ...buttonCommonStyle }}
                         text='깃허브 업로드'
-                        onClick={() => {}}
+                        onClick={uploadToGithub}
                     />
                     <Button
                         style={{ ...buttonCommonStyle }}
