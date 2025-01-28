@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './ReviewWriteCommentBlock.css';
-import AutoResizableTextarea from '../AutoResizableTextarea/AutoResizableTextarea';
+import { AutoResizableTextarea } from '@/common/components/AutoResizableTextarea';
 
 type ReviewWriteCommentBlockProps = {
     icon?: string;

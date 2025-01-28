@@ -8,7 +8,7 @@ import {
 } from '@/baekjoon/utils/status';
 import WrongResultModal from '@/baekjoon/containers/WrongResultModal/WrongResultModal';
 import './status.css';
-import { ReviewNotePopUp } from '../containers/ReviewNotePopUp';
+import { ReviewNotePopUp } from '@/baekjoon/containers/ReviewNotePopUp';
 
 const customStatusPage = async () => {
     if (

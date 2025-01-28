@@ -1,8 +1,7 @@
 import React from 'react';
 import './ReviewNotes.css';
 import { CommentBlock } from '@/common/types/source';
-import { ReviewWriteBlock } from '../ReviewWriteBlock';
-import { ReviewNoteBlock } from '../ReviewNoteBlock';
+import { ReviewNoteBlock } from '@/common/presentations/ReviewNoteBlock';
 
 type ReviewNotesProps = {
     commentBlocks: CommentBlock[];
