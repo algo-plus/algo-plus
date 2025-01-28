@@ -41,8 +41,11 @@ const Modal: React.FC<ModalProps> = ({
                     gap: '5px',
                 }}
             >
-                <div className='modal-header'>
-                    <div className='modal-title' style={{ width: '100%' }}>
+                <div className='algoplus-modal-header'>
+                    <div
+                        className='algoplus-modal-title'
+                        style={{ width: '100%' }}
+                    >
                         {title}
                     </div>
                     <button
@@ -53,8 +56,8 @@ const Modal: React.FC<ModalProps> = ({
                         ×
                     </button>
                 </div>
-                <div className='modal-body algoplus-modal-body'>{content}</div>
-                <div className='modal-footer'>{footer}</div>
+                <div className='algoplus-modal-body'>{content}</div>
+                <div className='algoplus-modal-footer'>{footer}</div>
             </div>
         </div>
     );

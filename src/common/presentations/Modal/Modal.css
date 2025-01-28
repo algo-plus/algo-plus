@@ -39,7 +39,16 @@
     color: #585858;
 }
 
+.algoplus-modal-title {
+    padding: 10px;
+}
+
 .algoplus-modal-body {
     height: 100%;
     overflow: auto;
+    padding: 0 20px;
+}
+
+.algoplus-modal-footer {
+    padding: 10px;
 }

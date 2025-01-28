@@ -46,9 +46,14 @@ const ReviewWriteBlock: React.FC<ReviewWriteBlockProps> = ({
     return (
         <>
             {oldCode || newCode ? (
-                <>
+                <div className='review-write-block'>
                     <hr />
-                    <h2 style={{ textAlign: 'center', marginBottom: '10px' }}>
+                    <h2
+                        style={{
+                            textAlign: 'center',
+                            marginBottom: '10px',
+                        }}
+                    >
                         노트 작성
                     </h2>
                     <div className='review-note-write-container'>
@@ -89,7 +94,9 @@ const ReviewWriteBlock: React.FC<ReviewWriteBlockProps> = ({
                                     <Button
                                         text='등록'
                                         onClick={registReviewBlock}
-                                        style={{ width: '100%' }}
+                                        style={{
+                                            width: '100%',
+                                        }}
                                     ></Button>
                                 </div>
                             </>
@@ -97,7 +104,7 @@ const ReviewWriteBlock: React.FC<ReviewWriteBlockProps> = ({
                             <></>
                         )}
                     </div>
-                </>
+                </div>
             ) : (
                 <></>
             )}
