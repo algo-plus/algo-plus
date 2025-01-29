@@ -46,7 +46,7 @@ import {
     checkServerError,
     checkCompileError,
     preprocessSourceCode,
-} from '@/baekjoon/utils/compile';
+} from '@/common/utils/compile';
 import { getReferenceUrl } from '@/common/utils/language-reference-url';
 import './SolveView.css';
 

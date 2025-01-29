@@ -1,4 +1,4 @@
-import { SourceCode } from '@/common/types/source';
+import { SourceCode } from '@/common/types/review-note';
 
 function parseLang(str: string) {
     const parsed = str.slice(7, str.length);

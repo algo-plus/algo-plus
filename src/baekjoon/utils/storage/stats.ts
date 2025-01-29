@@ -1,5 +1,5 @@
 import { isNull } from '@/baekjoon/utils/utils';
-import { getStats, saveStats } from './storage';
+import { getStats, saveStats } from '@/common/utils/storage';
 
 class TTLCacheStats {
     name: string;

@@ -3,7 +3,7 @@ import {
     saveObjectInLocalStorage,
 } from '@/common/utils/storage';
 import { parsingProblemDetail, parsingStyle } from '@/baekjoon/utils/parsing';
-import { getDiffTime } from '@/baekjoon/utils/time';
+import { getDiffTime } from '@/common/utils/time';
 
 const PROBLEM_STORAGE_KEY: string = 'algo-plus-problem-save';
 const PROBLEM_STYLE_STORAGE_KEY: string = 'algo-plus-problem-style-save';

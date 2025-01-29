@@ -3,7 +3,7 @@ import {
     DiffViewerSide,
     DiffViewerSideType,
     SourceCode,
-} from '@/common/types/source';
+} from '@/common/types/review-note';
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer-continued';
 import { Prism } from 'react-syntax-highlighter';
 import { coy } from 'react-syntax-highlighter/dist/esm/styles/prism';

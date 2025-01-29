@@ -1,4 +1,7 @@
-import { CommentBlock, ReviewMarkdownContent } from '@/common/types/source';
+import {
+    CommentBlock,
+    ReviewMarkdownContent,
+} from '@/common/types/review-note';
 import * as Diff from 'diff';
 
 const markdownCodeDiff = (oldCode: string, newCode: string) => {

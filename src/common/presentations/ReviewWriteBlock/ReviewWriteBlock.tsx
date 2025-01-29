@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './ReviewWriteBlock.css';
-import { CommentBlock } from '@/common/types/source';
+import { CommentBlock } from '@/common/types/review-note';
 import ReviewWriteCodeBlock from '@/common/components/ReviewWriteCodeBlock/ReviewWriteCodeBlock';
 import { ReviewWriteCommentBlock } from '@/common/components/ReviewWriteCommentBlock';
 import { Button } from '@/common/components/Button';

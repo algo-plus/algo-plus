@@ -7,7 +7,7 @@ import {
     DiffViewerSideType,
     ReviewMarkdownContent,
     SourceCode,
-} from '@/common/types/source';
+} from '@/common/types/review-note';
 import { CodeDiffViewer } from '@/common/presentations/CodeDiffViewer';
 import { Button } from '@/common/components/Button';
 import { ReviewWriteBlock } from '@/common/presentations/ReviewWriteBlock';
@@ -15,7 +15,7 @@ import { ReviewNotes } from '@/common/presentations/ReviewNotes';
 import ReviewOverallCommentBlock, {
     ReviewOverallCommentBlockRef,
 } from '@/common/presentations/ReviewOverallCommentBlock/ReviewOverallCommentBlock';
-import { markdownReview } from '@/baekjoon/utils/review';
+import { markdownReview } from '@/common/utils/review';
 import { getObjectFromLocalStorage } from '@/common/utils/storage';
 import { startLoader } from '@/baekjoon/utils/baekjoon';
 import { Spinner } from '@/common/components/Spinner';

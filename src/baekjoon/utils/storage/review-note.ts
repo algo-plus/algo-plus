@@ -1,4 +1,4 @@
-import { CodeStorageSaveInfo } from '@/baekjoon/types/review';
+import { CodeStorageSaveInfo } from '@/baekjoon/types/review-note';
 import {
     getObjectFromLocalStorage,
     saveObjectInLocalStorage,

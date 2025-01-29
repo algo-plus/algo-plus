@@ -19,7 +19,7 @@ import {
     getProblemFromStats,
     getSolvedACFromStats,
     updateSolvedACFromStats,
-} from '@/common/utils/baekjoon-storage';
+} from '@/baekjoon/utils/storage/stats';
 
 export const findData = async (data: any = null) => {
     try {

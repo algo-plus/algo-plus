@@ -6,9 +6,9 @@ import { CodeNullContent } from '@/baekjoon/components/CodeNullContent';
 import { fetchCode } from '@/baekjoon/apis/source';
 import { Button } from '@/common/components/Button';
 import { ReviewNoteModal } from '@/common/containers/ReviewNoteModal';
-import { SourceCode } from '@/common/types/source';
+import { SourceCode } from '@/common/types/review-note';
 import { CodeInfoNoteHeader } from '@/baekjoon/components/CodeInfoNoteHeader';
-import { CodeInfo } from '@/baekjoon/types/review';
+import { CodeInfo } from '@/baekjoon/types/review-note';
 
 type ReviewNotePopUpProps = {};
 

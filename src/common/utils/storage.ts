@@ -1,5 +1,5 @@
 import { isNull, getVersion } from '@/baekjoon/utils/utils';
-import { GitHub } from '@/baekjoon/utils/github';
+import { GitHub } from '@/common/utils/github';
 
 interface StorageObject {
     [key: string]: any;
@@ -140,7 +140,7 @@ export const updateLocalStorageStats = async () => {
     tree_items.forEach((item) => {
         updateObjectDatafromPath(submission, `${hook}/${item.path}`, item.sha);
     });
-    const default_branch= await git.getDefaultBranchOnRepo();
+    const default_branch = await git.getDefaultBranchOnRepo();
 
     if (isNull(stats.branches[hook])) {
         stats.branches[hook] = {};
