@@ -20,6 +20,8 @@ import { getObjectFromLocalStorage } from '@/common/utils/storage';
 import { startLoader } from '@/baekjoon/utils/baekjoon';
 import { Spinner } from '@/common/components/Spinner';
 import { OverlayNotification } from '@/common/components/OverlayNotification';
+import { DraggableResizableBox } from '@/common/components/DraggableResizableBox';
+import { ReviewWriteBlockWrapper } from '../ReviewWriteBlockWrapper';
 
 type ReviewNoteModalProps = {
     modalOpen: boolean;
@@ -136,7 +138,7 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
                                 <ReviewOverallCommentBlock
                                     ref={reviewOverallCommentBlockRef}
                                 />
-                                <ReviewWriteBlock
+                                <ReviewWriteBlockWrapper
                                     commentBlock={currentCommentBlock}
                                     setCommentBlock={setCurrentCommentBlock}
                                     onRegistReviewBlock={(commentBlock) => {
