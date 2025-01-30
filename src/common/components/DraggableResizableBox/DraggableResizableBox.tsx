@@ -43,6 +43,7 @@ const DraggableResizableBox: React.FC<DraggableResizableBoxProps> = ({
             minHeight={minHeight}
             bounds='body'
             style={{ ...style }}
+            cancel='.no-drag'
         >
             {content}
         </Rnd>

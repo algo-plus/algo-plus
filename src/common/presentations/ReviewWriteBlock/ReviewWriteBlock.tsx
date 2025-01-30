@@ -55,7 +55,7 @@ const ReviewWriteBlock: React.FC<ReviewWriteBlockProps> = ({
                     <h2>노트 작성</h2>
                     {headerCustomElement ? headerCustomElement : <></>}
                 </div>
-                <div className='review-write-block-container'>
+                <div className='review-write-block-container no-drag'>
                     {oldCode ? (
                         <ReviewWriteCodeBlock
                             icon='✏️'

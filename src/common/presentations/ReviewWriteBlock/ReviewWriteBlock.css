@@ -26,3 +26,7 @@
     display: flex;
     justify-content: center;
 }
+
+.review-write-block-container.no-drag {
+    cursor: default;
+}
