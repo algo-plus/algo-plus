@@ -10,6 +10,7 @@ export type ReviewWriteBlockProps = {
     setCommentBlock: (commentBlock: CommentBlock) => void;
     onRegistReviewBlock: (commentBlock: CommentBlock) => void;
     className?: string;
+    headerCustomElement?: JSX.Element;
 };
 
 const ReviewWriteBlock: React.FC<ReviewWriteBlockProps> = ({
@@ -17,6 +18,7 @@ const ReviewWriteBlock: React.FC<ReviewWriteBlockProps> = ({
     setCommentBlock,
     onRegistReviewBlock,
     className,
+    headerCustomElement,
 }: ReviewWriteBlockProps) => {
     const [oldCodeName, setOldCodeName] = useState<string>(
         commentBlock.oldCodeName
@@ -49,15 +51,11 @@ const ReviewWriteBlock: React.FC<ReviewWriteBlockProps> = ({
         <>
             <div className={`review-write-block ${className}`}>
                 {/* <hr /> */}
-                <h2
-                    style={{
-                        textAlign: 'center',
-                        marginBottom: '10px',
-                    }}
-                >
-                    노트 작성
-                </h2>
-                <div className='review-note-write-container'>
+                <div className='review-write-block-header'>
+                    <h2>노트 작성</h2>
+                    {headerCustomElement ? headerCustomElement : <></>}
+                </div>
+                <div className='review-write-block-container'>
                     {oldCode ? (
                         <ReviewWriteCodeBlock
                             icon='✏️'
