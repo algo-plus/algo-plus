@@ -8,7 +8,7 @@ const Button = (props: {
 }) => {
     return (
         <button
-            className='review-note-pop-up__button'
+            className='algoplus-button'
             style={{ ...props.style }}
             onClick={props.onClick}
         >

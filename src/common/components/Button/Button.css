@@ -1,4 +1,4 @@
-.review-note-pop-up__button {
+.algoplus-button {
     color: #fcfcfc;
     background-color: #2e2e2e;
     border-radius: 8px !important;
@@ -7,6 +7,6 @@
     transition: 0.5 all;
 }
 
-.review-note-pop-up__button:hover {
+.algoplus-button:hover {
     background-color: #000000;
 }
