@@ -69,20 +69,6 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = ({ problemId }) => {
         [addSubmissionId, deleteCode]
     );
 
-    const updateCodeList = useCallback(() => {
-        const submissionIdElements = getSubmissionElements();
-
-        submissionIdElements.forEach((element) => {
-            const submissionId = element.textContent?.trim();
-            if (!submissionId) return;
-            const row = element.closest('tr') as HTMLElement;
-            row.classList.toggle(
-                'algoplus-code-select',
-                submissionIds.includes(submissionId)
-            );
-        });
-    }, [submissionIds]);
-
     const toggleReviewNoteModal = () => {
         setReviewNoteModalOpen(!reviewNoteModalOpen);
     };
@@ -142,8 +128,10 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = ({ problemId }) => {
             if (!submissionId) return;
 
             const listener = () => {
-                const row = element.closest('tr') as HTMLElement;
-                handleSubmissionClick(submissionId, row);
+                const row = element.closest('tr');
+                if (row instanceof HTMLElement) {
+                    handleSubmissionClick(submissionId, row);
+                }
             };
             clickListeners.set(element, listener);
             element.addEventListener('click', listener);
@@ -160,8 +148,18 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = ({ problemId }) => {
     }, [handleSubmissionClick]);
 
     useEffect(() => {
-        updateCodeList();
-    }, [submissionIds, updateCodeList]);
+        const submissionIdElements = getSubmissionElements();
+
+        submissionIdElements.forEach((element) => {
+            const submissionId = element.textContent?.trim();
+            if (!submissionId) return;
+            const row = element.closest('tr') as HTMLElement;
+            row.classList.toggle(
+                'algoplus-code-select',
+                submissionIds.includes(submissionId)
+            );
+        });
+    }, [submissionIds]);
 
     return (
         <>

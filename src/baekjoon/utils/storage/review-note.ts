@@ -71,17 +71,14 @@ export const loadSelectedCodeFromStorage = async (problemId: string) => {
 };
 
 const isProblemIdMatched = async (problemId: string): Promise<boolean> => {
-    const storedProblemId = (await getObjectFromLocalStorage(
+    const storedProblemId = await getObjectFromLocalStorage(
         REVIEW_NOTE_PROBLEM_ID
-    )) as string;
-    return problemId === storedProblemId;
+    );
+    return storedProblemId && problemId === storedProblemId;
 };
 
 const syncReviewNoteStorage = async (problemId: string) => {
-    const storedProblemId = (await getObjectFromLocalStorage(
-        REVIEW_NOTE_PROBLEM_ID
-    )) as string;
-    if (!storedProblemId || problemId !== storedProblemId) {
+    if (!isProblemIdMatched(problemId)) {
         await saveObjectInLocalStorage({ [REVIEW_NOTE_PROBLEM_ID]: problemId });
         await saveObjectInLocalStorage({ [REVIEW_NOTE_CODE_INFOS]: [] });
         await saveObjectInLocalStorage({
