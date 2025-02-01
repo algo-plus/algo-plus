@@ -7,7 +7,7 @@ import {
     saveStats,
 } from '@/common/utils/storage';
 import { GitHub } from '@/common/utils/github';
-import { clearReviewCode } from '@/baekjoon/utils/storage/review-note';
+import { eraseCodeInfosInStorage } from './storage/review-note';
 
 export const uploadOneSolveProblemOnGit = async (
     bojData: any,
@@ -20,7 +20,7 @@ export const uploadOneSolveProblemOnGit = async (
         console.error('token or hook is null', token, hook);
         return;
     }
-    await clearReviewCode(); // 오답노트 저장된 코드 제거
+    await eraseCodeInfosInStorage();
     return upload(
         token,
         hook,

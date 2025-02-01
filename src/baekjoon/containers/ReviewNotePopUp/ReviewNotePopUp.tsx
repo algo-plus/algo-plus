@@ -9,41 +9,57 @@ import { ReviewNoteModal } from '@/common/containers/ReviewNoteModal';
 import { SourceCode } from '@/common/types/review-note';
 import { CodeInfoNoteHeader } from '@/baekjoon/components/CodeInfoNoteHeader';
 import { CodeInfo } from '@/baekjoon/types/review-note';
+import {
+    getCodeInfosFromStatusTable,
+    getSubmissionElements,
+} from '@/baekjoon/utils/parse';
+import {
+    loadCodeInfosFromStorage,
+    loadSelectedCodeFromStorage,
+    saveCodeInfosToStorage,
+    saveSelectedCodeToStorage,
+} from '@/baekjoon/utils/storage/review-note';
 
-type ReviewNotePopUpProps = {};
+type ReviewNotePopUpProps = { problemId: string };
 
-const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = () => {
+const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = ({ problemId }) => {
     const [submissionIds, setSubmissionIds] = useState<string[]>([]);
     const [codeInfos, setCodeInfos] = useState<CodeInfo[]>([]);
     const [sourceCodes, setSourceCodes] = useState<SourceCode[]>([]);
     const [reviewNoteModalOpen, setReviewNoteModalOpen] =
         useState<boolean>(false);
+    const [storedCodeInfos, setStoredCodeInfos] = useState<CodeInfo[]>([]);
 
-    const getSubmissionElements = useCallback(() => {
-        return document.querySelectorAll(
-            'table#status-table tbody tr td:first-child'
-        ) as NodeListOf<HTMLTableCellElement>;
-    }, []);
-
-    const addSubmissionId = useCallback((submissionId: string) => {
-        setSubmissionIds((prev) => {
-            if (prev.length < 2) {
-                return [...prev, submissionId];
+    const addSubmissionId = useCallback(
+        (submissionId: string) => {
+            if (submissionIds.length >= 2) {
+                alert('코드는 최대 2개까지만 선택할 수 있습니다.');
+                return;
             }
-            alert('코드는 최대 2개까지만 선택할 수 있습니다.');
-            return prev;
-        });
-    }, []);
+            const updateSubmissionIds = (prev: string[]) => {
+                if (prev.length < 2) {
+                    return [...prev, submissionId];
+                }
+                return prev;
+            };
+            setSubmissionIds(updateSubmissionIds);
+            saveSelectedCodeToStorage(
+                problemId,
+                updateSubmissionIds(submissionIds)
+            );
+        },
+        [problemId, submissionIds]
+    );
 
     const deleteCode = useCallback((submissionId: string) => {
-        setSubmissionIds((prev) =>
-            prev.filter((_submissionId) => _submissionId !== submissionId)
+        const updateSubmissionIds = (prev: string[]) =>
+            prev.filter((_submissionId) => _submissionId !== submissionId);
+        setSubmissionIds(updateSubmissionIds);
+        saveSelectedCodeToStorage(
+            problemId,
+            updateSubmissionIds(submissionIds)
         );
     }, []);
-
-    const toggleReviewNoteModal = () => {
-        setReviewNoteModalOpen(!reviewNoteModalOpen);
-    };
 
     const handleSubmissionClick = useCallback(
         (submissionId: string, row: HTMLElement) => {
@@ -68,38 +84,17 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = () => {
                 submissionIds.includes(submissionId)
             );
         });
-    }, [submissionIds, getSubmissionElements]);
+    }, [submissionIds]);
 
-    const getCodeInfo = useCallback(
-        (submissionId: string): CodeInfo | null => {
-            const elements = getSubmissionElements();
-            for (const element of elements) {
-                if (element.textContent?.trim() === submissionId) {
-                    const row = element.closest('tr') as HTMLElement;
-                    const codeInfo: CodeInfo = {
-                        submissionId: String(submissionId),
-                        memory:
-                            row.querySelector('.memory')?.textContent?.trim() ||
-                            '',
-                        time:
-                            row.querySelector('.time')?.textContent?.trim() ||
-                            '',
-                        result:
-                            row
-                                .querySelector('.result-text')
-                                ?.textContent?.trim() || '',
-                        language:
-                            row
-                                .querySelector('td:nth-child(7) a')
-                                ?.textContent?.trim() || '',
-                    };
-                    return codeInfo;
-                }
-            }
-            return null;
-        },
-        [getSubmissionElements]
-    );
+    const toggleReviewNoteModal = () => {
+        setReviewNoteModalOpen(!reviewNoteModalOpen);
+    };
+
+    const getCodeInfo = (submissionId: string): CodeInfo | undefined => {
+        return storedCodeInfos.find(
+            (codeInfo) => codeInfo.submissionId === submissionId
+        );
+    };
 
     const getSourceCodes = async () => {
         const sourceCodes = [];
@@ -122,14 +117,30 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = () => {
     };
 
     useEffect(() => {
+        const syncReviewNoteInfo = async () => {
+            const codeInfos = getCodeInfosFromStatusTable();
+            await saveCodeInfosToStorage(problemId, codeInfos);
+            setStoredCodeInfos(await loadCodeInfosFromStorage(problemId));
+            setSubmissionIds(await loadSelectedCodeFromStorage(problemId));
+            console.log(await loadSelectedCodeFromStorage(problemId));
+        };
+        syncReviewNoteInfo();
+    }, []);
+
+    useEffect(() => {
         const updateCodeInfos = () => {
             const newCodeInfos = submissionIds.map((code) =>
                 getCodeInfo(code)
             ) as CodeInfo[];
             setCodeInfos(newCodeInfos);
         };
+        const a = async () => {
+            console.log(await loadSelectedCodeFromStorage(problemId));
+        };
         updateCodeInfos();
-    }, [submissionIds, getCodeInfo]);
+        console.log('ssss', submissionIds);
+        a();
+    }, [submissionIds]);
 
     useEffect(() => {
         const submissionIdElements = getSubmissionElements();
@@ -155,7 +166,7 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = () => {
                 }
             });
         };
-    }, [getSubmissionElements, handleSubmissionClick]);
+    }, [handleSubmissionClick]);
 
     useEffect(() => {
         updateCodeList();

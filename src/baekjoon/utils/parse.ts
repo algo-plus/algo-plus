@@ -20,6 +20,7 @@ import {
     getSolvedACFromStats,
     updateSolvedACFromStats,
 } from '@/baekjoon/utils/storage/stats';
+import { CodeInfo } from '../types/review-note';
 
 export const findData = async (data: any = null) => {
     try {
@@ -300,3 +301,35 @@ const langVersionRemove = (lang: string, ignores: any): string => {
 
     return lang;
 };
+
+export const getCodeInfosFromStatusTable = (): CodeInfo[] => {
+    const rows = document.querySelectorAll<HTMLTableRowElement>(
+        'table#status-table tbody tr'
+    );
+
+    return Array.from(rows).reduce<CodeInfo[]>((codeInfos, row) => {
+        const submissionId = getTextContent(
+            row.querySelector('td:first-child')
+        );
+        if (!submissionId) return codeInfos;
+
+        const codeInfo: CodeInfo = {
+            submissionId,
+            memory: getTextContent(row.querySelector('.memory')),
+            time: getTextContent(row.querySelector('.time')),
+            result: getTextContent(row.querySelector('.result-text')),
+            language: getTextContent(row.querySelector('td:nth-child(7) a')),
+        };
+
+        return [...codeInfos, codeInfo];
+    }, []);
+};
+
+export const getSubmissionElements = () => {
+    return document.querySelectorAll(
+        'table#status-table tbody tr td:first-child'
+    ) as NodeListOf<HTMLTableCellElement>;
+};
+
+const getTextContent = (element: Element | null): string =>
+    element?.textContent?.trim() || '';
