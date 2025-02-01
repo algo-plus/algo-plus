@@ -1,10 +1,15 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import './ReviewWriteBlockWrapper.css';
 import { DraggableResizableBox } from '@/common/components/DraggableResizableBox';
 import { ReviewWriteBlock } from '@/common/presentations/ReviewWriteBlock';
 import { ReviewWriteBlockProps } from '@/common/presentations/ReviewWriteBlock/ReviewWriteBlock';
 import { ExternalButton } from '@/common/components/ExternalButton';
 import { EmbedButton } from '@/common/components/EmbedButton';
+import {
+    BlockGeometry,
+    loadWriteBlockGeometryFromStorage,
+    saveWriteBlockGeometryToStorage,
+} from '@/common/utils/storage/review-note';
 
 type ReviewWriteBlockWrapperProps = ReviewWriteBlockProps;
 
@@ -16,6 +21,8 @@ const ReviewWriteBlockWrapper: React.FC<ReviewWriteBlockWrapperProps> = ({
     onRegistReviewBlock,
 }: ReviewWriteBlockWrapperProps) => {
     const [externalMode, setExternalMode] = useState<boolean>(true);
+    const [isGeometryLoaded, setIsGeometryLoaded] = useState(false);
+    const [blockGeometry, setBlockGeometry] = useState<BlockGeometry>();
 
     const memoizedContent = useMemo(
         () => (props: { className?: string; modeButton: JSX.Element }) =>
@@ -43,24 +50,61 @@ const ReviewWriteBlockWrapper: React.FC<ReviewWriteBlockWrapperProps> = ({
         right: '15px',
     };
 
+    useEffect(() => {
+        if (blockGeometry) {
+            saveWriteBlockGeometryToStorage(blockGeometry);
+        }
+    }, [blockGeometry]);
+
+    useEffect(() => {
+        const syncBlockGeometry = async () => {
+            const storedBlockGeometry =
+                await loadWriteBlockGeometryFromStorage();
+            if (storedBlockGeometry) {
+                setBlockGeometry(storedBlockGeometry);
+            }
+            setIsGeometryLoaded(true);
+        };
+        syncBlockGeometry();
+    }, []);
+
     return commentBlock.oldCode || commentBlock.newCode ? (
         <>
             {externalMode ? (
                 <>
-                    <DraggableResizableBox
-                        defaultSize={{ width: 650, height: 300 }}
-                        minWidth={400}
-                        minHeight={200}
-                        content={memoizedContent({
-                            className: 'algoplus-block-draggable',
-                            modeButton: (
-                                <EmbedButton
-                                    onClick={toggleWriteBlockMode}
-                                    style={buttonCommonStyle}
-                                />
-                            ),
-                        })}
-                    />
+                    {isGeometryLoaded && blockGeometry && (
+                        <DraggableResizableBox
+                            defaultPosition={{
+                                x: blockGeometry.x,
+                                y: blockGeometry.y,
+                            }}
+                            defaultSize={{
+                                width: blockGeometry.width,
+                                height: blockGeometry.height,
+                            }}
+                            minWidth={400}
+                            minHeight={200}
+                            content={memoizedContent({
+                                className: 'algoplus-block-draggable',
+                                modeButton: (
+                                    <EmbedButton
+                                        onClick={toggleWriteBlockMode}
+                                        style={buttonCommonStyle}
+                                    />
+                                ),
+                            })}
+                            onPositionChange={(x, y) =>
+                                setBlockGeometry({ ...blockGeometry, x, y })
+                            }
+                            onSizeChange={(width, height) =>
+                                setBlockGeometry({
+                                    ...blockGeometry,
+                                    width,
+                                    height,
+                                })
+                            }
+                        />
+                    )}
                 </>
             ) : (
                 <>
