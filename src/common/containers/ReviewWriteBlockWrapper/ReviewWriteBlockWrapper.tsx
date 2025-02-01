@@ -48,7 +48,7 @@ const ReviewWriteBlockWrapper: React.FC<ReviewWriteBlockWrapperProps> = ({
             {externalMode ? (
                 <>
                     <DraggableResizableBox
-                        defaultSize={{ width: 600, height: 300 }}
+                        defaultSize={{ width: 650, height: 300 }}
                         minWidth={400}
                         minHeight={200}
                         content={memoizedContent({
