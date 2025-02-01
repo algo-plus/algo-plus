@@ -32,34 +32,31 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = ({ problemId }) => {
 
     const addSubmissionId = useCallback(
         (submissionId: string) => {
-            if (submissionIds.length >= 2) {
-                alert('코드는 최대 2개까지만 선택할 수 있습니다.');
-                return;
-            }
-            const updateSubmissionIds = (prev: string[]) => {
-                if (prev.length < 2) {
-                    return [...prev, submissionId];
+            setSubmissionIds((prev) => {
+                if (prev.length >= 2) {
+                    alert('코드는 최대 2개까지만 선택할 수 있습니다.');
+                    return prev;
                 }
-                return prev;
-            };
-            setSubmissionIds(updateSubmissionIds);
-            saveSelectedCodeToStorage(
-                problemId,
-                updateSubmissionIds(submissionIds)
-            );
+                const updatedIds = [...prev, submissionId];
+                saveSelectedCodeToStorage(problemId, updatedIds);
+                return updatedIds;
+            });
         },
-        [problemId, submissionIds]
+        [problemId]
     );
 
-    const deleteCode = useCallback((submissionId: string) => {
-        const updateSubmissionIds = (prev: string[]) =>
-            prev.filter((_submissionId) => _submissionId !== submissionId);
-        setSubmissionIds(updateSubmissionIds);
-        saveSelectedCodeToStorage(
-            problemId,
-            updateSubmissionIds(submissionIds)
-        );
-    }, []);
+    const deleteCode = useCallback(
+        (submissionId: string) => {
+            setSubmissionIds((prev) => {
+                const updatedIds = prev.filter(
+                    (_submissionId) => _submissionId !== submissionId
+                );
+                saveSelectedCodeToStorage(problemId, updatedIds);
+                return updatedIds;
+            });
+        },
+        [problemId]
+    );
 
     const handleSubmissionClick = useCallback(
         (submissionId: string, row: HTMLElement) => {
