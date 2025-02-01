@@ -6,44 +6,40 @@ type DraggableResizableBoxProps = {
     content: JSX.Element;
     style?: React.CSSProperties;
     defaultSize?: { width: number; height: number };
+    defaultPosition?: { x: number; y: number };
     minWidth?: number | string;
     minHeight?: number | string;
+    onPositionChange?: (x: number, y: number) => void;
+    onSizeChange?: (width: number, height: number) => void;
 };
 
 const DraggableResizableBox: React.FC<DraggableResizableBoxProps> = ({
     content,
     style,
     defaultSize = { width: 400, height: 300 },
+    defaultPosition = { x: 0, y: 0 },
     minWidth = 400,
     minHeight = 300,
+    onPositionChange,
+    onSizeChange,
 }) => {
-    const [position, setPosition] = useState({ x: 0, y: 0 });
-
-    const calculateCenterPosition = () => {
-        const x = Math.max(0, (window.innerWidth - defaultSize.width) / 2);
-        const y = Math.max(0, (window.innerHeight - defaultSize.height) / 2);
-        setPosition({ x, y });
-    };
-
-    useEffect(() => {
-        calculateCenterPosition();
-        window.addEventListener('resize', calculateCenterPosition);
-        return () =>
-            window.removeEventListener('resize', calculateCenterPosition);
-    }, [defaultSize.width, defaultSize.height]);
-
     return (
         <Rnd
             default={{
-                ...position,
-                width: defaultSize.width,
-                height: defaultSize.height,
+                ...defaultPosition,
+                ...defaultSize,
             }}
             minWidth={minWidth}
             minHeight={minHeight}
             bounds='body'
             style={{ ...style }}
             cancel='.no-drag'
+            onResizeStop={(event, dir, ref, defaultCommands, position) => {
+                onSizeChange && onSizeChange(ref.offsetWidth, ref.offsetHeight);
+            }}
+            onDragStop={(event, data) => {
+                onPositionChange && onPositionChange(data.x, data.y);
+            }}
         >
             {content}
         </Rnd>
