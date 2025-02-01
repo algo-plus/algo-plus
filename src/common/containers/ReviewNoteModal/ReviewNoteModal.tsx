@@ -14,7 +14,7 @@ import { ReviewNotes } from '@/common/presentations/ReviewNotes';
 import ReviewOverallCommentBlock, {
     ReviewOverallCommentBlockRef,
 } from '@/common/presentations/ReviewOverallCommentBlock/ReviewOverallCommentBlock';
-import { markdownReview } from '@/common/utils/review';
+import { generateReviewMarkdown } from '@/common/utils/review-note-markdown';
 import { getObjectFromLocalStorage } from '@/common/utils/storage';
 import { startLoader } from '@/baekjoon/utils/baekjoon';
 import { Spinner } from '@/common/components/Spinner';
@@ -92,7 +92,7 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
             commentBlocks: commentBlocks,
             comment: reviewOverallCommentBlockRef.current?.getValue(),
         };
-        return markdownReview(reviewNoteContent);
+        return generateReviewMarkdown(reviewNoteContent);
     };
 
     const localSave = () => {
