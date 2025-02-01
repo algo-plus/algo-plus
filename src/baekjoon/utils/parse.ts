@@ -20,7 +20,7 @@ import {
     getSolvedACFromStats,
     updateSolvedACFromStats,
 } from '@/baekjoon/utils/storage/stats';
-import { CodeInfo } from '../types/review-note';
+import { CodeInfo } from '@/baekjoon/types/review-note';
 
 export const findData = async (data: any = null) => {
     try {

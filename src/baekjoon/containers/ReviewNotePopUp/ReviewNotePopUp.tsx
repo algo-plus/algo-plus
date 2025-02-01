@@ -122,7 +122,6 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = ({ problemId }) => {
             await saveCodeInfosToStorage(problemId, codeInfos);
             setStoredCodeInfos(await loadCodeInfosFromStorage(problemId));
             setSubmissionIds(await loadSelectedCodeFromStorage(problemId));
-            console.log(await loadSelectedCodeFromStorage(problemId));
         };
         syncReviewNoteInfo();
     }, []);
@@ -134,12 +133,7 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = ({ problemId }) => {
             ) as CodeInfo[];
             setCodeInfos(newCodeInfos);
         };
-        const a = async () => {
-            console.log(await loadSelectedCodeFromStorage(problemId));
-        };
         updateCodeInfos();
-        console.log('ssss', submissionIds);
-        a();
     }, [submissionIds]);
 
     useEffect(() => {

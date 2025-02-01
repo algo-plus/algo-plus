@@ -10,7 +10,6 @@ import {
 } from '@/common/types/review-note';
 import { CodeDiffViewer } from '@/common/presentations/CodeDiffViewer';
 import { Button } from '@/common/components/Button';
-import { ReviewWriteBlock } from '@/common/presentations/ReviewWriteBlock';
 import { ReviewNotes } from '@/common/presentations/ReviewNotes';
 import ReviewOverallCommentBlock, {
     ReviewOverallCommentBlockRef,
@@ -20,8 +19,7 @@ import { getObjectFromLocalStorage } from '@/common/utils/storage';
 import { startLoader } from '@/baekjoon/utils/baekjoon';
 import { Spinner } from '@/common/components/Spinner';
 import { OverlayNotification } from '@/common/components/OverlayNotification';
-import { DraggableResizableBox } from '@/common/components/DraggableResizableBox';
-import { ReviewWriteBlockWrapper } from '../ReviewWriteBlockWrapper';
+import { ReviewWriteBlockWrapper } from '@/common/containers/ReviewWriteBlockWrapper';
 
 type ReviewNoteModalProps = {
     modalOpen: boolean;

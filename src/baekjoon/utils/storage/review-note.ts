@@ -56,7 +56,6 @@ export const saveSelectedCodeToStorage = async (
     submissionIds: string[]
 ) => {
     syncReviewNoteStorage(problemId);
-    console.log(33333, submissionIds);
     await saveObjectInLocalStorage({
         [REVIEW_NOTE_SELECTED_SUBMISSIONS_IDS]: submissionIds,
     });
@@ -64,7 +63,6 @@ export const saveSelectedCodeToStorage = async (
 
 export const loadSelectedCodeFromStorage = async (problemId: string) => {
     if (!(await isProblemIdMatched(problemId))) {
-        console.log(22222);
         return [];
     }
     return await getObjectFromLocalStorage(
@@ -84,7 +82,6 @@ const syncReviewNoteStorage = async (problemId: string) => {
         REVIEW_NOTE_PROBLEM_ID
     )) as string;
     if (!storedProblemId || problemId !== storedProblemId) {
-        console.log('11111');
         await saveObjectInLocalStorage({ [REVIEW_NOTE_PROBLEM_ID]: problemId });
         await saveObjectInLocalStorage({ [REVIEW_NOTE_CODE_INFOS]: [] });
         await saveObjectInLocalStorage({
