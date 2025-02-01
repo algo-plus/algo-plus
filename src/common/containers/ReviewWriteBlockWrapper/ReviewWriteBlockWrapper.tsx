@@ -20,6 +20,12 @@ const ReviewWriteBlockWrapper: React.FC<ReviewWriteBlockWrapperProps> = ({
     setCommentBlock,
     onRegistReviewBlock,
 }: ReviewWriteBlockWrapperProps) => {
+    const DEFAULT_BLOCK_GEOMETRY: BlockGeometry = {
+        x: 0,
+        y: -300,
+        width: 650,
+        height: 300,
+    };
     const [externalMode, setExternalMode] = useState<boolean>(true);
     const [isGeometryLoaded, setIsGeometryLoaded] = useState(false);
     const [blockGeometry, setBlockGeometry] = useState<BlockGeometry>();
@@ -62,6 +68,8 @@ const ReviewWriteBlockWrapper: React.FC<ReviewWriteBlockWrapperProps> = ({
                 await loadWriteBlockGeometryFromStorage();
             if (storedBlockGeometry) {
                 setBlockGeometry(storedBlockGeometry);
+            } else {
+                setBlockGeometry(DEFAULT_BLOCK_GEOMETRY);
             }
             setIsGeometryLoaded(true);
         };
