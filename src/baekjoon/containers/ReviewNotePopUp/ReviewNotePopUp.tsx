@@ -73,20 +73,19 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = ({ problemId }) => {
         setReviewNoteModalOpen(!reviewNoteModalOpen);
     };
 
-    const getCodeInfo = (submissionId: string): CodeInfo | undefined => {
-        return storedCodeInfos.find(
-            (codeInfo) => codeInfo.submissionId === submissionId
-        );
-    };
+    const getCodeInfo = useCallback(
+        (submissionId: string): CodeInfo | undefined => {
+            return storedCodeInfos.find(
+                (codeInfo) => codeInfo.submissionId === submissionId
+            );
+        },
+        [storedCodeInfos]
+    );
 
-    const getSourceCodes = async () => {
-        const sourceCodes = [];
-        for (const submissionId of submissionIds) {
-            const sourceCode = await fetchCode(submissionId);
-            sourceCodes.push(sourceCode);
-        }
+    const getSourceCodes = useCallback(async () => {
+        const sourceCodes = await Promise.all(submissionIds.map(fetchCode));
         return sourceCodes;
-    };
+    }, [submissionIds]);
 
     const writeReview = async () => {
         if (submissionIds.length === 0) {
