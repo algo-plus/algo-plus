@@ -9,6 +9,8 @@ import {
     BlockGeometry,
     loadWriteBlockGeometryFromStorage,
     saveWriteBlockGeometryToStorage,
+    saveWriteBlockModeToStorage,
+    getStoredWriteBlockModeIsExternal,
 } from '@/common/utils/storage/review-note';
 
 type ReviewWriteBlockWrapperProps = ReviewWriteBlockProps;
@@ -47,7 +49,9 @@ const ReviewWriteBlockWrapper: React.FC<ReviewWriteBlockWrapperProps> = ({
     );
 
     const toggleWriteBlockMode = () => {
-        setExternalMode(!externalMode);
+        const updatedMode = !externalMode;
+        setExternalMode(updatedMode);
+        saveWriteBlockModeToStorage(updatedMode);
     };
 
     const buttonCommonStyle: React.CSSProperties = {
@@ -63,6 +67,11 @@ const ReviewWriteBlockWrapper: React.FC<ReviewWriteBlockWrapperProps> = ({
     }, [blockGeometry]);
 
     useEffect(() => {
+        const syncBlockMode = async () => {
+            const isExternalMode: boolean =
+                await getStoredWriteBlockModeIsExternal();
+            setExternalMode(isExternalMode);
+        };
         const syncBlockGeometry = async () => {
             const storedBlockGeometry =
                 await loadWriteBlockGeometryFromStorage();
@@ -73,6 +82,7 @@ const ReviewWriteBlockWrapper: React.FC<ReviewWriteBlockWrapperProps> = ({
             }
             setIsGeometryLoaded(true);
         };
+        syncBlockMode();
         syncBlockGeometry();
     }, []);
 
