@@ -55,7 +55,7 @@ const markdownCommentBlock = (commentBlocks: CommentBlock[]) => {
     return commentBlockContainer;
 };
 
-const markdownReview = (
+const generateReviewMarkdown = (
     reviewMarkdownContent: ReviewMarkdownContent
 ): string => {
     const title = '#  🚀  오답노트 \n\n';
@@ -75,4 +75,4 @@ const markdownReview = (
     return reviewContainer;
 };
 
-export { markdownReview };
+export { generateReviewMarkdown };

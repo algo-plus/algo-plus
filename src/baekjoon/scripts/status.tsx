@@ -11,13 +11,13 @@ import './status.css';
 import { ReviewNotePopUp } from '@/baekjoon/containers/ReviewNotePopUp';
 
 const customStatusPage = async () => {
+    const problemId = getUrlSearchParam(window.location.href, 'problem_id');
+    if (!problemId) return;
+
     if (
         getUrlSearchParam(window.location.href, 'after_algoplus_submit') ===
         'true'
     ) {
-        const problemId = getUrlSearchParam(window.location.href, 'problem_id');
-        if (!problemId) return;
-
         let timer = setInterval(() => {
             if (isJudgingState()) {
                 return;
@@ -49,7 +49,7 @@ const customStatusPage = async () => {
     const divElement = document.createElement('div');
     document.body.appendChild(divElement);
     const root = createRoot(divElement);
-    root.render(<ReviewNotePopUp />);
+    root.render(<ReviewNotePopUp problemId={problemId} />);
 };
 
 export default customStatusPage;
