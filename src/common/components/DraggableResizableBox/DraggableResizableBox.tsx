@@ -17,27 +17,12 @@ const DraggableResizableBox: React.FC<DraggableResizableBoxProps> = ({
     minWidth = 400,
     minHeight = 300,
 }) => {
-    const [position, setPosition] = useState({ x: 0, y: 0 });
-
-    const calculateCenterPosition = () => {
-        const x = Math.max(0, (window.innerWidth - defaultSize.width) / 2);
-        const y = Math.max(0, (window.innerHeight - defaultSize.height) / 2);
-        setPosition({ x, y });
-    };
-
-    useEffect(() => {
-        calculateCenterPosition();
-        window.addEventListener('resize', calculateCenterPosition);
-        return () =>
-            window.removeEventListener('resize', calculateCenterPosition);
-    }, [defaultSize.width, defaultSize.height]);
-
     return (
         <Rnd
             default={{
-                ...position,
-                width: defaultSize.width,
-                height: defaultSize.height,
+                x: 0,
+                y: -defaultSize.height,
+                ...defaultSize,
             }}
             minWidth={minWidth}
             minHeight={minHeight}
