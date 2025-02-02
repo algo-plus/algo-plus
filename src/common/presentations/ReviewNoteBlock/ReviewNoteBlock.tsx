@@ -7,7 +7,7 @@ import { Button } from '@/common/components/Button';
 
 type ReviewNoteBlockProps = {
     commentBlock: CommentBlock;
-    onUpdate: () => void;
+    onUpdate: (comment: string) => void;
     onDelete: () => void;
 };
 
@@ -25,10 +25,15 @@ const ReviewNoteBlock: React.FC<ReviewNoteBlockProps> = ({
     );
     const [comment, setComment] = useState<string>(commentBlock.comment);
 
-    const onBlockDelete = () => {
+    const onDeleteBlock = () => {
         if (confirm('블록을 삭제하시겠습니까?')) {
             onDelete();
         }
+    };
+
+    const onUpdateBlock = () => {
+        onUpdate(comment);
+        setReadonly(!readonly);
     };
 
     return (
@@ -67,13 +72,14 @@ const ReviewNoteBlock: React.FC<ReviewNoteBlockProps> = ({
                         <Button
                             text={readonly ? '수정' : '수정 완료'}
                             onClick={() => {
-                                setReadonly(!readonly);
+                                if (readonly) setReadonly(!readonly);
+                                else onUpdateBlock();
                             }}
                             style={{ width: '100%' }}
                         ></Button>
                         <Button
                             text='삭제'
-                            onClick={onBlockDelete}
+                            onClick={onDeleteBlock}
                             style={{ width: '100%' }}
                         ></Button>
                     </div>

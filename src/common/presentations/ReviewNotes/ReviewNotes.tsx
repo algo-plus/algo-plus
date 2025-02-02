@@ -6,11 +6,13 @@ import { ReviewNoteBlock } from '@/common/presentations/ReviewNoteBlock';
 type ReviewNotesProps = {
     commentBlocks: CommentBlock[];
     onDelete: (id: string) => void;
+    onUpdate: (id: string, comment: string) => void;
 };
 
 const ReviewNotes: React.FC<ReviewNotesProps> = ({
     commentBlocks,
     onDelete,
+    onUpdate,
 }: ReviewNotesProps) => {
     return (
         <>
@@ -25,7 +27,9 @@ const ReviewNotes: React.FC<ReviewNotesProps> = ({
                             {index > 0 && <hr />}
                             <ReviewNoteBlock
                                 commentBlock={commentBlock}
-                                onUpdate={() => {}}
+                                onUpdate={(comment) => {
+                                    onUpdate(commentBlock.id, comment);
+                                }}
                                 onDelete={() => onDelete(commentBlock.id)}
                             />
                         </React.Fragment>

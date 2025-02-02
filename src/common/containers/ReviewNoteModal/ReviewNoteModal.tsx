@@ -62,6 +62,16 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
         );
     };
 
+    const updateCommentBlock = (id: string, comment: string) => {
+        setCommentBlocks((prevCommentBlocks) =>
+            prevCommentBlocks.map((commentBlock) =>
+                commentBlock.id === id
+                    ? { ...commentBlock, comment: comment }
+                    : commentBlock
+            )
+        );
+    };
+
     const changeOrder = () => {
         if (confirm('작성한 내용이 사라집니다. 진행하시겠습니까?')) {
             setSourceCodes((prev) => [...prev].reverse());
@@ -149,6 +159,7 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
                                 <ReviewNotes
                                     commentBlocks={commentBlocks}
                                     onDelete={deleteCommentBlock}
+                                    onUpdate={updateCommentBlock}
                                 />
                             </div>
                         </div>
