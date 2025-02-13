@@ -1,40 +1,61 @@
 import React from 'react';
 import './CodeInfoContent.css';
 
-interface ProblemInfoModalProps {
-    problemId: number;
-    submissionNumber: number;
-    memory: number;
-    time: number;
+interface CodeInfoContentProps {
+    submissionId: string;
+    memory: string;
+    time: string;
+    language: string;
     result: string;
     onClose: () => void;
 }
 
 const CodeInfoContent = ({
-    problemId,
-    submissionNumber,
+    submissionId,
     memory,
     time,
     result,
+    language,
     onClose,
-}: ProblemInfoModalProps) => {
+}: CodeInfoContentProps) => {
     return (
-        <>
-            <h4 style={{ position: 'relative' }}>
-                선택된 코드
-                <button className='close-button' onClick={onClose}>
-                    &#x2715; {/* X 문자 */}
-                </button>
-            </h4>
-            <p>제출 번호: {submissionNumber}</p>
-            {result === '맞았습니다!!' && (
-                <>
-                    <p>메모리: {memory} KB</p>
-                    <p>시간: {time} ms</p>
-                </>
-            )}
-            <p>결과: {result}</p>
-        </>
+        <div className='algoplus-code-info-content'>
+            <button className='close-button' onClick={onClose}>
+                &#x2715;
+            </button>
+            <p>
+                제출 번호 : <b>{submissionId}</b>
+            </p>
+            <p>언어 : {language}</p>
+            <p>
+                결과 :&nbsp;
+                <span
+                    className={`result-text ${
+                        result === '맞았습니다!!' ? 'result-ac' : 'result-wa'
+                    }`}
+                >
+                    {result}
+                </span>
+            </p>
+            <p style={{ fontSize: '12px' }}>
+                {memory ? (
+                    <span>
+                        메모리 : {memory}{' '}
+                        <span style={{ color: '#e74c3c' }}>KB</span> /{' '}
+                    </span>
+                ) : (
+                    <></>
+                )}
+                {time ? (
+                    <span>
+                        시간 : {time}{' '}
+                        <span style={{ color: '#e74c3c' }}>ms</span>
+                    </span>
+                ) : (
+                    <></>
+                )}
+            </p>
+        </div>
     );
 };
 

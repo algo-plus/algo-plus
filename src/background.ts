@@ -1,9 +1,6 @@
-import {
-    postprecessOutput,
-    processErrorCode,
-    trimLineByLine,
-} from './baekjoon/utils/compile';
-import { CodeCompileRequest } from './common/types/compile';
+import { postprecessOutput, processErrorCode } from '@/common/utils/compile';
+import { CodeCompileRequest } from '@/common/types/compile';
+import { trimLineByLine } from '@/common/utils/string';
 
 /**
  * solvedac 문제 데이터를 파싱해오는 함수.

@@ -1,0 +1,36 @@
+.review-write-code-block {
+    width: 100%;
+}
+
+.review-write-code-block .code-name-input {
+    border-bottom: 1px solid #adadad !important;
+    margin-bottom: 8px;
+    margin-left: 8px;
+    font-size: 16px;
+    width: 250px;
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.review-write-code-block .code-name-input label {
+    font-size: 16px;
+    margin: 0;
+}
+
+.review-write-code-block .code-name-input input {
+    background-color: transparent;
+    border: transparent;
+    width: 100%;
+}
+
+.review-write-code-block .code-name-input input:focus {
+    outline: none;
+}
+
+.review-write-code-block:not(.readonly) .code-name-input:focus-within {
+    border-color: #0065d1 !important;
+}
+
+.review-write-code-block pre {
+    background-color: #ffffff;
+}

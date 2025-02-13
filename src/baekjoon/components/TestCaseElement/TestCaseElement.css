@@ -3,6 +3,8 @@
 }
 
 .test-case-element textarea {
+    width: 100%;
+    resize: none;
     display: block;
     padding: 9.5px;
     margin: 0 0 10px;

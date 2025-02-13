@@ -8,6 +8,9 @@ interface InfoModalProps {
 }
 
 const InfoModal = ({ modalOpen, onClose }: InfoModalProps) => {
+    /**
+     * 새로운 디자인에 맞춰 업데이트 필요
+     */
     const [step, setStep] = useState(0);
     const help1 = chrome.runtime.getURL('asset/help1.png');
     const help2 = chrome.runtime.getURL('asset/help2.png');

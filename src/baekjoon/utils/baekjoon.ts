@@ -20,28 +20,10 @@ import {
     findData,
 } from './parse';
 
-const checkEnable = async () => {
-    const enable = await getObjectFromLocalStorage('alpEnable');
-    enable ? uploadSuccessModal() : writeEnableMsgOnLog();
-    return enable;
-};
+let loader: ReturnType<typeof setInterval> | null = null;
 
-const uploadSuccessModal = () => {
-    const uploadModal: any = document.querySelector('#uploadSuccessModal');
-    uploadModal.style.display = 'block';
-};
-
-const writeEnableMsgOnLog = () => {
-    const errMsg =
-        '확장이 활성화되지 않았습니다. 확장을 활성화하고 시도해주세요';
-    alert(errMsg);
-};
-
-let loader: any;
-
-export const startLoader = async (content: string, closeModal: Function) => {
-    const loadModal: any = document.querySelector('#loaderModal');
-    loadModal.style.display = 'block';
+export const startLoader = async (content: string, closeEvent: Function) => {
+    showUploadSpinner();
     loader = setInterval(async () => {
         const enable = await checkEnable();
         if (!enable) stopLoader();
@@ -59,7 +41,7 @@ export const startLoader = async (content: string, closeModal: Function) => {
                     resultCategory.includes(RESULT_CATEGORY.RESULT_ACCEPTED)
                 ) {
                     stopLoader();
-                    console.log('풀이가 맞았습니다. 업로드를 시작합니다.');
+                    console.log('깃허브 업로드를 시작합니다.');
                     startUpload();
                     const bojData = await findData();
                     await beginUpload(bojData, content);
@@ -68,14 +50,49 @@ export const startLoader = async (content: string, closeModal: Function) => {
         }
     }, 2000);
     setTimeout(() => {
-        loadModal.style.display = 'none';
-        closeModal();
+        closeEvent();
     }, 3000);
 };
 
 const stopLoader = () => {
-    clearInterval(loader);
-    loader = null;
+    if (loader !== null) {
+        clearInterval(loader);
+        loader = null;
+    }
+};
+
+const checkEnable = async () => {
+    const enable = await getObjectFromLocalStorage('alpEnable');
+    hideUploadSpinner();
+    enable ? showUploadSuccessNotification() : writeEnableMsgOnLog();
+    return enable;
+};
+
+const showUploadSuccessNotification = () => {
+    const uploadSuccessNotification = document.querySelector(
+        '#review-note-success-notification'
+    ) as HTMLDivElement;
+    uploadSuccessNotification.style.display = 'block';
+};
+
+const writeEnableMsgOnLog = () => {
+    const errMsg =
+        '확장이 활성화되지 않았습니다. 확장을 활성화하고 시도해주세요';
+    alert(errMsg);
+};
+
+const showUploadSpinner = () => {
+    getSpinnerElement().style.display = 'block';
+};
+
+const hideUploadSpinner = () => {
+    getSpinnerElement().style.display = 'none';
+};
+
+const getSpinnerElement = (): HTMLDivElement => {
+    return document.querySelector(
+        '#review-note-upload-spinner'
+    ) as HTMLDivElement;
 };
 
 const beginUpload = async (bojData: any, content: string) => {
