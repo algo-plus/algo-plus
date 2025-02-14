@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import './ReviewWriteBlockWrapper.css';
 import { DraggableResizableBox } from '@/common/components/DraggableResizableBox';
 import { ReviewWriteBlock } from '@/common/presentations/ReviewWriteBlock';
@@ -28,14 +28,15 @@ const ReviewWriteBlockWrapper: React.FC<ReviewWriteBlockWrapperProps> = ({
         width: 650,
         height: 300,
     };
-    const [externalMode, setExternalMode] = useState<boolean>(true);
+    const [isExternalMode, setIsExternalMode] = useState<boolean>(true);
     const [isGeometryLoaded, setIsGeometryLoaded] = useState(false);
     const [blockGeometry, setBlockGeometry] = useState<BlockGeometry>();
+    const blockRef = useRef<HTMLDivElement>(null);
 
     const memoizedContent = useMemo(
         () => (props: { className?: string; modeButton: JSX.Element }) =>
             (
-                <>
+                <div ref={blockRef}>
                     <MemoizedReviewWriteBlock
                         className={props.className}
                         commentBlock={commentBlock}
@@ -43,14 +44,25 @@ const ReviewWriteBlockWrapper: React.FC<ReviewWriteBlockWrapperProps> = ({
                         onRegistReviewBlock={onRegistReviewBlock}
                         headerCustomElement={props.modeButton}
                     />
-                </>
+                </div>
             ),
         [commentBlock, setCommentBlock, onRegistReviewBlock]
     );
 
+    useEffect(() => {
+        if (!isExternalMode) {
+            setTimeout(() => {
+                blockRef.current?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start',
+                });
+            }, 0);
+        }
+    }, [isExternalMode]);
+
     const toggleWriteBlockMode = () => {
-        const updatedMode = !externalMode;
-        setExternalMode(updatedMode);
+        const updatedMode = !isExternalMode;
+        setIsExternalMode(updatedMode);
         saveWriteBlockModeToStorage(updatedMode);
     };
 
@@ -70,7 +82,7 @@ const ReviewWriteBlockWrapper: React.FC<ReviewWriteBlockWrapperProps> = ({
         const syncBlockMode = async () => {
             const isExternalMode: boolean =
                 await getStoredWriteBlockModeIsExternal();
-            setExternalMode(isExternalMode);
+            setIsExternalMode(isExternalMode);
         };
         const syncBlockGeometry = async () => {
             const storedBlockGeometry =
@@ -88,7 +100,7 @@ const ReviewWriteBlockWrapper: React.FC<ReviewWriteBlockWrapperProps> = ({
 
     return commentBlock.oldCode || commentBlock.newCode ? (
         <>
-            {externalMode ? (
+            {isExternalMode ? (
                 <>
                     {isGeometryLoaded && blockGeometry && (
                         <DraggableResizableBox
