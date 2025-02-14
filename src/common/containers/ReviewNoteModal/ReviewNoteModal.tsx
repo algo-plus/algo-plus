@@ -49,6 +49,13 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
         setCodeDescriptions(props.codeDescriptions);
     }, [props.sourceCodes, props.codeDescriptions]);
 
+    const resetStates = () => {
+        setSourceCodes([]);
+        setCodeDescriptions([]);
+        setCommentBlocks([]);
+        setCurrentCommentBlock(new CommentBlock());
+    };
+
     const addCommentBlock = (commentBlock: CommentBlock) => {
         setCommentBlocks((prevCommentBlocks) => [
             ...prevCommentBlocks,
@@ -180,7 +187,10 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
                     </div>
                 }
                 modalOpen={props.modalOpen}
-                onClose={props.onClose}
+                onClose={() => {
+                    resetStates();
+                    props.onClose();
+                }}
             />
             <Spinner id='review-note-upload-spinner' show={false} />
             <OverlayNotification
