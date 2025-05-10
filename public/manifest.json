@@ -3,7 +3,7 @@
 
     "name": "Algo Plus",
     "description": "백준 온라인 저지에서 실제 코딩테스트처럼 풀 수 있는 환경과 오답 노트 기능 등 학습에 유용한 기능을 제공합니다.",
-    "version": "1.0.7",
+    "version": "1.0.8",
 
     "icons": {
         "16": "asset/icon16.png",
@@ -68,9 +68,8 @@
 
     "web_accessible_resources": [
         {
-            "resources": ["asset/*.png"],
-            "extension_ids": ["*"],
-            "matches": ["*://*/*"]
+            "resources": ["asset/*.png", "js/injected.js"],
+            "matches": ["<all_urls>"]
         }
     ],
 

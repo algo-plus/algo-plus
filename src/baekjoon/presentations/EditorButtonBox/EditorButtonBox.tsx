@@ -8,6 +8,7 @@ const EditorButtonBox: React.FC<EditorButtonBoxProps> = ({
     runHandle,
     submitHandle,
     isRunning,
+    isSubmitting
 }) => {
     return (
         <div style={{ display: 'flex', gap: '10px', justifyContent: 'right' }}>
@@ -27,8 +28,12 @@ const EditorButtonBox: React.FC<EditorButtonBoxProps> = ({
             >
                 {isRunning ? '실행 중...' : '실행'}
             </button>
-            <button className='btn btn-primary' onClick={submitHandle}>
-                제출
+            <button 
+                className='btn btn-primary' 
+                onClick={submitHandle}
+                disabled={isSubmitting}
+            >
+                {isSubmitting ? '제출 중...' : '제출'}
             </button>
         </div>
     );
@@ -41,6 +46,7 @@ interface EditorButtonBoxProps {
     runHandle: () => void;
     submitHandle: () => void;
     isRunning: boolean;
+    isSubmitting: boolean;
 }
 
 export default EditorButtonBox;
