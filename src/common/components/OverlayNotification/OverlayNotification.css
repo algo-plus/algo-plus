@@ -1,0 +1,31 @@
+.algoplus-overlay-notification {
+    display: none;
+    position: fixed;
+    z-index: 10001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.algoplus-overlay-notification .notification-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+    height: 200px;
+    background-color: #ffffffd6;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.algoplus-overlay-notification .notification-container p {
+    padding: 4px 15px;
+    border-bottom: 1px solid #004bca;
+    font-size: 16px;
+    font-weight: 700;
+}

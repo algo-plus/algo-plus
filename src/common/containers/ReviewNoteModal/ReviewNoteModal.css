@@ -1,0 +1,29 @@
+.algoplus-review-note-content .code-description {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.algoplus-review-note-button-box {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    gap: 10px;
+}
+
+.change-order-button {
+    background: transparent;
+    border: transparent;
+    font-size: 16px;
+    position: absolute;
+    font-weight: 700;
+    transition: all 0.5s;
+}
+
+.change-order-button:hover {
+    color: #0c00bb;
+}
+.review-note-write-container {
+    width: 100%;
+}

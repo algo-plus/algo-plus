@@ -1,0 +1,17 @@
+.review-write-comment-block {
+    width: 100%;
+}
+
+.review-write-comment-block__header {
+    display: flex;
+    font-size: 16px !important;
+    margin-left: 8px;
+    gap: 4px;
+    align-items: center;
+    margin-bottom: 7px;
+}
+
+.review-write-comment-block__header * {
+    margin: 0;
+    padding: 0;
+}

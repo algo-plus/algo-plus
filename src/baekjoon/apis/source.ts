@@ -1,4 +1,4 @@
-import { CodeProps } from '@/baekjoon/types/source';
+import { SourceCode } from '@/common/types/review-note';
 
 function parseLang(str: string) {
     const parsed = str.slice(7, str.length);
@@ -7,7 +7,7 @@ function parseLang(str: string) {
     return parsed;
 }
 
-const fetchCode = async (submitId: number) => {
+const fetchCode = async (submitId: number | string) => {
     const url = `https://www.acmicpc.net/source/${submitId}`;
     try {
         const res = await fetch(url);
@@ -23,11 +23,11 @@ const fetchCode = async (submitId: number) => {
             console.error('No lang found');
             return null;
         }
-        const codeProp: CodeProps = {
+        const SourceCode: SourceCode = {
             lang: parseLang(lang),
             code: code.textContent,
         };
-        return codeProp;
+        return SourceCode;
     } catch (error) {
         console.error('Error fetching code:', error);
         return null;

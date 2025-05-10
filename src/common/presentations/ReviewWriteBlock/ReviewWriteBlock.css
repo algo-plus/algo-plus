@@ -1,0 +1,32 @@
+.review-write-block {
+}
+
+.review-write-block-header {
+    text-align: center;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.review-write-block-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 15px;
+    background-color: #fafafa;
+    border-radius: 10px !important;
+}
+
+.review-write-block-container .button-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.review-write-block-container.no-drag {
+    cursor: default;
+}

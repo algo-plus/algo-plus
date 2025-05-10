@@ -1,0 +1,12 @@
+.algoplus-button {
+    color: #fcfcfc;
+    background-color: #2e2e2e;
+    border-radius: 8px !important;
+    height: 30px;
+    width: 220px;
+    transition: 0.5 all;
+}
+
+.algoplus-button:hover {
+    background-color: #000000;
+}

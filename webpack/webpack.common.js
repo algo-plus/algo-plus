@@ -16,6 +16,7 @@ module.exports = {
         options: path.join(srcDir, 'options.tsx'),
         background: path.join(srcDir, 'background.ts'),
         main: path.join(srcDir, 'main.ts'),
+        injected: path.join(srcDir, 'baekjoon/scripts/injected-recaptcha.ts'),
     },
     output: {
         path: path.join(__dirname, '../dist/js'),
