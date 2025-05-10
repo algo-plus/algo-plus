@@ -68,9 +68,8 @@
 
     "web_accessible_resources": [
         {
-            "resources": ["asset/*.png"],
-            "extension_ids": ["*"],
-            "matches": ["*://*/*"]
+            "resources": ["asset/*.png", "js/injected.js"],
+            "matches": ["<all_urls>"]
         }
     ],
 

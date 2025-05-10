@@ -199,29 +199,45 @@ const SolveView: React.FC<SolveViewProps> = ({
 
     const codeSubmit = () => {
         saveEditorCode(problemId, languageId, code);
-        const data: SubmitPostRequest = {
-            problem_id: problemId,
-            language: Number(languageId),
-            code_open: codeOpen,
-            source: code,
-            csrf_key: csrfKey ? csrfKey : '',
+
+        const handleRecaptchaToken = (event: MessageEvent) => {
+            if (event.source !== window || event.data.type !== 'RECAPTCHA_TOKEN') return;
+
+            window.removeEventListener('message', handleRecaptchaToken);
+            const recaptchaToken = event.data.token;
+
+            const data: SubmitPostRequest = {
+                'g-recaptcha-response': String(recaptchaToken),
+                problem_id: problemId,
+                language: Number(languageId),
+                code_open: codeOpen,
+                source: code,
+                csrf_key: csrfKey ?? '',
+            };
+
+            submit(
+                data,
+                (response) => {
+                    const responseURL = response.request.responseURL;
+                    if (responseURL) {
+                        const redirectURL = addUrlSearchParam(
+                            responseURL,
+                            'after_algoplus_submit',
+                            'true'
+                        );
+                        refreshUrl(redirectURL);
+                    }
+                },
+                console.error
+            );
         };
 
-        submit(
-            data,
-            (response) => {
-                const responseURL = response.request.responseURL;
-                if (responseURL) {
-                    const redirectURL = addUrlSearchParam(
-                        responseURL,
-                        'after_algoplus_submit',
-                        'true'
-                    );
-                    refreshUrl(redirectURL);
-                }
-            },
-            console.error
-        );
+        window.addEventListener('message', handleRecaptchaToken);
+
+        const script = document.createElement('script');
+        script.src = chrome.runtime.getURL('js/injected.js');
+        script.onload = () => script.remove();
+        (document.head || document.documentElement).appendChild(script);
     };
 
     const changeLanguage = (languageId: string) => {
