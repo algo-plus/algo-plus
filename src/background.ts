@@ -1,6 +1,6 @@
 import { postprecessOutput, processErrorCode } from '@/common/utils/compile';
 import { CodeCompileRequest } from '@/common/types/compile';
-import { trimLineByLine } from '@/common/utils/string';
+import { formatDate, trimLineByLine } from '@/common/utils/string';
 
 /**
  * solvedac 문제 데이터를 파싱해오는 함수.
@@ -90,18 +90,15 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         reader.onloadend = () => {
             const dataUrl = reader.result;
 
+            const filename = `${request.platform}_${
+                request.problemId
+            }_${formatDate(new Date())}.md`;
+
             if (typeof dataUrl === 'string') {
                 chrome.downloads.download(
                     {
                         url: dataUrl,
-                        filename: `AlgoPlus${today.getFullYear()}${(
-                            today.getMonth() + 1
-                        )
-                            .toString()
-                            .padStart(2, '0')}${today
-                            .getDate()
-                            .toString()
-                            .padStart(2, '0')}.md`,
+                        filename: filename,
                         saveAs: true,
                     },
                     (downloadId) => {
