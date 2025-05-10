@@ -196,6 +196,7 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = ({ problemId }) => {
                 }
             />
             <ReviewNoteModal
+                problemId={problemId}
                 codeDescriptions={codeInfos.map((codeInfo, index) => (
                     <CodeInfoNoteHeader
                         key={codeInfo.submissionId}

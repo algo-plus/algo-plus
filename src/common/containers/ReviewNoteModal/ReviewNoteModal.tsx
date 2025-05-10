@@ -22,6 +22,7 @@ import { OverlayNotification } from '@/common/components/OverlayNotification';
 import { ReviewWriteBlockWrapper } from '@/common/containers/ReviewWriteBlockWrapper';
 
 type ReviewNoteModalProps = {
+    problemId: string;
     modalOpen: boolean;
     onClose: () => void;
     codeDescriptions: (string | JSX.Element)[];
@@ -116,6 +117,8 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
         chrome.runtime.sendMessage({
             action: 'saveRepository',
             content: getMarkdownContent(),
+            platform: 'BOJ',
+            problemId: props.problemId,
         });
     };
 
