@@ -86,6 +86,7 @@ const SolveView: React.FC<SolveViewProps> = ({
         'initial' | 'running' | 'result' | 'error'
     >('initial');
     const [targetTestCases, setTargetTestCases] = useState<TestCase[]>([]);
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const codeRef = useRef<string>(code);
     const languageIdRef = useRef<string>(languageId);
 
@@ -198,6 +199,8 @@ const SolveView: React.FC<SolveViewProps> = ({
     };
 
     const codeSubmit = () => {
+        if (isSubmitting) return;
+        setIsSubmitting(true);
         saveEditorCode(problemId, languageId, code);
 
         const handleRecaptchaToken = (event: MessageEvent) => {
@@ -227,8 +230,12 @@ const SolveView: React.FC<SolveViewProps> = ({
                         );
                         refreshUrl(redirectURL);
                     }
+                    setIsSubmitting(false);
                 },
-                console.error
+                (error) => {
+                    console.error(error);
+                    setIsSubmitting(false);
+                }
             );
         };
 
@@ -446,6 +453,7 @@ const SolveView: React.FC<SolveViewProps> = ({
                     submitHandle={codeSubmit}
                     openReferenceUrl={openReferenceUrl}
                     isRunning={testCaseState == 'running'}
+                    isSubmitting={isSubmitting}
                 />
             </div>
 
