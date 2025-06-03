@@ -1,5 +1,5 @@
 type SubmitPostRequest = {
-    'g-recaptcha-response': string;
+    'cf-turnstile-response': string;
     problem_id: string;
     language: number;
     code_open: CodeOpen;
