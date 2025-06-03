@@ -8,6 +8,22 @@ import { CodeOpen } from '@/baekjoon/types/submit';
 import './submit.css';
 
 const customSubmitPage = () => {
+    function pollingCfTurnstileResponse(name: string, interval = 1000) {
+        return new Promise((resolve) => {
+            const check = () => {
+                const input = document.querySelector(
+                    `input[name=${name}]`
+                ) as HTMLInputElement;
+                if (input && input.value.trim() !== '') {
+                    resolve(input.value);
+                } else {
+                    setTimeout(check, interval);
+                }
+            };
+            check();
+        });
+    }
+
     const addSplitView = () => {
         const root = document.createElement('div');
         const problemId = getProblemId();
@@ -28,6 +44,11 @@ const customSubmitPage = () => {
                 '#submit_form > input[type=hidden]:nth-child(6)'
             ) as HTMLInputElement
         ).value;
+        const cfTurnstileResponse = (
+            document.querySelector(
+                'input[name=cf-turnstile-response]'
+            ) as HTMLInputElement
+        ).value;
 
         let codeOpen: CodeOpen = 'close';
         const codeOpenRadios = document.querySelectorAll(
@@ -45,6 +66,7 @@ const customSubmitPage = () => {
                 <SolveView
                     problemId={problemId}
                     csrfKey={csrfKey}
+                    cfTurnstileResponse={cfTurnstileResponse}
                     codeOpenDefaultValue={codeOpen}
                 />
             );
@@ -96,7 +118,12 @@ const customSubmitPage = () => {
             }
         }
     };
-    window.addEventListener('load', checkActiveState);
+
+    window.addEventListener('load', () =>
+        pollingCfTurnstileResponse('cf-turnstile-response', 1000).then(
+            (value) => checkActiveState()
+        )
+    );
 };
 
 export default customSubmitPage;

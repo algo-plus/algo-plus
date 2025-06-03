@@ -54,12 +54,14 @@ type SolveViewProps = {
     problemId: string;
     csrfKey: string | null;
     codeOpenDefaultValue: CodeOpen;
+    cfTurnstileResponse: string | null;
 };
 
 const SolveView: React.FC<SolveViewProps> = ({
     problemId,
     csrfKey,
     codeOpenDefaultValue,
+    cfTurnstileResponse,
 }) => {
     const [problemContent, setProblemContent] = useState<JSX.Element | null>(
         null
@@ -203,48 +205,34 @@ const SolveView: React.FC<SolveViewProps> = ({
         setIsSubmitting(true);
         saveEditorCode(problemId, languageId, code);
 
-        const handleRecaptchaToken = (event: MessageEvent) => {
-            if (event.source !== window || event.data.type !== 'RECAPTCHA_TOKEN') return;
-
-            window.removeEventListener('message', handleRecaptchaToken);
-            const recaptchaToken = event.data.token;
-
-            const data: SubmitPostRequest = {
-                'g-recaptcha-response': String(recaptchaToken),
-                problem_id: problemId,
-                language: Number(languageId),
-                code_open: codeOpen,
-                source: code,
-                csrf_key: csrfKey ?? '',
-            };
-
-            submit(
-                data,
-                (response) => {
-                    const responseURL = response.request.responseURL;
-                    if (responseURL) {
-                        const redirectURL = addUrlSearchParam(
-                            responseURL,
-                            'after_algoplus_submit',
-                            'true'
-                        );
-                        refreshUrl(redirectURL);
-                    }
-                    setIsSubmitting(false);
-                },
-                (error) => {
-                    console.error(error);
-                    setIsSubmitting(false);
-                }
-            );
+        const data: SubmitPostRequest = {
+            'cf-turnstile-response': cfTurnstileResponse ?? '',
+            problem_id: problemId,
+            language: Number(languageId),
+            code_open: codeOpen,
+            source: code,
+            csrf_key: csrfKey ?? '',
         };
 
-        window.addEventListener('message', handleRecaptchaToken);
-
-        const script = document.createElement('script');
-        script.src = chrome.runtime.getURL('js/injected.js');
-        script.onload = () => script.remove();
-        (document.head || document.documentElement).appendChild(script);
+        submit(
+            data,
+            (response) => {
+                const responseURL = response.request.responseURL;
+                if (responseURL) {
+                    const redirectURL = addUrlSearchParam(
+                        responseURL,
+                        'after_algoplus_submit',
+                        'true'
+                    );
+                    refreshUrl(redirectURL);
+                }
+                setIsSubmitting(false);
+            },
+            (error) => {
+                console.error(error);
+                setIsSubmitting(false);
+            }
+        );
     };
 
     const changeLanguage = (languageId: string) => {
