@@ -23,6 +23,8 @@ const errorMessages: Record<string, string> = {
     server_error: '서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
     invalid_request:
         '올바르지 않은 요청입니다. 같은 문제가 계속 발생한다면 관리자에게 문의해주세요.\n\n문의: algoplus.official@gmail.com',
+    compile_failed:
+        '컴파일에 실패하였습니다. 코드에 오류가 없는지 확인해주세요.',
 };
 
 /* JDoodle compile API 동작을 위한 별도의 처리가 필요한 경우 코드를 전처리 */
@@ -103,6 +105,8 @@ const processErrorCode = (status: number): string => {
         return errorMessages.limit_exceeded;
     } else if (status < 410) {
         return errorMessages.invalid_request;
+    } else if (status == 417) {
+        return errorMessages.compile_failed;
     }
     return errorMessages.server_error;
 };

@@ -6,6 +6,7 @@ type CodeCompileRequest = {
     clientSecret: string;
     stdin?: string | null;
     compileOnly?: boolean;
+    key?: string;
 };
 
 type CompilerLanguage =

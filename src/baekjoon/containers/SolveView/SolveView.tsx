@@ -171,6 +171,7 @@ const SolveView: React.FC<SolveViewProps> = ({
                     script: script,
                     clientId: process.env.JDOODLE_CLIENT_ID as string,
                     clientSecret: process.env.JDOODLE_CLIENT_SECRET as string,
+                    key: process.env.JDOODLE_CLIENT_SECRET as string,
                     stdin: testCase.input,
                 };
 
