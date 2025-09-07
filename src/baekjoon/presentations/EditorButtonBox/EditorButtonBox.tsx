@@ -8,7 +8,8 @@ const EditorButtonBox: React.FC<EditorButtonBoxProps> = ({
     runHandle,
     submitHandle,
     isRunning,
-    isSubmitting
+    isSubmitting,
+    complieWaitMs
 }) => {
     return (
         <div style={{ display: 'flex', gap: '10px', justifyContent: 'right' }}>
@@ -25,8 +26,9 @@ const EditorButtonBox: React.FC<EditorButtonBoxProps> = ({
                 className={`btn btn-default ${isRunning ? 'loading' : ''}`}
                 onClick={runHandle}
                 disabled={isRunning}
+                style={{ ['--loading-ms']: `${complieWaitMs}ms` } as React.CSSProperties}
             >
-                {isRunning ? '실행 중...' : '실행'}
+                실행
             </button>
             <button 
                 className='btn btn-primary' 
@@ -47,6 +49,7 @@ interface EditorButtonBoxProps {
     submitHandle: () => void;
     isRunning: boolean;
     isSubmitting: boolean;
+    complieWaitMs: number;
 }
 
 export default EditorButtonBox;
