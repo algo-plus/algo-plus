@@ -1,4 +1,31 @@
 .loading {
-    opacity: 0.5;
+    position: relative;
+    overflow: hidden;
+    opacity: 1; 
     color: rgb(204, 204, 204);
+}
+
+.loading::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgb(204, 204, 204, 0.5);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    animation: fill-up var(--loading-ms, 10s) linear forwards;
+    z-index: 1;
+}
+
+.loading span {
+    position: relative;
+    z-index: 0;
+}
+
+@keyframes fill-up {
+    from {
+        transform: scaleY(0);
+    }
+    to {
+        transform: scaleY(1);
+    }
 }
