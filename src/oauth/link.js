@@ -169,7 +169,7 @@ const getMyRepos = (token) => {
                 select.innerHTML = '<option value="">저장소 선택...</option>';
                 repos.forEach(repo => {
                     const opt = document.createElement('option');
-                    opt.value = repo.full_name; // ex) username/repo
+                    opt.value = repo.full_name;
                     opt.textContent = repo.full_name;
                     select.appendChild(opt);
                 });
@@ -374,7 +374,7 @@ $('#github-link-button').on('click', () => {
                         $('#success').hide();
                         $('#auth-success').hide();
                     } else {
-                        linkRepo(token, `${username}/${repositoryName()}`);
+                        linkRepo(token, `${repositoryName()}`);
                     }
                 });
             }
