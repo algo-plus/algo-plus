@@ -87,7 +87,11 @@ const option = () => {
 };
 
 const repositoryName = () => {
-    return $('#name').val().trim();
+    if ($('#type').val() === 'new') {
+        return $('#name').val().trim();
+    } else {
+        return $('#repo-list').val(); // 선택한 레포 full_name 값
+    }
 };
 
 const statusCode = (res, status, name) => {
@@ -153,6 +157,36 @@ const statusCode = (res, status, name) => {
             break;
     }
 };
+const getMyRepos = (token) => {
+    const AUTHENTICATION_URL = 'https://api.github.com/user/repos?per_page=100';
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('readystatechange', function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                const repos = JSON.parse(xhr.responseText);
+                const select = document.querySelector('#repo-list');
+                select.innerHTML = '<option value="">저장소 선택...</option>';
+                repos.forEach(repo => {
+                    const opt = document.createElement('option');
+                    opt.value = repo.full_name; // ex) username/repo
+                    opt.textContent = repo.full_name;
+                    select.appendChild(opt);
+                });
+            } else {
+                console.error("Error fetching repos:", xhr.status, xhr.responseText);
+            }
+        }
+    });
+
+    xhr.open('GET', AUTHENTICATION_URL, true);
+    xhr.setRequestHeader('Authorization', `token ${token}`);
+    xhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
+    xhr.send();
+};
+
+
+
 
 const createRepo = (token, name) => {
     const AUTHENTICATION_URL = 'https://api.github.com/user/repos';
@@ -281,10 +315,22 @@ const linkRepo = (token, name) => {
 
 $('#type').on('change', function () {
     const valueSelected = this.value;
-    if (valueSelected) {
-        $('#github-link-button').attr('disabled', false);
-    } else {
-        $('#github-link-button').attr('disabled', true);
+    if (valueSelected === 'new') {
+        $('#name').show();
+        $('#repo-list').hide();
+    } else if (valueSelected === 'link') {
+        $('#name').hide();
+        $('#repo-list').show();
+
+        // 내 레포 불러오기
+        chrome.storage.local.get('AlgoPlus_token', (data) => {
+            const token = data.AlgoPlus_token;
+            if (!token) {
+                alert("GitHub 인증 토큰이 필요합니다!");
+                return;
+            }
+            getMyRepos(token); // 앞서 추가한 함수 활용
+        });
     }
 });
 
