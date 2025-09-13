@@ -1,6 +1,7 @@
 import React from 'react';
 import { TestCase } from '@/baekjoon/types/problem';
 import uuid from 'react-uuid';
+import { trimLineByLine } from '@/common/utils/string';
 
 export const getProblemId = (): string | null => {
     const problemIdElement = document.querySelector(
@@ -87,7 +88,7 @@ export const parsingTestCases = (html: string): TestCase[] => {
         testCases.push({
             uuid: uuid(),
             input: (inputs[i].textContent as string).trim(),
-            output: (outputs[i].textContent as string).trim(),
+            output: trimLineByLine(outputs[i].textContent as string),
             isMultiAnswer: isMultiAnswer != null,
         });
     }
