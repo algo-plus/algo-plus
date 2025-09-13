@@ -1,4 +1,5 @@
-export const replaceNewLineToBrTag = (string: string): string => {
+export const replaceSpaceAndNewlineToHtml = (string: string): string => {
+    string = string.replace(/ /g, '&nbsp;');
     return string.replace(/(\r\n|\r|\n)/g, '<br>');
 };
 
@@ -6,7 +7,8 @@ export const trimLineByLine = (text: string): string => {
     return text
         .split('\n')
         .map((line) => line.trim())
-        .join('\n');
+        .join('\n')
+        .trim();
 };
 
 export const formatDate = (date: Date) => {

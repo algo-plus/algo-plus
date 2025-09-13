@@ -1,6 +1,6 @@
 import React from 'react';
 import './TestCaseResultElement.css';
-import { replaceNewLineToBrTag } from '@/common/utils/string';
+import { replaceSpaceAndNewlineToHtml } from '@/common/utils/string';
 
 const TestCaseResultElement: React.FC<TestCaseResultElementProps> = ({
     no,
@@ -16,7 +16,7 @@ const TestCaseResultElement: React.FC<TestCaseResultElementProps> = ({
                 <span>입력값</span>
                 <span
                     dangerouslySetInnerHTML={{
-                        __html: replaceNewLineToBrTag(input),
+                        __html: replaceSpaceAndNewlineToHtml(input),
                     }}
                 ></span>
             </p>
@@ -24,7 +24,7 @@ const TestCaseResultElement: React.FC<TestCaseResultElementProps> = ({
                 <span>기댓값</span>
                 <span
                     dangerouslySetInnerHTML={{
-                        __html: replaceNewLineToBrTag(expectedValue),
+                        __html: replaceSpaceAndNewlineToHtml(expectedValue),
                     }}
                 ></span>
             </p>
@@ -66,7 +66,7 @@ const TestCaseResultElement: React.FC<TestCaseResultElementProps> = ({
                     ) : (
                         <span
                             dangerouslySetInnerHTML={{
-                                __html: replaceNewLineToBrTag(output),
+                                __html: replaceSpaceAndNewlineToHtml(output),
                             }}
                         ></span>
                     )}
@@ -76,7 +76,7 @@ const TestCaseResultElement: React.FC<TestCaseResultElementProps> = ({
                     <span>출력</span>
                     <span
                         dangerouslySetInnerHTML={{
-                            __html: replaceNewLineToBrTag(output),
+                            __html: replaceSpaceAndNewlineToHtml(output),
                         }}
                     ></span>
                 </p>
