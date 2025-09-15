@@ -66,6 +66,7 @@
         "https://github.com/",
         "https://solved.ac/api/v3/*",
         "https://xk4e9t1zac.execute-api.ap-northeast-2.amazonaws.com/execution/JdoodleCaller",
+        "https://i3hvuzq3v8.execute-api.ap-northeast-2.amazonaws.com/operation/AlgoPlusCompiler",
         "https://api.jdoodle.com/v1/execute"
     ],
 
