@@ -1,6 +1,11 @@
+import customGlobalPage from './global';
+import customSolvingProblemPage from './solving-problem';
+
 const url: string = window.location.pathname;
-const searchUrl: string = window.location.search;
 
 export const customSweaPage = () => {
-    console.log('swea page');
+    if (url.startsWith('/main/solvingProblem/solvingProblem.do')) {
+        customSolvingProblemPage();
+    }
+    customGlobalPage();
 };
