@@ -105,6 +105,7 @@
     overflow-x: unset;
     display: flex;
     flex-direction: column;
+    padding: 16px 8px 16px 16px !important;
     height: 100% !important;
 }
 
@@ -115,9 +116,43 @@
     height: 100% !important;
 }
 
-#algoplus-wrapper.swea #test-case-panel .test_wrap .test_in,
+#algoplus-wrapper.swea #test-case-panel .test_wrap .test_in {
+    height: 100% !important;
+    padding: 0px !important;
+    border: none;
+}
+
+#algoplus-wrapper.swea #test-case-panel .test_wrap .test_in .left .tit {
+    display: flex;
+    gap: 8px;
+}
+
 #algoplus-wrapper.swea #test-case-panel .test_wrap .test_in .text_area {
     height: 100% !important;
+}
+
+#algoplus-wrapper.swea #testcase-input-detail:hover .info-text {
+    display: block;
+}
+
+#algoplus-wrapper.swea #testcase-input-detail {
+    position: relative;
+}
+
+#algoplus-wrapper.swea #testcase-input-detail .info-text {
+    position: absolute;
+    display: none;
+    width: 280px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    line-height: 16px;
+    margin-left: 8px;
+    font-weight: 400;
+    top: 0px;
+    left: 20px;
 }
 
 #algoplus-wrapper.swea #solve-view-footer .algoplus-button-container {

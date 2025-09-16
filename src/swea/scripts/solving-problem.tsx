@@ -95,6 +95,30 @@ const customSolvingProblemPage = async (): Promise<void> => {
         const testCasePanel = document.querySelector(
             '#test-case-panel'
         ) as HTMLDivElement;
+
+        testCasePanel.querySelector('p.ico_infotxt')?.remove();
+
+        const inputTitle = testCasePanel.querySelector(
+            '.test_wrap .test_in .left .tit'
+        ) as HTMLSpanElement;
+
+        const infoDetail: HTMLDivElement = document.createElement('div');
+        infoDetail.id = 'testcase-input-detail';
+
+        const infoIcon: HTMLImageElement = document.createElement('img');
+        infoIcon.src = '../images/sw_sub/sw_icon/icon_info.png';
+        infoIcon.width = 20;
+        infoIcon.classList.add('info-icon');
+
+        const infoText: HTMLSpanElement = document.createElement('span');
+        infoText.innerText =
+            'Input을 입력하고 Run을 선택하면 Output 결과를 확인할 수 있습니다. Input 값을 넣지 않으면 기본 Input값이 적용되어 실행됩니다. Test는 채점을 하는 것이 아니며 정답 여부를 알려주지 않습니다.';
+        infoText.classList.add('info-text');
+
+        infoDetail.appendChild(infoIcon);
+        infoDetail.appendChild(infoText);
+
+        inputTitle.appendChild(infoDetail);
     };
 
     const customFooter = () => {
