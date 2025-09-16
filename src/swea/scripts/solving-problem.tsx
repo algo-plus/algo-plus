@@ -21,9 +21,6 @@ const customSolvingProblemPage = async (): Promise<void> => {
         const editorPanel: HTMLDivElement = problemRight.querySelector(
             '.panel.panel-default:nth-child(2)'
         ) as HTMLDivElement;
-        const btnCenter: HTMLDivElement = problemRight.querySelector(
-            '.btn_center'
-        ) as HTMLDivElement;
         const testWrap: HTMLDivElement = problemRight.querySelector(
             '.test_wrap'
         )?.parentNode as HTMLDivElement;
@@ -44,9 +41,15 @@ const customSolvingProblemPage = async (): Promise<void> => {
         const testCasePanel = document.querySelector(
             '#test-case-panel'
         ) as HTMLDivElement;
-
         testCasePanel?.appendChild(testWrap!);
-        testCasePanel?.appendChild(btnCenter!);
+
+        const solveViewFooter = document.querySelector(
+            '#solve-view-footer'
+        ) as HTMLDivElement;
+        const btnCenter: HTMLDivElement = problemRight.querySelector(
+            '.btn_center'
+        ) as HTMLDivElement;
+        solveViewFooter?.appendChild(btnCenter!);
     };
 
     const customProblemDescriptionPanel = () => {
@@ -82,8 +85,26 @@ const customSolvingProblemPage = async (): Promise<void> => {
 
     const customTestCasePanel = () => {
         const testCasePanel = document.querySelector(
-            '#stest-case-panel'
+            '#test-case-panel'
         ) as HTMLDivElement;
+    };
+
+    const customFooter = () => {
+        const solveViewFooter = document.querySelector(
+            '#solve-view-footer'
+        ) as HTMLDivElement;
+
+        const buttonContainer = document.querySelector(
+            '.btn_center'
+        ) as HTMLDivElement;
+
+        buttonContainer.classList.remove('btn_center');
+        buttonContainer.classList.add('algoplus-button-container');
+
+        buttonContainer.querySelectorAll('a').forEach((btn) => {
+            btn.classList.remove('lg');
+            btn.classList.add('sm');
+        });
     };
 
     const renderAlgoPlusSolveView = () => {
@@ -107,6 +128,7 @@ const customSolvingProblemPage = async (): Promise<void> => {
                 solveEditorPanelTop={<div id='solve-editor-panel-top'></div>}
                 solveEditorPanel={<div id='solve-editor-panel'></div>}
                 testCasePanel={<div id='test-case-panel'></div>}
+                footer={<div id='solve-view-footer'></div>}
             />
         );
         createRoot(algoplusWrapper).render(solvingProblemView);
@@ -117,6 +139,7 @@ const customSolvingProblemPage = async (): Promise<void> => {
     setTimeout(customProblemDescriptionPanel, 0);
     setTimeout(customSolveEditorPanel, 0);
     setTimeout(customTestCasePanel, 0);
+    setTimeout(customFooter, 0);
 };
 
 export default customSolvingProblemPage;

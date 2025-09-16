@@ -7,6 +7,14 @@
     padding-top: 20px;
 }
 
+#algoplus-wrapper.swea #algoplus-wrapper.swea#test-case-panel {
+    padding-right: 10px;
+}
+
+#algoplus-wrapper.swea #solve-view-wrapper {
+    height: 75vh !important;
+}
+
 #algoplus-wrapper.swea #problem-description-panel {
     padding-right: 10px;
 }
@@ -50,10 +58,8 @@
     padding-bottom: 8px !important;
 }
 
-#algoplus-wrapper.swea #solve-view-wrapper {
-    height: 85vh !important;
-}
-
-#algoplus-wrapper.swea #algoplus-wrapper.swea#test-case-panel {
-    padding-right: 10px;
+#algoplus-wrapper.swea #solve-view-footer .algoplus-button-container {
+    margin-top: 16px !important;
+    padding-bottom: 0px !important;
+    text-align: right;
 }

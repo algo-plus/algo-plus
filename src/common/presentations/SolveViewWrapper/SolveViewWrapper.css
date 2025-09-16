@@ -1,8 +1,6 @@
 #solve-view-wrapper {
     width: 100%;
     height: 100%;
-    padding-bottom: 40px;
-    margin-top: 10px;
 }
 
 .split-view ::-webkit-scrollbar {

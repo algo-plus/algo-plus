@@ -9,6 +9,7 @@ type SolveViewWrapperProps = {
     solveEditorPanel: JSX.Element;
     solveEditorPanelTop: JSX.Element;
     testCasePanel: JSX.Element;
+    footer: JSX.Element;
 };
 
 const SolveViewWrapper: React.FC<SolveViewWrapperProps> = ({
@@ -16,6 +17,7 @@ const SolveViewWrapper: React.FC<SolveViewWrapperProps> = ({
     solveEditorPanel,
     solveEditorPanelTop,
     testCasePanel,
+    footer,
 }) => {
     return (
         <>
@@ -39,6 +41,7 @@ const SolveViewWrapper: React.FC<SolveViewWrapperProps> = ({
                         </div>
                     }
                 />
+                {footer}
             </div>
         </>
     );
