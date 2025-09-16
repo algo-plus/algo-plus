@@ -19,8 +19,22 @@
     display: none;
 }
 
-#collapseOne .panel-body {
+#algoplus-wrapper.swea #problem-description-panel #collapseOne .panel-body {
     margin-top: 0px !important;
+}
+
+#algoplus-wrapper.swea
+    #problem-description-panel
+    #collapseOne
+    .panel-body
+    .box3 {
+    padding: 16px !important;
+}
+
+#algoplus-wrapper.swea #problem-description-panel #collapseOne .list_type2.ico {
+    padding-left: 60px;
+    background-size: 40px;
+    background-position: left;
 }
 
 #algoplus-wrapper.swea #solve-editor-panel {
