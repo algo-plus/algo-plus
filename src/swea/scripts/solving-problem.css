@@ -1,5 +1,18 @@
+.problem_left#problem_left {
+    z-index: 9999 !important;
+    border-right: 1px solid #ccc;
+}
+
+.problem_left#problem_left #more-less-left {
+    margin-right: -12px !important;
+}
+
 .problem_right#problem_right {
     overflow-x: unset !important;
+    margin-left: 64px !important;
+    padding-right: 16px !important;
+    position: unset !important;
+    margin-top: 88px !important;
 }
 
 #algoplus-wrapper.swea {
@@ -8,7 +21,7 @@
 }
 
 #algoplus-wrapper.swea #solve-view-wrapper {
-    height: 75vh !important;
+    height: 77vh !important;
 }
 
 #algoplus-wrapper.swea #problem-description-panel {
