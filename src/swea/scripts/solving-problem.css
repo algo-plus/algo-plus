@@ -70,6 +70,7 @@
 #algoplus-wrapper.swea #solve-editor-panel #collapseTwo .CodeMirror-code pre {
     border-right: none !important;
     white-space: pre-wrap !important;
+    word-break: break-all !important;
 }
 
 #algoplus-wrapper.swea #solve-editor-panel #collapseTwo .CodeMirror-gutters {
@@ -102,6 +103,21 @@
 #algoplus-wrapper.swea #test-case-panel .test_wrap {
     overflow-y: scroll;
     overflow-x: unset;
+    display: flex;
+    flex-direction: column;
+    height: 100% !important;
+}
+
+#algoplus-wrapper.swea #test-case-panel .test_wrap .left,
+#algoplus-wrapper.swea #test-case-panel .test_wrap .right {
+    display: flex;
+    flex-direction: column;
+    height: 100% !important;
+}
+
+#algoplus-wrapper.swea #test-case-panel .test_wrap .test_in,
+#algoplus-wrapper.swea #test-case-panel .test_wrap .test_in .text_area {
+    height: 100% !important;
 }
 
 #algoplus-wrapper.swea #solve-view-footer .algoplus-button-container {
