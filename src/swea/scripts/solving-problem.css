@@ -4,11 +4,7 @@
 
 #algoplus-wrapper.swea {
     width: 100%;
-    padding-top: 20px;
-}
-
-#algoplus-wrapper.swea #algoplus-wrapper.swea#test-case-panel {
-    padding-right: 10px;
+    padding-top: 28px;
 }
 
 #algoplus-wrapper.swea #solve-view-wrapper {
@@ -17,6 +13,14 @@
 
 #algoplus-wrapper.swea #problem-description-panel {
     padding-right: 10px;
+}
+
+#algoplus-wrapper.swea #problem-description-panel #headingOne {
+    display: none;
+}
+
+#collapseOne .panel-body {
+    margin-top: 0px !important;
 }
 
 #algoplus-wrapper.swea #solve-editor-panel {
@@ -56,6 +60,21 @@
     height: calc(100% - 4px) !important;
     margin-bottom: 0px !important;
     padding-bottom: 8px !important;
+}
+
+#algoplus-wrapper.swea #test-case-panel,
+#algoplus-wrapper.swea #test-case-panel .border_top,
+#algoplus-wrapper.swea #test-case-panel .test_wrap {
+    height: 100%;
+}
+
+#algoplus-wrapper.swea #test-case-panel .border_top {
+    border-color: #d1d1d1 !important;
+}
+
+#algoplus-wrapper.swea #test-case-panel .test_wrap {
+    overflow-y: scroll;
+    overflow-x: unset;
 }
 
 #algoplus-wrapper.swea #solve-view-footer .algoplus-button-container {
