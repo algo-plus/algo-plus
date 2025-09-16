@@ -115,6 +115,17 @@ const customSolvingProblemPage = async (): Promise<void> => {
         });
     };
 
+    const customLeftPanel = () => {
+        const problemLeft = document.querySelector(
+            '.problem_left#problem_left'
+        ) as HTMLDivElement;
+
+        const moreLeftLeft = problemLeft.querySelector(
+            '#more-less-left'
+        ) as HTMLAnchorElement;
+        moreLeftLeft.click();
+    };
+
     const renderAlgoPlusSolveView = () => {
         const problemRight: HTMLDivElement | null =
             document.querySelector('#problem_right');
@@ -148,6 +159,7 @@ const customSolvingProblemPage = async (): Promise<void> => {
     setTimeout(customSolveEditorPanel, 0);
     setTimeout(customTestCasePanel, 0);
     setTimeout(customFooter, 0);
+    setTimeout(customLeftPanel, 0);
 };
 
 export default customSolvingProblemPage;
