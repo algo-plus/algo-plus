@@ -1,6 +1,5 @@
 .horizontal.split-view {
     display: flex;
-    height: 95vh;
     overflow: hidden;
 }
 

@@ -8,8 +8,8 @@ import {
     parsingTestCases,
 } from '@/baekjoon/utils/parsing';
 import { EditorCode, TestCase } from '@/baekjoon/types/problem';
-import { HorizontalSplitView } from '@/baekjoon/presentations/HorizontalSplitView';
-import { VerticalSplitView } from '@/baekjoon/presentations/VerticalSplitView';
+import { HorizontalSplitView } from '@/common/presentations/HorizontalSplitView';
+import { VerticalSplitView } from '@/common/presentations/VerticalSplitView';
 import TestCasePanel from '@/baekjoon/presentations/TestCasePanel/TestCasePanel';
 import EditorButtonBox from '@/baekjoon/presentations/EditorButtonBox/EditorButtonBox';
 import { LanguageSelectBox } from '@/baekjoon/components/LanguageSelectBox';
@@ -49,6 +49,7 @@ import {
 } from '@/common/utils/compile';
 import { getReferenceUrl } from '@/common/utils/language-reference-url';
 import './SolveView.css';
+import SolveViewWrapper from '@/common/presentations/SolveViewWrapper/SolveViewWrapper';
 
 type SolveViewProps = {
     problemId: string;
@@ -375,6 +376,7 @@ const SolveView: React.FC<SolveViewProps> = ({
         <>
             <div id='solve-view'>
                 <HorizontalSplitView
+                    height={'95vh'}
                     left={
                         <ProblemPanel
                             content={problemContent}

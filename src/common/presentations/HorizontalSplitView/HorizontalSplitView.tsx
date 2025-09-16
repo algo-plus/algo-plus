@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './HorizontalSplitView.css';
+import style from 'react-syntax-highlighter/dist/esm/styles/hljs/a11y-dark';
 
 type HorizontalSplitViewProps = {
     left: JSX.Element;
     right: JSX.Element;
     leftStyle?: React.CSSProperties;
     rightStyle?: React.CSSProperties;
+    height?: string | number;
 };
 
 const HorizontalSplitView: React.FC<HorizontalSplitViewProps> = (
@@ -69,7 +71,11 @@ const HorizontalSplitView: React.FC<HorizontalSplitViewProps> = (
     };
 
     return (
-        <div className='horizontal split-view' ref={wrapperRef}>
+        <div
+            className='horizontal split-view'
+            ref={wrapperRef}
+            style={{ height: props.height || '100%' }}
+        >
             <div
                 className='horizontal panel left'
                 style={{

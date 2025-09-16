@@ -1,4 +1,59 @@
-#algoplus-wrapper {
+.problem_right#problem_right {
+    overflow-x: unset !important;
+}
+
+#algoplus-wrapper.swea {
+    width: 100%;
+    padding-top: 20px;
+}
+
+#algoplus-wrapper.swea #problem-description-panel {
+    padding-right: 10px;
+}
+
+#algoplus-wrapper.swea #solve-editor-panel {
+    height: 100%;
+}
+
+#algoplus-wrapper.swea #solve-editor-panel .panel,
+#algoplus-wrapper.swea #solve-editor-panel #collapseTwo,
+#algoplus-wrapper.swea #solve-editor-panel #collapseTwo .code_in,
+#algoplus-wrapper.swea #solve-editor-panel #collapseTwo .CodeMirror {
+    height: 100%;
+}
+
+#algoplus-wrapper.swea #solve-editor-panel #collapseTwo .CodeMirror-sizer {
+    min-width: unset !important;
+    border-right-width: 0px !important;
+    padding-right: 0px !important;
+}
+
+#algoplus-wrapper.swea #solve-editor-panel #collapseTwo .CodeMirror-code pre {
+    border-right: none !important;
+    white-space: pre-wrap !important;
+}
+
+#algoplus-wrapper.swea #solve-editor-panel #collapseTwo .CodeMirror-gutters {
+    height: unset !important;
+}
+
+#algoplus-wrapper.swea #solve-editor-panel #collapseTwo .panel-body {
+    height: 100%;
     display: flex;
-    gap: 20px;
+    flex-direction: column;
+    margin-top: 0px !important;
+}
+
+#algoplus-wrapper.swea #solve-editor-panel #collapseTwo .code_wrap2 {
+    height: calc(100% - 4px) !important;
+    margin-bottom: 0px !important;
+    padding-bottom: 8px !important;
+}
+
+#algoplus-wrapper.swea #solve-view-wrapper {
+    height: 85vh !important;
+}
+
+#algoplus-wrapper.swea #algoplus-wrapper.swea#test-case-panel {
+    padding-right: 10px;
 }
