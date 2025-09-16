@@ -56,6 +56,14 @@ const customSolvingProblemPage = async (): Promise<void> => {
         const problemDescriptionPanel = document.querySelector(
             '#problem-description-panel'
         ) as HTMLDivElement;
+
+        problemDescriptionPanel.querySelectorAll('img').forEach((img) => {
+            if (img.style.width) {
+                img.style.maxWidth = img.style.width;
+                img.style.width = '100%';
+                img.style.height = 'auto';
+            }
+        });
     };
 
     const customSolveEditorPanel = () => {
