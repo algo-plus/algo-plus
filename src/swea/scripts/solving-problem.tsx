@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import './solving-problem.css';
-import SolveViewWrapper from '@/common/presentations/SolveViewWrapper/SolveViewWrapper';
+import SolveViewWrapper from '@/common/containers/SolveViewWrapper/SolveViewWrapper';
 import React, { useEffect } from 'react';
 
 const customSolvingProblemPage = async (): Promise<void> => {

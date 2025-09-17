@@ -49,7 +49,7 @@ import {
 } from '@/common/utils/compile';
 import { getReferenceUrl } from '@/common/utils/language-reference-url';
 import './SolveView.css';
-import SolveViewWrapper from '@/common/presentations/SolveViewWrapper/SolveViewWrapper';
+import SolveViewWrapper from '@/common/containers/SolveViewWrapper/SolveViewWrapper';
 
 type SolveViewProps = {
     problemId: string;
