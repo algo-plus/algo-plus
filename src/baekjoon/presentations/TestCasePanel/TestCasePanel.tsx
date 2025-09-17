@@ -1,6 +1,6 @@
 import TestCaseResultElement from '@/baekjoon/components/TestCaseResultElement/TestCaseResultElement';
 import { TestCase } from '@/baekjoon/types/problem';
-import { replaceNewLineToBrTag } from '@/common/utils/string';
+import { replaceSpaceAndNewlineToHtml } from '@/common/utils/string';
 import React from 'react';
 
 interface TestCasePanelProps {
@@ -31,7 +31,7 @@ const TestCasePanel: React.FC<TestCasePanelProps> = ({
                 >
                     <span
                         dangerouslySetInnerHTML={{
-                            __html: replaceNewLineToBrTag(errorMessage),
+                            __html: replaceSpaceAndNewlineToHtml(errorMessage),
                         }}
                     ></span>
                 </p>

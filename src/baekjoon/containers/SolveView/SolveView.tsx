@@ -92,6 +92,9 @@ const SolveView: React.FC<SolveViewProps> = ({
     const codeRef = useRef<string>(code);
     const languageIdRef = useRef<string>(languageId);
 
+    const complieWaitMs = 3_500;
+    const [isCompile, setIsCompile] = useState<boolean>(false);
+
     const codeInitialize = () => {
         setCode(getDefaultCode(editorLanguage));
     };
@@ -145,12 +148,18 @@ const SolveView: React.FC<SolveViewProps> = ({
     };
 
     const codeRun = async () => {
+        if (isCompile) return;
         if (!code) {
             alert('실행할 코드가 없습니다.');
             return;
         }
 
         saveEditorCode(problemId, languageId, code);
+
+        setIsCompile(true);
+        setTimeout(() => {
+            setIsCompile(false);
+        }, complieWaitMs);
         setTestCaseState('running');
 
         const language = convertLanguageIdForSubmitApi(languageId);
@@ -171,6 +180,7 @@ const SolveView: React.FC<SolveViewProps> = ({
                     script: script,
                     clientId: process.env.JDOODLE_CLIENT_ID as string,
                     clientSecret: process.env.JDOODLE_CLIENT_SECRET as string,
+                    key: process.env.JDOODLE_CLIENT_SECRET as string,
                     stdin: testCase.input,
                 };
 
@@ -440,8 +450,9 @@ const SolveView: React.FC<SolveViewProps> = ({
                     runHandle={codeRun}
                     submitHandle={codeSubmit}
                     openReferenceUrl={openReferenceUrl}
-                    isRunning={testCaseState == 'running'}
+                    isRunning={isCompile}
                     isSubmitting={isSubmitting}
+                    complieWaitMs={complieWaitMs}
                 />
             </div>
 
