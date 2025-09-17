@@ -89,6 +89,7 @@ const VerticalSplitView: React.FC<VerticalSplitViewProps> = (
                 style={{
                     ...props.bottomStyle,
                     height: `${panelsHeight[1]}%`,
+                    overflowY: 'scroll',
                 }}
             >
                 {props.bottom}

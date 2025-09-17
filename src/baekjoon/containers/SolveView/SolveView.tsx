@@ -373,90 +373,77 @@ const SolveView: React.FC<SolveViewProps> = ({
     }, []);
 
     return (
-        <>
-            <div id='solve-view'>
-                <HorizontalSplitView
-                    height={'95vh'}
-                    left={
-                        <ProblemPanel
-                            content={problemContent}
-                            mathJaxStyle={problemStyle}
+        <div id='algoplus-wrapper' className='boj'>
+            <SolveViewWrapper
+                height={'95vh'}
+                problemDescriptionPanel={
+                    <ProblemPanel
+                        content={problemContent}
+                        mathJaxStyle={problemStyle}
+                    />
+                }
+                solveEditorPanelTop={
+                    <div
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            flexWrap: 'wrap',
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        <CodeOpenSelector
+                            defaultValue={codeOpen}
+                            onChange={setCodeOpen}
                         />
-                    }
-                    right={
-                        <div
-                            style={{
-                                height: '100%',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '5px',
-                            }}
-                        >
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    flexWrap: 'wrap',
-                                    justifyContent: 'space-between',
-                                }}
-                            >
-                                <CodeOpenSelector
-                                    defaultValue={codeOpen}
-                                    onChange={setCodeOpen}
-                                />
-                                <LanguageSelectBox
-                                    value={languageId}
-                                    onChange={languageChangeHandle}
-                                    onFocus={languageFocusHandle}
-                                    onChangeDefaultLanguage={
-                                        saveEditorDefaultLanguage
-                                    }
-                                />
-                            </div>
-                            <VerticalSplitView
-                                top={
-                                    <EditorPanel
-                                        language={editorLanguage}
-                                        code={code}
-                                        onCodeUpdate={setCode}
-                                    />
-                                }
-                                bottom={
-                                    <TestCasePanel
-                                        testCases={targetTestCases}
-                                        state={
-                                            testCaseState == 'initial'
-                                                ? 'initial'
-                                                : testCaseState == 'error'
-                                                ? 'error'
-                                                : 'run'
-                                        }
-                                        errorMessage={errorMessage}
-                                    />
-                                }
-                                bottomStyle={{
-                                    border: '1px solid #ccc',
-                                    background: '#efefef',
-                                }}
-                            />
-                        </div>
-                    }
-                />
-                <EditorButtonBox
-                    codeInitializeHandle={() => {
-                        if (confirm('정말로 초기화하시겠습니까?')) {
-                            codeInitialize();
+                        <LanguageSelectBox
+                            value={languageId}
+                            onChange={languageChangeHandle}
+                            onFocus={languageFocusHandle}
+                            onChangeDefaultLanguage={saveEditorDefaultLanguage}
+                        />
+                    </div>
+                }
+                solveEditorPanel={
+                    <EditorPanel
+                        language={editorLanguage}
+                        code={code}
+                        onCodeUpdate={setCode}
+                    />
+                }
+                testCasePanel={
+                    <TestCasePanel
+                        testCases={targetTestCases}
+                        state={
+                            testCaseState == 'initial'
+                                ? 'initial'
+                                : testCaseState == 'error'
+                                ? 'error'
+                                : 'run'
                         }
-                    }}
-                    addTestCaseHandle={toggleTestCaseModal}
-                    runHandle={codeRun}
-                    submitHandle={codeSubmit}
-                    openReferenceUrl={openReferenceUrl}
-                    isRunning={isCompile}
-                    isSubmitting={isSubmitting}
-                    complieWaitMs={complieWaitMs}
-                />
-            </div>
+                        errorMessage={errorMessage}
+                    />
+                }
+                testCasePanelStyle={{
+                    border: '1px solid #ccc',
+                    background: '#efefef',
+                }}
+                footer={
+                    <EditorButtonBox
+                        codeInitializeHandle={() => {
+                            if (confirm('정말로 초기화하시겠습니까?')) {
+                                codeInitialize();
+                            }
+                        }}
+                        addTestCaseHandle={toggleTestCaseModal}
+                        runHandle={codeRun}
+                        submitHandle={codeSubmit}
+                        openReferenceUrl={openReferenceUrl}
+                        isRunning={isCompile}
+                        isSubmitting={isSubmitting}
+                        complieWaitMs={complieWaitMs}
+                    />
+                }
+            />
 
             {/* 테스트 케이스 추가 모달 */}
             <Modal
@@ -479,7 +466,7 @@ const SolveView: React.FC<SolveViewProps> = ({
                 modalOpen={testCaseModalOpen}
                 onClose={toggleTestCaseModal}
             />
-        </>
+        </div>
     );
 };
 

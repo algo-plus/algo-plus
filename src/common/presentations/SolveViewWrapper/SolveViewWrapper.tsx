@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, CSSProperties } from 'react';
 
 import './SolveViewWrapper.css';
 import { HorizontalSplitView } from '@/common/presentations/HorizontalSplitView';
@@ -10,6 +10,8 @@ type SolveViewWrapperProps = {
     solveEditorPanelTop: JSX.Element;
     testCasePanel: JSX.Element;
     footer: JSX.Element;
+    height?: string | number;
+    testCasePanelStyle?: CSSProperties;
 };
 
 const SolveViewWrapper: React.FC<SolveViewWrapperProps> = ({
@@ -17,12 +19,15 @@ const SolveViewWrapper: React.FC<SolveViewWrapperProps> = ({
     solveEditorPanel,
     solveEditorPanelTop,
     testCasePanel,
+    testCasePanelStyle,
     footer,
+    height,
 }) => {
     return (
         <>
             <div id='solve-view-wrapper'>
                 <HorizontalSplitView
+                    height={height || '100%'}
                     left={problemDescriptionPanel}
                     right={
                         <div
@@ -37,6 +42,7 @@ const SolveViewWrapper: React.FC<SolveViewWrapperProps> = ({
                             <VerticalSplitView
                                 top={solveEditorPanel}
                                 bottom={testCasePanel}
+                                bottomStyle={testCasePanelStyle}
                             />
                         </div>
                     }

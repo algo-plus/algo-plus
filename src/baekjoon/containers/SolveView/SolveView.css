@@ -1,32 +1,6 @@
-#solve-view {
+#algoplus-wrapper.boj #solve-view-wrapper {
     height: 100%;
     padding: 20px;
     padding-bottom: 40px;
     margin-top: 10px;
-}
-
-.split-view ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-}
-
-.split-view ::-webkit-scrollbar-track {
-    background: transparent;
-    border-radius: 6px;
-}
-
-.split-view ::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 6px;
-    border: 0px solid transparent;
-    background-clip: content-box;
-}
-
-.split-view ::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
-.resizer:hover,
-.resizer:active {
-    background-color: #4d92cb;
 }

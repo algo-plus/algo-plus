@@ -26,5 +26,5 @@
 
 .resizer:hover,
 .resizer:active {
-    background-color: #4d92cb;
+    background-color: #4d92cb !important;
 }
