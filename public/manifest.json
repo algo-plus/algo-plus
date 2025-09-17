@@ -3,7 +3,7 @@
 
     "name": "Algo Plus",
     "description": "백준 온라인 저지에서 실제 코딩테스트처럼 풀 수 있는 환경과 오답 노트 기능 등 학습에 유용한 기능을 제공합니다.",
-    "version": "1.0.9",
+    "version": "1.1.0",
 
     "icons": {
         "16": "asset/icon16.png",
@@ -65,7 +65,6 @@
         "https://swexpertacademy.com/",
         "https://github.com/",
         "https://solved.ac/api/v3/*",
-        "https://xk4e9t1zac.execute-api.ap-northeast-2.amazonaws.com/execution/JdoodleCaller",
         "https://i3hvuzq3v8.execute-api.ap-northeast-2.amazonaws.com/operation/AlgoPlusCompiler",
         "https://api.jdoodle.com/v1/execute"
     ],
