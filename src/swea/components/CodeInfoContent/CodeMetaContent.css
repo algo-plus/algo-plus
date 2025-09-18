@@ -1,0 +1,42 @@
+.algoplus-code-meta-content {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(255, 240, 244);
+    border-radius: 7px !important;
+    padding: 10px 0;
+}
+
+.algoplus-code-meta-content p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.algoplus-code-meta-content span.pass {
+    color: #2599e0;
+    font-weight: 600;
+}
+
+.algoplus-code-meta-content span.fail {
+    color: #ee696a;
+    font-weight: 600;
+}
+
+.close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: none;
+    background: transparent;
+    font-size: 15px;
+    cursor: pointer;
+    color: #ccc;
+    transition: color 0.3s;
+}
+
+.close-button:hover {
+    color: #888;
+}

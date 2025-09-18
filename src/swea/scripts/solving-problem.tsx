@@ -1,7 +1,8 @@
 import { createRoot } from 'react-dom/client';
 import './solving-problem.css';
 import SolveViewWrapper from '@/common/containers/SolveViewWrapper/SolveViewWrapper';
-import React, { useEffect } from 'react';
+import React from 'react';
+import { ReviewNotePopUp } from '@/swea/containers/ReviewNotePopUp';
 
 const customSolvingProblemPage = async (): Promise<void> => {
     const injectSolveViewPanels = () => {
@@ -144,6 +145,8 @@ const customSolvingProblemPage = async (): Promise<void> => {
             '.problem_left#problem_left'
         ) as HTMLDivElement;
 
+        problemLeft.style.width = '480px';
+
         const moreLeftLeft = problemLeft.querySelector(
             '#more-less-left'
         ) as HTMLAnchorElement;
@@ -177,13 +180,30 @@ const customSolvingProblemPage = async (): Promise<void> => {
         createRoot(algoplusWrapper).render(solvingProblemView);
     };
 
+    const renderAlgoPlusReviewNotePopUp = () => {
+        const problemWrap: HTMLDivElement | null = document.querySelector(
+            'form[name="contestForm"] .problem_wrap'
+        );
+
+        if (!problemWrap) return;
+
+        const algoplusPopUpWrapper: HTMLDivElement =
+            document.createElement('div');
+        algoplusPopUpWrapper.id = 'algoplus-modal-wrapper';
+        problemWrap.appendChild(algoplusPopUpWrapper);
+
+        const reviewNotePopUp = <ReviewNotePopUp />;
+        createRoot(algoplusPopUpWrapper).render(reviewNotePopUp);
+    };
+
     renderAlgoPlusSolveView();
+    renderAlgoPlusReviewNotePopUp();
     setTimeout(injectSolveViewPanels, 0);
+    setTimeout(customLeftPanel, 0);
     setTimeout(customProblemDescriptionPanel, 0);
     setTimeout(customSolveEditorPanel, 0);
     setTimeout(customTestCasePanel, 0);
     setTimeout(customFooter, 0);
-    setTimeout(customLeftPanel, 0);
 };
 
 export default customSolvingProblemPage;
