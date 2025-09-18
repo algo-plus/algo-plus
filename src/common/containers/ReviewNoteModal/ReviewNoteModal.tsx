@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { MouseEvent, useEffect, useRef, useState } from 'react';
 import './ReviewNoteModal.css';
 import { Modal } from '@/common/presentations/Modal';
 import {
@@ -80,7 +80,8 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
         );
     };
 
-    const changeOrder = () => {
+    const changeOrder = (event: MouseEvent) => {
+        event.preventDefault();
         if (confirm('작성한 내용이 사라집니다. 진행하시겠습니까?')) {
             setSourceCodes((prev) => [...prev].reverse());
             setCodeDescriptions((prev) => [...prev].reverse());

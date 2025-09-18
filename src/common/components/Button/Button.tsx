@@ -10,7 +10,10 @@ const Button = (props: {
         <button
             className='algoplus-button'
             style={{ ...props.style }}
-            onClick={props.onClick}
+            onClick={(event) => {
+                event.preventDefault();
+                props.onClick(event);
+            }}
         >
             {props.text}
         </button>

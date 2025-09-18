@@ -1,5 +1,5 @@
 .problem_left#problem_left {
-    z-index: 9999 !important;
+    z-index: 999 !important;
     border-right: 1px solid #ccc;
 }
 

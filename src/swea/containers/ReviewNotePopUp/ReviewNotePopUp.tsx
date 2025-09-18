@@ -3,38 +3,63 @@ import './ReviewNotePopUp.css';
 import { PopUp } from '@/common/presentations/PopUp';
 import { CodeSelectDescription } from '@/swea/components/CodeSelectDescription';
 import { Button } from '@/common/components/Button';
-import { isSameCode, parsingPopCodeParams } from '@/swea/apis/source';
+import {
+    fetchCode,
+    isSameCode,
+    parsingPopCodeParams,
+} from '@/swea/apis/source';
 import { SweaCodeMeta } from '@/swea/types/source';
-import { CodeMetaContent } from '@/swea/components/CodeInfoContent';
+import { CodeMetaContent } from '@/swea/components/CodeMetaContent';
+import { ReviewNoteModal } from '@/common/containers/ReviewNoteModal';
+import CodeMetaNoteHeader from '@/swea/components/CodeMetaNoteHeader/CodeMetaNoteHeader';
+import { SourceCode } from '@/common/types/review-note';
 
 type ReviewNotePopUpProps = {};
 
 const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = ({}) => {
     const [reviewNoteModalOpen, setReviewNoteModalOpen] = useState(false);
     const [codeMetaList, setCodeMetaList] = useState<SweaCodeMeta[]>([]);
+    const [sourceCodes, setSourceCodes] = useState<SourceCode[]>([]);
 
-    const deleteCode = (codeMeta: SweaCodeMeta) => {
-        setCodeMetaList((prevList) =>
-            prevList.filter((meta) => !isSameCode(meta, codeMeta))
-        );
+    const toggleReviewNoteModal = () => {
+        setReviewNoteModalOpen(!reviewNoteModalOpen);
     };
 
-    const selectCode = (codeMeta: SweaCodeMeta) => {
-        setCodeMetaList((prevList) => {
-            const alreadySelected = prevList.some((meta) =>
-                isSameCode(meta, codeMeta)
-            );
-            if (alreadySelected) {
-                return prevList.filter((meta) => !isSameCode(meta, codeMeta));
+    const deleteCode = useCallback((codeMeta: SweaCodeMeta) => {
+        setCodeMetaList((prev) =>
+            prev.filter((meta) => !isSameCode(meta, codeMeta))
+        );
+    }, []);
+
+    const selectCode = useCallback((codeMeta: SweaCodeMeta) => {
+        setCodeMetaList((prev) => {
+            const exists = prev.some((meta) => isSameCode(meta, codeMeta));
+            if (exists) {
+                return prev.filter((meta) => !isSameCode(meta, codeMeta));
             }
-            if (prevList.length >= 2) {
+            if (prev.length >= 2) {
                 const el = codeMeta.checkboxElement as HTMLInputElement;
-                el.checked = false;
+                if (el) el.checked = false;
                 alert('코드는 최대 2개까지만 선택할 수 있습니다.');
-                return prevList;
+                return prev;
             }
-            return [...prevList, codeMeta];
+            return [...prev, codeMeta];
         });
+    }, []);
+
+    const getSourceCodes = useCallback(async () => {
+        return await Promise.all(codeMetaList.map(fetchCode));
+    }, [codeMetaList]);
+
+    const writeReview = async (event: Event) => {
+        if (codeMetaList.length === 0) {
+            alert('오답노트를 작성할 코드를 선택해주세요.');
+            return;
+        }
+
+        const sourceCodes = (await getSourceCodes()) as SourceCode[];
+        setSourceCodes(sourceCodes);
+        toggleReviewNoteModal();
     };
 
     const customLeftPanel = () => {
@@ -119,26 +144,22 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = ({}) => {
                         ) : (
                             <></>
                         )}
-                        <Button text='오답노트 작성' onClick={() => {}} />
+                        <Button text='오답노트 작성' onClick={writeReview} />
                     </div>
                 }
             />
-            {/* <ReviewNoteModal
-                problemId={problemId}
-                codeDescriptions={codeInfos.map((codeInfo, index) => (
-                    <CodeInfoNoteHeader
-                        key={codeInfo.submissionId}
-                        submissionId={codeInfo.submissionId}
-                        memory={codeInfo.memory}
-                        time={codeInfo.time}
-                        language={codeInfo.language}
-                        result={codeInfo.result}
+            <ReviewNoteModal
+                problemId={''}
+                codeDescriptions={codeMetaList.map((codeMeta, index) => (
+                    <CodeMetaNoteHeader
+                        key={`${codeMeta.contestProbId}_${codeMeta.contestHistoryId}_${codeMeta.submitIndex}`}
+                        codeMeta={codeMeta}
                     />
                 ))}
                 sourceCodes={sourceCodes}
                 modalOpen={reviewNoteModalOpen}
                 onClose={toggleReviewNoteModal}
-            /> */}
+            />
         </>
     );
 };
