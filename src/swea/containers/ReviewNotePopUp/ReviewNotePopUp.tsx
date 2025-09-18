@@ -20,6 +20,7 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = ({}) => {
     const [reviewNoteModalOpen, setReviewNoteModalOpen] = useState(false);
     const [codeMetaList, setCodeMetaList] = useState<SweaCodeMeta[]>([]);
     const [sourceCodes, setSourceCodes] = useState<SourceCode[]>([]);
+    const [problemId, setProblemId] = useState<string>('_');
 
     const toggleReviewNoteModal = () => {
         setReviewNoteModalOpen(!reviewNoteModalOpen);
@@ -119,6 +120,15 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = ({}) => {
             });
     };
 
+    useEffect(() => {
+        const titleElement = document.querySelector(
+            '.problem_title'
+        ) as HTMLHeadingElement;
+        if (titleElement && titleElement.textContent) {
+            setProblemId(titleElement.textContent.split('.')[0]);
+        }
+    }, []);
+
     useEffect(customLeftPanel, []);
 
     return (
@@ -153,7 +163,8 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = ({}) => {
                 }
             />
             <ReviewNoteModal
-                problemId={''}
+                platform='SWEA'
+                problemId={problemId}
                 codeDescriptions={codeMetaList.map((codeMeta, index) => (
                     <CodeMetaNoteHeader
                         key={`${codeMeta.contestProbId}_${codeMeta.contestHistoryId}_${codeMeta.submitIndex}`}

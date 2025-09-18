@@ -21,12 +21,15 @@ import { Spinner } from '@/common/components/Spinner';
 import { OverlayNotification } from '@/common/components/OverlayNotification';
 import { ReviewWriteBlockWrapper } from '@/common/containers/ReviewWriteBlockWrapper';
 
+type Platform = 'BOJ' | 'SWEA';
+
 type ReviewNoteModalProps = {
     problemId: string;
     modalOpen: boolean;
     onClose: () => void;
     codeDescriptions: (string | JSX.Element)[];
     sourceCodes: SourceCode[];
+    platform: Platform;
 };
 
 const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
@@ -118,7 +121,7 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
         chrome.runtime.sendMessage({
             action: 'saveRepository',
             content: getMarkdownContent(),
-            platform: 'BOJ',
+            platform: props.platform,
             problemId: props.problemId,
         });
     };
