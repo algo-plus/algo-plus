@@ -25,13 +25,17 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = ({}) => {
         setReviewNoteModalOpen(!reviewNoteModalOpen);
     };
 
-    const deleteCode = useCallback((codeMeta: SweaCodeMeta) => {
+    const deleteCode = (codeMeta: SweaCodeMeta) => {
+        codeMetaList
+            .filter((meta) => isSameCode(meta, codeMeta))
+            .forEach((meta) => (meta.checkboxElement.checked = false));
+
         setCodeMetaList((prev) =>
             prev.filter((meta) => !isSameCode(meta, codeMeta))
         );
-    }, []);
+    };
 
-    const selectCode = useCallback((codeMeta: SweaCodeMeta) => {
+    const selectCode = (codeMeta: SweaCodeMeta) => {
         setCodeMetaList((prev) => {
             const exists = prev.some((meta) => isSameCode(meta, codeMeta));
             if (exists) {
@@ -45,7 +49,7 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = ({}) => {
             }
             return [...prev, codeMeta];
         });
-    }, []);
+    };
 
     const getSourceCodes = useCallback(async () => {
         return await Promise.all(codeMetaList.map(fetchCode));
