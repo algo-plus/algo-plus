@@ -82,8 +82,6 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = ({}) => {
         document
             .querySelectorAll('table.table_type3 tbody tr')
             .forEach((row) => {
-                const tableSelectColumn = document.createElement('td');
-
                 const popCodeAnchor = row.querySelector(
                     'a.btn'
                 ) as HTMLAnchorElement;
@@ -92,11 +90,11 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = ({}) => {
                 );
 
                 const submitTime =
-                    document.querySelector('td[id^="submitTime"]')
-                        ?.textContent ?? '-';
+                    row.querySelector('td[id^="submitTime"]')?.textContent ??
+                    '-';
                 const result =
-                    document.querySelector('td:nth-child(3) span')
-                        ?.textContent ?? 'ERROR!';
+                    row.querySelector('td:nth-child(3) span')?.textContent ??
+                    'ERROR!';
 
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
@@ -115,6 +113,7 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = ({}) => {
                     selectCode(codeMeta);
                 });
 
+                const tableSelectColumn = document.createElement('td');
                 tableSelectColumn.appendChild(checkbox);
                 row.insertBefore(tableSelectColumn, row.firstChild);
             });
