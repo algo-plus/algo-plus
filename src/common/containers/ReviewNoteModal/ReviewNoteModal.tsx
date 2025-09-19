@@ -16,10 +16,11 @@ import ReviewOverallCommentBlock, {
 } from '@/common/presentations/ReviewOverallCommentBlock/ReviewOverallCommentBlock';
 import { generateReviewMarkdown } from '@/common/utils/review-note-markdown';
 import { getObjectFromLocalStorage } from '@/common/utils/storage';
-import { startLoader } from '@/baekjoon/utils/baekjoon';
+import { uploadBojContentToGithub } from '@/baekjoon/utils/upload';
 import { Spinner } from '@/common/components/Spinner';
 import { OverlayNotification } from '@/common/components/OverlayNotification';
 import { ReviewWriteBlockWrapper } from '@/common/containers/ReviewWriteBlockWrapper';
+import { uploadSweaContentToGithub } from '@/swea/utils/upload';
 
 type Platform = 'BOJ' | 'SWEA';
 
@@ -132,7 +133,11 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
             alert('깃허브 업로드를 위해서는 깃허브 연결이 필요합니다.');
             return enable;
         }
-        startLoader(getMarkdownContent(), () => {});
+        if (props.platform === 'BOJ') {
+            uploadBojContentToGithub(getMarkdownContent(), () => {});
+        } else if (props.platform === 'SWEA') {
+            uploadSweaContentToGithub(getMarkdownContent(), () => {});
+        }
     };
 
     return (
