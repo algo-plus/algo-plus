@@ -2,7 +2,7 @@ import uuid from 'react-uuid';
 
 type SourceCode = {
     code: string | null;
-    lang: string | null;
+    lang?: string | null;
 };
 
 class CommentBlock {

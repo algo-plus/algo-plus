@@ -210,6 +210,7 @@ const ReviewNotePopUp: React.FC<ReviewNotePopUpProps> = ({ problemId }) => {
                 sourceCodes={sourceCodes}
                 modalOpen={reviewNoteModalOpen}
                 onClose={toggleReviewNoteModal}
+                platform='BOJ'
             />
         </>
     );

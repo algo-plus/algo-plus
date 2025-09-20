@@ -7,7 +7,7 @@
 
 .vertical.panel {
     position: relative;
-    overflow-y: auto;
+    overflow-y: hidden;
     background-color: transparent;
 }
 

@@ -1,0 +1,162 @@
+.problem_left#problem_left {
+    z-index: 999 !important;
+    border-right: 1px solid #ccc;
+}
+
+.problem_left#problem_left #more-less-left {
+    margin-right: -12px !important;
+}
+
+.problem_right#problem_right {
+    overflow-x: unset !important;
+    margin-left: 64px !important;
+    padding-right: 16px !important;
+    position: unset !important;
+    margin-top: 88px !important;
+}
+
+#algoplus-wrapper.swea {
+    width: 100%;
+    padding-top: 28px;
+}
+
+#algoplus-wrapper.swea #solve-view-wrapper {
+    height: 77vh !important;
+}
+
+#algoplus-wrapper.swea #problem-description-panel {
+    padding-right: 10px;
+}
+
+#algoplus-wrapper.swea #problem-description-panel #headingOne {
+    display: none;
+}
+
+#algoplus-wrapper.swea #problem-description-panel #collapseOne .panel-body {
+    margin-top: 0px !important;
+}
+
+#algoplus-wrapper.swea
+    #problem-description-panel
+    #collapseOne
+    .panel-body
+    .box3 {
+    padding: 16px !important;
+}
+
+#algoplus-wrapper.swea #problem-description-panel #collapseOne .list_type2.ico {
+    padding-left: 60px;
+    background-size: 40px;
+    background-position: left;
+}
+
+#algoplus-wrapper.swea #solve-editor-panel {
+    height: 100%;
+}
+
+#algoplus-wrapper.swea #solve-editor-panel .panel,
+#algoplus-wrapper.swea #solve-editor-panel #collapseTwo,
+#algoplus-wrapper.swea #solve-editor-panel #collapseTwo .code_in,
+#algoplus-wrapper.swea #solve-editor-panel #collapseTwo .CodeMirror {
+    height: 100%;
+}
+
+#algoplus-wrapper.swea #solve-editor-panel #collapseTwo .CodeMirror-sizer {
+    min-width: unset !important;
+    border-right-width: 0px !important;
+    padding-right: 0px !important;
+}
+
+#algoplus-wrapper.swea #solve-editor-panel #collapseTwo .CodeMirror-code pre {
+    border-right: none !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+}
+
+#algoplus-wrapper.swea #solve-editor-panel #collapseTwo .CodeMirror-gutters {
+    height: unset !important;
+}
+
+#algoplus-wrapper.swea #solve-editor-panel #collapseTwo .panel-body {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 0px !important;
+}
+
+#algoplus-wrapper.swea #solve-editor-panel #collapseTwo .code_wrap2 {
+    height: calc(100% - 4px) !important;
+    margin-bottom: 0px !important;
+    padding-bottom: 8px !important;
+}
+
+#algoplus-wrapper.swea #test-case-panel,
+#algoplus-wrapper.swea #test-case-panel .border_top,
+#algoplus-wrapper.swea #test-case-panel .test_wrap {
+    height: 100%;
+}
+
+#algoplus-wrapper.swea #test-case-panel .border_top {
+    border-color: #d1d1d1 !important;
+}
+
+#algoplus-wrapper.swea #test-case-panel .test_wrap {
+    overflow-y: scroll;
+    overflow-x: unset;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 8px 16px 16px !important;
+    height: 100% !important;
+}
+
+#algoplus-wrapper.swea #test-case-panel .test_wrap .left,
+#algoplus-wrapper.swea #test-case-panel .test_wrap .right {
+    display: flex;
+    flex-direction: column;
+    height: 100% !important;
+}
+
+#algoplus-wrapper.swea #test-case-panel .test_wrap .test_in {
+    height: 100% !important;
+    padding: 0px !important;
+    border: none;
+}
+
+#algoplus-wrapper.swea #test-case-panel .test_wrap .test_in .left .tit {
+    display: flex;
+    gap: 8px;
+}
+
+#algoplus-wrapper.swea #test-case-panel .test_wrap .test_in .text_area {
+    height: 100% !important;
+}
+
+#algoplus-wrapper.swea #testcase-input-detail:hover .info-text {
+    display: block;
+}
+
+#algoplus-wrapper.swea #testcase-input-detail {
+    position: relative;
+}
+
+#algoplus-wrapper.swea #testcase-input-detail .info-text {
+    position: absolute;
+    display: none;
+    width: 280px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    line-height: 16px;
+    margin-left: 8px;
+    font-weight: 400;
+    top: 0px;
+    left: 20px;
+}
+
+#algoplus-wrapper.swea #solve-view-footer .algoplus-button-container {
+    margin-top: 16px !important;
+    padding-bottom: 0px !important;
+    text-align: right;
+}

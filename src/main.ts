@@ -1,21 +1,10 @@
-import customProblemPage from '@/baekjoon/scripts/problem';
-import customStatusPage from '@/baekjoon/scripts/status';
-import customGlobalPage from '@/baekjoon/scripts/global';
-import customSubmitPage from '@/baekjoon/scripts/submit';
+import { customBaekjoonPage } from '@/baekjoon/scripts/main';
+import { customSweaPage } from '@/swea/scripts/main';
 
-const url: string = window.location.pathname;
-const searchUrl: string = window.location.search;
+const href: string = location.href;
 
-if (
-    url.startsWith('/problem/') &&
-    !url.includes('status') &&
-    !url.includes('history')
-) {
-    customProblemPage();
-} else if (url.startsWith('/status') && searchUrl.includes('from_mine')) {
-    customStatusPage();
-} else if (url.startsWith('/submit')) {
-    customSubmitPage();
+if (href.includes('acmicpc.net') || href.includes('boj.kr')) {
+    customBaekjoonPage();
+} else if (href.includes('swexpertacademy.com')) {
+    customSweaPage();
 }
-
-customGlobalPage();

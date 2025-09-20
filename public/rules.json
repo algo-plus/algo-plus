@@ -18,7 +18,7 @@
             ]
         },
         "condition": {
-            "domains": ["acmicpc.net"],
+            "domains": ["acmicpc.net", "swexpertacademy.com"],
             "resourceTypes": ["xmlhttprequest"]
         }
     }

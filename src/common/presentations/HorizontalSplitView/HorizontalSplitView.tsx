@@ -1,18 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { CSSProperties } from 'react';
-import './VerticalSplitView.css';
+import './HorizontalSplitView.css';
+import style from 'react-syntax-highlighter/dist/esm/styles/hljs/a11y-dark';
 
-type VerticalSplitViewProps = {
-    top: JSX.Element;
-    bottom: JSX.Element;
-    topStyle?: CSSProperties;
-    bottomStyle?: CSSProperties;
+type HorizontalSplitViewProps = {
+    left: JSX.Element;
+    right: JSX.Element;
+    leftStyle?: React.CSSProperties;
+    rightStyle?: React.CSSProperties;
+    height?: string | number;
 };
 
-const VerticalSplitView: React.FC<VerticalSplitViewProps> = (
-    props: VerticalSplitViewProps
+const HorizontalSplitView: React.FC<HorizontalSplitViewProps> = (
+    props: HorizontalSplitViewProps
 ) => {
-    const [panelsHeight, setPanelsHeight] = useState<number[]>([50, 50]);
+    const [panelsWidth, setPanelsWidth] = useState<number[]>([50, 50]);
     const [resizingIndex, setResizingIndex] = useState<number | null>(null);
     const [mouseOffset, setMouseOffset] = useState<number>(0);
     const wrapperRef = useRef<HTMLDivElement>(null);
@@ -22,15 +23,15 @@ const VerticalSplitView: React.FC<VerticalSplitViewProps> = (
             if (resizingIndex === null || !wrapperRef.current) return;
 
             const wrapperRect = wrapperRef.current.getBoundingClientRect();
-            const totalHeight = wrapperRect.height;
-            const mouseY = e.clientY - wrapperRect.top - mouseOffset;
-            const topPanelHeight = (mouseY / totalHeight) * 100;
-            const bottomPanelHeight = 100 - topPanelHeight;
+            const totalWidth = wrapperRect.width;
+            const mouseX = e.clientX - wrapperRect.left - mouseOffset;
+            const leftPanelWidth = (mouseX / totalWidth) * 100;
+            const rightPanelWidth = 100 - leftPanelWidth;
 
-            const newHeights = [...panelsHeight];
-            newHeights[resizingIndex] = topPanelHeight;
-            newHeights[resizingIndex + 1] = bottomPanelHeight;
-            setPanelsHeight(newHeights);
+            const newWidths = [...panelsWidth];
+            newWidths[resizingIndex] = leftPanelWidth;
+            newWidths[resizingIndex + 1] = rightPanelWidth;
+            setPanelsWidth(newWidths);
         };
 
         window.addEventListener('mousemove', handleMouseMove);
@@ -40,11 +41,11 @@ const VerticalSplitView: React.FC<VerticalSplitViewProps> = (
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('mouseup', handleMouseUp);
         };
-    }, [resizingIndex, panelsHeight]);
+    }, [resizingIndex, panelsWidth]);
 
     const disableTextSelection = () => {
         document.body.style.userSelect = 'none';
-        document.body.style.cursor = 'row-resize';
+        document.body.style.cursor = 'col-resize';
     };
 
     const enableTextSelection = () => {
@@ -62,39 +63,43 @@ const VerticalSplitView: React.FC<VerticalSplitViewProps> = (
         index: number
     ) => {
         const resizerRect = e.currentTarget.getBoundingClientRect();
-        const resizerMiddle = resizerRect.height / 2;
-        const offset = e.clientY - resizerRect.top - resizerMiddle;
+        const resizerMiddle = resizerRect.width / 2;
+        const offset = e.clientX - resizerRect.left - resizerMiddle;
         setMouseOffset(offset);
         disableTextSelection();
         setResizingIndex(index);
     };
 
     return (
-        <div className='vertical split-view' ref={wrapperRef}>
+        <div
+            className='horizontal split-view'
+            ref={wrapperRef}
+            style={{ height: props.height || '100%' }}
+        >
             <div
-                className='vertical panel top'
+                className='horizontal panel left'
                 style={{
-                    ...props.topStyle,
-                    height: `${panelsHeight[0]}%`,
+                    ...props.leftStyle,
+                    width: `${panelsWidth[0]}%`,
                 }}
             >
-                {props.top}
+                {props.left}
             </div>
             <div
-                className='vertical resizer'
+                className='horizontal resizer'
                 onMouseDown={(e) => handleMouseDown(e, 0)}
             />
             <div
-                className='vertical panel bottom'
+                className='horizontal panel right'
                 style={{
-                    ...props.bottomStyle,
-                    height: `${panelsHeight[1]}%`,
+                    ...props.rightStyle,
+                    width: `${panelsWidth[1]}%`,
                 }}
             >
-                {props.bottom}
+                {props.right}
             </div>
         </div>
     );
 };
 
-export default VerticalSplitView;
+export default HorizontalSplitView;
