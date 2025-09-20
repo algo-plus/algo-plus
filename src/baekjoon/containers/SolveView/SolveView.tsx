@@ -52,14 +52,12 @@ import './SolveView.css';
 
 type SolveViewProps = {
     problemId: string;
-    csrfKey: string | null;
     codeOpenDefaultValue: CodeOpen;
     cfTurnstileResponse: string | null;
 };
 
 const SolveView: React.FC<SolveViewProps> = ({
     problemId,
-    csrfKey,
     codeOpenDefaultValue,
     cfTurnstileResponse,
 }) => {
@@ -221,7 +219,6 @@ const SolveView: React.FC<SolveViewProps> = ({
             language: Number(languageId),
             code_open: codeOpen,
             source: code,
-            csrf_key: csrfKey ?? '',
         };
 
         submit(
