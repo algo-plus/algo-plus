@@ -39,11 +39,6 @@ const customSubmitPage = () => {
             '.container.content'
         ) as HTMLElement;
 
-        const csrfKey = (
-            document.querySelector(
-                '#submit_form > input[type=hidden]:nth-child(6)'
-            ) as HTMLInputElement
-        ).value;
         const cfTurnstileResponse = (
             document.querySelector(
                 'input[name=cf-turnstile-response]'
@@ -65,7 +60,6 @@ const customSubmitPage = () => {
             const solveView = (
                 <SolveView
                     problemId={problemId}
-                    csrfKey={csrfKey}
                     cfTurnstileResponse={cfTurnstileResponse}
                     codeOpenDefaultValue={codeOpen}
                 />
