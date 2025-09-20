@@ -22,7 +22,10 @@ import {
 
 let loader: ReturnType<typeof setInterval> | null = null;
 
-export const startLoader = async (content: string, closeEvent: Function) => {
+export const uploadBojContentToGithub = async (
+    content: string,
+    closeEvent: Function
+) => {
     showUploadSpinner();
     loader = setInterval(async () => {
         const enable = await checkEnable();

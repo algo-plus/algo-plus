@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { MouseEvent, useEffect, useRef, useState } from 'react';
 import './ReviewNoteModal.css';
 import { Modal } from '@/common/presentations/Modal';
 import {
@@ -16,10 +16,13 @@ import ReviewOverallCommentBlock, {
 } from '@/common/presentations/ReviewOverallCommentBlock/ReviewOverallCommentBlock';
 import { generateReviewMarkdown } from '@/common/utils/review-note-markdown';
 import { getObjectFromLocalStorage } from '@/common/utils/storage';
-import { startLoader } from '@/baekjoon/utils/baekjoon';
+import { uploadBojContentToGithub } from '@/baekjoon/utils/upload';
 import { Spinner } from '@/common/components/Spinner';
 import { OverlayNotification } from '@/common/components/OverlayNotification';
 import { ReviewWriteBlockWrapper } from '@/common/containers/ReviewWriteBlockWrapper';
+import { uploadSweaContentToGithub } from '@/swea/utils/upload';
+
+type Platform = 'BOJ' | 'SWEA';
 
 type ReviewNoteModalProps = {
     problemId: string;
@@ -27,6 +30,7 @@ type ReviewNoteModalProps = {
     onClose: () => void;
     codeDescriptions: (string | JSX.Element)[];
     sourceCodes: SourceCode[];
+    platform: Platform;
 };
 
 const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
@@ -80,7 +84,8 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
         );
     };
 
-    const changeOrder = () => {
+    const changeOrder = (event: MouseEvent) => {
+        event.preventDefault();
         if (confirm('작성한 내용이 사라집니다. 진행하시겠습니까?')) {
             setSourceCodes((prev) => [...prev].reverse());
             setCodeDescriptions((prev) => [...prev].reverse());
@@ -117,7 +122,7 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
         chrome.runtime.sendMessage({
             action: 'saveRepository',
             content: getMarkdownContent(),
-            platform: 'BOJ',
+            platform: props.platform,
             problemId: props.problemId,
         });
     };
@@ -128,7 +133,11 @@ const ReviewNoteModal: React.FC<ReviewNoteModalProps> = (
             alert('깃허브 업로드를 위해서는 깃허브 연결이 필요합니다.');
             return enable;
         }
-        startLoader(getMarkdownContent(), () => {});
+        if (props.platform === 'BOJ') {
+            uploadBojContentToGithub(getMarkdownContent(), () => {});
+        } else if (props.platform === 'SWEA') {
+            uploadSweaContentToGithub(getMarkdownContent(), () => {});
+        }
     };
 
     return (

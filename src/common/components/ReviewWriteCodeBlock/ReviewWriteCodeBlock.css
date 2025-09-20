@@ -1,5 +1,5 @@
 .review-write-code-block {
-    width: 100%;
+    width: 100% !important;
 }
 
 .review-write-code-block .code-name-input {
@@ -12,15 +12,27 @@
     margin-bottom: 10px;
 }
 
+.review-write-code-block pre {
+    display: block;
+    padding: 9.5px;
+    margin: 0 0 10px;
+    font-size: 13px;
+    line-height: 1.42857143;
+    color: #333;
+    word-break: break-all;
+    word-wrap: break-word;
+    border: 1px solid #ccc;
+}
+
 .review-write-code-block .code-name-input label {
-    font-size: 16px;
-    margin: 0;
+    font-size: 16px !important;
+    margin: 0 !important;
 }
 
 .review-write-code-block .code-name-input input {
-    background-color: transparent;
-    border: transparent;
-    width: 100%;
+    background-color: transparent !important;
+    border: transparent !important;
+    width: 100% !important;
 }
 
 .review-write-code-block .code-name-input input:focus {
